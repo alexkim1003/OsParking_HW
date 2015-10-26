@@ -36,6 +36,9 @@ import static com.osparking.global.Globals.getTopLeftPointToPutThisFrameAtScreen
 import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.names.DB_Access.readSettings;
 import static com.osparking.global.Globals.checkOptions;
+import static com.osparking.global.Globals.font_Size;
+import static com.osparking.global.Globals.font_Style;
+import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 
 /**
@@ -143,19 +146,47 @@ public class DisAllowedCar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        wholePanel = new javax.swing.JPanel();
+        firstPanel = new javax.swing.JPanel();
+        tag_Reco_Panel = new javax.swing.JPanel();
+        filler20 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        jLabel1 = new javax.swing.JLabel();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        recogTextField = new javax.swing.JTextField();
+        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        tag_Regi_Panel = new javax.swing.JPanel();
+        filler21 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        jLabel2 = new javax.swing.JLabel();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        regisTextField = new javax.swing.JTextField();
+        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
+        warnningPanel = new javax.swing.JPanel();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        WarningSignTBox = new javax.swing.JLabel();
+        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        reasonPanel = new javax.swing.JPanel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
+        jLabel4 = new javax.swing.JLabel();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
+        disallowReasonPanel = new javax.swing.JPanel();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(150, 0), new java.awt.Dimension(80, 32767));
+        disAllowReasonTextField = new javax.swing.JTextField();
+        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
+        buttonPanel = new javax.swing.JPanel();
         openBarButton = new javax.swing.JButton();
         closeGateButton = new javax.swing.JButton();
         closeFormButton = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        recogTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        regisTextField = new javax.swing.JTextField();
-        WarningSignTBox = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        disAllowReasonTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("DisAllowed Car");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -166,139 +197,156 @@ public class DisAllowedCar extends javax.swing.JFrame {
                 formKeyReleased(evt);
             }
         });
+        getContentPane().add(filler1, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(filler2, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(filler3, java.awt.BorderLayout.EAST);
+        getContentPane().add(filler4, java.awt.BorderLayout.WEST);
 
-        openBarButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        openBarButton.setText("Open(O)");
+        wholePanel.setPreferredSize(new java.awt.Dimension(513, 450));
+        wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        firstPanel.setLayout(new javax.swing.BoxLayout(firstPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        tag_Reco_Panel.setLayout(new javax.swing.BoxLayout(tag_Reco_Panel, javax.swing.BoxLayout.LINE_AXIS));
+        tag_Reco_Panel.add(filler20);
+
+        jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel1.setText("Tag Recognized");
+        jLabel1.setMaximumSize(new java.awt.Dimension(150, 50));
+        jLabel1.setMinimumSize(new java.awt.Dimension(150, 50));
+        jLabel1.setPreferredSize(new java.awt.Dimension(180, 50));
+        tag_Reco_Panel.add(jLabel1);
+        tag_Reco_Panel.add(filler11);
+
+        recogTextField.setEditable(false);
+        recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
+        recogTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        recogTextField.setText("30MO8186");
+        recogTextField.setMaximumSize(new java.awt.Dimension(200, 50));
+        recogTextField.setMinimumSize(new java.awt.Dimension(200, 50));
+        recogTextField.setPreferredSize(new java.awt.Dimension(200, 50));
+        tag_Reco_Panel.add(recogTextField);
+        tag_Reco_Panel.add(filler19);
+
+        firstPanel.add(tag_Reco_Panel);
+        firstPanel.add(filler5);
+
+        tag_Regi_Panel.setLayout(new javax.swing.BoxLayout(tag_Regi_Panel, javax.swing.BoxLayout.LINE_AXIS));
+        tag_Regi_Panel.add(filler21);
+
+        jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel2.setText("Tag Registered");
+        jLabel2.setMaximumSize(new java.awt.Dimension(150, 50));
+        jLabel2.setMinimumSize(new java.awt.Dimension(150, 50));
+        jLabel2.setPreferredSize(new java.awt.Dimension(180, 50));
+        tag_Regi_Panel.add(jLabel2);
+        tag_Regi_Panel.add(filler12);
+
+        regisTextField.setEditable(false);
+        regisTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
+        regisTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        regisTextField.setText("30MO8186");
+        regisTextField.setMaximumSize(new java.awt.Dimension(200, 50));
+        regisTextField.setMinimumSize(new java.awt.Dimension(200, 50));
+        regisTextField.setPreferredSize(new java.awt.Dimension(200, 50));
+        tag_Regi_Panel.add(regisTextField);
+        tag_Regi_Panel.add(filler22);
+
+        firstPanel.add(tag_Regi_Panel);
+        firstPanel.add(filler6);
+
+        warnningPanel.setLayout(new javax.swing.BoxLayout(warnningPanel, javax.swing.BoxLayout.LINE_AXIS));
+        warnningPanel.add(filler13);
+
+        WarningSignTBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        WarningSignTBox.setForeground(new java.awt.Color(255, 0, 0));
+        WarningSignTBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        WarningSignTBox.setText("Car Temporarily Not Permitted");
+        WarningSignTBox.setMaximumSize(new java.awt.Dimension(2147483647, 50));
+        WarningSignTBox.setPreferredSize(new java.awt.Dimension(133, 50));
+        warnningPanel.add(WarningSignTBox);
+        warnningPanel.add(filler14);
+
+        firstPanel.add(warnningPanel);
+
+        reasonPanel.setLayout(new javax.swing.BoxLayout(reasonPanel, javax.swing.BoxLayout.LINE_AXIS));
+        reasonPanel.add(filler10);
+
+        jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("Nonpermission Reason");
+        jLabel4.setMaximumSize(new java.awt.Dimension(133, 50));
+        jLabel4.setMinimumSize(new java.awt.Dimension(133, 50));
+        jLabel4.setPreferredSize(new java.awt.Dimension(230, 50));
+        reasonPanel.add(jLabel4);
+        reasonPanel.add(filler16);
+
+        firstPanel.add(reasonPanel);
+        firstPanel.add(filler9);
+
+        disallowReasonPanel.setLayout(new javax.swing.BoxLayout(disallowReasonPanel, javax.swing.BoxLayout.LINE_AXIS));
+        disallowReasonPanel.add(filler8);
+
+        disAllowReasonTextField.setEditable(false);
+        disAllowReasonTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        disAllowReasonTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        disAllowReasonTextField.setText("Parking Violation");
+        disAllowReasonTextField.setMaximumSize(new java.awt.Dimension(2147483647, 50));
+        disAllowReasonTextField.setPreferredSize(new java.awt.Dimension(133, 50));
+        disallowReasonPanel.add(disAllowReasonTextField);
+        disallowReasonPanel.add(filler15);
+
+        firstPanel.add(disallowReasonPanel);
+        firstPanel.add(filler7);
+
+        wholePanel.add(firstPanel);
+
+        buttonPanel.setPreferredSize(new java.awt.Dimension(784, 70));
+
+        openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        openBarButton.setMnemonic('o');
+        openBarButton.setText("Open");
+        openBarButton.setMaximumSize(new java.awt.Dimension(140, 40));
+        openBarButton.setMinimumSize(new java.awt.Dimension(140, 40));
+        openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
         openBarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBarButtonActionPerformed(evt);
             }
         });
+        buttonPanel.add(openBarButton);
 
-        closeGateButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
+        closeGateButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        closeGateButton.setMnemonic('l');
         closeGateButton.setText("Close Bar");
+        closeGateButton.setMaximumSize(new java.awt.Dimension(140, 40));
+        closeGateButton.setMinimumSize(new java.awt.Dimension(140, 40));
+        closeGateButton.setPreferredSize(new java.awt.Dimension(140, 60));
         closeGateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeGateButtonActionPerformed(evt);
             }
         });
+        buttonPanel.add(closeGateButton);
 
-        closeFormButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
+        closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        closeFormButton.setMnemonic('c');
         closeFormButton.setText("Close Form");
+        closeFormButton.setMaximumSize(new java.awt.Dimension(140, 40));
+        closeFormButton.setMinimumSize(new java.awt.Dimension(140, 40));
+        closeFormButton.setPreferredSize(new java.awt.Dimension(140, 60));
         closeFormButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeFormButtonActionPerformed(evt);
             }
         });
+        buttonPanel.add(closeFormButton);
 
-        jLabel1.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText("Tag Recognized");
+        wholePanel.add(buttonPanel);
 
-        recogTextField.setEditable(false);
-        recogTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        recogTextField.setText("30MO8186");
-
-        jLabel2.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText("Tag Registered");
-
-        regisTextField.setEditable(false);
-        regisTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        regisTextField.setText("30MO8186");
-
-        WarningSignTBox.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        WarningSignTBox.setForeground(new java.awt.Color(255, 0, 0));
-        WarningSignTBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        WarningSignTBox.setText("Car Temporarily Not Permitted");
-
-        jLabel4.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Nonpermission Reason");
-
-        disAllowReasonTextField.setEditable(false);
-        disAllowReasonTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        disAllowReasonTextField.setText("Parking Violation");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(90, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(recogTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(regisTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(WarningSignTBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(38, 38, 38))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(disAllowReasonTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(recogTextField)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(regisTextField))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(WarningSignTBox)
-                .addGap(25, 25, 25)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(disAllowReasonTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(openBarButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(closeGateButton)
-                        .addGap(18, 18, 18)
-                        .addComponent(closeFormButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(36, 36, 36))
-        );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {closeFormButton, closeGateButton, openBarButton});
-
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(openBarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(closeGateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(closeFormButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(60, 60, 60))
-        );
+        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -374,6 +422,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(DisAllowedCar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         initializeLoggers();
         checkOptions(args);
@@ -390,15 +439,42 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel WarningSignTBox;
+    private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton closeFormButton;
     private javax.swing.JButton closeGateButton;
     private javax.swing.JTextField disAllowReasonTextField;
+    private javax.swing.JPanel disallowReasonPanel;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
+    private javax.swing.Box.Filler filler14;
+    private javax.swing.Box.Filler filler15;
+    private javax.swing.Box.Filler filler16;
+    private javax.swing.Box.Filler filler19;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler20;
+    private javax.swing.Box.Filler filler21;
+    private javax.swing.Box.Filler filler22;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JPanel firstPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton openBarButton;
+    private javax.swing.JPanel reasonPanel;
     private javax.swing.JTextField recogTextField;
     private javax.swing.JTextField regisTextField;
+    private javax.swing.JPanel tag_Reco_Panel;
+    private javax.swing.JPanel tag_Regi_Panel;
+    private javax.swing.JPanel warnningPanel;
+    private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 }
