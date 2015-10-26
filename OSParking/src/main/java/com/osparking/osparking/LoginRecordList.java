@@ -56,8 +56,8 @@ public class LoginRecordList extends javax.swing.JFrame {
         
         setIconImages(OSPiconList);
         
-        getContentPane().setBackground(PopUpBackground);
-        LoginRecordListTopPanel.setBackground(PopUpBackground);
+//        getContentPane().setBackground(PopUpBackground);
+//        LoginRecordListTopPanel.setBackground(PopUpBackground);
         initUserIDComboBox();
         
         BeginDateChooser.setLocale(parkingLotLocale);
@@ -79,20 +79,124 @@ public class LoginRecordList extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        wholePanel = new javax.swing.JPanel();
+        closePanel = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        CloseFormButton = new javax.swing.JButton();
+        LoginRecordListTopPanel = new javax.swing.JPanel();
+        titlePanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        datePanel = new javax.swing.JPanel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        UserIDComboBox = new javax.swing.JComboBox();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        BeginDateChooser = new com.toedter.calendar.JDateChooser();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        jLabel2 = new javax.swing.JLabel();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        EndDateChooser = new com.toedter.calendar.JDateChooser();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0));
+        SearchLoginRecordButton = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jScrollPane1 = new javax.swing.JScrollPane();
         LoginRecordTable = new javax.swing.JTable();
-        LoginRecordListTopPanel = new javax.swing.JPanel();
-        UserIDComboBox = new javax.swing.JComboBox();
-        SearchLoginRecordButton = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        BeginDateChooser = new com.toedter.calendar.JDateChooser();
-        EndDateChooser = new com.toedter.calendar.JDateChooser();
-        CloseFormButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("User Login Record");
+        setPreferredSize(new java.awt.Dimension(850, 527));
+        getContentPane().add(filler10, java.awt.BorderLayout.LINE_END);
+        getContentPane().add(filler8, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(filler11, java.awt.BorderLayout.LINE_START);
+        getContentPane().add(filler9, java.awt.BorderLayout.SOUTH);
 
-        LoginRecordTable.setFont(new java.awt.Font("Dotum", 0, 14)); // NOI18N
+        wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.Y_AXIS));
+
+        closePanel.setLayout(new javax.swing.BoxLayout(closePanel, javax.swing.BoxLayout.LINE_AXIS));
+        closePanel.add(filler1);
+
+        CloseFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        CloseFormButton.setMnemonic('c');
+        CloseFormButton.setText("Close");
+        CloseFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
+        CloseFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
+        CloseFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        CloseFormButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CloseFormButtonActionPerformed(evt);
+            }
+        });
+        closePanel.add(CloseFormButton);
+
+        wholePanel.add(closePanel);
+
+        LoginRecordListTopPanel.setLayout(new javax.swing.BoxLayout(LoginRecordListTopPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        titlePanel.setLayout(new javax.swing.BoxLayout(titlePanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("User Login Record");
+        jLabel3.setFocusable(false);
+        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabel3.setMaximumSize(new java.awt.Dimension(32767, 28));
+        titlePanel.add(jLabel3);
+
+        LoginRecordListTopPanel.add(titlePanel);
+
+        datePanel.setLayout(new javax.swing.BoxLayout(datePanel, javax.swing.BoxLayout.LINE_AXIS));
+        datePanel.add(filler3);
+
+        UserIDComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        UserIDComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        UserIDComboBox.setMaximumSize(new java.awt.Dimension(32767, 28));
+        UserIDComboBox.setMinimumSize(new java.awt.Dimension(100, 28));
+        UserIDComboBox.setPreferredSize(new java.awt.Dimension(100, 28));
+        datePanel.add(UserIDComboBox);
+        datePanel.add(filler4);
+
+        BeginDateChooser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        BeginDateChooser.setMaximumSize(new java.awt.Dimension(32767, 28));
+        datePanel.add(BeginDateChooser);
+        datePanel.add(filler5);
+
+        jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("~");
+        jLabel2.setFocusable(false);
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        datePanel.add(jLabel2);
+        datePanel.add(filler6);
+
+        EndDateChooser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        EndDateChooser.setMaximumSize(new java.awt.Dimension(32767, 28));
+        datePanel.add(EndDateChooser);
+        datePanel.add(filler7);
+
+        SearchLoginRecordButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        SearchLoginRecordButton.setMnemonic('s');
+        SearchLoginRecordButton.setText("Search");
+        SearchLoginRecordButton.setMaximumSize(new java.awt.Dimension(90, 40));
+        SearchLoginRecordButton.setMinimumSize(new java.awt.Dimension(90, 40));
+        SearchLoginRecordButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        SearchLoginRecordButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchLoginRecordButtonActionPerformed(evt);
+            }
+        });
+        datePanel.add(SearchLoginRecordButton);
+        datePanel.add(filler2);
+
+        LoginRecordListTopPanel.add(datePanel);
+
+        wholePanel.add(LoginRecordListTopPanel);
+        wholePanel.add(filler12);
+
+        LoginRecordTable.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LoginRecordTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -104,109 +208,14 @@ public class LoginRecordList extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        LoginRecordTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        LoginRecordTable.getTableHeader().setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LoginRecordTable.setRowHeight(28);
         jScrollPane1.setViewportView(LoginRecordTable);
 
-        UserIDComboBox.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        UserIDComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        wholePanel.add(jScrollPane1);
 
-        SearchLoginRecordButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        SearchLoginRecordButton.setText("Search");
-        SearchLoginRecordButton.setMaximumSize(new java.awt.Dimension(80, 34));
-        SearchLoginRecordButton.setMinimumSize(new java.awt.Dimension(80, 34));
-        SearchLoginRecordButton.setPreferredSize(new java.awt.Dimension(80, 34));
-        SearchLoginRecordButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SearchLoginRecordButtonActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("~");
-        jLabel2.setFocusable(false);
-        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        jLabel3.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("User Login Record");
-        jLabel3.setFocusable(false);
-        jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        BeginDateChooser.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        BeginDateChooser.setPreferredSize(new java.awt.Dimension(150, 20));
-
-        EndDateChooser.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-
-        javax.swing.GroupLayout LoginRecordListTopPanelLayout = new javax.swing.GroupLayout(LoginRecordListTopPanel);
-        LoginRecordListTopPanel.setLayout(LoginRecordListTopPanelLayout);
-        LoginRecordListTopPanelLayout.setHorizontalGroup(
-            LoginRecordListTopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginRecordListTopPanelLayout.createSequentialGroup()
-                .addContainerGap(56, Short.MAX_VALUE)
-                .addComponent(UserIDComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BeginDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(EndDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(SearchLoginRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginRecordListTopPanelLayout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(94, 94, 94))
-        );
-        LoginRecordListTopPanelLayout.setVerticalGroup(
-            LoginRecordListTopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, LoginRecordListTopPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(LoginRecordListTopPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(UserIDComboBox)
-                    .addComponent(SearchLoginRecordButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BeginDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(EndDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        CloseFormButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        CloseFormButton.setText("Close");
-        CloseFormButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CloseFormButtonActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(LoginRecordListTopPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(14, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(CloseFormButton, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(CloseFormButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LoginRecordListTopPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
-                .addGap(61, 61, 61))
-        );
+        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -245,6 +254,7 @@ public class LoginRecordList extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(LoginRecordList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         initializeLoggers();
         checkOptions(args);
@@ -266,9 +276,25 @@ public class LoginRecordList extends javax.swing.JFrame {
     private javax.swing.JTable LoginRecordTable;
     private javax.swing.JButton SearchLoginRecordButton;
     private javax.swing.JComboBox UserIDComboBox;
+    private javax.swing.JPanel closePanel;
+    private javax.swing.JPanel datePanel;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel titlePanel;
+    private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 
     private void RefreshTableContents(Date beginDate, Date endDate) {
@@ -380,8 +406,8 @@ public class LoginRecordList extends javax.swing.JFrame {
         
         // Adjust column width one by one
         SetAColumnWidth(tcm.getColumn(0), 90, 90, 90); // record number column
-        SetAColumnWidth(tcm.getColumn(1), 110, 110, 110); // User ID
-        SetAColumnWidth(tcm.getColumn(4), 110, 110, 110); // logged in duration
+//        SetAColumnWidth(tcm.getColumn(1), 110, 110, 110); // User ID
+//        SetAColumnWidth(tcm.getColumn(4), 110, 110, 110); // logged in duration
     }
 
     public void getDatesRefreshTable() {
