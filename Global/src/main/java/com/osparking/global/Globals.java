@@ -275,7 +275,7 @@ public class Globals {
                 "for details use top menu [System] > [About] command." + System.lineSeparator() +
                 "This is free software, and you are welcome to redistribute it" + System.lineSeparator() +
                 "under certain conditions; use [About] command for more details.";
-        JOptionPane.showMessageDialog(parentForm, message, "License Notice", 
+        JOptionPane.showMessageDialog(null, message, "License Notice", 
                 JOptionPane.PLAIN_MESSAGE, getLGPN30_Icon());    
     }
     

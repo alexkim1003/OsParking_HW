@@ -107,8 +107,8 @@ public class GateBarManager extends Thread implements DeviceManager {
                     if (! isConnected(socket)) 
                     {
                         mainForm.getSocketMutex()[GateBar.ordinal()][gateID].wait(); 
-                        neverConnected = false;
                     }
+                    neverConnected = false;
                     //</editor-fold>
                 }
                 // SocketTimeoutException will arise when no data on the socket during 1 second
