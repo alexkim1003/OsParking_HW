@@ -330,6 +330,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         eBoardPanel0.add(combo_ContentType0, gridBagConstraints);
 
         btn_Save0.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Save0.setMnemonic('s');
         btn_Save0.setText("Save");
         btn_Save0.setEnabled(false);
         btn_Save0.setInheritsPopupMenu(true);
@@ -352,7 +353,9 @@ public class Settings_EBoard extends javax.swing.JFrame {
         eBoardPanel0.add(btn_Save0, gridBagConstraints);
 
         btn_Cancel0.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Cancel0.setMnemonic('c');
         btn_Cancel0.setText("Cancel");
+        btn_Cancel0.setEnabled(false);
         btn_Cancel0.setMaximumSize(new java.awt.Dimension(73, 35));
         btn_Cancel0.setMinimumSize(new java.awt.Dimension(73, 35));
         btn_Cancel0.setName("btn_Cancel" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
@@ -519,6 +522,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         eBoardPanel1.add(combo_ContentType1, gridBagConstraints);
 
         btn_Save1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Save1.setMnemonic('s');
         btn_Save1.setText("Save");
         btn_Save1.setEnabled(false);
         btn_Save1.setInheritsPopupMenu(true);
@@ -715,6 +719,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         eBoardPanel2.add(combo_ContentType2, gridBagConstraints);
 
         btn_Save2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Save2.setMnemonic('s');
         btn_Save2.setText("Save");
         btn_Save2.setEnabled(false);
         btn_Save2.setInheritsPopupMenu(true);
@@ -904,6 +909,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         eBoardPanel3.add(combo_ContentType3, gridBagConstraints);
 
         btn_Save3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Save3.setMnemonic('s');
         btn_Save3.setText("Save");
         btn_Save3.setEnabled(false);
         btn_Save3.setInheritsPopupMenu(true);
@@ -953,6 +959,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         buttonPanel.setLayout(new java.awt.GridBagLayout());
 
         btn_Exit.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        btn_Exit.setMnemonic('c');
         btn_Exit.setText("Close");
         btn_Exit.setMaximumSize(new java.awt.Dimension(73, 35));
         btn_Exit.setMinimumSize(new java.awt.Dimension(73, 35));
@@ -978,11 +985,14 @@ public class Settings_EBoard extends javax.swing.JFrame {
         boolean yesNo = checkPanel(currentTab);
         ((JButton) getComponentByName("btn_Save" + currentTab.ordinal())).setEnabled(yesNo);
         ((JButton) getComponentByName("btn_Cancel" + currentTab.ordinal())).setEnabled(yesNo);
+        btn_Exit.setEnabled(!yesNo);
+        
     }    
     
     private void changeEnabled_of_SaveCancelButtons(boolean onOff) {
         ((JButton) getComponentByName("btn_Save" + currentTab.ordinal())).setEnabled(onOff);
         ((JButton) getComponentByName("btn_Cancel" + currentTab.ordinal())).setEnabled(onOff);        
+        btn_Exit.setEnabled(!onOff);
     }    
     
     private void tf_VerbatimContent0KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent0KeyReleased
