@@ -101,28 +101,28 @@ public class DisAllowedCar extends javax.swing.JFrame {
         1 * 1000);   
         
         // define shortcut keys for 3 buttons
-        JComponent pane = (JComponent) this.getContentPane();
-        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
-                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
-        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
-                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
-        pane.getActionMap().put("controlTheBar", new AbstractAction("controlTheBar") {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String cmd = e.getActionCommand();
-                switch (cmd.charAt(0)) {
-                    case 'O': case 'o':
-                        openBarButtonActionPerformed(null);
-                        break;
-                    case 'C': case 'c':
-                        closeFormButtonActionPerformed(null);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+//        JComponent pane = (JComponent) this.getContentPane();
+//        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
+//                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
+//        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
+//                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
+//        pane.getActionMap().put("controlTheBar", new AbstractAction("controlTheBar") {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                String cmd = e.getActionCommand();
+//                switch (cmd.charAt(0)) {
+//                    case 'O': case 'o':
+//                        openBarButtonActionPerformed(null);
+//                        break;
+//                    case 'C': case 'c':
+//                        closeFormButtonActionPerformed(null);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
         
         openBarButtonActionPerformed(null);
     }
@@ -167,7 +167,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
         warnningPanel = new javax.swing.JPanel();
-        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
         WarningSignTBox = new javax.swing.JLabel();
         filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         reasonPanel = new javax.swing.JPanel();
@@ -176,25 +176,19 @@ public class DisAllowedCar extends javax.swing.JFrame {
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
         disallowReasonPanel = new javax.swing.JPanel();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(150, 0), new java.awt.Dimension(80, 32767));
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
         disAllowReasonTextField = new javax.swing.JTextField();
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 20));
         buttonPanel = new javax.swing.JPanel();
         openBarButton = new javax.swing.JButton();
         closeGateButton = new javax.swing.JButton();
-        closeFormButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DisAllowed Car");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
-            }
-        });
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
             }
         });
         getContentPane().add(filler1, java.awt.BorderLayout.PAGE_START);
@@ -236,6 +230,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         tag_Regi_Panel.add(filler21);
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel2.setForeground(java.awt.Color.gray);
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel2.setText("Tag Registered");
         jLabel2.setMaximumSize(new java.awt.Dimension(150, 50));
@@ -246,6 +241,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         regisTextField.setEditable(false);
         regisTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
+        regisTextField.setForeground(java.awt.Color.gray);
         regisTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         regisTextField.setText("30MO8186");
         regisTextField.setMaximumSize(new java.awt.Dimension(200, 50));
@@ -258,11 +254,11 @@ public class DisAllowedCar extends javax.swing.JFrame {
         firstPanel.add(filler6);
 
         warnningPanel.setLayout(new javax.swing.BoxLayout(warnningPanel, javax.swing.BoxLayout.LINE_AXIS));
-        warnningPanel.add(filler13);
+        warnningPanel.add(filler17);
 
         WarningSignTBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         WarningSignTBox.setForeground(new java.awt.Color(255, 0, 0));
-        WarningSignTBox.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        WarningSignTBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         WarningSignTBox.setText("Car Temporarily Not Permitted");
         WarningSignTBox.setMaximumSize(new java.awt.Dimension(2147483647, 50));
         WarningSignTBox.setPreferredSize(new java.awt.Dimension(133, 50));
@@ -276,7 +272,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Nonpermission Reason");
+        jLabel4.setText("Disallowance Reason");
         jLabel4.setMaximumSize(new java.awt.Dimension(133, 50));
         jLabel4.setMinimumSize(new java.awt.Dimension(133, 50));
         jLabel4.setPreferredSize(new java.awt.Dimension(230, 50));
@@ -292,7 +288,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         disAllowReasonTextField.setEditable(false);
         disAllowReasonTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         disAllowReasonTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        disAllowReasonTextField.setText("Parking Violation");
+        disAllowReasonTextField.setText("012345678901234567890123456789");
         disAllowReasonTextField.setMaximumSize(new java.awt.Dimension(2147483647, 50));
         disAllowReasonTextField.setPreferredSize(new java.awt.Dimension(133, 50));
         disallowReasonPanel.add(disAllowReasonTextField);
@@ -305,9 +301,9 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         buttonPanel.setPreferredSize(new java.awt.Dimension(784, 70));
 
-        openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
         openBarButton.setMnemonic('o');
-        openBarButton.setText("Open");
+        openBarButton.setText("Open Bar");
         openBarButton.setMaximumSize(new java.awt.Dimension(140, 40));
         openBarButton.setMinimumSize(new java.awt.Dimension(140, 40));
         openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
@@ -318,8 +314,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
         });
         buttonPanel.add(openBarButton);
 
-        closeGateButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        closeGateButton.setMnemonic('l');
+        closeGateButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
+        closeGateButton.setMnemonic('c');
         closeGateButton.setText("Close Bar");
         closeGateButton.setMaximumSize(new java.awt.Dimension(140, 40));
         closeGateButton.setMinimumSize(new java.awt.Dimension(140, 40));
@@ -330,19 +326,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
             }
         });
         buttonPanel.add(closeGateButton);
-
-        closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        closeFormButton.setMnemonic('c');
-        closeFormButton.setText("Close Form");
-        closeFormButton.setMaximumSize(new java.awt.Dimension(140, 40));
-        closeFormButton.setMinimumSize(new java.awt.Dimension(140, 40));
-        closeFormButton.setPreferredSize(new java.awt.Dimension(140, 60));
-        closeFormButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeFormButtonActionPerformed(evt);
-            }
-        });
-        buttonPanel.add(closeFormButton);
 
         wholePanel.add(buttonPanel);
 
@@ -373,16 +356,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_closeGateButtonActionPerformed
 
-    private void closeFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFormButtonActionPerformed
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
-                filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);   
-        timer.cancel();
-        timer.purge();
-        parent.isGateBusy[gateNo] = false;
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
-        dispose();
-    }//GEN-LAST:event_closeFormButtonActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                 filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);   
@@ -391,10 +364,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
         parent.isGateBusy[gateNo] = false;
         parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);        
     }//GEN-LAST:event_formWindowClosing
-
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments
@@ -440,7 +409,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel WarningSignTBox;
     private javax.swing.JPanel buttonPanel;
-    private javax.swing.JButton closeFormButton;
     private javax.swing.JButton closeGateButton;
     private javax.swing.JTextField disAllowReasonTextField;
     private javax.swing.JPanel disallowReasonPanel;
@@ -448,10 +416,10 @@ public class DisAllowedCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
     private javax.swing.Box.Filler filler12;
-    private javax.swing.Box.Filler filler13;
     private javax.swing.Box.Filler filler14;
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
+    private javax.swing.Box.Filler filler17;
     private javax.swing.Box.Filler filler19;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler20;

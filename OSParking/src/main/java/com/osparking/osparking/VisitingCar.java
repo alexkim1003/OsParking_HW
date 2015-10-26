@@ -34,6 +34,9 @@ import static com.osparking.global.names.DB_Access.readSettings;
 import static com.osparking.global.Globals.checkOptions;
 import static com.osparking.global.Globals.getTopLeftPointToPutThisFrameAtScreenCenter;
 import static com.osparking.global.Globals.OSPiconList;
+import static com.osparking.global.Globals.font_Size;
+import static com.osparking.global.Globals.font_Style;
+import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.OSP_enums.DriverCol;
@@ -77,7 +80,7 @@ public class VisitingCar extends javax.swing.JFrame {
         this.delay = delay;
 
         recogTextField.setText(tagRecognized);
-        visitTimeTextField.setText("'" + new SimpleDateFormat ("yy/MM/dd a hh:mm:ss").
+        visitTimeTextField.setText("'" + new SimpleDateFormat ("a hh:mm:ss").
                 format(arrivalTime));
         
         initAffiliationComboBoxes(highLevelComboBox, lowLevelComboBox, 
@@ -94,75 +97,164 @@ public class VisitingCar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        wholePanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jLabel1 = new javax.swing.JLabel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         recogTextField = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        visitReasonTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        visitTimeTextField = new javax.swing.JTextField();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel6 = new javax.swing.JPanel();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         jLabel8 = new javax.swing.JLabel();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        visitTimeTextField = new javax.swing.JTextField();
+        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel10 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel7 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         highLevelComboBox = new PComboBox();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel12 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         lowLevelComboBox = new PComboBox();
         jPanel3 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        filler20 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         buildingComboBox = new PComboBox();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel14 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        filler21 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         unitComboBox = new PComboBox();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel9 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel8 = new javax.swing.JPanel();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 0), new java.awt.Dimension(80, 32767));
+        visitReasonTextField = new javax.swing.JTextField();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        jPanel4 = new javax.swing.JPanel();
         openBarButton = new javax.swing.JButton();
         notAllowButton = new javax.swing.JButton();
-        closeFormButton = new javax.swing.JButton();
+        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        filler23 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        filler24 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
+        filler25 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Visitor Information Entry");
+        setPreferredSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        wholePanel.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel5.add(filler8);
+
+        jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Recognized");
+        jLabel1.setMaximumSize(null);
+        jLabel1.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel1.setPreferredSize(new java.awt.Dimension(130, 50));
+        jPanel5.add(jLabel1);
+        jPanel5.add(filler10);
 
         recogTextField.setEditable(false);
-        recogTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         recogTextField.setText("12가3456");
+        recogTextField.setMaximumSize(new java.awt.Dimension(180, 50));
+        recogTextField.setMinimumSize(new java.awt.Dimension(180, 50));
+        recogTextField.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel5.add(recogTextField);
+        jPanel5.add(filler16);
 
-        jLabel4.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText("Detailed Reason");
+        jPanel1.add(jPanel5);
+        jPanel1.add(filler4);
 
-        visitReasonTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        visitReasonTextField.setText("Visit coffee shop \"Star Coffee Bean\"");
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel6.add(filler9);
 
-        jLabel2.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel2.setText("Visit Purpose");
+        jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Visit Time");
+        jLabel8.setMaximumSize(null);
+        jLabel8.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel8.setPreferredSize(new java.awt.Dimension(130, 50));
+        jPanel6.add(jLabel8);
+        jPanel6.add(filler11);
 
         visitTimeTextField.setEditable(false);
-        visitTimeTextField.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        visitTimeTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         visitTimeTextField.setText("'15.02.05 13:27:04");
+        visitTimeTextField.setMaximumSize(new java.awt.Dimension(180, 50));
+        visitTimeTextField.setMinimumSize(new java.awt.Dimension(180, 50));
+        visitTimeTextField.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel6.add(visitTimeTextField);
+        jPanel6.add(filler17);
 
-        jLabel8.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel8.setText("Visit Time");
+        jPanel1.add(jPanel6);
+        jPanel1.add(filler15);
+
+        jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel2.setText("Visit Purpose");
+        jLabel2.setMaximumSize(null);
+        jLabel2.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel2.setPreferredSize(new java.awt.Dimension(130, 50));
+        jPanel10.add(jLabel2);
+        jPanel10.add(filler1);
+
+        jPanel1.add(jPanel10);
+        jPanel1.add(filler14);
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(65676, 130));
+        jPanel7.setPreferredSize(new java.awt.Dimension(1001, 130));
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel2.setPreferredSize(new java.awt.Dimension(201, 99));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jLabel3.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Higher Affiliation");
+        jLabel3.setMaximumSize(null);
+        jLabel3.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel3.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel11.add(jLabel3);
+        jPanel11.add(filler18);
 
-        jLabel5.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText("Lower Affiliation");
-
-        highLevelComboBox.setFont(new java.awt.Font("Dotum", 1, 18));
+        highLevelComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         highLevelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
+        highLevelComboBox.setMaximumSize(null);
+        highLevelComboBox.setMinimumSize(new java.awt.Dimension(210, 50));
+        highLevelComboBox.setPreferredSize(new java.awt.Dimension(210, 50));
         highLevelComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -177,9 +269,27 @@ public class VisitingCar extends javax.swing.JFrame {
                 highLevelComboBoxActionPerformed(evt);
             }
         });
+        jPanel11.add(highLevelComboBox);
 
-        lowLevelComboBox.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        jPanel2.add(jPanel11);
+        jPanel2.add(filler7);
+
+        jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel5.setText("Lower Affiliation");
+        jLabel5.setMaximumSize(null);
+        jLabel5.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel5.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel12.add(jLabel5);
+        jPanel12.add(filler19);
+
+        lowLevelComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         lowLevelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
+        lowLevelComboBox.setMaximumSize(null);
+        lowLevelComboBox.setMinimumSize(new java.awt.Dimension(210, 50));
+        lowLevelComboBox.setPreferredSize(new java.awt.Dimension(210, 50));
         lowLevelComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -189,52 +299,31 @@ public class VisitingCar extends javax.swing.JFrame {
                 lowLevelComboBoxPopupMenuWillBecomeVisible(evt);
             }
         });
+        jPanel12.add(lowLevelComboBox);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lowLevelComboBox, 0, 234, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(highLevelComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(highLevelComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 3, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(lowLevelComboBox))
-                .addContainerGap())
-        );
+        jPanel2.add(jPanel12);
+
+        jPanel7.add(jPanel2);
 
         jPanel3.setPreferredSize(new java.awt.Dimension(161, 99));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.PAGE_AXIS));
 
-        jLabel9.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        jPanel13.setLayout(new javax.swing.BoxLayout(jPanel13, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel9.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel9.setText("Building");
+        jLabel9.setMaximumSize(null);
+        jLabel9.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel9.setPreferredSize(new java.awt.Dimension(130, 50));
+        jPanel13.add(jLabel9);
+        jPanel13.add(filler20);
 
-        jLabel10.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText("Room/Unit");
-
-        buildingComboBox.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        buildingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         buildingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
+        buildingComboBox.setMaximumSize(null);
+        buildingComboBox.setMinimumSize(new java.awt.Dimension(100, 50));
+        buildingComboBox.setPreferredSize(new java.awt.Dimension(100, 50));
         buildingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -249,9 +338,27 @@ public class VisitingCar extends javax.swing.JFrame {
                 buildingComboBoxActionPerformed(evt);
             }
         });
+        jPanel13.add(buildingComboBox);
 
-        unitComboBox.setFont(new java.awt.Font("Dotum", 1, 18)); // NOI18N
+        jPanel3.add(jPanel13);
+        jPanel3.add(filler12);
+
+        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel10.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel10.setText("Room/Unit");
+        jLabel10.setMaximumSize(null);
+        jLabel10.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel10.setPreferredSize(new java.awt.Dimension(130, 50));
+        jPanel14.add(jLabel10);
+        jPanel14.add(filler21);
+
+        unitComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         unitComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] {}));
+        unitComboBox.setMaximumSize(null);
+        unitComboBox.setMinimumSize(new java.awt.Dimension(100, 50));
+        unitComboBox.setPreferredSize(new java.awt.Dimension(100, 50));
         unitComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -261,149 +368,80 @@ public class VisitingCar extends javax.swing.JFrame {
                 unitComboBoxPopupMenuWillBecomeVisible(evt);
             }
         });
+        jPanel14.add(unitComboBox);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(unitComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(buildingComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(buildingComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 3, Short.MAX_VALUE)
-                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(unitComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
+        jPanel3.add(jPanel14);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(recogTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(visitTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(308, 308, 308))
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(visitReasonTextField))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(recogTextField))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(visitTimeTextField))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(visitReasonTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jPanel7.add(jPanel3);
+
+        jPanel1.add(jPanel7);
+        jPanel1.add(filler13);
+
+        jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel4.setText("Detailed Reason");
+        jLabel4.setMaximumSize(null);
+        jLabel4.setMinimumSize(new java.awt.Dimension(130, 50));
+        jLabel4.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel9.add(jLabel4);
+        jPanel9.add(filler2);
+
+        jPanel1.add(jPanel9);
+        jPanel1.add(filler5);
+
+        jPanel8.setMaximumSize(new java.awt.Dimension(2147483647, 50));
+        jPanel8.setPreferredSize(new java.awt.Dimension(1001, 50));
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel8.add(filler3);
+
+        visitReasonTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        visitReasonTextField.setText("Visit coffee shop \"Star Coffee Bean\"");
+        visitReasonTextField.setMaximumSize(null);
+        visitReasonTextField.setMinimumSize(new java.awt.Dimension(6, 50));
+        visitReasonTextField.setPreferredSize(new java.awt.Dimension(207, 50));
+        jPanel8.add(visitReasonTextField);
+
+        jPanel1.add(jPanel8);
+        jPanel1.add(filler6);
+
+        wholePanel.add(jPanel1);
 
         openBarButton.setBackground(new java.awt.Color(102, 255, 102));
-        openBarButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
+        openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        openBarButton.setMnemonic('o');
         openBarButton.setText("Open");
+        openBarButton.setMaximumSize(new java.awt.Dimension(140, 60));
+        openBarButton.setMinimumSize(new java.awt.Dimension(140, 60));
+        openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
         openBarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBarButtonActionPerformed(evt);
             }
         });
+        jPanel4.add(openBarButton);
 
-        notAllowButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
+        notAllowButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        notAllowButton.setMnemonic('c');
         notAllowButton.setText("Close Bar");
+        notAllowButton.setMaximumSize(new java.awt.Dimension(140, 60));
+        notAllowButton.setMinimumSize(new java.awt.Dimension(140, 60));
+        notAllowButton.setPreferredSize(new java.awt.Dimension(140, 60));
         notAllowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 notAllowButtonActionPerformed(evt);
             }
         });
+        jPanel4.add(notAllowButton);
 
-        closeFormButton.setFont(new java.awt.Font("Dotum", 1, 14)); // NOI18N
-        closeFormButton.setText("Close Form");
-        closeFormButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeFormButtonActionPerformed(evt);
-            }
-        });
+        wholePanel.add(jPanel4);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(60, 60, 60))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(openBarButton)
-                .addGap(18, 18, 18)
-                .addComponent(notAllowButton)
-                .addGap(18, 18, 18)
-                .addComponent(closeFormButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {closeFormButton, notAllowButton, openBarButton});
-
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(openBarButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(notAllowButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(closeFormButton, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(68, Short.MAX_VALUE))
-        );
+        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(filler22, java.awt.BorderLayout.PAGE_START);
+        getContentPane().add(filler23, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(filler24, java.awt.BorderLayout.EAST);
+        getContentPane().add(filler25, java.awt.BorderLayout.WEST);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -415,15 +453,6 @@ public class VisitingCar extends javax.swing.JFrame {
     private void notAllowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notAllowButtonActionPerformed
         welcomeVisitor(false);
     }//GEN-LAST:event_notAllowButtonActionPerformed
-
-    private void closeFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFormButtonActionPerformed
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTime, tagRecognized, null,
-            filenameModified, bImg, -1,  -1, null, BarOperation.REMAIN_CLOSED);    
-        parent.isGateBusy[gateNo] = false;
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
-        
-        dispose();
-    }//GEN-LAST:event_closeFormButtonActionPerformed
 
     @SuppressWarnings("unchecked") 
     private void highLevelComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_highLevelComboBoxActionPerformed
@@ -519,6 +548,7 @@ public class VisitingCar extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(VisitingCar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         initializeLoggers();
         checkOptions(args);
@@ -535,7 +565,31 @@ public class VisitingCar extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox buildingComboBox;
-    private javax.swing.JButton closeFormButton;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
+    private javax.swing.Box.Filler filler14;
+    private javax.swing.Box.Filler filler15;
+    private javax.swing.Box.Filler filler16;
+    private javax.swing.Box.Filler filler17;
+    private javax.swing.Box.Filler filler18;
+    private javax.swing.Box.Filler filler19;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler20;
+    private javax.swing.Box.Filler filler21;
+    private javax.swing.Box.Filler filler22;
+    private javax.swing.Box.Filler filler23;
+    private javax.swing.Box.Filler filler24;
+    private javax.swing.Box.Filler filler25;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.JComboBox highLevelComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -546,8 +600,19 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JComboBox lowLevelComboBox;
     private javax.swing.JButton notAllowButton;
     private javax.swing.JButton openBarButton;
@@ -555,6 +620,7 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.JComboBox unitComboBox;
     private javax.swing.JTextField visitReasonTextField;
     private javax.swing.JTextField visitTimeTextField;
+    private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 
     /**

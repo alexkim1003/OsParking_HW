@@ -309,6 +309,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="115"/>
                         <Property name="text" type="java.lang.String" value="Save"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -339,7 +340,9 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="99"/>
                         <Property name="text" type="java.lang.String" value="Cancel"/>
+                        <Property name="enabled" type="boolean" value="false"/>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[73, 35]"/>
                         </Property>
@@ -615,6 +618,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="115"/>
                         <Property name="text" type="java.lang.String" value="Save"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -948,6 +952,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="115"/>
                         <Property name="text" type="java.lang.String" value="Save"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -1254,6 +1259,7 @@
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                         </Property>
+                        <Property name="mnemonic" type="int" value="115"/>
                         <Property name="text" type="java.lang.String" value="Save"/>
                         <Property name="enabled" type="boolean" value="false"/>
                         <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -1327,6 +1333,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
+                <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" value="Close"/>
                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[73, 35]"/>

@@ -1082,6 +1082,7 @@ public class Settings_System extends javax.swing.JFrame {
         wholePanel.add(gateSettingPanel);
 
         SettingsSaveButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        SettingsSaveButton.setMnemonic('s');
         SettingsSaveButton.setText("Save");
         SettingsSaveButton.setToolTipText("Save your changes");
         SettingsSaveButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1094,6 +1095,7 @@ public class Settings_System extends javax.swing.JFrame {
         bottomPanel.add(filler5);
 
         SettingsCancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        SettingsCancelButton.setMnemonic('a');
         SettingsCancelButton.setText("Cancel");
         SettingsCancelButton.setToolTipText("It rejected the changes made");
         SettingsCancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1106,6 +1108,7 @@ public class Settings_System extends javax.swing.JFrame {
         bottomPanel.add(filler8);
 
         SettingsCloseButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        SettingsCloseButton.setMnemonic('c');
         SettingsCloseButton.setText("Close");
         SettingsCloseButton.setToolTipText("Closing the Form");
         SettingsCloseButton.setPreferredSize(new java.awt.Dimension(90, 40));

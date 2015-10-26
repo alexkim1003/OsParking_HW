@@ -1495,6 +1495,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             }
         }
         int imageNo = randomInteger.nextInt(6) + 1;
+//        int imageNo = 5;
        
         processCarArrival(gateNo, --manualSimulationImageID, dummyMessages[imageNo].getCarNumber(),
                 dummyMessages[imageNo].getBufferedImg());
