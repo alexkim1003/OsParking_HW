@@ -553,10 +553,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         fullPanel = new javax.swing.JPanel();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         PanelMainTop = new javax.swing.JPanel();
         MainToolBar = new javax.swing.JToolBar();
         fillerLeft = new javax.swing.Box.Filler(new java.awt.Dimension(7, 0), new java.awt.Dimension(7, 0), new java.awt.Dimension(7, 0));
@@ -568,7 +566,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         ClockLabel = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(0, 0));
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         WholePanel = new javax.swing.JPanel();
         Panel_MainMsgList = new javax.swing.JPanel();
         LeftSide_Label = new javax.swing.JLabel();
@@ -576,11 +573,27 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         MessageTextArea = new javax.swing.JTextArea();
         Status_Panel = new javax.swing.JPanel();
         status_topPanel = new javax.swing.JPanel();
-        CarEnteredButton = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         PID_Label = new javax.swing.JLabel();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jPanel1 = new javax.swing.JPanel();
+        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         errorCheckBox = new javax.swing.JCheckBox();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         errIncButton = new javax.swing.JButton();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         errDecButton = new javax.swing.JButton();
+        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jPanel4 = new javax.swing.JPanel();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        errorLabel = new javax.swing.JLabel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 50), new java.awt.Dimension(0, 50), new java.awt.Dimension(32767, 50));
+        jPanel2 = new javax.swing.JPanel();
+        CarEnteredButton = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
         showStatisticsBtn = new javax.swing.JButton();
         status_botPanel = new javax.swing.JPanel();
         statusPanelGate1 = new javax.swing.JPanel();
@@ -642,7 +655,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
         fullPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 5, 1, 5));
         fullPanel.setLayout(new java.awt.BorderLayout());
-        fullPanel.add(filler7, java.awt.BorderLayout.LINE_END);
 
         PanelMainTop.setBackground(MainBackground);
         PanelMainTop.setAlignmentY(0.0F);
@@ -743,7 +755,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         PanelMainTop.add(MainToolBar, java.awt.BorderLayout.CENTER);
 
         fullPanel.add(PanelMainTop, java.awt.BorderLayout.PAGE_START);
-        fullPanel.add(filler8, java.awt.BorderLayout.LINE_END);
 
         WholePanel.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
         WholePanel.setPreferredSize(new java.awt.Dimension(864, 497));
@@ -800,29 +811,29 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         Status_Panel.setLayout(new java.awt.BorderLayout());
 
         status_topPanel.setBackground(MainBackground);
-        status_topPanel.setLayout(new java.awt.GridBagLayout());
+        status_topPanel.setLayout(new javax.swing.BoxLayout(status_topPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        CarEnteredButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CarEnteredButton.setText("Car Arrival");
-        CarEnteredButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CarEnteredButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
-        status_topPanel.add(CarEnteredButton, gridBagConstraints);
+        jPanel3.setBackground(MainBackground);
+        jPanel3.setMaximumSize(new java.awt.Dimension(32882, 32767));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel5.setBackground(MainBackground);
+        jPanel5.setMaximumSize(new java.awt.Dimension(32882, 32767));
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel5.add(filler12);
 
         PID_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         PID_Label.setText("(PID)");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 20, 0);
-        status_topPanel.add(PID_Label, gridBagConstraints);
+        PID_Label.setMaximumSize(new java.awt.Dimension(40, 15));
+        jPanel5.add(PID_Label);
+        jPanel5.add(filler13);
+
+        jPanel3.add(jPanel5);
+
+        jPanel1.setBackground(MainBackground);
+        jPanel1.setMaximumSize(new java.awt.Dimension(32882, 200));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel1.add(filler15);
 
         errorCheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errorCheckBox.setText("error");
@@ -834,35 +845,33 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 errorCheckBoxActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        status_topPanel.add(errorCheckBox, gridBagConstraints);
+        jPanel1.add(errorCheckBox);
+        jPanel1.add(filler8);
 
         errIncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errIncButton.setIcon(getPlusIcon());
         errIncButton.setToolTipText("Inc by 0.1");
-        errIncButton.setAlignmentY(0.0F);
+        errIncButton.setAlignmentX(0.5F);
         errIncButton.setBorder(null);
         errIncButton.setBorderPainted(false);
         errIncButton.setContentAreaFilled(false);
         errIncButton.setEnabled(false);
         errIncButton.setIconTextGap(0);
         errIncButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        errIncButton.setMinimumSize(new java.awt.Dimension(16, 16));
         errIncButton.setPreferredSize(new java.awt.Dimension(16, 16));
         errIncButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 errIncButtonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        status_topPanel.add(errIncButton, gridBagConstraints);
+        jPanel1.add(errIncButton);
+        jPanel1.add(filler16);
 
         errDecButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errDecButton.setIcon(getMinusIcon());
         errDecButton.setToolTipText("Dec by 0.1");
+        errDecButton.setAlignmentX(0.5F);
         errDecButton.setBorder(null);
         errDecButton.setBorderPainted(false);
         errDecButton.setContentAreaFilled(false);
@@ -876,24 +885,60 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 errDecButtonActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 30);
-        status_topPanel.add(errDecButton, gridBagConstraints);
+        jPanel1.add(errDecButton);
+        jPanel1.add(filler14);
+
+        jPanel3.add(jPanel1);
+
+        jPanel4.setBackground(MainBackground);
+        jPanel4.setToolTipText("");
+        jPanel4.setMaximumSize(new java.awt.Dimension(32882, 200));
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel4.add(filler11);
+
+        errorLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        errorLabel.setToolTipText("");
+        errorLabel.setMaximumSize(new java.awt.Dimension(100, 23));
+        errorLabel.setMinimumSize(new java.awt.Dimension(100, 23));
+        errorLabel.setPreferredSize(new java.awt.Dimension(100, 23));
+        jPanel4.add(errorLabel);
+        jPanel4.add(filler10);
+
+        jPanel3.add(jPanel4);
+        jPanel3.add(filler9);
+
+        status_topPanel.add(jPanel3);
+
+        jPanel2.setBackground(MainBackground);
+        jPanel2.setMaximumSize(new java.awt.Dimension(32882, 32767));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+
+        CarEnteredButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        CarEnteredButton.setText("Car Arrival");
+        CarEnteredButton.setMaximumSize(new java.awt.Dimension(120, 40));
+        CarEnteredButton.setMinimumSize(new java.awt.Dimension(120, 40));
+        CarEnteredButton.setPreferredSize(new java.awt.Dimension(120, 40));
+        CarEnteredButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CarEnteredButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(CarEnteredButton);
+        jPanel2.add(filler7);
 
         showStatisticsBtn.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         showStatisticsBtn.setText("statistics");
+        showStatisticsBtn.setMaximumSize(new java.awt.Dimension(120, 40));
+        showStatisticsBtn.setMinimumSize(new java.awt.Dimension(120, 40));
+        showStatisticsBtn.setPreferredSize(new java.awt.Dimension(120, 40));
         showStatisticsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showStatisticsBtnActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        status_topPanel.add(showStatisticsBtn, gridBagConstraints);
+        jPanel2.add(showStatisticsBtn);
+
+        status_topPanel.add(jPanel2);
 
         Status_Panel.add(status_topPanel, java.awt.BorderLayout.CENTER);
 
@@ -1441,6 +1486,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         Random randomInteger = new Random();
         byte gateNo = (byte) (randomInteger.nextInt(gateCount) + 1);
         int imageNo = randomInteger.nextInt(6) + 1;
+//        int imageNo = 5;
        
         processCarArrival(gateNo, --manualSimulationImageID, dummyMessages[imageNo].getCarNumber(),
                 dummyMessages[imageNo].getBufferedImg());
@@ -1471,12 +1517,13 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }//GEN-LAST:event_EntryRecordItemActionPerformed
 
     private void errorCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorCheckBoxActionPerformed
-
         if (getErrorCheckBox().isSelected()) {
             addMessageLine(MessageTextArea, "Artificial error is on");
             addMessageLine(MessageTextArea, "\tprob of error: " + getFormattedRealNumber(ERROR_RATE, 2));
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
             addMessageLine(MessageTextArea, "No artificial error");
+            errorLabel.setText("");
         }
     }//GEN-LAST:event_errorCheckBoxActionPerformed
 
@@ -1498,13 +1545,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
       
     private void errIncButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errIncButtonActionPerformed
         if (errorCheckBox.isSelected()) {
-            if (ERROR_RATE < 0.9) {
+           if (ERROR_RATE < 0.9) {
                 ERROR_RATE += 0.1f;
-                addMessageLine(MessageTextArea, "error rate: " + getFormattedRealNumber(ERROR_RATE, 2));
             } else {
-                addMessageLine(MessageTextArea, "current error rate(=" 
+                
+               addMessageLine(MessageTextArea,"current error rate(=" 
                         + getFormattedRealNumber(ERROR_RATE, 2) + ") is max!");
             }
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
             addMessageLine(MessageTextArea, "First, select error check box, OK?");
         }
@@ -1514,11 +1562,12 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         if (errorCheckBox.isSelected()) {
             if (ERROR_RATE > 0.10) {
                 ERROR_RATE -= 0.1f;
-                addMessageLine(MessageTextArea, "error rate: " + getFormattedRealNumber(ERROR_RATE, 2));
             } else {
-                addMessageLine(MessageTextArea, "current error rate(=" 
-                        + getFormattedRealNumber(ERROR_RATE, 2) + ") is min!");
+                
+               addMessageLine(MessageTextArea,"current error rate(=" 
+                        + getFormattedRealNumber(ERROR_RATE, 2) + ") is max!");
             }
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
             addMessageLine(MessageTextArea, "First, select error check box, OK?");
         }
@@ -1636,7 +1685,15 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private javax.swing.JButton errDecButton;
     private javax.swing.JButton errIncButton;
     public javax.swing.JCheckBox errorCheckBox;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
+    private javax.swing.Box.Filler filler14;
+    private javax.swing.Box.Filler filler15;
+    private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -1644,6 +1701,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
     private javax.swing.Box.Filler fillerLeft;
     private javax.swing.JPanel fullPanel;
     private javax.swing.JLabel jLabel2;
@@ -1651,6 +1709,11 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private javax.swing.JLabel jLabel4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel labelBar1;
     private javax.swing.JLabel labelBar2;
     private javax.swing.JLabel labelBar3;
