@@ -308,8 +308,8 @@ public class VehiclesForm extends javax.swing.JFrame {
         saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1250, 800));
-        setPreferredSize(new java.awt.Dimension(1190, 800));
+        setMinimumSize(new java.awt.Dimension(1250, 750));
+        setPreferredSize(new java.awt.Dimension(1250, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
