@@ -1836,7 +1836,8 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
 
     void stopOperation() {
-        mainForm.setConfigureSettingsForm(null);
+        if(mainForm != null)
+            mainForm.setConfigureSettingsForm(null);
         if (eBDsettings != null) 
             eBDsettings.dispose();
         
