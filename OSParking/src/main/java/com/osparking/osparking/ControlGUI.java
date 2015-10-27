@@ -160,10 +160,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
@@ -293,7 +295,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             admissionListModel[i] = new DefaultListModel<CarAdmission>();
         }
             
-        initComponents();       
+        initComponents();   
         
         /**
          * Hide unnecessary status panels
@@ -323,8 +325,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
          * Set icon for the simulated camera program
          */
         setIconImages(OSPiconList);
-        setTitle("OSParking--Open Source Parking Inc.");   
         
+        setTitle("OsParking--Open Source Parking Inc.");   
         String processName = ManagementFactory.getRuntimeMXBean().getName();
         PID_Label.setText("(PID:" + processName.substring(0, processName.indexOf("@")) + ")");        
         
@@ -466,6 +468,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         LED_Timer = new Timer("ospLEDtimer", true);
         LED_Timer.schedule(new LED_Task(this, getDeviceManagers()), 0, LED_PERIOD);
     }
+    
     
     private void prepareIDLogFile(DeviceType devType, int gateNo) {
         StringBuilder pathname = new StringBuilder();
