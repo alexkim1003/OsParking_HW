@@ -251,8 +251,6 @@ public class Globals {
     }    
     
     public static void shortLicenseDialog(JFrame parentForm, String name, String location) {
-        if (DEBUG)
-            return;
         
         String message = 
                 name + "," + System.lineSeparator() +
