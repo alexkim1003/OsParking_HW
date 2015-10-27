@@ -96,7 +96,6 @@ public class Settings_System extends javax.swing.JFrame {
         addMaxArrivalItems();
         maxArrivalCBoxIndex = findCBoxIndex(MaxDateComboBox, maxMaintainDate);
         addOperationLoggingLevelOptions();
-//        this.getContentPane().setBackground(PopUpBackground);
         loadComponentValues();
     }
 
