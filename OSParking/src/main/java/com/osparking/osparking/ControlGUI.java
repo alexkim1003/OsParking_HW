@@ -2969,8 +2969,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 parentGUI = mainForm;
                 mainForm.recordSystemStart();
                 mainForm.setVisible(true);
-                if (!DEBUG)
-                    Globals.shortLicenseDialog(mainForm);
+                Globals.shortLicenseDialog(mainForm);
             }
         });
     }
