@@ -1511,6 +1511,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         int imageNo = randomInteger.nextInt(6) + 1;
         
         getPassingDelayStat()[gateNo].setICodeArrivalTime(System.currentTimeMillis());
+//        int imageNo = 5;
+        
         processCarArrival(gateNo, --manualSimulationImageID, dummyMessages[imageNo].getCarNumber(),
                 dummyMessages[imageNo].getBufferedImg());
     }//GEN-LAST:event_CarEnteredButtonActionPerformed
