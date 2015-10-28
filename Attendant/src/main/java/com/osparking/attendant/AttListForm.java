@@ -1365,6 +1365,8 @@ public class AttListForm extends javax.swing.JFrame {
                 formMode = FormMode.NormalMode;
                 multiFuncButton.setText("Modify");  
                 multiFuncButton.setMnemonic('m');
+                createButton.setEnabled(true);
+                deleteButton.setEnabled(true);
             }
             usersTableMouseClicked(null);
         } catch (Exception ex) {

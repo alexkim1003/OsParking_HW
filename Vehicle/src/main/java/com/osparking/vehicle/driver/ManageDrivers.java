@@ -2292,7 +2292,7 @@ public class ManageDrivers extends javax.swing.JFrame {
                 label  = "(Building No.)";
                 break;
             case AffiliationL2:  
-                label = complexItem ? "(Higher-Lower)" : "(Lower Group)";
+                label = complexItem ? "(Lower-Higher)" : "(Lower Group)";
                 break;
             case UnitNo: 
                 label = complexItem ? "(Room-Building)" : "(Room No.)";

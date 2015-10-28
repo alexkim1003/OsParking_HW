@@ -40,8 +40,10 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
+import static com.osparking.global.names.DB_Access.gateNames;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.UIManager;
 
 /**
  *
@@ -78,7 +80,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
     public DisAllowedCar(ControlGUI parent, String tagRecognized, Date arrivalTm, 
             String tagEnteredAs, String remark, byte gateNo, String filename, String filenameModified, 
             BufferedImage bImg, int delay) {
-        
         initComponents();
         this.parent = parent;
         this.tagRecognized = tagRecognized;
@@ -102,31 +103,12 @@ public class DisAllowedCar extends javax.swing.JFrame {
         timer.schedule(new RemindTask(), 0, //initial delay
         1 * 1000);   
         
-        openBarButton.requestFocus();
-        
-        // define shortcut keys for 3 buttons
-//        JComponent pane = (JComponent) this.getContentPane();
-//        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
-//                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
-//        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
-//                java.awt.event.InputEvent.ALT_DOWN_MASK), "controlTheBar");
-//        pane.getActionMap().put("controlTheBar", new AbstractAction("controlTheBar") {
-//
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                String cmd = e.getActionCommand();
-//                switch (cmd.charAt(0)) {
-//                    case 'O': case 'o':
-//                        openBarButtonActionPerformed(null);
-//                        break;
-//                    case 'C': case 'c':
-//                        closeFormButtonActionPerformed(null);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
+        gateNameTextField.setText(gateNames[gateNo]);
+        addWindowListener( new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+                openBarButton.requestFocus();
+            }
+        });  
 //        openBarButtonActionPerformed(null);
     }
     
@@ -155,6 +137,13 @@ public class DisAllowedCar extends javax.swing.JFrame {
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
         wholePanel = new javax.swing.JPanel();
         firstPanel = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        filler23 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        jLabel3 = new javax.swing.JLabel();
+        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        gateNameTextField = new javax.swing.JTextField();
+        filler26 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         tag_Reco_Panel = new javax.swing.JPanel();
         filler20 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jLabel1 = new javax.swing.JLabel();
@@ -189,6 +178,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("DisAllowed Car");
+        setMinimumSize(new java.awt.Dimension(573, 530));
+        setPreferredSize(new java.awt.Dimension(573, 530));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -203,6 +194,31 @@ public class DisAllowedCar extends javax.swing.JFrame {
         wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.PAGE_AXIS));
 
         firstPanel.setLayout(new javax.swing.BoxLayout(firstPanel, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel1.add(filler23);
+
+        jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel3.setText("Gate Name");
+        jLabel3.setMaximumSize(new java.awt.Dimension(150, 50));
+        jLabel3.setMinimumSize(new java.awt.Dimension(150, 50));
+        jLabel3.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel1.add(jLabel3);
+        jPanel1.add(filler18);
+
+        gateNameTextField.setEditable(false);
+        gateNameTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
+        gateNameTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        gateNameTextField.setText("jTextField1");
+        gateNameTextField.setMaximumSize(new java.awt.Dimension(200, 50));
+        gateNameTextField.setMinimumSize(new java.awt.Dimension(200, 50));
+        gateNameTextField.setPreferredSize(new java.awt.Dimension(200, 50));
+        jPanel1.add(gateNameTextField);
+        jPanel1.add(filler26);
+
+        firstPanel.add(jPanel1);
+        firstPanel.add(filler13);
 
         tag_Reco_Panel.setLayout(new javax.swing.BoxLayout(tag_Reco_Panel, javax.swing.BoxLayout.LINE_AXIS));
         tag_Reco_Panel.add(filler20);
@@ -300,11 +316,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
         firstPanel.add(disallowReasonPanel);
         firstPanel.add(filler7);
 
-        wholePanel.add(firstPanel);
-
         buttonPanel.setPreferredSize(new java.awt.Dimension(784, 70));
 
-        openBarButton.setBackground(new java.awt.Color(102, 255, 102));
         openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
         openBarButton.setMnemonic('o');
         openBarButton.setText("Open Bar");
@@ -322,6 +335,11 @@ public class DisAllowedCar extends javax.swing.JFrame {
         openBarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBarButtonActionPerformed(evt);
+            }
+        });
+        openBarButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                openBarButtonKeyTyped(evt);
             }
         });
         buttonPanel.add(openBarButton);
@@ -345,9 +363,16 @@ public class DisAllowedCar extends javax.swing.JFrame {
                 closeGateButtonActionPerformed(evt);
             }
         });
+        closeGateButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                closeGateButtonKeyTyped(evt);
+            }
+        });
         buttonPanel.add(closeGateButton);
 
-        wholePanel.add(buttonPanel);
+        firstPanel.add(buttonPanel);
+
+        wholePanel.add(firstPanel);
 
         getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
@@ -361,11 +386,11 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg, -1, -1, null, BarOperation.MANUAL);
-            timer.cancel();
-            timer.purge();
             parent.isGateBusy[gateNo] = false;
             parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.MANUAL);
         }
+        timer.cancel();
+        timer.purge();
         dispose();
     }//GEN-LAST:event_openBarButtonActionPerformed
 
@@ -373,11 +398,11 @@ public class DisAllowedCar extends javax.swing.JFrame {
         if(parent != null){  
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        
-            timer.cancel();
-            timer.purge();
             parent.isGateBusy[gateNo] = false;
             parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
         }
+        timer.cancel();
+        timer.purge();
         dispose();
     }//GEN-LAST:event_closeGateButtonActionPerformed
 
@@ -385,11 +410,11 @@ public class DisAllowedCar extends javax.swing.JFrame {
         if(parent != null){
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);   
-            timer.cancel();
-            timer.purge();
             parent.isGateBusy[gateNo] = false;
             parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);        
         }
+        timer.cancel();
+        timer.purge();
     }//GEN-LAST:event_formWindowClosing
 
     private void closeGateButtonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_closeGateButtonFocusGained
@@ -411,6 +436,22 @@ public class DisAllowedCar extends javax.swing.JFrame {
         // TODO add your handling code here:
         closeGateButton.setBackground((new java.awt.Color(240, 240, 240)));
     }//GEN-LAST:event_closeGateButtonFocusLost
+
+    private void openBarButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBarButtonKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            openBarButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_openBarButtonKeyTyped
+
+    private void closeGateButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_closeGateButtonKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            closeGateButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_closeGateButtonKeyTyped
 
     /**
      * @param args the command line arguments
@@ -449,6 +490,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
             public void run() {
                 new DisAllowedCar(null, "30MO8186", new Date(), "30MO8186", "testing",
                     (byte)1, "abc.jpg", null, null, 8000).setVisible(true);
+                
             }
         });
     }
@@ -463,15 +505,19 @@ public class DisAllowedCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
     private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
     private javax.swing.Box.Filler filler14;
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler17;
+    private javax.swing.Box.Filler filler18;
     private javax.swing.Box.Filler filler19;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler20;
     private javax.swing.Box.Filler filler21;
     private javax.swing.Box.Filler filler22;
+    private javax.swing.Box.Filler filler23;
+    private javax.swing.Box.Filler filler26;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
@@ -480,9 +526,12 @@ public class DisAllowedCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
     private javax.swing.JPanel firstPanel;
+    private javax.swing.JTextField gateNameTextField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton openBarButton;
     private javax.swing.JPanel reasonPanel;
     private javax.swing.JTextField recogTextField;

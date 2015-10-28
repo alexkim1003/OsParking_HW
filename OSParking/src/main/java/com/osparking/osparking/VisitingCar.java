@@ -38,6 +38,7 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
+import static com.osparking.global.names.DB_Access.gateNames;
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.OSP_enums.DriverCol;
 import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
@@ -45,6 +46,10 @@ import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL2;
 import static com.osparking.global.names.OSP_enums.DriverCol.BuildingNo;
 import static com.osparking.global.names.OSP_enums.DriverCol.UnitNo;
 import com.osparking.global.names.PComboBox;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.UIManager;
 
 /**
  *
@@ -86,6 +91,12 @@ public class VisitingCar extends javax.swing.JFrame {
         initAffiliationComboBoxes(highLevelComboBox, lowLevelComboBox, 
                 buildingComboBox, unitComboBox);
         visitReasonTextField.setText("");
+        gateNameTextField.setText(gateNames[gateNo]);
+        addWindowListener( new WindowAdapter() {
+            public void windowOpened( WindowEvent e ){
+                openBarButton.requestFocus();
+            }
+        });  
     }
 
     /**
@@ -100,18 +111,21 @@ public class VisitingCar extends javax.swing.JFrame {
         wholePanel = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        filler28 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        gateNameTextField = new javax.swing.JTextField();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        jLabel1 = new javax.swing.JLabel();
-        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        recogTextField = new javax.swing.JTextField();
-        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel6 = new javax.swing.JPanel();
-        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        jLabel1 = new javax.swing.JLabel();
+        filler26 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        recogTextField = new javax.swing.JTextField();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jLabel8 = new javax.swing.JLabel();
         filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         visitTimeTextField = new javax.swing.JTextField();
-        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         jPanel10 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -171,49 +185,66 @@ public class VisitingCar extends javax.swing.JFrame {
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.PAGE_AXIS));
 
         jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.LINE_AXIS));
+
+        jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Gate");
+        jLabel6.setMaximumSize(null);
+        jLabel6.setMinimumSize(new java.awt.Dimension(160, 50));
+        jLabel6.setPreferredSize(new java.awt.Dimension(160, 50));
+        jPanel5.add(jLabel6);
+        jPanel5.add(filler28);
+
+        gateNameTextField.setEditable(false);
+        gateNameTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+11));
+        gateNameTextField.setText("gateNameTextField");
+        gateNameTextField.setMaximumSize(new java.awt.Dimension(210, 50));
+        gateNameTextField.setMinimumSize(new java.awt.Dimension(210, 50));
+        gateNameTextField.setPreferredSize(new java.awt.Dimension(210, 50));
+        jPanel5.add(gateNameTextField);
         jPanel5.add(filler8);
-
-        jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Recognized");
-        jLabel1.setMaximumSize(null);
-        jLabel1.setMinimumSize(new java.awt.Dimension(130, 50));
-        jLabel1.setPreferredSize(new java.awt.Dimension(130, 50));
-        jPanel5.add(jLabel1);
         jPanel5.add(filler10);
-
-        recogTextField.setEditable(false);
-        recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
-        recogTextField.setText("12가3456");
-        recogTextField.setMaximumSize(new java.awt.Dimension(180, 50));
-        recogTextField.setMinimumSize(new java.awt.Dimension(180, 50));
-        recogTextField.setPreferredSize(new java.awt.Dimension(180, 50));
-        jPanel5.add(recogTextField);
-        jPanel5.add(filler16);
 
         jPanel1.add(jPanel5);
         jPanel1.add(filler4);
 
         jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
-        jPanel6.add(filler9);
+
+        jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Recognized");
+        jLabel1.setMaximumSize(null);
+        jLabel1.setMinimumSize(new java.awt.Dimension(160, 50));
+        jLabel1.setPreferredSize(new java.awt.Dimension(160, 50));
+        jPanel6.add(jLabel1);
+        jPanel6.add(filler26);
+
+        recogTextField.setEditable(false);
+        recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
+        recogTextField.setText("12가3456");
+        recogTextField.setMaximumSize(null);
+        recogTextField.setMinimumSize(new java.awt.Dimension(210, 50));
+        recogTextField.setPreferredSize(new java.awt.Dimension(210, 50));
+        jPanel6.add(recogTextField);
+        jPanel6.add(filler16);
 
         jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel8.setText("Visit Time");
         jLabel8.setMaximumSize(null);
         jLabel8.setMinimumSize(new java.awt.Dimension(130, 50));
-        jLabel8.setPreferredSize(new java.awt.Dimension(130, 50));
+        jLabel8.setPreferredSize(new java.awt.Dimension(120, 50));
         jPanel6.add(jLabel8);
         jPanel6.add(filler11);
 
         visitTimeTextField.setEditable(false);
-        visitTimeTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        visitTimeTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+11));
         visitTimeTextField.setText("'15.02.05 13:27:04");
         visitTimeTextField.setMaximumSize(new java.awt.Dimension(180, 50));
         visitTimeTextField.setMinimumSize(new java.awt.Dimension(180, 50));
-        visitTimeTextField.setPreferredSize(new java.awt.Dimension(180, 50));
+        visitTimeTextField.setPreferredSize(new java.awt.Dimension(210, 50));
         jPanel6.add(visitTimeTextField);
-        jPanel6.add(filler17);
+        jPanel6.add(filler9);
 
         jPanel1.add(jPanel6);
         jPanel1.add(filler15);
@@ -221,6 +252,7 @@ public class VisitingCar extends javax.swing.JFrame {
         jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel2.setForeground(new java.awt.Color(18, 22, 113));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Visit Purpose");
         jLabel2.setMaximumSize(null);
@@ -245,8 +277,8 @@ public class VisitingCar extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel3.setText("Higher Affiliation");
         jLabel3.setMaximumSize(null);
-        jLabel3.setMinimumSize(new java.awt.Dimension(130, 50));
-        jLabel3.setPreferredSize(new java.awt.Dimension(180, 50));
+        jLabel3.setMinimumSize(new java.awt.Dimension(160, 50));
+        jLabel3.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel11.add(jLabel3);
         jPanel11.add(filler18);
 
@@ -280,8 +312,8 @@ public class VisitingCar extends javax.swing.JFrame {
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel5.setText("Lower Affiliation");
         jLabel5.setMaximumSize(null);
-        jLabel5.setMinimumSize(new java.awt.Dimension(130, 50));
-        jLabel5.setPreferredSize(new java.awt.Dimension(180, 50));
+        jLabel5.setMinimumSize(new java.awt.Dimension(160, 50));
+        jLabel5.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel12.add(jLabel5);
         jPanel12.add(filler19);
 
@@ -380,6 +412,7 @@ public class VisitingCar extends javax.swing.JFrame {
         jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
+        jLabel4.setForeground(new java.awt.Color(18, 22, 113));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("Detailed Reason");
         jLabel4.setMaximumSize(null);
@@ -408,16 +441,28 @@ public class VisitingCar extends javax.swing.JFrame {
 
         wholePanel.add(jPanel1);
 
-        openBarButton.setBackground(new java.awt.Color(102, 255, 102));
         openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         openBarButton.setMnemonic('o');
-        openBarButton.setText("Open");
+        openBarButton.setText("Open Bar");
         openBarButton.setMaximumSize(new java.awt.Dimension(140, 60));
         openBarButton.setMinimumSize(new java.awt.Dimension(140, 60));
         openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
+        openBarButton.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                openBarButtonFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                openBarButtonFocusLost(evt);
+            }
+        });
         openBarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBarButtonActionPerformed(evt);
+            }
+        });
+        openBarButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                openBarButtonKeyTyped(evt);
             }
         });
         jPanel4.add(openBarButton);
@@ -428,9 +473,22 @@ public class VisitingCar extends javax.swing.JFrame {
         notAllowButton.setMaximumSize(new java.awt.Dimension(140, 60));
         notAllowButton.setMinimumSize(new java.awt.Dimension(140, 60));
         notAllowButton.setPreferredSize(new java.awt.Dimension(140, 60));
+        notAllowButton.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                notAllowButtonFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                notAllowButtonFocusLost(evt);
+            }
+        });
         notAllowButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 notAllowButtonActionPerformed(evt);
+            }
+        });
+        notAllowButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                notAllowButtonKeyTyped(evt);
             }
         });
         jPanel4.add(notAllowButton);
@@ -523,6 +581,42 @@ public class VisitingCar extends javax.swing.JFrame {
         dispose();        
     }//GEN-LAST:event_formWindowClosing
 
+    private void openBarButtonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_openBarButtonFocusGained
+        // TODO add your handling code here:
+        openBarButton.setBackground((new java.awt.Color(102, 255, 102)));
+    }//GEN-LAST:event_openBarButtonFocusGained
+
+    private void openBarButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_openBarButtonFocusLost
+        // TODO add your handling code here:
+        openBarButton.setBackground((new java.awt.Color(240, 240, 240)));
+    }//GEN-LAST:event_openBarButtonFocusLost
+
+    private void openBarButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openBarButtonKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            openBarButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_openBarButtonKeyTyped
+
+    private void notAllowButtonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_notAllowButtonFocusGained
+        // TODO add your handling code here:
+        notAllowButton.setBackground((new java.awt.Color(102, 255, 102)));
+    }//GEN-LAST:event_notAllowButtonFocusGained
+
+    private void notAllowButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_notAllowButtonFocusLost
+        // TODO add your handling code here:
+        notAllowButton.setBackground((new java.awt.Color(240, 240, 240)));
+    }//GEN-LAST:event_notAllowButtonFocusLost
+
+    private void notAllowButtonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_notAllowButtonKeyTyped
+        // TODO add your handling code here:
+        if(evt.getKeyChar() == KeyEvent.VK_ENTER)
+        {
+            notAllowButtonActionPerformed(null);
+        }
+    }//GEN-LAST:event_notAllowButtonKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -574,7 +668,6 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler14;
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
-    private javax.swing.Box.Filler filler17;
     private javax.swing.Box.Filler filler18;
     private javax.swing.Box.Filler filler19;
     private javax.swing.Box.Filler filler2;
@@ -584,6 +677,8 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler23;
     private javax.swing.Box.Filler filler24;
     private javax.swing.Box.Filler filler25;
+    private javax.swing.Box.Filler filler26;
+    private javax.swing.Box.Filler filler28;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
@@ -591,6 +686,7 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
     private javax.swing.Box.Filler filler9;
+    private javax.swing.JTextField gateNameTextField;
     private javax.swing.JComboBox highLevelComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -598,6 +694,7 @@ public class VisitingCar extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
