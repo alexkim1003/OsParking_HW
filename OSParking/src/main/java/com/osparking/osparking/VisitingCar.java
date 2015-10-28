@@ -514,11 +514,12 @@ public class VisitingCar extends javax.swing.JFrame {
     }//GEN-LAST:event_unitComboBoxPopupMenuWillBecomeVisible
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTime, tagRecognized, null,
-            filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);
-        parent.isGateBusy[gateNo] = false;        
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
-        
+        if(parent != null){
+            long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTime, tagRecognized, null,
+                filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);
+            parent.isGateBusy[gateNo] = false;        
+            parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
+        }
         dispose();        
     }//GEN-LAST:event_formWindowClosing
 
@@ -632,32 +633,33 @@ public class VisitingCar extends javax.swing.JFrame {
     private void welcomeVisitor(boolean openGate) {
         int unitSeqNo;
         int l2No;
-        
-        if (openGate) {
-            parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
+        if(parent != null){
+            if (openGate) {
+                parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
+            }
+
+            if (lowLevelComboBox.getSelectedIndex() == -1) {
+                l2No = -1;
+            } else {
+                l2No = (Integer)
+                        ((InnoComboBoxItem)lowLevelComboBox.getSelectedItem()).getKeys()[0];
+            }
+            if (unitComboBox.getSelectedIndex() == -1) {
+                unitSeqNo = -1;
+            } else {
+                unitSeqNo = (Integer)
+                        ((InnoComboBoxItem)unitComboBox.getSelectedItem()).getKeys()[0];
+            }
+            BarOperation barOperation = BarOperation.MANUAL;
+            if (!openGate) {
+                barOperation = BarOperation.REMAIN_CLOSED;
+            }
+            String reason = visitReasonTextField.getText();
+            long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTime, tagRecognized, null, filenameModified, 
+                    bImg, unitSeqNo, l2No, reason.length() == 0 ? null : reason , barOperation);
+            parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, barOperation);        
+            parent.isGateBusy[gateNo] = false; 
         }
-        
-        if (lowLevelComboBox.getSelectedIndex() == -1) {
-            l2No = -1;
-        } else {
-            l2No = (Integer)
-                    ((InnoComboBoxItem)lowLevelComboBox.getSelectedItem()).getKeys()[0];
-        }
-        if (unitComboBox.getSelectedIndex() == -1) {
-            unitSeqNo = -1;
-        } else {
-            unitSeqNo = (Integer)
-                    ((InnoComboBoxItem)unitComboBox.getSelectedItem()).getKeys()[0];
-        }
-        BarOperation barOperation = BarOperation.MANUAL;
-        if (!openGate) {
-            barOperation = BarOperation.REMAIN_CLOSED;
-        }
-        String reason = visitReasonTextField.getText();
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTime, tagRecognized, null, filenameModified, 
-                bImg, unitSeqNo, l2No, reason.length() == 0 ? null : reason , barOperation);
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, barOperation);        
-        parent.isGateBusy[gateNo] = false;        
         dispose();
     }
 }

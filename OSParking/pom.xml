@@ -107,6 +107,25 @@
                 </configuration> 
             </plugin> 
         </plugins> 
+        <resources>
+            <!-- include main.properties -->
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>OsParking.properties</include>
+                </includes>
+            </resource>
+
+            <!-- exclude everything else from filtering -->
+            <resource>
+                <directory>src/main/resources</directory>
+                    <filtering>false</filtering>
+                <excludes>
+                    <exclude>OsParking.properties</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>    
     
     

@@ -40,6 +40,8 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 /**
  *
@@ -100,6 +102,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
         timer.schedule(new RemindTask(), 0, //initial delay
         1 * 1000);   
         
+        openBarButton.requestFocus();
+        
         // define shortcut keys for 3 buttons
 //        JComponent pane = (JComponent) this.getContentPane();
 //        pane.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 
@@ -123,8 +127,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 //                }
 //            }
 //        });
-        
-        openBarButtonActionPerformed(null);
+//        openBarButtonActionPerformed(null);
     }
     
     class RemindTask extends TimerTask {
@@ -301,12 +304,21 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         buttonPanel.setPreferredSize(new java.awt.Dimension(784, 70));
 
+        openBarButton.setBackground(new java.awt.Color(102, 255, 102));
         openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
         openBarButton.setMnemonic('o');
         openBarButton.setText("Open Bar");
         openBarButton.setMaximumSize(new java.awt.Dimension(140, 40));
         openBarButton.setMinimumSize(new java.awt.Dimension(140, 40));
         openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
+        openBarButton.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                openBarButtonFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                openBarButtonFocusLost(evt);
+            }
+        });
         openBarButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBarButtonActionPerformed(evt);
@@ -320,6 +332,14 @@ public class DisAllowedCar extends javax.swing.JFrame {
         closeGateButton.setMaximumSize(new java.awt.Dimension(140, 40));
         closeGateButton.setMinimumSize(new java.awt.Dimension(140, 40));
         closeGateButton.setPreferredSize(new java.awt.Dimension(140, 60));
+        closeGateButton.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                closeGateButtonFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                closeGateButtonFocusLost(evt);
+            }
+        });
         closeGateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeGateButtonActionPerformed(evt);
@@ -331,39 +351,66 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
-        pack();
+        setSize(new java.awt.Dimension(516, 446));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void openBarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBarButtonActionPerformed
-        parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
-        
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
-                filenameModified, bImg, -1, -1, null, BarOperation.MANUAL);
-        timer.cancel();
-        timer.purge();
-        parent.isGateBusy[gateNo] = false;
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.MANUAL);
+        if(parent != null){
+            parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
+
+            long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
+                    filenameModified, bImg, -1, -1, null, BarOperation.MANUAL);
+            timer.cancel();
+            timer.purge();
+            parent.isGateBusy[gateNo] = false;
+            parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.MANUAL);
+        }
         dispose();
     }//GEN-LAST:event_openBarButtonActionPerformed
 
     private void closeGateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeGateButtonActionPerformed
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
-                filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        
-        timer.cancel();
-        timer.purge();
-        parent.isGateBusy[gateNo] = false;
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
+        if(parent != null){  
+            long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
+                    filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        
+            timer.cancel();
+            timer.purge();
+            parent.isGateBusy[gateNo] = false;
+            parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);
+        }
         dispose();
     }//GEN-LAST:event_closeGateButtonActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
-                filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);   
-        timer.cancel();
-        timer.purge();
-        parent.isGateBusy[gateNo] = false;
-        parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);        
+        if(parent != null){
+            long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
+                    filenameModified, bImg, -1, -1, null, BarOperation.REMAIN_CLOSED);   
+            timer.cancel();
+            timer.purge();
+            parent.isGateBusy[gateNo] = false;
+            parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);        
+        }
     }//GEN-LAST:event_formWindowClosing
+
+    private void closeGateButtonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_closeGateButtonFocusGained
+        // TODO add your handling code here:
+        closeGateButton.setBackground((new java.awt.Color(102, 255, 102)));
+    }//GEN-LAST:event_closeGateButtonFocusGained
+
+    private void openBarButtonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_openBarButtonFocusGained
+        // TODO add your handling code here:
+        openBarButton.setBackground((new java.awt.Color(102, 255, 102)));
+    }//GEN-LAST:event_openBarButtonFocusGained
+
+    private void openBarButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_openBarButtonFocusLost
+        // TODO add your handling code here:
+        openBarButton.setBackground((new java.awt.Color(240, 240, 240)));
+    }//GEN-LAST:event_openBarButtonFocusLost
+
+    private void closeGateButtonFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_closeGateButtonFocusLost
+        // TODO add your handling code here:
+        closeGateButton.setBackground((new java.awt.Color(240, 240, 240)));
+    }//GEN-LAST:event_closeGateButtonFocusLost
 
     /**
      * @param args the command line arguments
