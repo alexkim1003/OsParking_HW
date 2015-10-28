@@ -283,6 +283,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
     static Random gateRandomOpen = new Random(System.currentTimeMillis());
     
+    Properties prop = null;
+    
     /**
      * Creates new form MainForm
      */
@@ -326,7 +328,16 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
          */
         setIconImages(OSPiconList);
         
-        setTitle("OsParking--Open Source Parking Inc.");   
+        
+        InputStream resourceAsStream = this.getClass().getResourceAsStream("/OsParking.properties");
+        this.prop = new Properties();
+        try
+        {
+            this.prop.load( resourceAsStream );
+        } catch (IOException e){
+        }
+        setTitle("OsParking("+this.prop.getProperty("osparking.current.version")+")--Open Source Parking Inc.");   
+        
         String processName = ManagementFactory.getRuntimeMXBean().getName();
         PID_Label.setText("(PID:" + processName.substring(0, processName.indexOf("@")) + ")");        
         
