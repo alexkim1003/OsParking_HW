@@ -505,7 +505,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                     break;
                 case GateBar:
                     header = "* ID numbers of Open commands sent to Gate #" + gateNo 
-                            + System.lineSeparator() + "<ID number>";
+                            + System.lineSeparator() + "<ID number>(negative: random attendant)";
                     break;
             }
             IDLogFile[devType.ordinal()][gateNo].write(header + System.lineSeparator());
