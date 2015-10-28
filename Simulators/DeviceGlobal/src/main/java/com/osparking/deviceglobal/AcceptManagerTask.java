@@ -130,6 +130,9 @@ public class AcceptManagerTask implements Runnable {
                     if (!deviceGUI.isSHUT_DOWN()) {
                         logParkingExceptionStatus(Level.INFO, e, devType + " Socket creation error",
                                 deviceGUI.getCriticalInfoTextField(), GENERAL_DEVICE);
+                    }else{
+                        
+                        System.out.println("device Closed");
                     }
                     break;
                 } catch (Exception e) {

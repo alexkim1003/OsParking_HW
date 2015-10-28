@@ -307,6 +307,7 @@ public class CarArrivals extends javax.swing.JFrame {
         attendantCB.setModel(new javax.swing.DefaultComboBoxModel(new Object[] {
             new ConvComboBoxItem("", "(Attendant)")
         }));
+        attendantCB.setMinimumSize(new java.awt.Dimension(120, 23));
         attendantCB.setPreferredSize(new java.awt.Dimension(120, 23));
         attendantCB.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -480,9 +481,9 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationBuildingPanelLayout.setHorizontalGroup(
             affiliationBuildingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(affiliationBuildingPanelLayout.createSequentialGroup()
-                .addComponent(affiliPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addComponent(affiliPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                 .addGap(8, 8, 8)
-                .addComponent(buildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE))
+                .addComponent(buildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
         );
         affiliationBuildingPanelLayout.setVerticalGroup(
             affiliationBuildingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -506,15 +507,15 @@ public class CarArrivals extends javax.swing.JFrame {
             searchTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchTopLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(gatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+                .addComponent(gatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addComponent(carTagPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(attendPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                .addComponent(attendPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addComponent(barOptnPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5)
-                .addComponent(affiliationBuildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
+                .addComponent(affiliationBuildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(5, 5, 5)
                 .addComponent(clearSearchPropertiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
@@ -541,7 +542,7 @@ public class CarArrivals extends javax.swing.JFrame {
                     .addGroup(searchTopLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(clearSearchPropertiesButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         searchBottom.setBackground(new java.awt.Color(244, 244, 244));
@@ -671,7 +672,7 @@ public class CarArrivals extends javax.swing.JFrame {
                             .addComponent(BeginDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(setSearchPeriodOptionButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(EndDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout criteriaPanelLayout = new javax.swing.GroupLayout(criteriaPanel);
@@ -681,8 +682,8 @@ public class CarArrivals extends javax.swing.JFrame {
             .addGroup(criteriaPanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addGroup(criteriaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchTop, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
-                    .addComponent(searchBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE))
+                    .addComponent(searchTop, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
+                    .addComponent(searchBottom, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
         criteriaPanelLayout.setVerticalGroup(
@@ -712,7 +713,7 @@ public class CarArrivals extends javax.swing.JFrame {
             searchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchPanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(criteriaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 833, Short.MAX_VALUE)
+                .addComponent(criteriaPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
                 .addGap(7, 7, 7)
                 .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(7, 7, 7))
@@ -747,7 +748,7 @@ public class CarArrivals extends javax.swing.JFrame {
         topPanelLayout.setHorizontalGroup(
             topPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(topPanelLayout.createSequentialGroup()
-                .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
+                .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 931, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(closePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -823,7 +824,7 @@ public class CarArrivals extends javax.swing.JFrame {
         registeredTF.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         registeredTF.setMaximumSize(new java.awt.Dimension(130, 35));
         registeredTF.setMinimumSize(new java.awt.Dimension(130, 35));
-        registeredTF.setPreferredSize(new java.awt.Dimension(130, 35));
+        registeredTF.setPreferredSize(new java.awt.Dimension(150, 35));
         jPanel1.add(registeredTF);
 
         jPanel4.add(jPanel1);
@@ -871,7 +872,7 @@ public class CarArrivals extends javax.swing.JFrame {
         recognizedTF.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         recognizedTF.setMaximumSize(new java.awt.Dimension(130, 35));
         recognizedTF.setMinimumSize(new java.awt.Dimension(130, 35));
-        recognizedTF.setPreferredSize(new java.awt.Dimension(130, 35));
+        recognizedTF.setPreferredSize(new java.awt.Dimension(150, 35));
         jPanel3.add(recognizedTF);
 
         jPanel4.add(jPanel3);
@@ -883,9 +884,9 @@ public class CarArrivals extends javax.swing.JFrame {
         buildingLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         buildingLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         buildingLabel.setText("Building");
-        buildingLabel.setMaximumSize(new java.awt.Dimension(80, 35));
-        buildingLabel.setMinimumSize(new java.awt.Dimension(80, 35));
-        buildingLabel.setPreferredSize(new java.awt.Dimension(80, 35));
+        buildingLabel.setMaximumSize(new java.awt.Dimension(130, 35));
+        buildingLabel.setMinimumSize(new java.awt.Dimension(130, 35));
+        buildingLabel.setPreferredSize(new java.awt.Dimension(130, 35));
         jPanel5.add(buildingLabel);
 
         buildingTF.setEditable(false);
@@ -918,9 +919,9 @@ public class CarArrivals extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Purpose of Visit");
-        jLabel14.setMaximumSize(new java.awt.Dimension(120, 35));
-        jLabel14.setMinimumSize(new java.awt.Dimension(120, 35));
-        jLabel14.setPreferredSize(new java.awt.Dimension(120, 35));
+        jLabel14.setMaximumSize(new java.awt.Dimension(130, 35));
+        jLabel14.setMinimumSize(new java.awt.Dimension(130, 35));
+        jLabel14.setPreferredSize(new java.awt.Dimension(130, 35));
         jPanel6.add(jLabel14);
 
         visitPurposeTF.setEditable(false);
@@ -938,9 +939,9 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         affiliationLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         affiliationLabel.setText("Affiliation");
-        affiliationLabel.setMaximumSize(new java.awt.Dimension(120, 35));
-        affiliationLabel.setMinimumSize(new java.awt.Dimension(120, 35));
-        affiliationLabel.setPreferredSize(new java.awt.Dimension(120, 35));
+        affiliationLabel.setMaximumSize(new java.awt.Dimension(130, 35));
+        affiliationLabel.setMinimumSize(new java.awt.Dimension(130, 35));
+        affiliationLabel.setPreferredSize(new java.awt.Dimension(130, 35));
         jPanel8.add(affiliationLabel);
 
         affiliationTF.setEditable(false);
@@ -1464,7 +1465,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
             Object selValue = ((ConvComboBoxItem)attendantCB.getSelectedItem()).getValue();
             if (selValue == null) {
-                cond.append(" attendantID is null");
+                cond.append("and attendantID is null");
             } else {
                 attachCondition(cond, "attendantID", (String)selValue);
             }
