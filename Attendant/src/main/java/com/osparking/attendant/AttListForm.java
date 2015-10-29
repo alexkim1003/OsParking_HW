@@ -2168,9 +2168,9 @@ public class AttListForm extends javax.swing.JFrame {
     }
 
     private void setModificationState(boolean flag) {
-        boolean notAdminRerocd = !(loginID.equals("admin"));
+        boolean isAdminRerocd = (loginID.equals("admin"));
         boolean notOwnRecord = !(loginID.equals(userIDText.getText()));
-        if (notAdminRerocd && notOwnRecord) {
+        if (!isAdminRerocd && notOwnRecord) {
             // No user can change self 'admin' property
             // No user with admin right can change admin property of user 'admin'
             if (loginID.equals("admin")) {
@@ -2187,6 +2187,8 @@ public class AttListForm extends javax.swing.JFrame {
             }
         }
         changePWCheckBox.setEnabled(flag);
+        if(isAdminRerocd && notOwnRecord)
+            managerAuthCheckBox.setEnabled(flag);
         changeBoxEditability(flag);
         changeButtonEnabled(!flag);        
     }
