@@ -1652,6 +1652,9 @@ public class CarArrivals extends javax.swing.JFrame {
                         
                         InputStream imageIS = rs.getBinaryStream("ImageBlob");
                         try {
+                            if(imageIS == null){
+                                imageIS = this.getClass().getResourceAsStream("/deletedPicture.png");
+                            }
                             originalImg = ImageIO.read(imageIS);
                             ImageIcon iIcon = createStretchedIcon(imageLabel.getSize(), originalImg,
                                     false);   
