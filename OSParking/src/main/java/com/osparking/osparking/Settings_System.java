@@ -226,12 +226,10 @@ public class Settings_System extends javax.swing.JFrame {
         StatPopSizeTextField.setMinimumSize(new java.awt.Dimension(6, 25));
         StatPopSizeTextField.setName(""); // NOI18N
         StatPopSizeTextField.setPreferredSize(new java.awt.Dimension(70, 25));
-        StatPopSizeTextField.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                StatPopSizeTextFieldFocusLost(evt);
-            }
-        });
         StatPopSizeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                StatPopSizeTextFieldKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 StatPopSizeTextFieldKeyTyped(evt);
             }
@@ -529,12 +527,10 @@ public class Settings_System extends javax.swing.JFrame {
 
         TextFieldPicWidth.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldPicWidth.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextFieldPicWidth.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TextFieldPicWidthFocusLost(evt);
-            }
-        });
         TextFieldPicWidth.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextFieldPicWidthKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextFieldPicWidthKeyTyped(evt);
             }
@@ -549,12 +545,10 @@ public class Settings_System extends javax.swing.JFrame {
 
         TextFieldPicHeight.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldPicHeight.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        TextFieldPicHeight.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                TextFieldPicHeightFocusLost(evt);
-            }
-        });
         TextFieldPicHeight.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                TextFieldPicHeightKeyReleased(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 TextFieldPicHeightKeyTyped(evt);
             }
@@ -1649,32 +1643,6 @@ public class Settings_System extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_SettingsCloseButtonActionPerformed
 
-    private void StatPopSizeTextFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldFocusLost
-        // TODO add your handling code here:
-        if (PassingDelayCheckBox.isSelected()) {
-            TextFieldNumericValueOK(StatPopSizeTextField, "Statistics Population Size Error");
-            changeEnabled_of_SaveCancelButtons();
-        }
-    }//GEN-LAST:event_StatPopSizeTextFieldFocusLost
-
-    private void TextFieldPicWidthFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFieldPicWidthFocusLost
-        // TODO add your handling code here:
-        if(TextFieldNumericValueOK(TextFieldPicWidth, "Picture Width Error")){
-            TextFieldPicWidth.setText(new DecimalFormat("#,##0").format(
-                        Integer.parseInt(TextFieldPicWidth.getText().replace(",",""))));
-            changeEnabled_of_SaveCancelButtons();
-        }
-    }//GEN-LAST:event_TextFieldPicWidthFocusLost
-
-    private void TextFieldPicHeightFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TextFieldPicHeightFocusLost
-        // TODO add your handling code here:
-        if(TextFieldNumericValueOK(TextFieldPicHeight, "Picture Height Error")){
-            TextFieldPicHeight.setText(new DecimalFormat("#,##0").format(
-                        Integer.parseInt(TextFieldPicHeight.getText().replace(",",""))));
-            changeEnabled_of_SaveCancelButtons();
-        }
-    }//GEN-LAST:event_TextFieldPicHeightFocusLost
-
     private void TextFieldPicHeightKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicHeightKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
@@ -1835,6 +1803,21 @@ public class Settings_System extends javax.swing.JFrame {
         changeEnabled_of_SaveCancelButtons();
     }//GEN-LAST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
 
+    private void StatPopSizeTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldKeyReleased
+        // TODO add your handling code here:
+        changeEnabled_of_SaveCancelButtons();
+    }//GEN-LAST:event_StatPopSizeTextFieldKeyReleased
+
+    private void TextFieldPicWidthKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicWidthKeyReleased
+        // TODO add your handling code here:
+        changeEnabled_of_SaveCancelButtons();
+    }//GEN-LAST:event_TextFieldPicWidthKeyReleased
+
+    private void TextFieldPicHeightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicHeightKeyReleased
+        // TODO add your handling code here:
+        changeEnabled_of_SaveCancelButtons();
+    }//GEN-LAST:event_TextFieldPicHeightKeyReleased
+ 
     void stopOperation() {
         if(mainForm != null)
             mainForm.setConfigureSettingsForm(null);
@@ -2096,9 +2079,7 @@ public class Settings_System extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(this, "Enter a value of 1 or more ..",
                     dialogTitle, JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
             textField.requestFocusInWindow();
-            textField.setText("0");
             textField.select(0, input.length());
-            changeEnabled_of_SaveCancelButtons(false);
             return false;
         }  else {
             return true;
@@ -2322,17 +2303,41 @@ public class Settings_System extends javax.swing.JFrame {
     
     private boolean checkframe(){
         boolean onOff = false;
+        int a = 0;
+        if (PassingDelayCheckBox.isSelected()) {
+            if(TextFieldNumericValueOK(StatPopSizeTextField, "Statistics Population Size Error")){
+                if(statCount != Integer.parseInt(StatPopSizeTextField.getText().trim())){
+                   onOff = true;
+                }
+            }else{
+                StatPopSizeTextField.setText(""+statCount);
+                return false;
+            }
+        }
+        if(TextFieldNumericValueOK(TextFieldPicWidth, "Picture Width Error")){
+            if(PIC_WIDTH != Integer.parseInt(((String) TextFieldPicWidth.getText()).replace(",", ""))){
+                onOff = true;
+            }
+        }else{
+            TextFieldPicWidth.setText(""+PIC_WIDTH);
+            return false;
+        }
+        if(TextFieldNumericValueOK(TextFieldPicHeight, "Picture Height Error")){
+            if(PIC_HEIGHT != Integer.parseInt(((String) TextFieldPicHeight.getText()).replace(",", ""))){
+                onOff = true;
+            }
+        }else{
+            TextFieldPicHeight.setText(""+PIC_HEIGHT);
+            return false;
+        }
         
-        if(statCount != Integer.parseInt(StatPopSizeTextField.getText().trim())
-                || storePassingDelay != PassingDelayCheckBox.isSelected()
+        if(storePassingDelay != PassingDelayCheckBox.isSelected()
                 || pwStrengthLevel != PWStrengthChoiceComboBox.getSelectedIndex()
                 || opLoggingIndex != OptnLoggingLevelComboBox.getSelectedIndex()
                 || localeIndex != LangLocaleChooser.getSelectedIndex()
                 || maxMessageLines != Integer.parseInt(((String)MessageMaxLineComboBox.getSelectedItem()))
                 || gateCount - 1 != GateCountComboBox.getSelectedIndex()
                 || maxArrivalCBoxIndex != MaxDateComboBox.getSelectedIndex()
-                || PIC_WIDTH != Integer.parseInt(((String) TextFieldPicWidth.getText()).replace(",", ""))
-                || PIC_HEIGHT != Integer.parseInt(((String) TextFieldPicHeight.getText()).replace(",", ""))
                 || EBD_blinkCycle != Integer.parseInt(((String) BlinkingComboBox.getSelectedItem()).replace(",", ""))
                 || EBD_flowCycle != Integer.parseInt(((String) FlowingComboBox.getSelectedItem()).replace(",", ""))
                 || checkPanel()){
