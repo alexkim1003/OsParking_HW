@@ -180,7 +180,7 @@ import javax.swing.event.ListSelectionListener;
 /**
  * Main GUI of OSParking -- Open Source Parking Lot Management Program which is
  * developed by Open Source Parking Inc.
- * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a><p>
+ * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a></p>
  * <p>(Company logo: <img src ="doc-files/64px.png"/>)</p>
  * 
  * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
