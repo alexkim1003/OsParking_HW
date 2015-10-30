@@ -27,3 +27,15 @@ Additionally Needed Softwares for Developers
 3. Java Compiler: JDK 1.8.0_45
 
 4. (Optionally) Toad for MySQL 7.5.0
+
+-
+
+After the Maven is installed, the rs2xml.jar need to be registered manually as follows(this jar file is in lib folder in thie repository):
+
+C:\DOS> // first move to the directory where this jar file exists
+
+C:\DOS> mvn install:install-file -Dfile=rs2xml.jar
+
+ 	      -DgroupId=net.proteanit.sql -DartifactId=rs2xml 
+ 	      
+        -Dversion=1.0 -Dpackaging=jar
