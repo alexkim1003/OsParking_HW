@@ -1,5 +1,6 @@
 # Release
-OsParking, 3 device simulators, etc.
+OsParking, 3 device simulators, etc.-needs parkinglot-db repository.
+
 OsParking (pronounced 'Oz' Parking, as in The Wizard of Oz) is an Open Source Parking Lot Management Software. In an extended sense, it is a term which describes a simulation package which includes OsParking(manager) and three device simulators(Camera, E-Board, GateBar).
 
 It is going to be officially public as of Oct 30, 2015, Seoul, South Korea time)
