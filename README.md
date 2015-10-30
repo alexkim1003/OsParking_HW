@@ -35,7 +35,5 @@ After the Maven is installed, the rs2xml.jar need to be registered manually as f
 C:\DOS> // first move to the directory where this jar file exists
 
 C:\DOS> mvn install:install-file -Dfile=rs2xml.jar
-
  	      -DgroupId=net.proteanit.sql -DartifactId=rs2xml 
- 	      
         -Dversion=1.0 -Dpackaging=jar
