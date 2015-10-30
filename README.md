@@ -11,11 +11,17 @@ Open source Parking Inc
 Oct. 30, 2015
 
 Relsate Software Needed to Run
+
 1. JRE 1.8.0
+
 2. MySQL 5.6.24
 
 Additionally Needed Software for Developers
+
 1. IDE used: netbeans 8.0.2
+
 2. IDE augmenting Maven : apache-maven-3.3.3
+
 3. Java Compiler: JDK 1.8.0_45
+
 4. (Optionally) Toad for MySQL 7.5.0
