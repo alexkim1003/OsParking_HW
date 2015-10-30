@@ -10,13 +10,13 @@ Open source Parking Inc
 
 Oct. 30, 2015
 
-Relsate Software Needed to Run
+Softwares Needed to Run
 
 1. JRE 1.8.0
 
 2. MySQL 5.6.24
 
-Additionally Needed Software for Developers
+Additionally Needed Softwares for Developers
 
 1. IDE used: netbeans 8.0.2
 
