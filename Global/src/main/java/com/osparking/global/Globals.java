@@ -768,7 +768,7 @@ public class Globals {
      * @param progType type of the program, usually ID of a device the program is representing
      * @return a text file relative pathname
      */    
-    public static String associateTextFileToLogger(Logger log, int progType) {
+    public synchronized static String associateTextFileToLogger(Logger log, int progType) {
 
         StringBuilder pathnameSB = new StringBuilder();
         StringBuilder daySB = new StringBuilder();
