@@ -67,7 +67,7 @@ public class OuterCycleTask implements Runnable{
             EBD_PERIOD = rowSetting.displayCycle * flowDelta / eBoardTextField.getWidth();
     }
     
-    public synchronized void run(){
+    public void run(){
         JTextField rowTextField = null;
         String renderedContent = null;
         
@@ -94,7 +94,7 @@ public class OuterCycleTask implements Runnable{
             
             InnerCycleTask innerCycleTask 
                     = new InnerCycleTask(mainform, row, rowSetting, textWidth, flowDelta, rowTextField);
-            mainform.eBoardInnerTimer[row].reschedule(innerCycleTask, 0, EBD_PERIOD);
+            mainform.parking_Display_InnerTimer[row].reschedule(innerCycleTask, 0, EBD_PERIOD);
         }
     }
 }

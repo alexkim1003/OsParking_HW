@@ -32,11 +32,14 @@ import java.awt.event.ActionEvent;
 import java.lang.management.ManagementFactory;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.Timer;
 import java.util.TimerTask;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import com.osparking.global.names.Blink_Task;
 import com.osparking.global.names.DeviceReader;
 import static com.osparking.global.Globals.*;
 
@@ -64,22 +67,22 @@ import java.util.List;
  * @author Song, YongSeok <Song, YongSeok at Open Source Parking Inc.>
  */
 public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
-    ParkingTimer[] eBoardOuterTimer =  null;
-    ParkingTimer[] eBoardInnerTimer = null;
-    ParkingTimer[] eBoardRestoreTimer = null;
-    
+    ParkingTimer[] parking_Display_OuterTimer =  null;
+    ParkingTimer[] parking_Display_InnerTimer = null;
     OuterCycleTask[] outerCycleTask = null;
     InnerCycleTask[] innerCycleTask = null;
-    public TimerTask displayDefaultTask = null;
     
     private byte ID = 0;
     
+    private Timer statusBlinkLED_Timer = null;
     private ParkingTimer acceptManagerTimer = null;
     private DeviceReader reader = null;
     
     private ToleranceLevel tolerance = new ToleranceLevel();
     private Object socketMUTEX = new Object();
     
+    private ParkingTimer[] displayRestoreTimer = new ParkingTimer[2];
+    public TimerTask displayDefaultTask = null;
     
     public EBD_DisplaySetting defaultDisplaySettings[] = new EBD_DisplaySetting[2]; 
     public int[] prevMsgSN = new int[2]; // the Serial Number of the most recently processed display message
@@ -102,7 +105,7 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
             "/e64px.png", 
         };          
         setIconList(iconFilenames, iconList);        
-        setIconImages(iconList);              
+        setIconImages(iconList);            
         
         setTitle("E-Board #" + displayID);
         IDtextField.setText(Integer.toString(displayID));
@@ -118,30 +121,37 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
             setLocation(new Point(GATE_BAR_WIDTH * 2 + E_BOARD_WIDTH, 
                     screen.height - E_BOARD_HEIGHT - TASK_BAR_HEIGHT));
         }                     
-        String a = null;
-            try {
+        
+        try {
             String myIP = Inet4Address.getLocalHost().getHostAddress();
             IPaddrTextField.setText(myIP);
         } catch (UnknownHostException e) {}
         String processName = ManagementFactory.getRuntimeMXBean().getName();
         PID_Label.setText("(PID:" + processName.substring(0, processName.indexOf("@")) + ")");
         
-        eBoardOuterTimer = new ParkingTimer[2];
-        eBoardInnerTimer = new ParkingTimer[2];
-        eBoardRestoreTimer = new ParkingTimer[2];
+        parking_Display_OuterTimer = new ParkingTimer[2];
+        parking_Display_InnerTimer = new ParkingTimer[2];
         
         for (int rowNum = 0; rowNum <= 1; rowNum++) {
-            eBoardOuterTimer[rowNum] = 
+            parking_Display_OuterTimer[rowNum] = 
                     new ParkingTimer("E_Board" + ID + "_Row" + rowNum + "_outerTimer", false);
-            eBoardInnerTimer[rowNum] = 
+            parking_Display_InnerTimer[rowNum] = 
                     new ParkingTimer("E_Board" + ID + "_Row" + rowNum + "_innerTimer", false);
-            eBoardRestoreTimer[rowNum] =
+            displayRestoreTimer[rowNum] =
                     new ParkingTimer("E_Board" + ID + "row_" + rowNum + "_displayRestoreTimer", false);
         }        
         
         outerCycleTask = new OuterCycleTask[2];
         innerCycleTask = new InnerCycleTask[2];
         
+        //<editor-fold desc="create timers and threads">
+        // timer and it's task for the status textbox blinking
+        statusBlinkLED_Timer = new Timer("E_Board" + ID + "_MsgBlinkingTimer");
+        statusBlinkLED_Timer.scheduleAtFixedRate(
+                new Blink_Task(criticalInfoTextField, "Press [Start] to begin operation"), 0, LED_PERIOD);
+        
+        // create a reader for the socket to the manager and start it
+        //</editor-fold>                
         defaultDisplaySettings[TOP_ROW] = readEBoardUsageSettings(DEFAULT_TOP_ROW);
         defaultDisplaySettings[BOTTOM_ROW] = readEBoardUsageSettings(DEFAULT_BOTTOM_ROW);        
         
@@ -154,6 +164,7 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         reader = new EBoardReader(this);
         reader.start();
         
+        statusBlinkLED_Timer.cancel();
         /**
          * Start electrical board socket listener.
          */
@@ -171,52 +182,26 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
     private void initComponents() {
 
         torbBG = new javax.swing.ButtonGroup();
-        wholePanel = new javax.swing.JPanel();
         topTextField = new javax.swing.JTextField();
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         botTextField = new javax.swing.JTextField();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        settingPanel = new javax.swing.JPanel();
-        PID_Label1 = new javax.swing.JLabel();
-        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
-        IDtextField = new javax.swing.JTextField();
-        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
-        PID_Label2 = new javax.swing.JLabel();
-        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
-        IPaddrTextField = new javax.swing.JTextField();
-        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        errorPanel = new javax.swing.JPanel();
-        PID_Label = new javax.swing.JLabel();
-        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(10, 32767));
-        errorCheckBox = new javax.swing.JCheckBox();
-        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        errIncButton = new javax.swing.JButton();
-        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        errDecButton = new javax.swing.JButton();
-        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        connectionLED = new javax.swing.JLabel();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        aboutPanel = new javax.swing.JPanel();
-        seeLicenseButton = new javax.swing.JButton();
-        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         criticalInfoTextField = new javax.swing.JTextField();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
-        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        IPaddrTextField = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
+        PID_Label = new javax.swing.JLabel();
+        errorCheckBox = new javax.swing.JCheckBox();
+        errIncButton = new javax.swing.JButton();
+        errDecButton = new javax.swing.JButton();
+        connectionLED = new javax.swing.JLabel();
+        PID_Label1 = new javax.swing.JLabel();
+        IDtextField = new javax.swing.JTextField();
+        seeLicenseButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
         });
-
-        wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.Y_AXIS));
 
         topTextField.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
         topTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -224,86 +209,73 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         topTextField.setEnabled(false);
         topTextField.setPreferredSize(new java.awt.Dimension(300, 35));
         topTextField.setVerifyInputWhenFocusTarget(false);
-        wholePanel.add(topTextField);
-        wholePanel.add(filler6);
 
-        botTextField.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
+        botTextField.setFont(new java.awt.Font("Arial Black", 1, 20)); // NOI18N
         botTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         botTextField.setText("E-Board Bottom Row");
         botTextField.setEnabled(false);
-        botTextField.setPreferredSize(new java.awt.Dimension(300, 35));
-        wholePanel.add(botTextField);
-        wholePanel.add(filler7);
 
-        settingPanel.setLayout(new javax.swing.BoxLayout(settingPanel, javax.swing.BoxLayout.LINE_AXIS));
-
-        PID_Label1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        PID_Label1.setText("ID");
-        settingPanel.add(PID_Label1);
-        settingPanel.add(filler17);
-
-        IDtextField.setEditable(false);
-        IDtextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        IDtextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        IDtextField.setText("1");
-        IDtextField.setEnabled(false);
-        IDtextField.setMaximumSize(new java.awt.Dimension(30, 28));
-        IDtextField.setMinimumSize(new java.awt.Dimension(30, 28));
-        IDtextField.setPreferredSize(new java.awt.Dimension(30, 28));
-        settingPanel.add(IDtextField);
-        settingPanel.add(filler16);
-
-        PID_Label2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        PID_Label2.setText("E-Board IP");
-        settingPanel.add(PID_Label2);
-        settingPanel.add(filler19);
+        criticalInfoTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
 
         IPaddrTextField.setEditable(false);
         IPaddrTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         IPaddrTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         IPaddrTextField.setText("127.0.0.1");
-        IPaddrTextField.setEnabled(false);
-        IPaddrTextField.setMaximumSize(new java.awt.Dimension(150, 28));
-        IPaddrTextField.setMinimumSize(new java.awt.Dimension(150, 28));
-        IPaddrTextField.setPreferredSize(new java.awt.Dimension(150, 28));
-        settingPanel.add(IPaddrTextField);
-        settingPanel.add(filler12);
-
-        wholePanel.add(settingPanel);
-        wholePanel.add(filler8);
-
-        errorPanel.setMaximumSize(new java.awt.Dimension(300, 38));
-        errorPanel.setMinimumSize(new java.awt.Dimension(300, 38));
-        errorPanel.setPreferredSize(new java.awt.Dimension(300, 30));
-        errorPanel.setLayout(new javax.swing.BoxLayout(errorPanel, javax.swing.BoxLayout.LINE_AXIS));
 
         PID_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         PID_Label.setText("(PID)");
-        errorPanel.add(PID_Label);
-        errorPanel.add(filler18);
 
         errorCheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errorCheckBox.setText("error");
-        errorCheckBox.setMaximumSize(new java.awt.Dimension(100, 28));
-        errorCheckBox.setMinimumSize(new java.awt.Dimension(100, 28));
-        errorCheckBox.setPreferredSize(new java.awt.Dimension(100, 28));
-        errorCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                errorCheckBoxActionPerformed(evt);
-            }
-        });
-        errorPanel.add(errorCheckBox);
-        errorPanel.add(filler13);
 
-        errIncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errIncButton.setIcon(getPlusIcon());
+        errIncButton.setBorder(null);
         errIncButton.setBorderPainted(false);
         errIncButton.setContentAreaFilled(false);
-        errIncButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        errIncButton.setMaximumSize(new java.awt.Dimension(20, 20));
-        errIncButton.setMinimumSize(new java.awt.Dimension(20, 20));
-        errIncButton.setPreferredSize(new java.awt.Dimension(20, 20));
-        errorPanel.add(errIncButton);
+        errIncButton.setPreferredSize(new java.awt.Dimension(25, 25));
+
+        errDecButton.setIcon(getMinusIcon());
+        errDecButton.setBorder(null);
+        errDecButton.setBorderPainted(false);
+        errDecButton.setContentAreaFilled(false);
+        errDecButton.setPreferredSize(new java.awt.Dimension(25, 25));
+
+        connectionLED.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        connectionLED.setForeground(new java.awt.Color(255, 0, 0));
+        connectionLED.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        connectionLED.setText("X");
+        connectionLED.setToolTipText("");
+        connectionLED.setPreferredSize(new java.awt.Dimension(25, 25));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(PID_Label)
+                .addGap(18, 18, 18)
+                .addComponent(errorCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errIncButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(errDecButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(connectionLED, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(errDecButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(errIncButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(PID_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(errorCheckBox))
+                    .addComponent(connectionLED, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
         errIncButton.setBorder(null);
         errIncButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -313,29 +285,15 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
 
             private void errIncButtonActionPerformed(ActionEvent e) {
                 if (errorCheckBox.isSelected()) {
-                    if (ERROR_RATE < 0.9) {
-                        ERROR_RATE += 0.1f;
-                    } else {
-                        criticalInfoTextField.setText("current error rate(="
-                            + getFormattedRealNumber(ERROR_RATE, 2) + ") is max!");
-                    }
-                    errorCheckBox.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
+                    if (ERROR_RATE < 0.9)
+                    ERROR_RATE += 0.1f;
+                    criticalInfoTextField.setText("error probability: "
+                        + getFormattedRealNumber(ERROR_RATE, 2));
                 } else {
                     criticalInfoTextField.setText("First, select error check box, OK?");
                 }
             }
         });
-        errorPanel.add(filler14);
-
-        errDecButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        errDecButton.setIcon(getMinusIcon());
-        errDecButton.setBorderPainted(false);
-        errDecButton.setContentAreaFilled(false);
-        errDecButton.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        errDecButton.setMaximumSize(new java.awt.Dimension(20, 20));
-        errDecButton.setMinimumSize(new java.awt.Dimension(20, 20));
-        errDecButton.setPreferredSize(new java.awt.Dimension(20, 20));
-        errorPanel.add(errDecButton);
         errDecButton.setBorder(null);
         errDecButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
@@ -345,33 +303,23 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
 
             private void errDecButtonActionPerformed(ActionEvent e) {
                 if (errorCheckBox.isSelected()) {
-                    if (ERROR_RATE > 0.10) {
-                        ERROR_RATE -= 0.1f;
-                    } else {
-                        criticalInfoTextField.setText("current error rate(="
-                            + getFormattedRealNumber(ERROR_RATE, 2) + ") is min!");
-                    }
-                    errorCheckBox.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
+                    if (ERROR_RATE > 0.10)
+                    ERROR_RATE -= 0.1f;
+                    criticalInfoTextField.setText("error probability: "
+                        + getFormattedRealNumber(ERROR_RATE, 2));
                 } else {
                     criticalInfoTextField.setText("First, select error check box, OK?");
                 }
             }
         });
-        errorPanel.add(filler15);
 
-        connectionLED.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        connectionLED.setForeground(new java.awt.Color(255, 0, 0));
-        connectionLED.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        connectionLED.setText("X");
-        connectionLED.setToolTipText("");
-        connectionLED.setPreferredSize(new java.awt.Dimension(25, 25));
-        errorPanel.add(connectionLED);
-        errorPanel.add(filler1);
+        PID_Label1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        PID_Label1.setText("ID");
 
-        wholePanel.add(errorPanel);
-        wholePanel.add(filler9);
-
-        aboutPanel.setLayout(new javax.swing.BoxLayout(aboutPanel, javax.swing.BoxLayout.LINE_AXIS));
+        IDtextField.setEditable(false);
+        IDtextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        IDtextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        IDtextField.setText("1");
 
         seeLicenseButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         seeLicenseButton.setText("About");
@@ -380,23 +328,62 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
                 seeLicenseButtonActionPerformed(evt);
             }
         });
-        aboutPanel.add(seeLicenseButton);
-        aboutPanel.add(filler11);
 
-        wholePanel.add(aboutPanel);
-        wholePanel.add(filler10);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(criticalInfoTextField)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(topTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(botTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 3, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addComponent(PID_Label1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(IDtextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(IPaddrTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(seeLicenseButton))
+                        .addGap(0, 104, Short.MAX_VALUE))))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(topTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(IPaddrTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PID_Label1, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(IDtextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(seeLicenseButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(criticalInfoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        criticalInfoTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size-2));
-        criticalInfoTextField.setMaximumSize(new java.awt.Dimension(2147483647, 28));
-        criticalInfoTextField.setMinimumSize(new java.awt.Dimension(6, 28));
-        criticalInfoTextField.setPreferredSize(new java.awt.Dimension(6, 28));
-        wholePanel.add(criticalInfoTextField);
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {IDtextField, IPaddrTextField});
 
-        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
-        getContentPane().add(filler3, java.awt.BorderLayout.NORTH);
-        getContentPane().add(filler2, java.awt.BorderLayout.WEST);
-        getContentPane().add(filler4, java.awt.BorderLayout.EAST);
-        getContentPane().add(filler5, java.awt.BorderLayout.SOUTH);
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {botTextField, topTextField});
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -415,14 +402,6 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
     private void seeLicenseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seeLicenseButtonActionPerformed
         showLicensePanel(this, "License Notice on E-Board Simulator");
     }//GEN-LAST:event_seeLicenseButtonActionPerformed
-
-    private void errorCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorCheckBoxActionPerformed
-        // TODO add your handling code here:
-        if(!errorCheckBox.isSelected())
-            errorCheckBox.setText("error");
-        else
-            errorCheckBox.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
-    }//GEN-LAST:event_errorCheckBoxActionPerformed
     
     public static int getStrHeight(JTextField jTextField){
         int TextHeight;
@@ -458,9 +437,6 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
             java.util.logging.Logger.getLogger(A_EBD_GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         
         initializeLoggers();
         checkOptions(args);
@@ -494,6 +470,12 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         return criticalInfoTextField;
     }
     
+    /**
+     * @return the statusBlinkLED_Timer
+     */
+    public Timer getStatusBlinkLED_Timer() {
+        return statusBlinkLED_Timer;
+    }
     
     public void carEnter(){
     }
@@ -503,39 +485,16 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
     public javax.swing.JTextField IPaddrTextField;
     private javax.swing.JLabel PID_Label;
     private javax.swing.JLabel PID_Label1;
-    private javax.swing.JLabel PID_Label2;
-    private javax.swing.JPanel aboutPanel;
     public javax.swing.JTextField botTextField;
     public javax.swing.JLabel connectionLED;
     public javax.swing.JTextField criticalInfoTextField;
     private javax.swing.JButton errDecButton;
     private javax.swing.JButton errIncButton;
     javax.swing.JCheckBox errorCheckBox;
-    private javax.swing.JPanel errorPanel;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler10;
-    private javax.swing.Box.Filler filler11;
-    private javax.swing.Box.Filler filler12;
-    private javax.swing.Box.Filler filler13;
-    private javax.swing.Box.Filler filler14;
-    private javax.swing.Box.Filler filler15;
-    private javax.swing.Box.Filler filler16;
-    private javax.swing.Box.Filler filler17;
-    private javax.swing.Box.Filler filler18;
-    private javax.swing.Box.Filler filler19;
-    private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
-    private javax.swing.Box.Filler filler5;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
-    private javax.swing.Box.Filler filler9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JButton seeLicenseButton;
-    private javax.swing.JPanel settingPanel;
     public javax.swing.JTextField topTextField;
     private javax.swing.ButtonGroup torbBG;
-    private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -619,11 +578,12 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         }   
         //</editor-fold>        
         
-        if (eBoardOuterTimer[row].hasTask()) {
-            eBoardOuterTimer[row].cancelTask();
+        ParkingTimer outerTaskTimer = parking_Display_OuterTimer[row];
+        if (outerTaskTimer.hasTask()) {
+            outerTaskTimer.cancelTask();
         }
     
-        ParkingTimer innerTaskTimer = eBoardInnerTimer[row]; 
+        ParkingTimer innerTaskTimer = parking_Display_InnerTimer[row]; 
         if (innerTaskTimer.hasTask()) {
             innerTaskTimer.cancelTask();
         }        
@@ -636,9 +596,9 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
             if (rowSetting.displayPattern == BLINKING) {
                 rowTextField.setMargin(new Insets(2, 2, 2, 2) );            
                 rowTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);            
-                eBoardOuterTimer[row].reschedule(outerCycleTask[row], 0, rowSetting.displayCycle);
+                outerTaskTimer.reschedule(outerCycleTask[row], 0, rowSetting.displayCycle);
             } else {
-                eBoardOuterTimer[row].runOnce(outerCycleTask[row]);
+                outerTaskTimer.runOnce(outerCycleTask[row]);
             }
         }
         
@@ -668,11 +628,10 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
     }
 
     /**
-     * 
-     * @return a timer which restores e-board to default messages
+     * @return the displayRestoreTimer
      */
     public ParkingTimer[] getDisplayRestoreTimer() {
-        return eBoardRestoreTimer;
+        return displayRestoreTimer;
     }
 
     /**

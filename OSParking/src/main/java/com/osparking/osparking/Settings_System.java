@@ -1188,7 +1188,7 @@ public class Settings_System extends javax.swing.JFrame {
         eBoardSettingPanel.add(jLabel8, gridBagConstraints);
 
         BlinkingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        BlinkingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "100", "300", "500", "700", "900" }));
+        BlinkingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "500", "750", "1,000", "1,250", "1,500" }));
         ((JLabel) BlinkingComboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
         BlinkingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {

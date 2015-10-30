@@ -70,8 +70,8 @@ public class InnerCycleTask implements Runnable {
                 if(leftMG > -textWidth){
                     e_BoardTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
                 }else{
-                    mainform.eBoardInnerTimer[row].cancelTask();
-                    mainform.eBoardOuterTimer[row].reRunOnce();
+                    mainform.parking_Display_InnerTimer[row].cancelTask();
+                    mainform.parking_Display_OuterTimer[row].reRunOnce();
                 }
                 break;
                 
@@ -80,8 +80,8 @@ public class InnerCycleTask implements Runnable {
                     e_BoardTextField.setMargin(new Insets(topMG, 
                         leftMG, botMG, rightMG -= flowDelta));
                 }else{
-                    mainform.eBoardInnerTimer[row].cancelTask();
-                    mainform.eBoardOuterTimer[row].reRunOnce();                    
+                    mainform.parking_Display_InnerTimer[row].cancelTask();
+                    mainform.parking_Display_OuterTimer[row].reRunOnce();                    
                 }
                 break;
                 

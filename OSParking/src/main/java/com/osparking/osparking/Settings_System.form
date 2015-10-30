@@ -1388,11 +1388,11 @@
                     </Property>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                       <StringArray count="5">
-                        <StringItem index="0" value="100"/>
-                        <StringItem index="1" value="300"/>
-                        <StringItem index="2" value="500"/>
-                        <StringItem index="3" value="700"/>
-                        <StringItem index="4" value="900"/>
+                        <StringItem index="0" value="500"/>
+                        <StringItem index="1" value="750"/>
+                        <StringItem index="2" value="1,000"/>
+                        <StringItem index="3" value="1,250"/>
+                        <StringItem index="4" value="1,500"/>
                       </StringArray>
                     </Property>
                   </Properties>
