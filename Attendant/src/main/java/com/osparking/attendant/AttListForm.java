@@ -2474,6 +2474,7 @@ public class AttListForm extends javax.swing.JFrame {
             String tableRowID = attModel.getValueAt(clickedRow, 0).toString();
             boolean isManager = (attModel.getValueAt(clickedRow, 2).toString().equals("Y") ? true : false);
         
+            adminAuth2CheckBox.setSelected(isManager);
             userIDText.setText(tableRowID);
             changeFieldAndButtonProperties(tableRowID, isManager);
         
