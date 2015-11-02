@@ -8,6 +8,8 @@
 *.ear
 *.log
 #
+!/lib/rs2xml.jar
+#
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 #
