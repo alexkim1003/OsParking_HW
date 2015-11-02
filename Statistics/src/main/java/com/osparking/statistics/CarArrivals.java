@@ -63,6 +63,7 @@ import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.DB_Access.gateCount;
+import static com.osparking.global.names.DB_Access.gateNames;
 import com.osparking.global.names.ImageDisplay;
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.JDBCMySQL;
@@ -75,6 +76,8 @@ import static com.osparking.global.names.OSP_enums.DriverCol.BuildingNo;
 import static com.osparking.global.names.OSP_enums.DriverCol.UnitNo;
 import com.osparking.global.names.PComboBox;
 import com.osparking.global.names.OSP_enums.SearchPeriod;
+import static com.osparking.statistics.CarArrivals.getBarOperationLabel;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -82,6 +85,7 @@ import com.osparking.global.names.OSP_enums.SearchPeriod;
  */
 public class CarArrivals extends javax.swing.JFrame {
     BufferedImage originalImg = null;
+    ListSelectionListener valueChangeListener = null; 
     
     /**
      * Creates new form CarArrivals
@@ -1490,6 +1494,9 @@ public class CarArrivals extends javax.swing.JFrame {
             System.out.println("sql: " + sb.toString());
             model.setRowCount(0);
             int rowNum = 0;
+            
+            addSelectionChangeListener(false);
+            
             while (rs.next()) {
                 // <editor-fold defaultstate="collapsed" desc="-- make a vehicle row">     
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");   
@@ -1504,6 +1511,8 @@ public class CarArrivals extends javax.swing.JFrame {
                 });
                 //</editor-fold>
             }
+            addSelectionChangeListener(true);
+            
             //</editor-fold>
         } catch (SQLException ex) {
             logParkingException(Level.SEVERE, ex, "(registered vehicle list loading)");
@@ -1542,10 +1551,12 @@ public class CarArrivals extends javax.swing.JFrame {
         arrivalsTableModel.getColumn(0).setCellRenderer( rightRenderer );        
         arrivalsTableModel.removeColumn(arrivalsTableModel.getColumn(3));
         
-        arrivalsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        addSelectionChangeListener(true);
+        
+        valueChangeListener = new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                if (! e.getValueIsAdjusting()) return;
+                if (e.getValueIsAdjusting()) return;
                 
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     public void run() {
@@ -1563,9 +1574,8 @@ public class CarArrivals extends javax.swing.JFrame {
                     }
                 });
             }
-
+          
             private void displayArrivalDetail(String seqNo) {
-                
                 Connection conn = null;
                 Statement selectStmt = null;
                 ResultSet rs = null;
@@ -1717,7 +1727,8 @@ public class CarArrivals extends javax.swing.JFrame {
                     closeDBstuff(conn, selectStmt, rs, "(arrived vehicle detail loading)");
                 }                               
             }
-        });
+        };        
+        
     }
 
     private void clearArrivalDetail() {
@@ -1884,7 +1895,17 @@ public class CarArrivals extends javax.swing.JFrame {
         }        
         return label;
     }
+
+    private void addSelectionChangeListener(boolean listenerNeeded) {
+        if (listenerNeeded) {
+            arrivalsList.getSelectionModel().addListSelectionListener(valueChangeListener);
+        } else {
+            arrivalsList.getSelectionModel().removeListSelectionListener(valueChangeListener);
+        }
+    }
 }
+
+
 
 class HeaderCellRenderer implements TableCellRenderer {
  
