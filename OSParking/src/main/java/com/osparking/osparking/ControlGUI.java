@@ -1538,7 +1538,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }//GEN-LAST:event_DriverListItemActionPerformed
 
     private void EntryRecordItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EntryRecordItemActionPerformed
-        new CarArrivals().setVisible(true);
+        new ManageArrivalList().run();
     }//GEN-LAST:event_EntryRecordItemActionPerformed
 
     private void errorCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorCheckBoxActionPerformed
@@ -1670,8 +1670,15 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }//GEN-LAST:event_licenseMenuItemActionPerformed
 
     private void CarIOListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarIOListButtonActionPerformed
-        (new CarArrivals()).setVisible(true);
+        new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
+    
+    class ManageArrivalList extends Thread {
+        public void run() {
+            CarArrivals arrivals = new CarArrivals();
+            arrivals.setVisible(true);
+        }
+    }
     
     // <editor-fold defaultstate="collapsed" desc="-- Form Control Items ">
     // Variables declaration - do not modify//GEN-BEGIN:variables

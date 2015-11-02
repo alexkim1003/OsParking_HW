@@ -82,8 +82,6 @@ import com.osparking.global.names.OSP_enums.SearchPeriod;
  */
 public class CarArrivals extends javax.swing.JFrame {
     BufferedImage originalImg = null;
-//    double topPanelWidth;
-//    int affiliBldgWidth;
     
     /**
      * Creates new form CarArrivals
@@ -108,8 +106,6 @@ public class CarArrivals extends javax.swing.JFrame {
         loadArrivalsListTable(false);
         affiliationRadioButtonActionPerformed(null);
         carTagTF.requestFocus();
-//        topPanelWidth = (int)topFirst.getSize().getWidth();
-//        affiliBldgWidth = (int)affiliationBuildingPanel.getSize().getWidth();
     }
 
     /**
@@ -1491,6 +1487,7 @@ public class CarArrivals extends javax.swing.JFrame {
             conn = getConnection();
             selectStmt = conn.createStatement();
             rs = selectStmt.executeQuery(sb.toString());
+            System.out.println("sql: " + sb.toString());
             model.setRowCount(0);
             int rowNum = 0;
             while (rs.next()) {
@@ -1548,6 +1545,8 @@ public class CarArrivals extends javax.swing.JFrame {
         arrivalsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
+                if (! e.getValueIsAdjusting()) return;
+                
                 java.awt.EventQueue.invokeLater(new Runnable() {
                     public void run() {
                         int idx = arrivalsList.getSelectedRow();
@@ -1589,6 +1588,7 @@ public class CarArrivals extends javax.swing.JFrame {
                 try {
                     conn = JDBCMySQL.getConnection();
                     selectStmt = conn.createStatement();
+                    System.out.println("sb: " + sb.toString());
                     rs = selectStmt.executeQuery(sb.toString());
                     if (rs.next()) {
                         gateNameTF.setText(gateNames[rs.getInt("gateNo")]);

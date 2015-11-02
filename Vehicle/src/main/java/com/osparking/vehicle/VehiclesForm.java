@@ -1711,19 +1711,19 @@ searchETC.addFocusListener(new java.awt.event.FocusAdapter() {
 
                     @Override
                     public void run() {
-                            if (vehiclesTable.getSelectedRow() >= 0) {
-                                if (getFormMode() == FormMode.SEARCHING) {
-                                    showVehicleDetail(vehiclesTable.convertRowIndexToModel(
-                                            vehiclesTable.getSelectedRow()));  
-                                } else {
-                                    String work = 
-                                            getFormMode() == FormMode.CREATION ? "Created" : "Modified";
-                                    JOptionPane.showConfirmDialog(null, 
-                                            "Car information is being" + work, "Current Work Mode",
-                                        JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                                
-                                }
+                        if (vehiclesTable.getSelectedRow() >= 0) {
+                            if (getFormMode() == FormMode.SEARCHING) {
+                                showVehicleDetail(vehiclesTable.convertRowIndexToModel(
+                                        vehiclesTable.getSelectedRow()));  
+                            } else {
+                                String work = 
+                                        getFormMode() == FormMode.CREATION ? "Created" : "Modified";
+                                JOptionPane.showConfirmDialog(null, 
+                                        "Car information is being" + work, "Current Work Mode",
+                                    JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                                
                             }
                         }
+                    }
                 });
             }
         });
