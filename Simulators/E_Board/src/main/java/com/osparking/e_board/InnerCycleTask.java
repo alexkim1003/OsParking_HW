@@ -57,18 +57,15 @@ public class InnerCycleTask implements Runnable {
     }
     
     public void run(){
-        JTextField e_BoardTextField;
-        
-        if (row == TOP_ROW) {
-            e_BoardTextField = mainform.topTextField ;
-        } else {
-            e_BoardTextField = mainform.botTextField;
-        }
         
         switch(rowSetting.displayPattern) {
             case RTOL_FLOW : 
                 if(leftMG > -textWidth){
-                    e_BoardTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
+                    if (row == TOP_ROW) 
+                        mainform.topTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
+                    else
+                        mainform.botTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
+                        
                 }else{
                     mainform.parking_Display_InnerTimer[row].cancelTask();
                     mainform.parking_Display_OuterTimer[row].reRunOnce();
@@ -77,8 +74,11 @@ public class InnerCycleTask implements Runnable {
                 
             case LTOR_FLOW : 
                 if(rightMG > -textWidth){
-                    e_BoardTextField.setMargin(new Insets(topMG, 
-                        leftMG, botMG, rightMG -= flowDelta));
+                    if (row == TOP_ROW) {
+                        mainform.topTextField.setMargin(new Insets(topMG, leftMG, botMG, rightMG -= flowDelta));
+                    } else {
+                        mainform.botTextField.setMargin(new Insets(topMG, leftMG, botMG, rightMG -= flowDelta));
+                    }                    
                 }else{
                     mainform.parking_Display_InnerTimer[row].cancelTask();
                     mainform.parking_Display_OuterTimer[row].reRunOnce();                    

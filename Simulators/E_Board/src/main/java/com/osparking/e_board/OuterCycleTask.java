@@ -68,13 +68,7 @@ public class OuterCycleTask implements Runnable{
     }
     
     public void run(){
-        JTextField rowTextField = null;
         String renderedContent = null;
-        
-        if(row == TOP_ROW)
-            rowTextField = mainform.topTextField;
-        else
-            rowTextField = mainform.botTextField;
 
         if (rowSetting.contentType == VERBATIM)
             renderedContent = rowSetting.verbatimContent;
@@ -83,17 +77,26 @@ public class OuterCycleTask implements Runnable{
         
         if (rowSetting.displayPattern == BLINKING) {
             if (isTextShowing) {
-                rowTextField.setText("");
+                if(row == TOP_ROW)
+                    mainform.topTextField.setText("");
+                else
+                    mainform.botTextField.setText("");;                
             } else {
-                rowTextField.setText(renderedContent);
+                if(row == TOP_ROW)
+                    mainform.topTextField.setText(renderedContent);
+                else
+                    mainform.botTextField.setText(renderedContent);
             }
             isTextShowing = ! isTextShowing;
         } else {
-            textWidth = (int)(eBoardTextField.getFont().getStringBounds(renderedContent, frc).getWidth());              
-            rowTextField.setText(renderedContent);
+            textWidth = (int)(eBoardTextField.getFont().getStringBounds(renderedContent, frc).getWidth());   
+            if(row == TOP_ROW)
+                mainform.topTextField.setText(renderedContent);
+            else
+                mainform.botTextField.setText(renderedContent);
             
-            InnerCycleTask innerCycleTask 
-                    = new InnerCycleTask(mainform, row, rowSetting, textWidth, flowDelta, rowTextField);
+            InnerCycleTask innerCycleTask = new InnerCycleTask(mainform, row, rowSetting, textWidth, flowDelta, 
+                    row == TOP_ROW ? mainform.topTextField : mainform.botTextField);
             mainform.parking_Display_InnerTimer[row].reschedule(innerCycleTask, 0, EBD_PERIOD);
         }
     }
