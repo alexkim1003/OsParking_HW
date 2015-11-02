@@ -30,7 +30,7 @@ Additionally Needed Softwares for Developers
 
 -
 
-After the Maven is installed, the rs2xml.jar need to be registered manually as follows(this jar file is in lib folder in thie repository):
+After the Maven is installed, the rs2xml.jar need to be registered manually as follows(this jar file is in 'lib' folder of this repository):
 
 C:\DOS> // first move to the directory where this jar file exists
 
