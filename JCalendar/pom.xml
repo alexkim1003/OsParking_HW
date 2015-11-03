@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-        <netbeans.hint.license>calendarLicense</netbeans.hint.license>
+        <netbeans.hint.license>gpl30</netbeans.hint.license>
     </properties>
     <description>JCalendar 1.4 from com.toedter.calendar
 has been modified by Open Source Parking Inc. to make the weekday name field 
