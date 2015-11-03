@@ -93,7 +93,7 @@ public class RunRecordList extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         RunRecordTable = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("OSParking Program Run Record");
         getContentPane().add(filler9, java.awt.BorderLayout.SOUTH);
         getContentPane().add(filler8, java.awt.BorderLayout.PAGE_START);
@@ -203,7 +203,7 @@ public class RunRecordList extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CloseFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseFormButtonActionPerformed
-        setVisible(false);
+        dispose();
     }//GEN-LAST:event_CloseFormButtonActionPerformed
 
     private void SearchLoginRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchLoginRecordButtonActionPerformed
@@ -265,6 +265,7 @@ public class RunRecordList extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new RunRecordList().setVisible(true);
+                
             }
         });
     }
