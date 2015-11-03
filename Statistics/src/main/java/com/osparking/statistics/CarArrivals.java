@@ -350,6 +350,7 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationRadioButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         affiliationRadioButton.setMargin(new java.awt.Insets(2, 20, 2, 2));
         affiliationRadioButton.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        affiliationRadioButton.setMinimumSize(new java.awt.Dimension(30, 21));
         affiliationRadioButton.setPreferredSize(new java.awt.Dimension(180, 23));
         affiliationRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,7 +394,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         searchL2ComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchL2ComboBox.setModel(    new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchL2ComboBox.setPreferredSize(new java.awt.Dimension(100, 23));
+        searchL2ComboBox.setPreferredSize(new java.awt.Dimension(180, 23));
         searchL2ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -421,7 +422,8 @@ public class CarArrivals extends javax.swing.JFrame {
         buildingRadioButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buildingRadioButton.setMargin(new java.awt.Insets(2, 20, 2, 2));
         buildingRadioButton.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        buildingRadioButton.setPreferredSize(new java.awt.Dimension(100, 23));
+        buildingRadioButton.setMinimumSize(new java.awt.Dimension(30, 21));
+        buildingRadioButton.setPreferredSize(new java.awt.Dimension(150, 23));
         buildingRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buildingRadioButtonActionPerformed(evt);
@@ -432,7 +434,6 @@ public class CarArrivals extends javax.swing.JFrame {
         searchBuildingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchBuildingComboBox.setModel(
             new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchBuildingComboBox.setMinimumSize(new java.awt.Dimension(71, 23));
         searchBuildingComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
         searchBuildingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -453,8 +454,7 @@ public class CarArrivals extends javax.swing.JFrame {
         searchUnitComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchUnitComboBox.setModel(
             new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchUnitComboBox.setMinimumSize(new java.awt.Dimension(71, 23));
-        searchUnitComboBox.setPreferredSize(new java.awt.Dimension(100, 23));
+        searchUnitComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
         searchUnitComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -1188,10 +1188,7 @@ public class CarArrivals extends javax.swing.JFrame {
     private void searchL2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchL2ComboBoxActionPerformed
         affiliationRadioButton.setSelected(true);
     }//GEN-LAST:event_searchL2ComboBoxActionPerformed
-    private int bgTop = 4;
-    private int bgLeft = 4;
-    private int bgRight = 9;
-    private int bgBottom = 10;
+    
     private void searchL2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_searchL2ComboBoxPopupMenuWillBecomeVisible
         Object selItem = searchL2ComboBox.getSelectedItem();
 
@@ -1201,7 +1198,8 @@ public class CarArrivals extends javax.swing.JFrame {
         searchL2ComboBox.addItem(getPrompter(AffiliationL2, searchL1ComboBox));
         loadComboBoxItems(searchL2ComboBox, DriverCol.AffiliationL2, L1No);
         searchL2ComboBox.setSelectedItem(selItem);
-        
+
+        evt.getSource();
     }//GEN-LAST:event_searchL2ComboBoxPopupMenuWillBecomeVisible
 
     private void searchBuildingComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBuildingComboBoxActionPerformed

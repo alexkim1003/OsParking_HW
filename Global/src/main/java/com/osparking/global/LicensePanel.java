@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JDialog;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -95,12 +96,14 @@ public class LicensePanel extends javax.swing.JPanel {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(163, 400));
+        jScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        jScrollPane1.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jTextArea1.setRows(5);
-        jTextArea1.setText("Copyright (C) 2015 Open Source Parking Inc.\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU Lesser General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU Lesser General Public License for more details.\n\nYou should have received a copy of the GNU Lesser General Public License\nalong with this program in the \"src\\main\\java\\License\" folder. If not, see \n<http://www.gnu.org/licenses/>.");
+        jTextArea1.setText("Copyright (C) 2015 Open Source Parking Inc.\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU Lesser General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU Lesser General Public License for more details.\n\nYou should have received a copy of the GNU Lesser General Public License\nalong with this program in the \"src\\main\\java\\License\" folder. If not, see \n<http://www.gnu.org/licenses/>.\n\n\nasd");
         jScrollPane1.setViewportView(jTextArea1);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);

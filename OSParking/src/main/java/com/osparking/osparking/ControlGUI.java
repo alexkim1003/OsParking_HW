@@ -542,11 +542,16 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             MenuItems_setEnabled(false);
             LogInOutMenu.setText("<HTML>Log <U>I</U>n</HTML>");
             UserIDLabelMenu.setText(IDBeforeLogin);
+            IsManagerLabelMenu.setText("Manager : -  ");
         } else {
             MenuItems_setEnabled(true);
             
             LogInOutMenu.setText("<HTML>Log <U>O</U>ut</HTML>");
             UserIDLabelMenu.setText("ID: " + Globals.loginID);
+            if(isManager)
+                IsManagerLabelMenu.setText("Manager : O  ");
+            else
+                IsManagerLabelMenu.setText("Manager : X  ");
             AttendantTask_setEnabled(true);
         }
     }    
@@ -650,6 +655,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         LogInOutMenu = new javax.swing.JMenu();
         LoginUser = new javax.swing.JMenuItem();
         LogoutUser = new javax.swing.JMenuItem();
+        IsManagerLabelMenu = new javax.swing.JMenu();
         UserIDLabelMenu = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -1328,8 +1334,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
         visibleMenuBar.add(LogInOutMenu);
 
+        IsManagerLabelMenu.setText("Manager : -  ");
+        IsManagerLabelMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        IsManagerLabelMenu.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        visibleMenuBar.add(IsManagerLabelMenu);
+
         UserIDLabelMenu.setBackground(MainBackground);
         UserIDLabelMenu.setText(IDBeforeLogin);
+        UserIDLabelMenu.setToolTipText("");
         UserIDLabelMenu.setAlignmentX(0.0F);
         UserIDLabelMenu.setFocusPainted(true);
         UserIDLabelMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1694,6 +1706,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private javax.swing.JMenu CommandMenu;
     private javax.swing.JMenuItem DriverListItem;
     private javax.swing.JMenuItem EntryRecordItem;
+    private javax.swing.JMenu IsManagerLabelMenu;
     private javax.swing.JLabel LeftSide_Label;
     private javax.swing.JMenu LogInOutMenu;
     private javax.swing.JMenuItem LoginRecordItem;

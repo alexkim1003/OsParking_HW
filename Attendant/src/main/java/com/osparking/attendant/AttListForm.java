@@ -34,8 +34,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import org.apache.commons.validator.routines.EmailValidator;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -56,13 +55,11 @@ import com.osparking.global.names.PasswordValidator;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static com.osparking.global.names.DB_Access.*;
 import com.osparking.global.Globals;
-import com.osparking.global.names.ConvComboBoxItem;
 import com.osparking.global.names.DB_Access;
 import com.osparking.global.names.JDBCMySQL;
 import static com.osparking.global.names.JDBCMySQL.getHashedPW;
 import com.osparking.global.names.JTextFieldLimit;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
-import com.osparking.global.names.PComboBox;
 import com.osparking.global.names.ParentGUI;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -149,7 +146,7 @@ public class AttListForm extends javax.swing.JFrame {
             }
         });           
         attachEnterHandler(searchText);
-
+        adminAuth2CheckBox.setSelected(isManager);
     }
     
     private void attachEnterHandler(JComponent compo) {
@@ -1623,17 +1620,10 @@ public class AttListForm extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     private boolean validateEmail(String email) {
-        boolean isValid = false;
-
-        try {
-            //Create InternetAddress object and validated the email address.
-            InternetAddress internetAddress = new InternetAddress(email);
-            internetAddress.validate();
-            isValid = true;
-        } catch (AddressException ex) {
-            //logParkingException(Level.SEVERE, ex, "(email: " + email + ")");
-        }
-        return isValid;
+        //Create InternetAddress object and validated the email address.
+        final EmailValidator emailValidator = EmailValidator.getInstance();
+        
+        return emailValidator.isValid(email);
     }    
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
@@ -2473,7 +2463,6 @@ public class AttListForm extends javax.swing.JFrame {
             String tableRowID = attModel.getValueAt(clickedRow, 0).toString();
             boolean isManager = (attModel.getValueAt(clickedRow, 2).toString().equals("Y") ? true : false);
         
-            adminAuth2CheckBox.setSelected(isManager);
             userIDText.setText(tableRowID);
             changeFieldAndButtonProperties(tableRowID, isManager);
         
