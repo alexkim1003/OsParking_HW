@@ -1675,6 +1675,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     
     class ManageArrivalList extends Thread {
         public void run() {
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
             CarArrivals arrivals = new CarArrivals();
             arrivals.setVisible(true);
         }

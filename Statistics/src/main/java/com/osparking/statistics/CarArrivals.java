@@ -59,7 +59,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.names.DB_Access.SEARCH_PERIOD;
-import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -77,7 +76,6 @@ import static com.osparking.global.names.OSP_enums.DriverCol.UnitNo;
 import com.osparking.global.names.PComboBox;
 import com.osparking.global.names.OSP_enums.SearchPeriod;
 import static com.osparking.statistics.CarArrivals.getBarOperationLabel;
-import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -221,9 +219,9 @@ public class CarArrivals extends javax.swing.JFrame {
         setTitle("Arrival Records");
         setFocusCycleRoot(false);
         setMinimumSize(new java.awt.Dimension(1150, 850));
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                formComponentResized(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -250,11 +248,6 @@ public class CarArrivals extends javax.swing.JFrame {
         searchTop.setMaximumSize(new java.awt.Dimension(32767, 120));
         searchTop.setMinimumSize(new java.awt.Dimension(800, 70));
         searchTop.setPreferredSize(new java.awt.Dimension(880, 120));
-        searchTop.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                searchTopComponentResized(evt);
-            }
-        });
 
         gatePanel.setBackground(new java.awt.Color(243, 243, 243));
         gatePanel.setPreferredSize(new java.awt.Dimension(82, 39));
@@ -492,6 +485,7 @@ public class CarArrivals extends javax.swing.JFrame {
         );
 
         clearSearchPropertiesButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        clearSearchPropertiesButton.setMnemonic('l');
         clearSearchPropertiesButton.setText("Clear");
         clearSearchPropertiesButton.setToolTipText("Clears Criteria");
         clearSearchPropertiesButton.setPreferredSize(new java.awt.Dimension(77, 35));
@@ -589,6 +583,7 @@ public class CarArrivals extends javax.swing.JFrame {
         jLabel9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         setSearchPeriodOptionButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        setSearchPeriodOptionButton.setMnemonic('f');
         setSearchPeriodOptionButton.setText("Fix It");
         setSearchPeriodOptionButton.setToolTipText("Remember Radio Button Selection");
         setSearchPeriodOptionButton.setPreferredSize(new java.awt.Dimension(77, 35));
@@ -696,6 +691,7 @@ public class CarArrivals extends javax.swing.JFrame {
         );
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        searchButton.setMnemonic('s');
         searchButton.setText("Search");
         searchButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
         searchButton.setMaximumSize(new java.awt.Dimension(80, 80));
@@ -732,6 +728,7 @@ public class CarArrivals extends javax.swing.JFrame {
         closePanel.setMaximumSize(new java.awt.Dimension(87, 32767));
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        closeButton.setMnemonic('c');
         closeButton.setText("Close");
         closeButton.setMaximumSize(new java.awt.Dimension(77, 52));
         closeButton.setMinimumSize(new java.awt.Dimension(77, 52));
@@ -1173,6 +1170,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         // TODO add your handling code here:
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
@@ -1261,14 +1259,10 @@ public class CarArrivals extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_affiliationRadioButtonActionPerformed
 
-    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_formComponentResized
-
-    private void searchTopComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_searchTopComponentResized
-    }//GEN-LAST:event_searchTopComponentResized
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+    }//GEN-LAST:event_formWindowClosing
 
     // <editor-fold defaultstate="collapsed" desc="-- Variables defined via GUI creation">
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1372,7 +1366,6 @@ public class CarArrivals extends javax.swing.JFrame {
 
     private void loadArrivalsListTable(boolean selectTop) {
         DefaultTableModel model = (DefaultTableModel) arrivalsList.getModel();  
-        model.setRowCount(0);
         
         // <editor-fold defaultstate="collapsed" desc="-- construct SQL statement">  
         StringBuffer cond = new StringBuffer();
@@ -1491,12 +1484,11 @@ public class CarArrivals extends javax.swing.JFrame {
             conn = getConnection();
             selectStmt = conn.createStatement();
             rs = selectStmt.executeQuery(sb.toString());
-            System.out.println("sql: " + sb.toString());
-            model.setRowCount(0);
-            int rowNum = 0;
             
             addSelectionChangeListener(false);
+            model.setRowCount(0);
             
+            int rowNum = 0;
             while (rs.next()) {
                 // <editor-fold defaultstate="collapsed" desc="-- make a vehicle row">     
                 SimpleDateFormat timeFormat = new SimpleDateFormat("yy-MM-dd HH:mm:ss");   
@@ -1511,13 +1503,12 @@ public class CarArrivals extends javax.swing.JFrame {
                 });
                 //</editor-fold>
             }
-            addSelectionChangeListener(true);
-            
             //</editor-fold>
         } catch (SQLException ex) {
             logParkingException(Level.SEVERE, ex, "(registered vehicle list loading)");
         } finally {
             closeDBstuff(conn, selectStmt, rs, "(registered vehicle list loading)");
+            addSelectionChangeListener(true);
         }
         
         int numRows = model.getRowCount();
@@ -1550,8 +1541,6 @@ public class CarArrivals extends javax.swing.JFrame {
 
         arrivalsTableModel.getColumn(0).setCellRenderer( rightRenderer );        
         arrivalsTableModel.removeColumn(arrivalsTableModel.getColumn(3));
-        
-        addSelectionChangeListener(true);
         
         valueChangeListener = new ListSelectionListener() {
             @Override
@@ -1598,7 +1587,6 @@ public class CarArrivals extends javax.swing.JFrame {
                 try {
                     conn = JDBCMySQL.getConnection();
                     selectStmt = conn.createStatement();
-                    System.out.println("sb: " + sb.toString());
                     rs = selectStmt.executeQuery(sb.toString());
                     if (rs.next()) {
                         gateNameTF.setText(gateNames[rs.getInt("gateNo")]);
