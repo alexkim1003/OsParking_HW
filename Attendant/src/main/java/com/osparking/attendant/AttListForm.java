@@ -1,21 +1,18 @@
 /* 
- * Attendant, Module--Part of OSParking Software 
  * Copyright (C) 2015 Open Source Parking Inc.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3.0 of the License, or (at your option) any later version.
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
+ * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
- * MA 02110-1301  USA
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.osparking.attendant;
 
@@ -1624,7 +1621,19 @@ public class AttListForm extends javax.swing.JFrame {
         final EmailValidator emailValidator = EmailValidator.getInstance();
         
         return emailValidator.isValid(email);
+//        boolean isValid = false;
+//
+//        try {
+//            //Create InternetAddress object and validated the email address.
+//            InternetAddress internetAddress = new InternetAddress(email);
+//            internetAddress.validate();
+//            isValid = true;
+//        } catch (AddressException ex) {
+//            //logParkingException(Level.SEVERE, ex, "(email: " + email + ")");
+//        }
+//        return isValid;
     }    
+    
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
             Object selectedObj = searchCriteriaComboBox.getSelectedItem();

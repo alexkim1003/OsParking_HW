@@ -14,24 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.toedter.calendar;
-
-import com.toedter.components.GenericBeanInfo;
-
+package com.osparking.osparking;
 
 /**
- * A BeanInfo class for JCalendar.
- * 
- * @author Kai Toedter
- * @version $LastChangedRevision: 85 $
- * @version $LastChangedDate: 2006-04-28 13:50:52 +0200 (Fr, 28 Apr 2006) $
+ *
+ * @author Open Source Parking Inc
  */
-public class JCalendarBeanInfo extends GenericBeanInfo {
-
-	/**
-	 * Constructs a new BeanInfo class for the JCalendar bean.
-	 */
-	public JCalendarBeanInfo() {
-	    super("JCalendar", true);
-	}
+public class NewClass {
+    
 }
