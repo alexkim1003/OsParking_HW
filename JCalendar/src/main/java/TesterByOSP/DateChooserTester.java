@@ -1,5 +1,6 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * DateChooserTester, Java class module--Part of OSParking Software 
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +21,7 @@ import static com.osparking.global.Globals.OSPiconList;
 
 /**
  *
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 public class DateChooserTester extends javax.swing.JFrame {
 

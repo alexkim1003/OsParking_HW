@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ package com.osparking.global.names;
  *      -Submission no.: 10-2015-0055743 (South Korea)
  * 
  * It can have multiple keys and labels in two arrays which are of same length.
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 public class InnoComboBoxItem { // Inno stands for Innovative 
     private int[] keys;

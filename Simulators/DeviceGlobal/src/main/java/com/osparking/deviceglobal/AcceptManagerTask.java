@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
  * Gate Bar ServerSocket Listener thread.
  * 
  * Accepts each gate bar socket connection request and creates a manager thread for the socket.
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 public class AcceptManagerTask implements Runnable {
 //public class AcceptManagerTask extends Thread {

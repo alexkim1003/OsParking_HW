@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ import javax.swing.WindowConstants;
 /**
  * Provides GUI to set system parameters like image size(pixels), gate count, device IP address, etc.
  * For a stable operation, it is recommended to reboot this system(OS.Parking program) after any setting change.
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 public class Settings_System extends javax.swing.JFrame {
     private boolean isStand_Alone = false;

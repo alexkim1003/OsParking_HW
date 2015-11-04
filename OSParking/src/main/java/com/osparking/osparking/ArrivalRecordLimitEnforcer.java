@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ import javax.swing.JTextArea;
  * <code>maxMaintainDate</code> value is stored in <code>systemsettings</code> table. Default value of
  * <code>maxMaintainDate</code> is 60.
  * (<code>MAX_MAINTAIN_DATE</code> column)
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 class ArrivalRecordLimitEnforcer extends TimerTask {
     int numDeletedFolders;

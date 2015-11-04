@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -94,7 +94,7 @@ import javax.imageio.ImageIO;
  * Defines names and methods used globally in the Parking Lot manager application developed by 
  * Open Source Parking Inc. <p>(Company logo: <img src ="doc-files/64px.png"/>)</p>
  * 
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  * @version "%I%,%G%"
  */
 public class Globals {

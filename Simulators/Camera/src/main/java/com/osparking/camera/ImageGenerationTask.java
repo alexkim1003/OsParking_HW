@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ import com.osparking.global.names.OSP_enums.OpLogLevel;
  * LPR camera pictures tags of cars entering parking lot.
  * It randomly determines whether a car appeared at the gate and selects one car image out of 6 sample
  * images.
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 
 public class ImageGenerationTask extends TimerTask {

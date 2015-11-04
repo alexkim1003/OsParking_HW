@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2015 Open Source Parking Inc.
+ * Copyright (C) 2015 Open Source Parking Inc.(www.osparking.com)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
  * employes a socket reader thread dedicated to read message from the socket and handle them 
  * considering their type. the reader send back "ACK" for some messages to the camera.
  * 
- * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
+ * @author Open Source Parking Inc.
  */
 public class CameraManager extends Thread implements DeviceManager {
     //<editor-fold desc="--class variables">
