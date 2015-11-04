@@ -13,13 +13,13 @@ Company homepage(www.osparking.com) will open early November.
 
 -
 
-Softwares Needed to Run
+Softwares Needed to Run OsParking
 
 1. JRE 1.8.0 or later
 
 2. MySQL 5.6.24 or later
 
-Additionally Needed Softwares for Developers
+Additionally Needed Softwares for the Developers
 
 1. IDE used: netbeans 8.0.2 or later
 
