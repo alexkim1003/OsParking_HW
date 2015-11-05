@@ -336,6 +336,9 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationBuildingPanel.setPreferredSize(new java.awt.Dimension(300, 71));
 
         affiliPanel.setBackground(new java.awt.Color(243, 243, 243));
+        affiliPanel.setMinimumSize(new java.awt.Dimension(150, 69));
+        affiliPanel.setPreferredSize(new java.awt.Dimension(150, 69));
+        affiliPanel.setRequestFocusEnabled(false);
         affiliPanel.setLayout(new javax.swing.BoxLayout(affiliPanel, javax.swing.BoxLayout.Y_AXIS));
 
         affiliationRadioButton.setBackground(new java.awt.Color(243, 243, 243));
@@ -347,8 +350,8 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationRadioButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         affiliationRadioButton.setMargin(new java.awt.Insets(2, 20, 2, 2));
         affiliationRadioButton.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        affiliationRadioButton.setMinimumSize(new java.awt.Dimension(30, 21));
-        affiliationRadioButton.setPreferredSize(new java.awt.Dimension(180, 23));
+        affiliationRadioButton.setMinimumSize(new java.awt.Dimension(100, 23));
+        affiliationRadioButton.setPreferredSize(new java.awt.Dimension(100, 23));
         affiliationRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 affiliationRadioButtonActionPerformed(evt);
@@ -358,7 +361,8 @@ public class CarArrivals extends javax.swing.JFrame {
 
         searchL1ComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchL1ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchL1ComboBox.setPreferredSize(new java.awt.Dimension(180, 23));
+        searchL1ComboBox.setMinimumSize(new java.awt.Dimension(100, 23));
+        searchL1ComboBox.setPreferredSize(new java.awt.Dimension(100, 23));
         searchL1ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -391,7 +395,8 @@ public class CarArrivals extends javax.swing.JFrame {
 
         searchL2ComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchL2ComboBox.setModel(    new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchL2ComboBox.setPreferredSize(new java.awt.Dimension(180, 23));
+        searchL2ComboBox.setMinimumSize(new java.awt.Dimension(100, 23));
+        searchL2ComboBox.setPreferredSize(new java.awt.Dimension(100, 23));
         searchL2ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -419,8 +424,8 @@ public class CarArrivals extends javax.swing.JFrame {
         buildingRadioButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         buildingRadioButton.setMargin(new java.awt.Insets(2, 20, 2, 2));
         buildingRadioButton.setMaximumSize(new java.awt.Dimension(32767, 32767));
-        buildingRadioButton.setMinimumSize(new java.awt.Dimension(30, 21));
-        buildingRadioButton.setPreferredSize(new java.awt.Dimension(150, 23));
+        buildingRadioButton.setMinimumSize(new java.awt.Dimension(80, 21));
+        buildingRadioButton.setPreferredSize(new java.awt.Dimension(80, 23));
         buildingRadioButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buildingRadioButtonActionPerformed(evt);
@@ -431,7 +436,8 @@ public class CarArrivals extends javax.swing.JFrame {
         searchBuildingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchBuildingComboBox.setModel(
             new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchBuildingComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
+        searchBuildingComboBox.setMinimumSize(new java.awt.Dimension(80, 21));
+        searchBuildingComboBox.setPreferredSize(new java.awt.Dimension(80, 23));
         searchBuildingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -451,7 +457,8 @@ public class CarArrivals extends javax.swing.JFrame {
         searchUnitComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchUnitComboBox.setModel(
             new javax.swing.DefaultComboBoxModel(new String[]{}));
-        searchUnitComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
+        searchUnitComboBox.setMinimumSize(new java.awt.Dimension(80, 21));
+        searchUnitComboBox.setPreferredSize(new java.awt.Dimension(80, 23));
         searchUnitComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -473,9 +480,9 @@ public class CarArrivals extends javax.swing.JFrame {
         affiliationBuildingPanelLayout.setHorizontalGroup(
             affiliationBuildingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(affiliationBuildingPanelLayout.createSequentialGroup()
-                .addComponent(affiliPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addComponent(affiliPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(8, 8, 8)
-                .addComponent(buildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                .addComponent(buildingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
         );
         affiliationBuildingPanelLayout.setVerticalGroup(
             affiliationBuildingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
