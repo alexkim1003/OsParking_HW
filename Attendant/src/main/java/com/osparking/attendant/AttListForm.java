@@ -71,7 +71,7 @@ import net.proteanit.sql.DbUtils;
  *
  * @author Park, Jongbum <Park, Jongbum at Open Source Parking Inc.>
  */
-
+//test git
 public class AttListForm extends javax.swing.JFrame {
     FormMode formMode = FormMode.NormalMode;
     int selectedRowIndex = 0;  
