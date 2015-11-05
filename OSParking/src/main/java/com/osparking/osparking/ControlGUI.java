@@ -1515,11 +1515,11 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 logParkingException(Level.SEVERE, ex, "Car entry simulation button");
             }
         }
+        
         int imageNo = randomInteger.nextInt(6) + 1;
+        gateNo = 1;
         
         getPassingDelayStat()[gateNo].setICodeArrivalTime(System.currentTimeMillis());
-//        int imageNo = 5;
-        
         processCarArrival(gateNo, --manualSimulationImageID, dummyMessages[imageNo].getCarNumber(),
                 dummyMessages[imageNo].getBufferedImg());
     }//GEN-LAST:event_CarEnteredButtonActionPerformed
@@ -2109,10 +2109,10 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         PermissionType permission = enteranceAllowed(tagRecognized, tagEnteredAs, remark);
         int carPassingDelayMs = rand.nextInt(MAX_PASSING_DELAY)  + CAR_PERIOD;
 
-        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-                carPassingDelayMs);
         
         if (permission == ALLOWED || autoGateOpenCheckBox.isSelected()) {
+            interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
+                    carPassingDelayMs);
             getPassingDelayStat()[cameraID].setAccumulatable(true);
         } else {
             getPassingDelayStat()[cameraID].setAccumulatable(false);
@@ -2161,7 +2161,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                     tagEnteredAs.toString(), filenameModified, image, -1, -1, null, 
                                     BarOperation.MANUAL);
                             updateMainForm(cameraID, tagRecognized, arrSeqNo, BarOperation.MANUAL);                            
-                            
                         } else {
                             // Handle as if [close bar] button were pressed in the [DisAllowedCar] form
                             arrSeqNo = insertDBrecord(cameraID, arrivalTime, tagRecognized, 
@@ -2169,6 +2168,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                     BarOperation.REMAIN_CLOSED);        
                             updateMainForm(cameraID, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);                            
                         }
+                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), 
+                                imageSN, carPassingDelayMs);                            
                         
                     } else {
                         isGateBusy[cameraID] = true;
@@ -2179,11 +2180,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                 tagEnteredAs.toString(),
                                 remark.toString(),
                                 cameraID, 
+                                imageSN,
                                 "",
                                 filenameModified,
                                 image, 
                                 carPassingDelayMs
                         ).setVisible(true);
+                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
+                                -1);
                     }
                     break;   
                     //</editor-fold>
@@ -2207,6 +2211,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                     BarOperation.REMAIN_CLOSED);        
                             updateMainForm(cameraID, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);                            
                         }                        
+                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
+                                carPassingDelayMs);
 
                     } else {
                         isGateBusy[cameraID] = true;
@@ -2215,11 +2221,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                 tagRecognized, 
                                 arrivalTime,
                                 cameraID,
+                                imageSN,
                                 "",
                                 filenameModified.toString(),
                                 image, 
                                 carPassingDelayMs
                         ).setVisible(true);
+                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
+                                -1);  // -1 : don't return to default message display
                     }
                     break;
                     //</editor-fold>
@@ -2604,7 +2613,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
     Random rand = new Random();
     
-    synchronized private void interruptEBoardDisplay(byte gateNo, String tagRecognized, 
+    public synchronized void interruptEBoardDisplay(byte gateNo, String tagRecognized, 
             PermissionType permission, String tagEnteredAs, int imageSN, int carPassingDelayMs)
     {
         String tagNumber = tagRecognized;
@@ -2621,7 +2630,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
             eBoardMsgSentMs[gateNo][TOP_ROW] = currTimeMs;
             eBoardMsgSentMs[gateNo][BOTTOM_ROW] = currTimeMs;
-                
+            
             getSendEBDmsgTimer()[gateNo][TOP_ROW].reschedule(new SendEBDMessageTask(
                             this, gateNo, TOP_ROW, 
                             getIntMessage(tagNumber, gateNo, TOP_ROW, 
@@ -2635,6 +2644,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                                     imageSN * 2 + BOTTOM_ROW, 
                                     carPassingDelayMs), 
                             imageSN * 2 + BOTTOM_ROW));
+            
             if (DEBUG) {
                 /**
                  * Save gate open command ID for a book keeping

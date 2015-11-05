@@ -168,6 +168,7 @@ public class GateBarReader extends Thread implements DeviceReader {
                                 getManagerSocket().getOutputStream().write(messageOpenAck);
 
                                 if (cmdID != gateBarGUI.prevCommandID) {
+                                    System.out.println("open gate cmd ID: " + cmdID);
                                     gateBarGUI.orderOpenGate(delayMS);
                                     if (DEBUG) {
                                         saveOpenCommandID(cmdID, gateBarGUI.prevCommandID);

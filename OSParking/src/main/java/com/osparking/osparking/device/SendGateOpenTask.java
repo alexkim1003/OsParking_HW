@@ -45,14 +45,12 @@ public class SendGateOpenTask implements Runnable {
     private int resendCount = 0;
     byte[] messageArr = new byte[9]; // code(1 byte), cmd ID(4 bytes), delay(4 bytes)
     
-//    ParkingTimer timerSendOpenCmd;
-
     /**
      * Open Command Sender Task constructor.
      * 
      * @param managerForm manager program GUI
      * @param gateID ID of the gate being simulated
-     * @param openCmd_ID ID of the open command to send* 
+     * @param openCmd_ID ID of the open command to send*
      * @param passingDelay car passing delay in milliseconds
      */
     public SendGateOpenTask(ControlGUI managerForm, byte gateID, int openCmd_ID,
@@ -65,10 +63,10 @@ public class SendGateOpenTask implements Runnable {
         messageArr[0] = (byte)Open.ordinal();
         
         integerArr = ByteBuffer.allocate(4).putInt(openCmd_ID).array();
-        System.arraycopy(integerArr, 0, messageArr, 1, 4);        
+        System.arraycopy(integerArr, 0, messageArr, 1, 4);
         
         integerArr = ByteBuffer.allocate(4).putInt(passingDelay).array();
-        System.arraycopy(integerArr, 0, messageArr, 5, 4);        
+        System.arraycopy(integerArr, 0, messageArr, 5, 4);
     }
 
     /**

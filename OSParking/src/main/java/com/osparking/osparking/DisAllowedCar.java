@@ -34,6 +34,7 @@ import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.names.DB_Access.gateNames;
+import com.osparking.global.names.OSP_enums;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -47,6 +48,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
     Timer timer;
     ControlGUI parent = null;
     byte gateNo;
+    int imageSN;
     String tagRecognized;
     Date arrivalTm;
     String tagEnteredAs;
@@ -69,8 +71,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
      * @param bImg
      * @param delay 
      */
-    public DisAllowedCar(ControlGUI parent, String tagRecognized, Date arrivalTm, 
-            String tagEnteredAs, String remark, byte gateNo, String filename, String filenameModified, 
+    public DisAllowedCar(ControlGUI parent, String tagRecognized, Date arrivalTm, String tagEnteredAs, 
+            String remark, byte gateNo, int imageSN, String filename, String filenameModified, 
             BufferedImage bImg, int delay) {
         initComponents();
         this.parent = parent;
@@ -78,6 +80,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         this.arrivalTm = arrivalTm;
         this.tagEnteredAs = tagEnteredAs;
         this.gateNo = gateNo;
+        this.imageSN = imageSN; 
         this.filename = filename;
         this.filenameModified = filenameModified;
         this.bImg = bImg;
@@ -374,12 +377,14 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
     private void openBarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBarButtonActionPerformed
         if(parent != null){
-            parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
-
+            parent.raiseGateBar(gateNo, imageSN, delay);
+            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
+                    tagEnteredAs, -imageSN, delay);  
+                
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg, -1, -1, null, BarOperation.MANUAL);
-            parent.isGateBusy[gateNo] = false;
             parent.updateMainForm(gateNo, tagRecognized, arrSeqNo, BarOperation.MANUAL);
+            parent.isGateBusy[gateNo] = false;
         }
         timer.cancel();
         timer.purge();
@@ -388,6 +393,9 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
     private void closeGateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeGateButtonActionPerformed
         if(parent != null){  
+            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
+                    tagEnteredAs, -imageSN, delay);  
+            
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        
             parent.isGateBusy[gateNo] = false;
@@ -481,7 +489,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new DisAllowedCar(null, "30MO8186", new Date(), "30MO8186", "testing",
-                    (byte)1, "abc.jpg", null, null, 8000).setVisible(true);
+                    (byte)1, 1000000, "abc.jpg", null, null, 8000).setVisible(true);
                 
             }
         });

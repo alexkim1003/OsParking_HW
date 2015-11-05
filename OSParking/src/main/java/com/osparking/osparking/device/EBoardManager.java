@@ -148,7 +148,7 @@ public class EBoardManager extends Thread implements DeviceManager {
                             else
                                 continue;
 
-                            System.out.println("4. message ACD arrived at: " + System.currentTimeMillis() % 10000);
+//                            System.out.println("4. message ACD arrived at: " + System.currentTimeMillis() % 10000);
 
                             int codeAcked = restOfMessage[0];
                             short checkTSC = (short)(msgCode + codeAcked); // TCS: This Site Calculation

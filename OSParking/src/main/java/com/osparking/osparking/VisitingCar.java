@@ -42,11 +42,11 @@ import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
 import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL2;
 import static com.osparking.global.names.OSP_enums.DriverCol.BuildingNo;
 import static com.osparking.global.names.OSP_enums.DriverCol.UnitNo;
+import com.osparking.global.names.OSP_enums.PermissionType;
 import com.osparking.global.names.PComboBox;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.UIManager;
 
 /**
  *
@@ -57,6 +57,7 @@ public class VisitingCar extends javax.swing.JFrame {
     String tagRecognized;
     Date arrivalTime;
     byte gateNo;
+    int imageSN;
     String filename;
     String filenameModified;
     BufferedImage bImg;
@@ -64,7 +65,7 @@ public class VisitingCar extends javax.swing.JFrame {
     /**
      * Creates new form VisitingCar
      */
-    public VisitingCar(ControlGUI parent, String tagRecognized, Date arrivalTime, byte gateNo, 
+    public VisitingCar(ControlGUI parent, String tagRecognized, Date arrivalTime, byte gateNo, int imageSN,
             String filename, String filenameModified, BufferedImage bImg, int delay) {
         
         initComponents();
@@ -76,6 +77,7 @@ public class VisitingCar extends javax.swing.JFrame {
         this.tagRecognized = tagRecognized; 
         this.arrivalTime = arrivalTime; 
         this.gateNo = gateNo; 
+        this.imageSN = imageSN; 
         this.filename = filename; 
         this.filenameModified = filenameModified; 
         this.bImg = bImg;
@@ -649,7 +651,7 @@ public class VisitingCar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new VisitingCar(null, "12가3456", new Date(), (byte)1, "testImage.jpg", 
+                new VisitingCar(null, "12가3456", new Date(), (byte)1, 1, "testImage.jpg", 
                         "2015-05-02_18-59-45_testImage.jpg", null, 8000).setVisible(true);
             }
         });
@@ -727,10 +729,12 @@ public class VisitingCar extends javax.swing.JFrame {
     private void welcomeVisitor(boolean openGate) {
         int unitSeqNo;
         int l2No;
-        if(parent != null){
+        if (parent != null) {
             if (openGate) {
-                parent.raiseGateBar(gateNo, Integer.MAX_VALUE, delay);
+                parent.raiseGateBar(gateNo, imageSN, delay);
             }
+            parent.interruptEBoardDisplay(gateNo, tagRecognized, PermissionType.UNREGISTERED, 
+                    tagRecognized, -imageSN, delay);                
 
             if (lowLevelComboBox.getSelectedIndex() == -1) {
                 l2No = -1;

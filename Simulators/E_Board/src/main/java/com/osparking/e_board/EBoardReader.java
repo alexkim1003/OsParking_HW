@@ -123,7 +123,6 @@ public class EBoardReader extends Thread implements DeviceReader {
                 
                 if (justBooted) {
                     managerSocket.getOutputStream().write(JustBooted.ordinal());
-                    System.out.println("just booded sent");                        
                     justBooted = false;
                 }
                 
@@ -164,7 +163,6 @@ public class EBoardReader extends Thread implements DeviceReader {
                         case EBD_DEFAULT1:
                         case EBD_DEFAULT2:
                             //<editor-fold defaultstate="collapsed" desc="-- Change E-Board display temporarily">  
-//                                System.out.println("Message code: " + MsgCode.values()[msgCode]);
                             if (isConnected(getManagerSocket()))
                                 getManagerSocket().getInputStream().read(lenByteArr);
                             else 
@@ -185,14 +183,17 @@ public class EBoardReader extends Thread implements DeviceReader {
                             checkShort = new byte[2]; // function: checking, size: 2 byte short
                             len = restOfMessage.length;
                             coreBytes = Arrays.copyOfRange(restOfMessage, 0,  len - 2);
+                            
+                            System.out.println("code: " + MsgCode.values()[msgCode]);
 
                             addUpBytes((byte)msgCode, lenByteArr, coreBytes, checkShort);
                             if (checkShort[1] == restOfMessage[len - 1] 
                                     && checkShort[0] == restOfMessage[len - 2]
                                     && noArtificialErrorInserted(eBoardGUI.errorCheckBox)) 
                             {
-                                int msgSN = ByteBuffer.wrap(Arrays.copyOfRange(restOfMessage, 1, 5)).getInt();
                                 // Check if this message isn't a duplicate one.
+                                int msgSN = ByteBuffer.wrap(Arrays.copyOfRange(restOfMessage, 1, 5)).getInt();
+                                System.out.println("curr SN: " + msgSN + ", prev: " + eBoardGUI.prevMsgSN[coreBytes[0]]);
                                 if (msgSN != eBoardGUI.prevMsgSN[coreBytes[0]]) {
                                     //<editor-fold desc="-- Decode message, update settings, change display">
                                     // decode message field by field, and apply the result to global variables(Settings)
@@ -269,11 +270,12 @@ public class EBoardReader extends Thread implements DeviceReader {
                                 int msgSN = ByteBuffer.wrap(Arrays.copyOfRange(restOfMessage, 1, 5)).getInt();
                                 if (msgSN != eBoardGUI.prevMsgSN[coreBytes[0]]) {
                                     // decode message field by field and apply the result to display
+                                    System.out.println("display Intr msg ID: " + msgSN);
                                     interruptCurrentDisplay(coreBytes);
                                     if (DEBUG) {
                                         saveMsgSN(msgSN, eBoardGUI.prevMsgSN[coreBytes[0]]);
                                     }
-                                    eBoardGUI.prevMsgSN[coreBytes[0]] = msgSN;                                        
+                                    eBoardGUI.prevMsgSN[coreBytes[0]] = msgSN;
                                 }
                                 // build ack message and send it to the manager
                                 byte[] ackMessage = {(byte)EBD_ACK.ordinal(), (byte)msgCode, 0, 0};
@@ -377,8 +379,6 @@ public class EBoardReader extends Thread implements DeviceReader {
         int len = coreInfoBytes.length;
         try {
             displayText = new String(Arrays.copyOfRange(coreInfoBytes, 5,  len - index), "UTF-8");
-//        } catch( UnsupportedEncodingException e) {
-//            logParkingException(Level.SEVERE, e, "display text (len: " + len + ", index: " + index + ")");
         } catch (IOException ex) {
             logParkingException(Level.SEVERE, ex, "logging display text");
         }
@@ -399,8 +399,16 @@ public class EBoardReader extends Thread implements DeviceReader {
             patternIndex = (byte) (EBD_Effects.RTOL_FLOW.ordinal());
             System.out.println("adjust cycle: " + cycle);
             cycle = EBD_flowCycle;
-        }
+        }        
         
+        eBoardGUI.getCriticalInfoTextField().setText(
+                                    timeFormat.format(new Date()) + "-- Vehicle Entered");
+        eBoardGUI.changeE_BoardDisplay(row, 
+                new EBD_DisplaySetting(displayText, adjustedContentType,
+                        EBD_Effects.values()[patternIndex], EBD_Colors.values()[colorIndex], 
+                        EBD_Fonts.values()[fontIndex], cycle));
+        
+        //<editor-fold desc="-- print debug message">
         if (DEBUG) {
             System.out.println("row: " + row);
             System.out.println("msg : " + displayText);
@@ -414,29 +422,29 @@ public class EBoardReader extends Thread implements DeviceReader {
             System.out.println("cycle: " + cycle);
             System.out.println("delay: " + delay);
         }
+        //</editor-fold>
         
-        eBoardGUI.getCriticalInfoTextField().setText(
-                                    timeFormat.format(new Date()) + "-- Vehicle Entered");
-        eBoardGUI.changeE_BoardDisplay(row, 
-                new EBD_DisplaySetting(displayText, adjustedContentType,
-                        EBD_Effects.values()[patternIndex], EBD_Colors.values()[colorIndex], 
-                        EBD_Fonts.values()[fontIndex], cycle));
-        
-        try {
-            eBoardGUI.getDisplayRestoreTimer()[row].reRunOnce(
-                    new TimerTask() {
-                        @Override
-                        public void run() {
-                            eBoardGUI.changeE_BoardDisplay(row, eBoardGUI.getDefaultDisplaySettings()[row]);
-                            eBoardGUI.getCriticalInfoTextField().setText(
-                                    timeFormat.format(new Date()) + "-- Vehicle left gate");
-                        }
-                    },
-                    delay
-            );
-        } catch (Exception e) {
-            logParkingException(Level.SEVERE, e, "Return to default display for row #" + row, eBoardGUI.getID());  
-        }        
+        //<editor-fold desc="-- reserve default message display event">
+        if (delay == -1) {
+            eBoardGUI.prevMsgSN[row] = 0;
+        } else {
+            try {
+                eBoardGUI.getDisplayRestoreTimer()[row].reRunOnce(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                eBoardGUI.changeE_BoardDisplay(row, eBoardGUI.getDefaultDisplaySettings()[row]);
+                                eBoardGUI.getCriticalInfoTextField().setText(
+                                        timeFormat.format(new Date()) + "-- Vehicle left gate");
+                            }
+                        },
+                        delay
+                );
+            } catch (Exception e) {
+                logParkingException(Level.SEVERE, e, "Return to default display for row #" + row, eBoardGUI.getID());  
+            }  
+        }
+        //</editor-fold>
     }
 
     private synchronized void saveMsgSN(int currMsgSN, int prevMsgSN) {

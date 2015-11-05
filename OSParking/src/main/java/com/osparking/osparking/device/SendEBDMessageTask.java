@@ -43,7 +43,6 @@ public class SendEBDMessageTask implements Runnable {
         this.message = message;
         this.rowNo = rowNo;
         this.msgSN = msgSN;
-        System.err.println("msgSN$" + deviceNo + "$" + msgSN);
     }
 
     @Override
