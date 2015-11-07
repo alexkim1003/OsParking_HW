@@ -1630,7 +1630,7 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_SettingsCancelButtonActionPerformed
 
     private void SettingsCloseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsCloseButtonActionPerformed
-        if(!checkframe()){
+        if(!anyFrameFieldModified()){
             stopOperation();
         }else{
             JOptionPane.showMessageDialog(this, "Settings Changed.\n \n"
@@ -1665,7 +1665,7 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_TextFieldPicWidthKeyTyped
 
     private void finishSettingsForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_finishSettingsForm
-        if(!checkframe()){
+        if(!anyFrameFieldModified()){
             stopOperation();
         }else{
             JOptionPane.showMessageDialog(this, "Settings Changed.\n \n"
@@ -2230,10 +2230,10 @@ public class Settings_System extends javax.swing.JFrame {
                         ((JTextField) componentMap.get("Camera" + gateID + "_IP_TextField"))
                                 .getText().trim());
                 updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField"))
+                        ((JTextField) componentMap.get("E_Board" + gateID + "_IP_TextField"))
                                 .getText().trim());
                 updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("E_Board" + gateID + "_IP_TextField"))
+                        ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField"))
                                 .getText().trim());
                 updateSettings.setInt(pIndex++, gateID);
                 // </editor-fold>
@@ -2284,7 +2284,7 @@ public class Settings_System extends javax.swing.JFrame {
     }
    
     private void changeEnabled_of_SaveCancelButtons() {
-        boolean onOff = checkframe();
+        boolean onOff = anyFrameFieldModified();
         SettingsSaveButton.setEnabled(onOff);
         SettingsCancelButton.setEnabled(onOff);        
         SettingsCloseButton.setEnabled(!onOff);
@@ -2298,7 +2298,7 @@ public class Settings_System extends javax.swing.JFrame {
     } 
     
     
-    private boolean checkframe(){
+    private boolean anyFrameFieldModified(){
         boolean onOff = false;
         int a = 0;
         if (PassingDelayCheckBox.isSelected()) {
@@ -2337,17 +2337,17 @@ public class Settings_System extends javax.swing.JFrame {
                 || maxArrivalCBoxIndex != MaxDateComboBox.getSelectedIndex()
                 || EBD_blinkCycle != Integer.parseInt(((String) BlinkingComboBox.getSelectedItem()).replace(",", ""))
                 || EBD_flowCycle != Integer.parseInt(((String) FlowingComboBox.getSelectedItem()).replace(",", ""))
-                || checkPanel()){
+                || anyGateFieldModified()){
             onOff = true;
         }
         
         return onOff;
     }
-    private boolean checkPanel(){
+    private boolean anyGateFieldModified(){
         boolean onOff = false;
         
-        for(int i = 0; i < gateCount; i++){
-            if(!(gateNames[i+1].equals(((JTextField)getComponentByName(
+        for (int i = 0; i < gateCount; i++){
+            if (!(gateNames[i+1].equals(((JTextField)getComponentByName(
                     "TextFieldGateName" +(i+1))).getText().trim()))
                     || !(deviceIP[Camera.ordinal() ][i+1].equals(((JTextField)getComponentByName(
                             "Camera" +(i+1) + "_IP_TextField")).getText().trim()))
