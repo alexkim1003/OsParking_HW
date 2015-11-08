@@ -52,6 +52,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="admin"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
           <ComponentRef name="password"/>
@@ -160,6 +161,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
         </Property>
+        <Property name="text" type="java.lang.String" value="1234"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="nextFocusableComponent" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
           <ComponentRef name="loginButton"/>

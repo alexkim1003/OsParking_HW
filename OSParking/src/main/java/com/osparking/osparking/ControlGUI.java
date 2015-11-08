@@ -116,6 +116,7 @@ import com.osparking.osparking.device.ConnectDeviceTask;
 import com.osparking.osparking.device.EBoardManager;
 import com.osparking.osparking.device.GateBarManager;
 import com.osparking.osparking.device.LED_Task;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import com.osparking.osparking.device.SendEBDMessageTask;
 import com.osparking.osparking.device.SendGateOpenTask;
 import com.osparking.osparking.statistics.DeviceCommand;
@@ -176,7 +177,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Main GUI of OSParking -- Open Source Parking Lot Management Program which is
+ * Main GUI of OsParking -- Open Source Parking Lot Management Program which is
  * developed by Open Source Parking Inc.
  * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a></p>
  * <p>(Company logo: <img src ="doc-files/64px.png"/>)</p>
@@ -408,12 +409,23 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 
                 switch (type) {
                     case Camera: 
-                
                         deviceManagers[type.ordinal()][gateNo] = (DeviceManager)new CameraManager(this, gateNo);
                         break;
+                        
                     case E_Board: 
-                        deviceManagers[type.ordinal()][gateNo] = (DeviceManager)new EBoardManager(this, gateNo);
+                        switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
+                            case LEDnotice:
+                                deviceManagers[type.ordinal()][gateNo] 
+                                        = (DeviceManager)new LEDnoticeManager(this, gateNo);
+                                break;
+                                
+                            default:
+                                deviceManagers[type.ordinal()][gateNo] 
+                                        = (DeviceManager)new EBoardManager(this, gateNo);
+                                break;
+                        }
                         break;
+                        
                     case GateBar: 
                         deviceManagers[type.ordinal()][gateNo] = (DeviceManager)new GateBarManager(this, gateNo);
                         break;
@@ -1673,7 +1685,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }//GEN-LAST:event_LogoutUserActionPerformed
 
     private void licenseMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_licenseMenuItemActionPerformed
-        showLicensePanel(this, "License Notice on OSParking program");
+        showLicensePanel(this, "License Notice on OsParking program");
     }//GEN-LAST:event_licenseMenuItemActionPerformed
 
     private void CarIOListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarIOListButtonActionPerformed
@@ -2038,7 +2050,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             getMessageTextArea().setCaretPosition(len); // places the caret at the bottom of the display area
             
         }  catch (FileNotFoundException fe) {
-            addMessageLine(MessageTextArea, "Very First Run of OSParking!");
+            addMessageLine(MessageTextArea, "Very First Run of OsParking!");
             logParkingException(Level.SEVERE, fe, "First Run of Parking Lot Manager");
         }  catch (IOException ie) {
             logParkingException(Level.SEVERE, ie, "(message list file IO exception)");
@@ -3004,7 +3016,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                testUniqueness("ParkingLotManager", "OSParking");
+                testUniqueness("ParkingLotManager", "OsParking");
                 ControlGUI mainForm = new ControlGUI();
                 parentGUI = mainForm;
                 mainForm.recordSystemStart();

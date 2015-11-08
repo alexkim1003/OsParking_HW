@@ -23,7 +23,7 @@ import static com.osparking.global.Globals.MAX_TOLERANCE;
  * @author Open Source Parking Inc.
  */
 public class ToleranceLevel {
-    private int level = MAX_TOLERANCE;// + 10;
+    private int level = MAX_TOLERANCE;
     
     public void  assignMAX() {
         level = MAX_TOLERANCE;

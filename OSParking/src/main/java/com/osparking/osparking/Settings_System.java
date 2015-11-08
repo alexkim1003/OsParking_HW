@@ -221,7 +221,7 @@ public class Settings_System extends javax.swing.JFrame {
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 40), new java.awt.Dimension(32767, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("System Settings -- OSParking");
+        setTitle("System Settings -- OsParking");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(640, 568));
         setPreferredSize(new java.awt.Dimension(660, 523));
@@ -1844,8 +1844,8 @@ public class Settings_System extends javax.swing.JFrame {
                 if (mainForm != null && gateCountChanged)
                 {
                     JOptionPane.showMessageDialog(mainForm, "After Gate count change," + 
-                            System.lineSeparator() + "'OSParking' shuts down by itself." +
-                            System.lineSeparator() + "So, you need to start OSParking again.", 
+                            System.lineSeparator() + "'OsParking' shuts down by itself." +
+                            System.lineSeparator() + "So, you need to start OsParking again.", 
                             "Reboot System", WARNING_MESSAGE, 
                             new javax.swing.ImageIcon(mainForm.getClass().getResource("/restart.png")));
                     mainForm.askUserIntentionOnProgramStop(true);

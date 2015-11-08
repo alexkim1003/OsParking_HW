@@ -1936,7 +1936,7 @@ public class AttListForm extends javax.swing.JFrame {
             } else {
                 // non-admin administrator attendant manages admin's information
                 // (cf. average attendant can be an administrator but not an 'admin'.
-                // 'admin' is a special ID which is unique in the OSParking system.
+                // 'admin' is a special ID which is unique in the OsParking system.
                 changeEnabledProperty(false);
                 multiFuncButton.setEnabled(false);            
             }

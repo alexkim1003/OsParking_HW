@@ -105,7 +105,7 @@ public class RunRecordList extends javax.swing.JFrame {
         RunRecordTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("OSParking Program Run Record");
+        setTitle("OsParking Program Run Record");
         getContentPane().add(filler9, java.awt.BorderLayout.SOUTH);
         getContentPane().add(filler8, java.awt.BorderLayout.PAGE_START);
         getContentPane().add(filler11, java.awt.BorderLayout.LINE_START);
@@ -137,7 +137,7 @@ public class RunRecordList extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("OSParking Program Run Record");
+        jLabel3.setText("OsParking Program Run Record");
         jLabel3.setFocusable(false);
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setMaximumSize(new java.awt.Dimension(32767, 28));

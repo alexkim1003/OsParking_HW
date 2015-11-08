@@ -16,6 +16,7 @@
  */
 package com.osparking.osparking.device;
 
+import static com.osparking.global.Globals.gateDeviceTypes;
 import com.osparking.global.names.DeviceManager;
 import java.awt.Color;
 import java.io.IOException;
@@ -29,6 +30,8 @@ import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
+import com.osparking.osparking.device.LEDnotice.LedProtocol;
 
 //<editor-fold desc="-- Class LED_Task">
 /**
@@ -45,6 +48,9 @@ public class LED_Task extends TimerTask {
      */
     boolean setHalfTransparent = false;
 
+    LedProtocol ledNoticeProtocol; 
+    byte[] ledNoticeGetIDmsg;
+    
     /**
      * Initializes this task with the main GUI and a manager array.
      * 
@@ -54,6 +60,10 @@ public class LED_Task extends TimerTask {
     public LED_Task(ControlGUI guiMain, DeviceManager[][] deviceManagers) {
         this.controlGUI = guiMain;
         this.deviceManagers = deviceManagers;
+        ledNoticeProtocol = new LedProtocol();
+        
+        // Initialize some repeatedly used messages.
+        ledNoticeGetIDmsg = ledNoticeProtocol.hexToByteArray(ledNoticeProtocol.getId());
     }
     
     /**
@@ -65,7 +75,7 @@ public class LED_Task extends TimerTask {
     public void run() {
 
         for (DeviceType type : DeviceType.values()) {
-            byte typeNo= (byte)type.ordinal(); // tn: type number
+            byte typeNo= (byte)type.ordinal();
             
             for (byte gateNo = 1; gateNo <= gateCount; gateNo++) // gn : gate number
             {
@@ -76,7 +86,7 @@ public class LED_Task extends TimerTask {
                         if (deviceManagers[typeNo][gateNo] != null 
                                 && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
 
-                            sendHeartBeat(typeNo, gateNo);                        
+                            sendHeartBeat(type, gateNo);
                             controlGUI.tolerance[type.ordinal()][gateNo].decrease();
 
                             if (gateNo % 2 == 0 )
@@ -99,7 +109,7 @@ public class LED_Task extends TimerTask {
                         if (deviceManagers[typeNo][gateNo] != null 
                                 && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
 
-                            sendHeartBeat(typeNo, gateNo);                        
+                            sendHeartBeat(type, gateNo);                        
                             controlGUI.tolerance[type.ordinal()][gateNo].decrease();
 
                             if (gateNo % 2 == 0 ) 
@@ -126,13 +136,27 @@ public class LED_Task extends TimerTask {
         }
         setHalfTransparent  =  ! setHalfTransparent;
     }
-
-    private void sendHeartBeat(byte typeNo, byte gateNo) {
+    
+    private void sendHeartBeat(DeviceType type, byte gateNo) {
+        byte typeNo= (byte)type.ordinal();
+        
         try {
-//            System.out.println("3. try sending AreYouThere");
-            int beat = (typeNo == E_Board.ordinal() ? EBD_GetID.ordinal() : AreYouThere.ordinal());
-            deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(beat);
-//            System.out.println("3.1. AreYouThere sent");
+            if (type == E_Board) {
+                switch (gateDeviceTypes[gateNo].eBoardType) {
+                    case LEDnotice:
+                        deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(ledNoticeGetIDmsg);
+                        break;
+
+                    default:
+                        deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(EBD_GetID.ordinal());
+                        break;
+                }
+                
+            } else {
+                deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(AreYouThere.ordinal());
+            }
+            
+            
         } catch (IOException e) {
             deviceManagers[typeNo][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
         }           

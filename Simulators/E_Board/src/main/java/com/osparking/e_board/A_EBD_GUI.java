@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * E-Board Simulator GUI -- Part of OSParking simulator package which is developed by Open Source 
+ * E-Board Simulator GUI -- Part of OsParking simulator package which is developed by Open Source 
  * Parking Inc.
  * Electronic Board simulator consists of a socket reader and display form module.
  * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a><p>

@@ -137,7 +137,7 @@ public class Globals {
         }
         
         // Modify/Add/Delete whenever a device type changes (simulator <==> real hardware)
-//        gateDeviceTypes[1].eBoardType = OSP_enums.E_BoardType.LEDnotice;
+        gateDeviceTypes[1].eBoardType = OSP_enums.E_BoardType.LEDnotice;  // 1:gateID
     }  
     
     public static int getGateDevicePortNo(DeviceType deviceType, byte deviceID) {
@@ -215,7 +215,7 @@ public class Globals {
         osParkingIcon = new javax.swing.ImageIcon(new Globals().getClass().getResource("/64px.png"));        
     }
     
-    public static ImageIcon getOSParkingIcon() {
+    public static ImageIcon getOsParkingIcon() {
         return osParkingIcon;
     }
      
@@ -312,7 +312,7 @@ public class Globals {
     
     public static void shortLicenseDialog(JFrame parentForm) {
         String message = 
-                "OSParking, a parking lot management program," + System.lineSeparator() +
+                "OsParking, a parking lot management program," + System.lineSeparator() +
                 "Copyright (C) 2015 Open Source Parking Inc." + System.lineSeparator() +
                 "This program comes with ABSOLUTELY NO WARRANTY;" + System.lineSeparator() +
                 "for details use top menu [System] > [About] command." + System.lineSeparator() +

@@ -73,7 +73,7 @@ public class ConnectDeviceTask implements Runnable {
                     managerGUI.getStatusTextField().setFont(new Font(
                             managerGUI.getStatusTextField().getFont().getFontName(), Font.PLAIN, 
                             managerGUI.getStatusTextField().getFont().getSize()));  
-                    //</editor-fold>                  
+                    //</editor-fold>
 
                     managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();
                     // ...

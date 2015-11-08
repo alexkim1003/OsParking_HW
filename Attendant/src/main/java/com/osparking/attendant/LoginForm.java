@@ -115,6 +115,7 @@ public class LoginForm extends JFrame {
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         userIDText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        userIDText.setText("admin");
         userIDText.setToolTipText("");
         userIDText.setNextFocusableComponent(password);
         userIDText.setPreferredSize(new java.awt.Dimension(80, 30));
@@ -192,6 +193,7 @@ public class LoginForm extends JFrame {
         getContentPane().add(closeButton, gridBagConstraints);
 
         password.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        password.setText("1234");
         password.setToolTipText("");
         password.setNextFocusableComponent(loginButton);
         password.setPreferredSize(new java.awt.Dimension(80, 30));
