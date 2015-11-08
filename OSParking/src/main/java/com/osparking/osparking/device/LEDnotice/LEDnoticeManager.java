@@ -22,20 +22,12 @@ import com.osparking.global.names.DeviceManager;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.Date;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
-import com.osparking.global.names.OSP_enums.MsgCode;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_ACK;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT1;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT2;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_ID_ACK;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
-import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.STX;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
 
@@ -135,9 +127,9 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 successFail_int = preMsg[1];
                 typeInt = preMsg[2];        
                 
-                String isStart = String.format("%02X", stx); 
+//                String isStart = String.format("%02X", stx); 
                 String successFail = String.format("%02X", successFail_int);
-                String typeStr = String.format("%02X", typeInt);     
+//                String typeStr = String.format("%02X", typeInt);     
                 
                 int mIdx = 0;
                 while ( true )  {
@@ -159,11 +151,14 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     data_Test += String.format("%02X", MsgPost[i]);
                 }                
 
-                if (isStart.equals(STX)) {
+                if (typeInt == GET_ID.getValue()) {
+                    // process LEDnotice device heartbeat
                     if (successFail.equals(SUCCESS) ) {
                         mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
                     }
-                } 
+                } else {
+                    
+                }
 
                 //<editor-fold defaultstate="collapsed" desc="-- Process message from e-board">
 //                synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) 

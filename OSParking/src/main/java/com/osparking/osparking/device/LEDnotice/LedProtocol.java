@@ -190,9 +190,6 @@ public class LedProtocol {
         return setF; 
     }
 
-
-
-
     /**
      * checksum 계산용 함수 
      * 
@@ -209,16 +206,11 @@ public class LedProtocol {
         int L = data.length();
 
         for (int n=0; n < L; n = n + 2) {
-
             String D = data.substring(n, n+2);
             variable = variable + Integer.parseInt(D, 16);    
-
         }
-    
-    
-        String sumString = String.format("%04X", length + type +variable);
 
-        return sumString;
+        return String.format("%04X", length + type +variable);
     }
 
     //0x10, 0x02, 0x03을 검사하여 치환
@@ -254,10 +246,10 @@ public class LedProtocol {
     }
 
     public String sendMSG(MsgType msgType, String dataVariable){
-        String forlength = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
-        String dLength = String.format("%04X", forlength.length() / 2);
-        String ckSum = checkSum(dLength, Integer.toHexString(msgType.getValue()), dataVariable);
-        String typeText = dLength + forlength + ckSum;
+        String typeANDdata = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
+        String msgLen = String.format("%04X", typeANDdata.length() / 2);
+        String ckSum = checkSum(msgLen, Integer.toHexString(msgType.getValue()), dataVariable);
+        String typeText = msgLen + typeANDdata + ckSum;
 
         String dataOut = STX + finalData(typeText) + ETX;
         
