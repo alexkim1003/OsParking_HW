@@ -42,6 +42,7 @@ import java.io.FileWriter;
 import java.util.HashMap;
 import com.osparking.global.names.DeviceReader;
 import static com.osparking.global.Globals.*;
+import static com.osparking.global.names.DB_Access.readSettings;
 import com.osparking.global.names.JustOneLock;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.OSP_enums.VersionType;
@@ -682,22 +683,8 @@ public class CameraGUI extends javax.swing.JFrame implements DeviceGUI {
             java.util.logging.Logger.getLogger(CameraGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
  
+        readSettings();
         initializeLoggers();
         checkOptions(args);  
 

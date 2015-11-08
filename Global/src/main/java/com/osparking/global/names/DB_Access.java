@@ -17,6 +17,7 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
+import com.osparking.global.Globals.GateDeviceType;
 import static com.osparking.global.Globals.OSP_FALSE;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +27,7 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.closeDBstuff;
+import static com.osparking.global.Globals.initDeviceTypes;
 import static com.osparking.global.Globals.isInteger;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.sdf;
@@ -111,6 +113,8 @@ public class DB_Access {
     public static String[] gateNames = null;    
 
     public static String[][] deviceIP = null;
+    
+    public static String[][] devicePort = null;
     
     public static boolean passwordMatched(String userID, String passwd) 
     {
@@ -264,7 +268,8 @@ public class DB_Access {
             closeDBstuff(conn, selectStmt, rs, "(Releasing system DB resources after settings loading)");
         }
         readGateDevices();
-    }    
+        initDeviceTypes();
+    }
     
     /**
      * Read Electrical Display Board Settings from the database
@@ -528,6 +533,7 @@ public class DB_Access {
             String strField;
             gateNames = new String[gateCount + 1];   // textual gate names assigned
             deviceIP = new String[DeviceType.values().length][gateCount + 1];
+            devicePort = new String[DeviceType.values().length][gateCount + 1];
             passingCountCurrent = new int[gateCount + 1];
             passingDelayCurrentTotalMs = new int[gateCount + 1];
             
@@ -547,6 +553,15 @@ public class DB_Access {
                 
                 strField = rs.getString("gatebarIP");
                 deviceIP[GateBar.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
+                
+                strField = rs.getString("cameraPort");
+                devicePort[Camera.ordinal()][gateID] = (strField == null ? "8080" : strField);
+                
+                strField = rs.getString("e_boardPort");
+                devicePort[E_Board.ordinal()][gateID] = (strField == null ? "8080" : strField);
+                
+                strField = rs.getString("gatebarPort");
+                devicePort[GateBar.ordinal()][gateID] = (strField == null ? "8080" : strField);
                 
                 passingCountCurrent[gateID] = rs.getInt("passingCountCurrent");
                 

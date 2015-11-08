@@ -27,6 +27,7 @@ import java.util.logging.Level;
 import static com.osparking.global.names.DB_Access.gateCount;
 import com.osparking.global.Globals;
 import static com.osparking.global.Globals.*;
+import static com.osparking.global.names.DB_Access.devicePort;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
 
@@ -65,7 +66,11 @@ public class AcceptManagerTask implements Runnable {
 
         // create server socket by passing either a development or a test-run version port number
         try {
-            serverSocket = new ServerSocket(getPort(devType, Globals.versionType) + deviceGUI.getID());
+//            serverSocket = new ServerSocket(getPort(devType, deviceGUI.getID(), Globals.versionType));
+            int portNo = getGateDevicePortNo(devType, deviceGUI.getID());
+            serverSocket = new ServerSocket(getGateDevicePortNo(devType, deviceGUI.getID()));
+            
+//            serverSocket = new ServerSocket(Integer.parseInt(devicePort[devType.ordinal()][deviceGUI.getID()]));
         } catch (IOException e) {
             logParkingExceptionStatus(Level.INFO, null, "serverSocket creation error",
                     deviceGUI.getCriticalInfoTextField(), 0);

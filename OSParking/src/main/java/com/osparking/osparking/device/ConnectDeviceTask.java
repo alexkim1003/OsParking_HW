@@ -22,11 +22,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.DEBUG;
 import static com.osparking.global.Globals.LED_PERIOD;
 import static com.osparking.global.Globals.PULSE_PERIOD;
-import static com.osparking.global.Globals.getPort;
+import static com.osparking.global.Globals.getGateDevicePortNo;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.osparking.ControlGUI;
@@ -53,16 +52,18 @@ public class ConnectDeviceTask implements Runnable {
         while (true) {
             try {
                 //<editor-fold desc="-- establish socket connection">
+                int portNo = getGateDevicePortNo(deviceType, deviceID);
+                
                 if (DEBUG && (seq == 0 || seq % 20 == 1)) {
                     managerGUI.getStatusTextField().setText(
                             "Socket() IP: " + deviceIP[deviceType.ordinal()][deviceID] + ", port: " + 
-                                    (getPort(deviceType, Globals.versionType) + deviceID) + " (" + seq + "-th)");      
+                                    portNo + " (" + seq + "-th)");      
                 }
                 synchronized (managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID]) 
                 {                
                     Socket deviceSocket = new Socket();
-                    deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], 
-                            getPort(deviceType, Globals.versionType) + deviceID) , LED_PERIOD);  
+                    deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], portNo),
+                            LED_PERIOD);  
 
                     managerGUI.getSockConnStat()[deviceType.ordinal()][deviceID].recordSocketConnection(
                             System.currentTimeMillis());               

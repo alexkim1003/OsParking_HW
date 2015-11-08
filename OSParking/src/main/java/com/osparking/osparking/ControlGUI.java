@@ -69,6 +69,7 @@ import static com.osparking.global.Globals.sdf;
 import static com.osparking.global.Globals.showLicensePanel;
 import static com.osparking.global.Globals.testUniqueness;
 import com.osparking.global.names.CarAdmission;
+import static com.osparking.global.names.DB_Access.devicePort;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
@@ -474,7 +475,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         LED_Timer = new Timer("ospLEDtimer", true);
         LED_Timer.schedule(new LED_Task(this, getDeviceManagers()), 0, LED_PERIOD);
     }
-    
     
     private void prepareIDLogFile(DeviceType devType, int gateNo) {
         StringBuilder pathname = new StringBuilder();

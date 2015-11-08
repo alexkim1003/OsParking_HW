@@ -79,10 +79,12 @@ import com.osparking.global.names.Manager;
 import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import static com.osparking.global.names.DB_Access.deviceIP;
+import static com.osparking.global.names.DB_Access.devicePort;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.maxMessageLines;
 import static com.osparking.global.names.DB_Access.opLoggingIndex;
+import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.OSP_enums.EBD_ContentType;
@@ -117,9 +119,55 @@ public class Globals {
 
     public static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss"); 
     public static SimpleDateFormat timeFormatMMSS = new SimpleDateFormat("mm_ss"); 
-    public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
+
+    public static class GateDeviceType {
+        public OSP_enums.CameraType cameraType = OSP_enums.CameraType.Simulator;
+        public OSP_enums.E_BoardType eBoardType = OSP_enums.E_BoardType.Simulator;
+        public OSP_enums.GateBarType gateBarType = OSP_enums.GateBarType.Simulator;
+    }    
     
+    public static GateDeviceType[] gateDeviceTypes;
+    
+    public static void initDeviceTypes() {
+        gateDeviceTypes = new GateDeviceType[gateCount +1];
         
+        for (int gateID = 1; gateID <= gateCount; gateID++) {
+            gateDeviceTypes[gateID] = new GateDeviceType();
+        }
+        
+        // Modify/Add/Delete whenever a device type changes (simulator <==> real hardware)
+//        gateDeviceTypes[1].eBoardType = OSP_enums.E_BoardType.LEDnotice;
+    }  
+    
+    public static int getGateDevicePortNo(DeviceType deviceType, byte deviceID) {
+        int portNo = 0;
+        
+        switch (deviceType) {
+            case Camera: 
+                if (gateDeviceTypes[deviceID].cameraType != OSP_enums.CameraType.Simulator) {
+                    portNo = Integer.parseInt(devicePort[deviceType.ordinal()][deviceID]);
+                }
+                break;
+                
+            case E_Board: 
+                if (gateDeviceTypes[deviceID].eBoardType != OSP_enums.E_BoardType.Simulator) {
+                    portNo = Integer.parseInt(devicePort[deviceType.ordinal()][deviceID]);
+                }
+                break;
+                
+            case GateBar: 
+                if (gateDeviceTypes[deviceID].gateBarType != OSP_enums.GateBarType.Simulator) {
+                    portNo = Integer.parseInt(devicePort[deviceType.ordinal()][deviceID]);
+                }
+                break;
+        }
+        if (portNo == 0) // which means this device at that gate is a simulator
+            portNo = getPort(deviceType, deviceID, Globals.versionType) + deviceID;
+        
+        return portNo;
+    }    
+    
     /**
      * background color for the main frame window.
      */    
@@ -1603,7 +1651,7 @@ public class Globals {
         }
     }    
 
-    public static int getPort(DeviceType devType, VersionType versionType) {
+    public static int getPort(DeviceType devType, byte deviceID, VersionType versionType) {
         int portNo = 0;
         
         switch (devType) {

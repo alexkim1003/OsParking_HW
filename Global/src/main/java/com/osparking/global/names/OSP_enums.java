@@ -18,9 +18,22 @@ package com.osparking.global.names;
 
 /**
  *
- * @author Open Source Parking Inc.
+ * @author Open Source Parking Inc.S
  */
 public class OSP_enums {
+    
+    public enum E_BoardType {
+        Simulator,
+        LEDnotice,
+    }
+    
+    public enum GateBarType {
+        Simulator,
+    }
+    
+    public enum CameraType {
+        Simulator,
+    }
 
     public enum VehicleCol {
         RowNo(0),
