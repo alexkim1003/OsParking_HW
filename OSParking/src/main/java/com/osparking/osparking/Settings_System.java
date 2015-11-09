@@ -221,7 +221,7 @@ public class Settings_System extends javax.swing.JFrame {
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 40), new java.awt.Dimension(32767, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("System Settings -- OsParking");
+        setTitle("System Settings -- OSParking");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(640, 568));
         setPreferredSize(new java.awt.Dimension(660, 523));
@@ -1452,6 +1452,8 @@ public class Settings_System extends javax.swing.JFrame {
         BlinkingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         BlinkingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "500", "750", "1,000", "1,250", "1,500" }));
         ((JLabel) BlinkingComboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        BlinkingComboBox.setMinimumSize(new java.awt.Dimension(55, 23));
+        BlinkingComboBox.setPreferredSize(new java.awt.Dimension(55, 23));
         BlinkingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -1844,8 +1846,8 @@ public class Settings_System extends javax.swing.JFrame {
                 if (mainForm != null && gateCountChanged)
                 {
                     JOptionPane.showMessageDialog(mainForm, "After Gate count change," + 
-                            System.lineSeparator() + "'OsParking' shuts down by itself." +
-                            System.lineSeparator() + "So, you need to start OsParking again.", 
+                            System.lineSeparator() + "'OSParking' shuts down by itself." +
+                            System.lineSeparator() + "So, you need to start OSParking again.", 
                             "Reboot System", WARNING_MESSAGE, 
                             new javax.swing.ImageIcon(mainForm.getClass().getResource("/restart.png")));
                     mainForm.askUserIntentionOnProgramStop(true);
