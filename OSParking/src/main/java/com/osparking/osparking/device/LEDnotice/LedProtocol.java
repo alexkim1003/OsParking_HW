@@ -16,6 +16,8 @@
  */
 package com.osparking.osparking.device.LEDnotice;
 
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.WHOLE_AREA;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ALL;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
@@ -44,13 +46,18 @@ import java.util.logging.Logger;
 public class LedProtocol {
 
     final static String STX = "02";                   //데이터 전송 시작 코드
+    final static int intSTX = Integer.parseInt(STX);
+    
     final static String ETX = "03";                   //데이터 전송 마침 코드 
+    final static int intETX = Integer.parseInt(ETX);
+    
     final static String R5  = "0000000000";           // 5자리 예약 공간 표시
     final static String R6  = "076B033C0000";         // 6자리 예약 공간 표시
     final static String R9  = "000000000000000000";   // 9자리 예약 공간 표시
     final static String type2 = "41";
     
-    final static String SUCCESS = "31";                   // success
+    final static int SUCCESS = 0x31;                   // success: 0x31
+    final static int FAILURE = 0x30;                   // failure: 0x30
 
     /**
      * hex String을 Byte Array로 변환하기 위한 코드
@@ -95,34 +102,40 @@ public class LedProtocol {
      * @param p     position
      * @return 
      */
-    public String setCoordinate(int pos) {    
+    public String setCoordinate(DisplayArea pos) {    
         String position = null;
+        String X, Y, W, H;
 
-        if (pos == 1) {
-            String X = String.format("%02X", 0);
-            String Y = String.format("%02X", 0);
-            String W = String.format("%02X", 12);
-            String H = String.format("%02X", 16);
-            position = X + Y + W + H;
-        }
-        else if (pos == 2) {
-            String X = String.format("%02X", 0);
-            String Y = String.format("%02X", 16);
-            String W = String.format("%02X", 12);
-            String H = String.format("%02X", 32);
-            position = X + Y + W + H;
-        }
-        else if (pos == 3) {
-            String X = String.format("%02X", 0);
-            String Y = String.format("%02X", 0);
-            String W = String.format("%02X", 12);
-            String H = String.format("%02X", 32);
-            position = X + Y + W + H;
-        }
-            return position;
-        }
+        switch (pos) {
+            case TOP_ROW:
+                X = String.format("%02X", 0);
+                Y = String.format("%02X", 0);
+                W = String.format("%02X", 12);
+                H = String.format("%02X", 16);
+                position = X + Y + W + H;
+                break;
 
+            case BOTTOM_ROW:
+                X = String.format("%02X", 0);
+                Y = String.format("%02X", 16);
+                W = String.format("%02X", 12);
+                H = String.format("%02X", 32);
+                position = X + Y + W + H;
+                break;
 
+            case WHOLE_AREA:
+                X = String.format("%02X", 0);
+                Y = String.format("%02X", 0);
+                W = String.format("%02X", 12);
+                H = String.format("%02X", 32);
+                position = X + Y + W + H;
+                break;
+                
+            default:
+                break;
+        }
+        return position;
+    }
 
     /**
      * 효과설정 함수 시작 효과, 시작 속도, 정지 시간, 마침 효과, 마침 속도, 반복횟수
@@ -135,12 +148,13 @@ public class LedProtocol {
      * @param repeat        광고 문구의 반복횟수  1 Byte - 0x41~0x4a까지 (65~74)
      * @return              위의 효과를 합친 String 값.
      */
-    public String setEffect(int startEffect, int startSpeed, int stopTime, int endEffect, int endSpeed, int repeat) {
+    public String setEffect(LEDnotice_enums.EffectType startEffect, int startSpeed, int stopTime,
+            LEDnotice_enums.EffectType endEffect, int endSpeed, int repeat) {
 
-        String se = Integer.toHexString(startEffect+63);
+        String se = Integer.toHexString(startEffect.getValue());
         String ss = Integer.toHexString(startSpeed+64);
         String st = Integer.toHexString(stopTime+63);
-        String ee = Integer.toHexString(endEffect+63);
+        String ee = Integer.toHexString(endEffect.getValue());
         String es = Integer.toHexString(endSpeed+64);
         String re = Integer.toHexString(repeat+64);
         String reserve = "0000";
@@ -148,10 +162,6 @@ public class LedProtocol {
         return (se+ss+st+ee+es+re+reserve);
 
     }
-
-
-
-
 
     /**
      * 글씨체 설정
@@ -271,10 +281,11 @@ public class LedProtocol {
      * @param text
      * @return
      */
-    public String textType(int roomNum, int pos, int se, int ss, int st, 
-        int ee, int es, int re, int setF, String text)  {
+    public String textType(int roomNum, DisplayArea pos, LEDnotice_enums.EffectType se, int ss, int st, 
+        LEDnotice_enums.EffectType ee, int es, int re, int setF, String text)  {
         
-        String index = String.format("%02X", roomNum+48);
+        // Display text storage room number
+        String index = String.format("%02X", roomNum + 0x30); // (0~31) starts with 0x30
         String Coordinate = setCoordinate(pos);
         String effect = setEffect(se, ss, st, ee, es, re);
         String font = setFonts(setF);
@@ -293,14 +304,14 @@ public class LedProtocol {
         String dataVariable = null;
         try {
             String index = String.format("%02X", indexnumber+48);
-            String Coordinate = setCoordinate(pos);
-            String effect = setEffect(se, ss, st, ee, es, re);
+//            String Coordinate = setCoordinate(pos);
+//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             byte [] message2 = text2.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
             String stringData2 = (byteArrayToHex(message2)).toUpperCase();
-            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font + stringData2;
+//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font + stringData2;
             
             
                 
@@ -329,12 +340,12 @@ public class LedProtocol {
         String dataVariable = null;
         try {
             String index = String.format("%02X", indexnumber+80);
-            String Coordinate = setCoordinate(pos);
-            String effect = setEffect(se, ss, st, ee, es, re);
+//            String Coordinate = setCoordinate(pos);
+//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
-            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
+//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
             
             
                 
@@ -350,14 +361,14 @@ public class LedProtocol {
                 
         try {
             String index = String.format("%02X", indexnumber+80);
-            String Coordinate = setCoordinate(p);
-            String effect = setEffect(se, ss, st, ee, es, re);
+//            String Coordinate = setCoordinate(p);
+//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             byte [] message2 = text2.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
             String stringData2 = (byteArrayToHex(message2)).toUpperCase();
-            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1bE1" + stringData2;
+//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1bE1" + stringData2;
             
             
         } catch (UnsupportedEncodingException ex) {
@@ -373,9 +384,9 @@ public class LedProtocol {
                 
         try {
             String index = String.format("%02X", indexnumber+80);
-            String Coordinate = setCoordinate(p);
-            String effect = setEffect(se, ss, st, ee, es, re);
-            String effect2 = setEffect(se2, ss2, st2, ee2, es2, re2);
+//            String Coordinate = setCoordinate(p);
+//            String effect = setEffect(se, ss, st, ee, es, re);
+//            String effect2 = setEffect(se2, ss2, st2, ee2, es2, re2);
             String font = setFonts(setF);
             String font2 = setFonts(setF2);
             byte [] message = text.getBytes("x-windows-949");
@@ -383,7 +394,7 @@ public class LedProtocol {
             String stringData = (byteArrayToHex(message)).toUpperCase();
             String stringData2 = (byteArrayToHex(message2)).toUpperCase();
 //            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1bE1" + stringData2;
-            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font2 + stringData2;
+//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font2 + stringData2;
             
             
         } catch (UnsupportedEncodingException ex) {
@@ -411,13 +422,13 @@ public class LedProtocol {
         String dataVariable = null;
         try {
             String index = String.format("%02X", indexnumber+48);
-            String Coordinate = setCoordinate(p);
-            String effect = setEffect(se, ss, st, ee, es, re);
+//            String Coordinate = setCoordinate(p);
+//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
             
-            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
+//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
             
                 
         } catch (UnsupportedEncodingException ex) {
@@ -523,7 +534,6 @@ public class LedProtocol {
 
         return dataOut;
     }
-    
 
     public String delAll() {
         String dataVariable = "3030";
@@ -569,12 +579,10 @@ public class LedProtocol {
         return sendMSG(INTR_TXT_ON, dataVariable);    
     }
 
-
     public String intOff() {
         String dataVariable = "417031";
         return sendMSG(INTR_TXT_OFF, dataVariable);    
     }
-
 
     public String setCom(int com0, int com1, int ack, int rs) {
 
@@ -598,7 +606,6 @@ public class LedProtocol {
         return sendMSG(GET_ID, "000000000000");
     }
 
-
     public String getVersion() {
 
         String dataVariable = "0EF2F0FA0000";
@@ -606,5 +613,4 @@ public class LedProtocol {
         return sendMSG(GET_VERSION, dataVariable);    
 
     }
-
 }

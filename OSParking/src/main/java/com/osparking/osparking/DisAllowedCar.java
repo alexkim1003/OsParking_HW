@@ -378,8 +378,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
     private void openBarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBarButtonActionPerformed
         if(parent != null){
             parent.raiseGateBar(gateNo, imageSN, delay);
-            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
-                    tagEnteredAs, -imageSN, delay);  
+//            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
+//                    tagEnteredAs, -imageSN, delay);  
                 
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg, -1, -1, null, BarOperation.MANUAL);
@@ -393,8 +393,8 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
     private void closeGateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeGateButtonActionPerformed
         if(parent != null){  
-            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
-                    tagEnteredAs, -imageSN, delay);  
+//            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
+//                    tagEnteredAs, -imageSN, delay);  
             
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        

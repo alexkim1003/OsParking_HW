@@ -30,7 +30,7 @@ import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
+import static com.osparking.osparking.Settings_System.mainForm;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
 
 //<editor-fold desc="-- Class LED_Task">
@@ -145,6 +145,8 @@ public class LED_Task extends TimerTask {
                 switch (gateDeviceTypes[gateNo].eBoardType) {
                     case LEDnotice:
                         deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(ledNoticeGetIDmsg);
+                        int priority = Thread.currentThread().getPriority();
+//                        System.out.print("B" + controlGUI.tolerance[E_Board.ordinal()][gateNo].getLevel());
                         break;
 
                     default:

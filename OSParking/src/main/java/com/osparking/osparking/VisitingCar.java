@@ -733,8 +733,8 @@ public class VisitingCar extends javax.swing.JFrame {
             if (openGate) {
                 parent.raiseGateBar(gateNo, imageSN, delay);
             }
-            parent.interruptEBoardDisplay(gateNo, tagRecognized, PermissionType.UNREGISTERED, 
-                    tagRecognized, -imageSN, delay);                
+//            parent.interruptEBoardDisplay(gateNo, tagRecognized, PermissionType.UNREGISTERED, 
+//                    tagRecognized, -imageSN, delay);                
 
             if (lowLevelComboBox.getSelectedIndex() == -1) {
                 l2No = -1;

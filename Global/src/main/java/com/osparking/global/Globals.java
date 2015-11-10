@@ -462,12 +462,6 @@ public class Globals {
     public static String exceptionLogName = "exception";    
     public static String exceptionPerDevice = "exceptionPerDev";    
      
-    /**
-     * Various constants used in the E-Board display control messages.
-     */
-    public final static byte TOP_ROW = 0;
-    public final static byte BOTTOM_ROW = 1;    
-
     public static int getFirstPart(String tagRecognized, StringBuilder firstPart) {
         //        String firstPart = tagRecognized.substring(
         //                tagRecognized.length() - 7, tagRecognized.length() - 5);

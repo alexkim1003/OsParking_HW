@@ -18,9 +18,9 @@ package com.osparking.osparking.device;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
+import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
 import javax.swing.JOptionPane;
@@ -33,15 +33,15 @@ public class SendEBDMessageTask implements Runnable {
     ControlGUI mainGUI;
     byte deviceNo;
     byte[] message;
-    byte rowNo;
+    OSP_enums.EBD_Row rowNo;
     private int sendCount = 0;
     int msgSN = 0; // message sequence number
 
-    public SendEBDMessageTask(ControlGUI mainGUI, int deviceNo, byte rowNo, byte[] message, int msgSN) {
+    public SendEBDMessageTask(ControlGUI mainGUI, int deviceNo, OSP_enums.EBD_Row row, byte[] message, int msgSN) {
         this.mainGUI = mainGUI;
         this.deviceNo = (byte) deviceNo;
         this.message = message;
-        this.rowNo = rowNo;
+        this.rowNo = row;
         this.msgSN = msgSN;
     }
 

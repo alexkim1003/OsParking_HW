@@ -45,6 +45,7 @@ import com.osparking.global.names.OSP_enums.EBD_Fonts;
 import com.osparking.global.names.OSP_enums.EBD_Effects;
 import static com.osparking.osparking.device.EBoardManager.sendEBoardDefaultSetting;
 import static com.osparking.global.names.DB_Access.gateCount;
+import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 
 /**
@@ -1423,7 +1424,12 @@ public class Settings_EBoard extends javax.swing.JFrame {
             {
                 for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
                     if (isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo].getSocket())) {
-                        sendEBoardDefaultSetting(mainForm, gateNo, (byte) usage_row.ordinal());
+                        OSP_enums.EBD_Row row = OSP_enums.EBD_Row.BOTTOM;
+                        
+                        if (usage_row.ordinal() == DEFAULT_TOP_ROW.ordinal())
+                            row = OSP_enums.EBD_Row.TOP;
+                        
+                        sendEBoardDefaultSetting(mainForm, gateNo, row);
                     }
                 }
             }
@@ -1469,15 +1475,15 @@ public class Settings_EBoard extends javax.swing.JFrame {
                 }
                 else if(n == JOptionPane.NO_OPTION) {
                     eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() <= 2 ? 0 : 1);
-                    if(usage_row.ordinal()%2 == 1)
+                    if (usage_row.ordinal()%2 == 1)
                     {
                         ((JTabbedPane) eboardTabbedPanel
-                                .getSelectedComponent()).setSelectedIndex(TOP_ROW);
+                                .getSelectedComponent()).setSelectedIndex(EBD_Row.TOP.getValue());
                     }
                     else
                     {
                         ((JTabbedPane) eboardTabbedPanel
-                                .getSelectedComponent()).setSelectedIndex(BOTTOM_ROW);
+                                .getSelectedComponent()).setSelectedIndex(EBD_Row.BOTTOM.getValue());
                     }
                 }
             }
@@ -1495,9 +1501,11 @@ public class Settings_EBoard extends javax.swing.JFrame {
                     null);
             eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() <= 2 ? 0 : 1);
             if(usage_row.ordinal()%2 == 1)
-                ((JTabbedPane) eboardTabbedPanel.getSelectedComponent()).setSelectedIndex(TOP_ROW);
+                ((JTabbedPane) eboardTabbedPanel.getSelectedComponent())
+                        .setSelectedIndex(EBD_Row.TOP.getValue());
             else
-                ((JTabbedPane) eboardTabbedPanel.getSelectedComponent()).setSelectedIndex(BOTTOM_ROW);
+                ((JTabbedPane) eboardTabbedPanel.getSelectedComponent())
+                        .setSelectedIndex(EBD_Row.BOTTOM.getValue());
         }
     }
     

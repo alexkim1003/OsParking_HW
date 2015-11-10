@@ -22,6 +22,21 @@ package com.osparking.global.names;
  */
 public class OSP_enums {
     
+    public enum EBD_Row {
+        TOP(1), 
+        BOTTOM(2);
+        
+        private int value;
+        
+        EBD_Row(int numVal) {
+            this.value = numVal;
+        }
+
+        public int getValue() {
+            return value;
+        }            
+    }
+    
     public enum E_BoardType {
         Simulator,
         LEDnotice,

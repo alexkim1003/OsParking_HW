@@ -27,7 +27,9 @@ import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
+import com.osparking.global.names.OSP_enums;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.STX;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
 
@@ -76,7 +78,6 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     public void run()
     {   
         byte[] preMsg = new byte[3];
-        int stx;
         int successFail_int;
         int typeInt;
         byte posiETX; // jbpark03
@@ -89,7 +90,7 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 return;
             }
             
-            int msgCode = -2;
+            int msgLength = -2;
             // read device message as long as connection is good
             
             try {
@@ -103,36 +104,20 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     
                         if (justBooted) {
                             justBooted = false;
-                            sendEBoardDefaultSetting(mainForm, deviceNo, TOP_ROW);
-                            sendEBoardDefaultSetting(mainForm, deviceNo, BOTTOM_ROW);
+                            sendEBoardDefaultSetting(mainForm, deviceNo, OSP_enums.EBD_Row.TOP);
+                            sendEBoardDefaultSetting(mainForm, deviceNo, OSP_enums.EBD_Row.BOTTOM);
                         } 
                     }
                     //</editor-fold>
                 } 
                 // SocketTimeoutException will arise when no data on the socket during 1 second
-                msgCode = socket.getInputStream().read(preMsg); // waits for PULSE_PERIOD miliseconds    
-                
-                //<editor-fold defaultstate="collapsed" desc="-- Reject irrelevant message code">
-                if (msgCode == -1) {
-                    // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    finishConnection(null,  "End of stream reached, gate #" + deviceNo, deviceNo);
-                    continue;
-                } else if (msgCode != preMsg.length) {
-                    finishConnection(null, "Wrong format message prefix: "+ msgCode, deviceNo);
-                    continue;
-                }
-                //</editor-fold>                
-                
-                stx = preMsg[0];
+                msgLength = socket.getInputStream().read(preMsg); // waits for PULSE_PERIOD miliseconds 
                 successFail_int = preMsg[1];
                 typeInt = preMsg[2];        
                 
-//                String isStart = String.format("%02X", stx); 
-                String successFail = String.format("%02X", successFail_int);
-//                String typeStr = String.format("%02X", typeInt);     
-                
                 int mIdx = 0;
-                while ( true )  {
+                while ( true )  
+                {
                     posiETX = (byte)(socket.getInputStream().read());
                     if (posiETX == 3) {
                         MsgPost[mIdx++] = posiETX;
@@ -146,115 +131,34 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     }
                 }     
                 
-                String data_Test = "";
-                for(int i = 0; i < mIdx; i++) {
-                    data_Test += String.format("%02X", MsgPost[i]);
-                }                
-
-                if (typeInt == GET_ID.getValue()) {
-                    // process LEDnotice device heartbeat
-                    if (successFail.equals(SUCCESS) ) {
-                        mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
-                    }
+                //<editor-fold defaultstate="collapsed" desc="-- Handle message arrived">
+                if (msgLength == -1) {
+                    // 'End of stream' means other party closed socket. So, I need to close it from my side.
+                    finishConnection(null,  "End of stream reached, gate #" + deviceNo, deviceNo);
                 } else {
-                    
-                }
+                    if (validMessage(preMsg, MsgPost[mIdx - 1])) 
+                    {
+                        String data_Test = "";
+                        int i = 0;
+                        
+                        for ( ; i < preMsg.length; i++) { data_Test += String.format("%02X", preMsg[i]); }
+                        System.out.print("msg came: " + data_Test);
+                        
+                        data_Test = "";
+                        for (i = 0; i < mIdx; i++) { data_Test += String.format("%02X", MsgPost[i]); }
+                        System.out.println(data_Test);
 
-                //<editor-fold defaultstate="collapsed" desc="-- Process message from e-board">
-//                synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
-//                {
-//                    switch (MsgCode.values()[msgCode]) 
-//                    {      
-//                        case EBD_ID_ACK: // e-board heartbeat
-//                            //<editor-fold defaultstate="collapsed" desc="--handle gate bar heartbeat">
-//                            if (noArtificialErrorInserted(mainForm.errorCheckBox))
-//                            {
-//                                /**
-//                                 * Maximize tolerance value for the E-Board.
-//                                 * manager will consider this bar connected for the next MAX_TOLERANCE
-//                                 * LED blinking cycles.
-//                                 */
-//                                mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
-//                            }
-//                            break;
-//                            //</editor-fold>
-//
-//                        case EBD_ACK: // gate acknowledges an e-board display message reception.
-//                            //<editor-fold defaultstate="collapsed" desc="--ACK for display interrupt or default display change">
-//                            byte[] restOfMessage = new byte[3];
-//
-//                            if (isConnected(socket))
-//                                socket.getInputStream().read(restOfMessage);
-//                            else
-//                                continue;
-//
-////                            System.out.println("4. message ACD arrived at: " + System.currentTimeMillis() % 10000);
-//
-//                            int codeAcked = restOfMessage[0];
-//                            short checkTSC = (short)(msgCode + codeAcked); // TCS: This Site Calculation
-//
-//                            if (restOfMessage[1] == (byte)((checkTSC >> 8) & 0xff)
-//                                    && restOfMessage[2] == (byte)(checkTSC & 0xff))
-//                            {
-//                                //<editor-fold desc="-- Handle ACK response from E-Board">
-//                                int row = -1;
-//
-//                                //<editor-fold desc="-- Calculate row number(0 or 1)">
-//                                if (codeAcked == EBD_INTERRUPT1.ordinal()
-//                                        || codeAcked == EBD_DEFAULT1.ordinal()) {
-//                                        row = TOP_ROW;
-//                                } else if (codeAcked == EBD_INTERRUPT2.ordinal()
-//                                        || codeAcked == EBD_DEFAULT2.ordinal()) {
-//                                        row = BOTTOM_ROW;
-//                                } else {
-//                                    logParkingException(Level.SEVERE, null, "wrong row number", deviceNo);
-//                                    break;
-//                                }
-//                                //</editor-fold>
-//
-//                                ParkingTimer msgSendingTimer = mainForm.getSendEBDmsgTimer()[deviceNo][row];
-//                                if (msgSendingTimer.hasTask()) {
-//                                    //<editor-fold desc="-- Save debugging info">
-//                                    if (codeAcked == EBD_INTERRUPT1.ordinal() || 
-//                                            codeAcked == EBD_INTERRUPT2.ordinal() ) 
-//                                    {
-//                                        long currTmMs = System.currentTimeMillis();
-//                                        long ackDelay = (int)(currTmMs - mainForm.eBoardMsgSentMs[deviceNo][row]);
-//                                        int resendCnt = ( (SendEBDMessageTask)msgSendingTimer.getParkingTask() )
-//                                                .getResendCount();
-//
-//                                        if (DEBUG) {
-//                                            mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]
-//                                                    .addAckSpeedStatistics((int)ackDelay, resendCnt);
-////                                            System.out.println(timeFormat.format(new Date()) + "--row:" + row 
-////                                                    + ", resent: " + resendCnt + ", delay:$ " + ackDelay);
-//                                        }
-//                                    }
-//                                    //</editor-fold>
-//
-//                                    msgSendingTimer.cancelTask();
-//                                }
-//                                //</editor-fold>
-//                            }
-//                            break;
-//                            //</editor-fold>
-//
-//                        case JustBooted:
-//                            //<editor-fold defaultstate="collapsed" desc="-- First connection after device booting">
-//                            // reset recent device disconnection time 
-////                            System.out.println("just booted arrived");
-//                            mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo].resetStatChangeTm();
-//                            break;
-//                            //</editor-fold>
-//                                                  
-//                        default:
-//                            throw new Exception("Unhandled message code " + MsgCode.values()[msgCode] 
-//                                + " from E-Board #" + deviceNo);
-//                    }
-//                }
-                //</editor-fold>
-                
+                        if (typeInt == GET_ID.getValue()) {
+                            // process LEDnotice device heartbeat
+                            mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
+//                            if (mIdx == 1) System.out.println("C"); else System.out.print("C");
+                        } else if (typeInt == SAVE_TEXT.getValue()) {
+                        }
+                    } 
+                }
+                //</editor-fold>                    
             } catch (SocketTimeoutException e) {
+                // exit this try statement and go to the following statement
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "E-Board manager #" + deviceNo + " waits socket conn'");
@@ -273,7 +177,6 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 finishConnection(e2, "E-Board manager Excp", deviceNo);
             }
             //</editor-fold>
-
             if (mainForm.tolerance[E_Board.ordinal()][deviceNo].getLevel() <= 0) {
                 finishConnection(null, "LED: tolerance depleted for", deviceNo);
             }
@@ -336,10 +239,10 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         }
     }
 
-    public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, byte row) {
-        if (! mainForm.getSendEBDmsgTimer()[deviceNo][row].hasTask())
+    public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, OSP_enums.EBD_Row row) {
+        if (! mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask())
         {
-            mainForm.getSendEBDmsgTimer()[deviceNo][row].reschedule(
+            mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
                         new SendEBDMessageTask(
                             mainForm, deviceNo, row, 
                             mainForm.getDefaultMessage(
@@ -352,5 +255,21 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     @Override
     public boolean isNeverConnected() {
         return neverConnected;
+    }
+
+    private boolean validMessage(byte[] preMsg, byte possibleETX) {
+//        if (preMsg[1] == SUCCESS) {
+//            System.out.println("success");
+//        } else {
+//            System.out.println("fail");
+//        }
+        if (preMsg[0] == LedProtocol.intSTX 
+                && possibleETX == LedProtocol.intETX
+                && preMsg[1] == SUCCESS) 
+        {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

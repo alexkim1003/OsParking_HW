@@ -27,6 +27,7 @@ import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
+import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_ACK;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT1;
@@ -100,8 +101,8 @@ public class EBoardManager extends Thread implements DeviceManager {
                     
                         if (justBooted) {
                             justBooted = false;
-                            sendEBoardDefaultSetting(mainForm, deviceNo, TOP_ROW);
-                            sendEBoardDefaultSetting(mainForm, deviceNo, BOTTOM_ROW);
+                            sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.TOP);
+                            sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.BOTTOM);
                         } 
                     }
                     //</editor-fold>
@@ -157,29 +158,31 @@ public class EBoardManager extends Thread implements DeviceManager {
                                     && restOfMessage[2] == (byte)(checkTSC & 0xff))
                             {
                                 //<editor-fold desc="-- Handle ACK response from E-Board">
-                                int row = -1;
+                                EBD_Row row;
 
                                 //<editor-fold desc="-- Calculate row number(0 or 1)">
                                 if (codeAcked == EBD_INTERRUPT1.ordinal()
                                         || codeAcked == EBD_DEFAULT1.ordinal()) {
-                                        row = TOP_ROW;
+                                        row = EBD_Row.TOP;
                                 } else if (codeAcked == EBD_INTERRUPT2.ordinal()
                                         || codeAcked == EBD_DEFAULT2.ordinal()) {
-                                        row = BOTTOM_ROW;
+                                        row = EBD_Row.BOTTOM;
                                 } else {
                                     logParkingException(Level.SEVERE, null, "wrong row number", deviceNo);
                                     break;
                                 }
                                 //</editor-fold>
 
-                                ParkingTimer msgSendingTimer = mainForm.getSendEBDmsgTimer()[deviceNo][row];
+                                ParkingTimer msgSendingTimer 
+                                        = mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()];
                                 if (msgSendingTimer.hasTask()) {
                                     //<editor-fold desc="-- Save debugging info">
                                     if (codeAcked == EBD_INTERRUPT1.ordinal() || 
                                             codeAcked == EBD_INTERRUPT2.ordinal() ) 
                                     {
                                         long currTmMs = System.currentTimeMillis();
-                                        long ackDelay = (int)(currTmMs - mainForm.eBoardMsgSentMs[deviceNo][row]);
+                                        long ackDelay 
+                                                = (int)(currTmMs - mainForm.eBoardMsgSentMs[deviceNo][row.ordinal()]);
                                         int resendCnt = ( (SendEBDMessageTask)msgSendingTimer.getParkingTask() )
                                                 .getResendCount();
 
@@ -296,10 +299,10 @@ public class EBoardManager extends Thread implements DeviceManager {
         }
     }
 
-    public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, byte row) {
-        if (! mainForm.getSendEBDmsgTimer()[deviceNo][row].hasTask())
+    public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, EBD_Row row) {
+        if (! mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask())
         {
-            mainForm.getSendEBDmsgTimer()[deviceNo][row].reschedule(
+            mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
                         new SendEBDMessageTask(
                             mainForm, deviceNo, row, 
                             mainForm.getDefaultMessage(
