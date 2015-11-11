@@ -28,10 +28,13 @@ import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
 import com.osparking.global.names.OSP_enums;
+import com.osparking.global.names.OSP_enums.EBD_Row;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_MONITOR;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.STX;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
+import java.util.logging.Logger;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -63,6 +66,8 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     boolean justBooted = true;
     private boolean neverConnected = true;
 
+    public LedProtocol ledNoticeProtocol = new LedProtocol(); 
+    
     /**
      * 
      * @param mainForm main GUI form of the whole manager program
@@ -74,12 +79,11 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         this.mainForm = mainForm; 
         this.deviceNo = deviceNo;
     }    
-
+    
     public void run()
     {   
         byte[] preMsg = new byte[3];
-        int successFail_int;
-        int typeInt;
+        byte typeInt;
         byte posiETX; // jbpark03
         
         byte[] MsgPost = new byte[100];
@@ -104,16 +108,21 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     
                         if (justBooted) {
                             justBooted = false;
-                            sendEBoardDefaultSetting(mainForm, deviceNo, OSP_enums.EBD_Row.TOP);
-                            sendEBoardDefaultSetting(mainForm, deviceNo, OSP_enums.EBD_Row.BOTTOM);
+                            byte[] message = mainForm.getDefaultMessage(
+                                    deviceNo, OSP_enums.EBD_Row.TOP, --mainForm.msgSNs[deviceNo]);
+                            sendDefaultText_ScreenSize(mainForm, deviceNo, OSP_enums.EBD_Row.TOP, message);
+                            
+                            message = mainForm.getDefaultMessage(
+                                    deviceNo, OSP_enums.EBD_Row.BOTTOM, --mainForm.msgSNs[deviceNo]);
+//                            sendDefaultText_ScreenSize(mainForm, deviceNo, OSP_enums.EBD_Row.BOTTOM, message);
                         } 
                     }
                     //</editor-fold>
                 } 
                 // SocketTimeoutException will arise when no data on the socket during 1 second
                 msgLength = socket.getInputStream().read(preMsg); // waits for PULSE_PERIOD miliseconds 
-                successFail_int = preMsg[1];
-                typeInt = preMsg[2];        
+                typeInt = preMsg[2];  
+                int typeUint = LedProtocol.byteToUint(typeInt);
                 
                 int mIdx = 0;
                 while ( true )  
@@ -142,19 +151,29 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                         int i = 0;
                         
                         for ( ; i < preMsg.length; i++) { data_Test += String.format("%02X", preMsg[i]); }
-                        System.out.print("msg came: " + data_Test);
-                        
-                        data_Test = "";
                         for (i = 0; i < mIdx; i++) { data_Test += String.format("%02X", MsgPost[i]); }
-                        System.out.println(data_Test);
-
-                        if (typeInt == GET_ID.getValue()) {
+                        System.out.println("msg came: " + data_Test);
+                        
+                        if (typeUint == GET_ID.getValue()) {
                             // process LEDnotice device heartbeat
                             mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
-//                            if (mIdx == 1) System.out.println("C"); else System.out.print("C");
-                        } else if (typeInt == SAVE_TEXT.getValue()) {
+                        } else if (typeUint == SET_MONITOR.getValue()) {
+                            ParkingTimer msgSendingTimer 
+                                    = mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()];
+                            if (msgSendingTimer.hasTask()) {
+                                msgSendingTimer.cancelTask();
+                                System.out.println("monitor size setting timer task cancelled");
+                            }
+                        } else {
+                            if (typeUint == SAVE_TEXT.getValue()) {
+                                ParkingTimer msgSendingTimer 
+                                        = mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()];
+                                if (msgSendingTimer.hasTask()) {
+                                    msgSendingTimer.cancelTask();
+                                }
+                            }
                         }
-                    } 
+                    }
                 }
                 //</editor-fold>                    
             } catch (SocketTimeoutException e) {
@@ -239,17 +258,21 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         }
     }
 
-    public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, OSP_enums.EBD_Row row) {
-        if (! mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask())
+    public static void sendDefaultText_ScreenSize(ControlGUI mainForm, 
+            byte deviceNo, EBD_Row row, byte[] message) 
+    {
+        while (mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask()) 
         {
-            mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
-                        new SendEBDMessageTask(
-                            mainForm, deviceNo, row, 
-                            mainForm.getDefaultMessage(
-                                    deviceNo, row,
-                                    --mainForm.msgSNs[deviceNo]), 
-                            mainForm.msgSNs[deviceNo]));
-        }    
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                logParkingException(Level.SEVERE, ex, "default text sender sleeping");
+            }
+        }
+        
+        mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
+                new SendEBDMessageTask(
+                        mainForm, deviceNo, row, message, mainForm.msgSNs[deviceNo]));
     }
 
     @Override

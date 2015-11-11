@@ -145,8 +145,6 @@ public class LED_Task extends TimerTask {
                 switch (gateDeviceTypes[gateNo].eBoardType) {
                     case LEDnotice:
                         deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(ledNoticeGetIDmsg);
-                        int priority = Thread.currentThread().getPriority();
-//                        System.out.print("B" + controlGUI.tolerance[E_Board.ordinal()][gateNo].getLevel());
                         break;
 
                     default:

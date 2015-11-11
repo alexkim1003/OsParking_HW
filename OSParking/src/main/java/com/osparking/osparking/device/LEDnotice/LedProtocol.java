@@ -44,7 +44,9 @@ import java.util.logging.Logger;
  * @author Open Source Parking Inc.
  */
 public class LedProtocol {
-
+    final public static int LED_COLUMN_CNT = 6; // LEDnotice 제품의 열 개수.
+    final public static int STOP_TIME_MIN = 1;
+    
     final static String STX = "02";                   //데이터 전송 시작 코드
     final static int intSTX = Integer.parseInt(STX);
     
@@ -59,6 +61,10 @@ public class LedProtocol {
     final static int SUCCESS = 0x31;                   // success: 0x31
     final static int FAILURE = 0x30;                   // failure: 0x30
 
+    public static int byteToUint(byte b) {
+        return b & 0xFF;
+    }    
+    
     /**
      * hex String을 Byte Array로 변환하기 위한 코드
      * @param hex
@@ -223,45 +229,13 @@ public class LedProtocol {
         return String.format("%04X", length + type +variable);
     }
 
-    //0x10, 0x02, 0x03을 검사하여 치환
-    /**
-     * SpecialCharater를 구분하기위한 코드.
-     * 
-     * STX와 ETX를 제외한 곳에서 Special Character (STX(0x02), ETX(0x03), DLE(0x10)) 
-     * 이 있으면 Special Character 앞에 DLE(0x10)을 추가하고 
-     * SpecialCharacter에 SP(0x20)을 더하여 전송한다.
-     * 이때 0x10 및 0x20을 추가 및 더하여도 전체 LENGTH 및 CHECKSUM에는 아무런 변화가 없다.
-     * 
-     * @param sendData
-     * @return 
-     */
-    public static String finalData(String sendData) {    
-        int data_length = sendData.length();
-
-        String data;
-        String alter_Data = "";
-
-        for (int n=0; n < data_length; n = n + 2) {
-
-            data = sendData.substring(n, n+2);
-            if ("10".equals(data))
-            {data = "1030";}
-            else if ("02".equals(data))
-            {data = "1022";}
-            else if ("03".equals(data))
-            {data = "1023";}
-            alter_Data += data;
-        }
-        return alter_Data.toUpperCase();    
-    }
-
     public String sendMSG(MsgType msgType, String dataVariable){
         String typeANDdata = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
         String msgLen = String.format("%04X", typeANDdata.length() / 2);
         String ckSum = checkSum(msgLen, Integer.toHexString(msgType.getValue()), dataVariable);
         String typeText = msgLen + typeANDdata + ckSum;
 
-        String dataOut = STX + finalData(typeText) + ETX;
+        String dataOut = STX + removeSpecialCharacter(typeText) + ETX;
         
         return dataOut;
     } 
@@ -298,29 +272,6 @@ public class LedProtocol {
 
     }
     
-    public String textType2(int indexnumber, int pos, int se, int ss, int st, 
-        int ee, int es, int re, int setF, String text, String text2)  {
-        
-        String dataVariable = null;
-        try {
-            String index = String.format("%02X", indexnumber+48);
-//            String Coordinate = setCoordinate(pos);
-//            String effect = setEffect(se, ss, st, ee, es, re);
-            String font = setFonts(setF);
-            byte [] message = text.getBytes("x-windows-949");
-            byte [] message2 = text2.getBytes("x-windows-949");
-            String stringData = (byteArrayToHex(message)).toUpperCase();
-            String stringData2 = (byteArrayToHex(message2)).toUpperCase();
-//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font + stringData2;
-            
-            
-                
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            return sendMSG(SAVE_TEXT, dataVariable);
-
-    }
     /**
      * Interrupt Text Display Settings.
      * 
@@ -439,18 +390,61 @@ public class LedProtocol {
     
     }
 
-    public String setScreen(int i, int w, int h) {
+    public String getScreenSetString(int i, int w, int h) {
 
-        String I = String.format("%04X", i); //스토리리스트 개수
+        String I = String.format("%04X", i); //스토리 리스트 개수 ??
         String W = String.format("%02X", w); //화면의 가로모듈 수
         String H = String.format("%02X", h); //화면의 세로모듈 수
+        String dataVariable = I + W + H + "0000000000"; // "3030300000"; 
 
-        String dataVariable = I + W + H + "3030300000"; 
-
-
-        return sendMSG(SET_MONITOR, dataVariable);
+        return getStringToTransmit(SET_MONITOR, dataVariable);
     }
 
+    public String getStringToTransmit(MsgType msgType, String dataVariable){
+        String forlength = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
+        String dLength = String.format("%04X", forlength.length() / 2);
+        String ckSum = checkSum(dLength, Integer.toHexString(msgType.getValue()), dataVariable);
+        String typeText = dLength + forlength + ckSum;
+
+        String dataOut = STX + removeSpecialCharacter(typeText) + ETX;
+        
+        return dataOut;
+    } 
+    
+    //0x10, 0x02, 0x03을 검사하여 치환
+    /**
+     * SpecialCharater를 구분하기위한 코드.
+     * 
+     * STX와 ETX를 제외한 곳에서 Special Character (STX(0x02), ETX(0x03), DLE(0x10)) 
+     * 이 있으면 Special Character 앞에 DLE(0x10)을 추가하고 
+     * SpecialCharacter에 SP(0x20)을 더하여 전송한다.
+     * 이때 0x10 및 0x20을 추가 및 더하여도 전체 LENGTH 및 CHECKSUM에는 아무런 변화가 없다.
+     * 
+     * @param sendData
+     * @return 
+     */
+    public static String removeSpecialCharacter(String sendData) {    
+        int data_length = sendData.length();
+
+        String data;
+        String alter_Data = "";
+
+        for (int n=0; n < data_length; n = n + 2) {
+
+            data = sendData.substring(n, n+2);
+            if ("10".equals(data))
+            {data = "1030";}
+            else if ("02".equals(data))
+            {data = "1022";}
+            else if ("03".equals(data))
+            {data = "1023";}
+            alter_Data += data;
+        }
+
+    return alter_Data.toUpperCase();    
+
+    }    
+    
     public String setTime() {
        long now = System.currentTimeMillis();
 
@@ -486,7 +480,7 @@ public class LedProtocol {
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, "61", dataVariable);
         String ScreenArea = dLength + forlength + ckSum;
-        String dataOut = STX + finalData(ScreenArea) + ETX;   
+        String dataOut = STX + removeSpecialCharacter(ScreenArea) + ETX;   
 
         return dataOut;
 
@@ -515,7 +509,7 @@ public class LedProtocol {
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, Integer.toHexString(DEL_TEXT_ONE.getValue()), dataVariable);
         String delData = dLength + forlength + ckSum;
-        String dataOut = STX + finalData(delData) + ETX;   
+        String dataOut = STX + removeSpecialCharacter(delData) + ETX;   
 
         return dataOut;
     }
@@ -530,7 +524,7 @@ public class LedProtocol {
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, typesG, dataVariable);
         String delData = dLength + forlength + ckSum;
-        String dataOut = STX + finalData(delData) + ETX;   
+        String dataOut = STX + removeSpecialCharacter(delData) + ETX;   
 
         return dataOut;
     }
@@ -541,7 +535,7 @@ public class LedProtocol {
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, Integer.toHexString(DEL_TEXT_ALL.getValue()), dataVariable);
         String delData = dLength + forlength + ckSum;
-        String dataOut = STX + finalData(delData) + ETX;   
+        String dataOut = STX + removeSpecialCharacter(delData) + ETX;   
     
         return dataOut;     
     }
@@ -562,7 +556,7 @@ public class LedProtocol {
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, typesT, dataVariable);
         String delData = dLength + forlength + ckSum;
-        String dataOut = STX + finalData(delData) + ETX;   
+        String dataOut = STX + removeSpecialCharacter(delData) + ETX;   
 
         return dataOut;
     }

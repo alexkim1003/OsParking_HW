@@ -1750,35 +1750,34 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
-    private byte[] getLEDnoticeDefaultMessage(byte deviceNo, EBD_Row row) {
+    private byte[] getLEDnoticeDefaultMessage(EBD_Row row) {
         int setFont = 1; // getLEDrowFont();
 
         int startSpeed = 15; // 1 ~ 31
         int stopTime = 5; // 1 ~ 10
         int endSpeed = 15;
         int repeatCnt = 2;
-
-        String displayText = ledNoticeProtocol.textType(0, // memory room number (range: 0~31)
-                (row == EBD_Row.TOP ? DisplayArea.TOP_ROW : DisplayArea.BOTTOM_ROW), 
-                EffectType.STOP_MOVING, startSpeed, stopTime, 
-                EffectType.NONE, endSpeed, repeatCnt, setFont, 
-                "오픈소스파3");
-//        sendData(displayText);
+        String displayText = null;
         
+        if (row == EBD_Row.TOP) {
+            displayText = ledNoticeProtocol.textType(0, // memory room number (range: 0~31)
+                    (row == EBD_Row.TOP ? DisplayArea.TOP_ROW : DisplayArea.BOTTOM_ROW), 
+                    EffectType.STOP_MOVING, startSpeed, stopTime, 
+                    EffectType.NONE, endSpeed, repeatCnt, setFont, 
+                    "환영합니다!");
+        } else {
+            startSpeed = 15; // 1 ~ 31
+            stopTime = 5; // 1 ~ 10
+            endSpeed = 15;
+            repeatCnt = 2;
+
+            displayText = ledNoticeProtocol.textType(1, // memory room number (range: 0~31)
+                    BOTTOM_ROW, 
+                    EffectType.FLOW_RtoL, startSpeed, stopTime, 
+                    EffectType.FLOW_DOWN, endSpeed, repeatCnt, setFont,
+                    "OzParking");
+        }
         return ledNoticeProtocol.hexToByteArray(displayText);
-
-//        startSpeed = 15; // 1 ~ 31
-//        stopTime = 5; // 1 ~ 10
-//        endSpeed = 15;
-//        repeatCnt = 2;
-//
-//        displayText = ledP.textType(1, // memory room number (range: 0~31)
-//                BOTTOM_ROW, 
-//                EffectType.FLOW_RtoL, startSpeed, stopTime, 
-//                EffectType.FLOW_DOWN, endSpeed, repeatCnt, setFont,
-//                (year ++) + ". 22. 22. Tuesday");            
-//        sendData(displayText);
-        
     }
     
     class ManageArrivalList extends Thread {
@@ -2983,20 +2982,18 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         });
     }
     
-    
     public byte[] getDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
         byte[] result;
 
         switch (gateDeviceTypes[deviceNo].eBoardType) {
             case LEDnotice:
-                result = getLEDnoticeDefaultMessage(deviceNo, row);
+                result = getLEDnoticeDefaultMessage(row);
                 break;
 
             default:
                 result = getEBDSimulatorDefaultMessage(deviceNo, row, msgSN);
                 break;
         }
-
         return result;
     }
     

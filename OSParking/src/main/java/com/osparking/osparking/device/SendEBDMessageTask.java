@@ -37,7 +37,9 @@ public class SendEBDMessageTask implements Runnable {
     private int sendCount = 0;
     int msgSN = 0; // message sequence number
 
-    public SendEBDMessageTask(ControlGUI mainGUI, int deviceNo, OSP_enums.EBD_Row row, byte[] message, int msgSN) {
+    public SendEBDMessageTask(ControlGUI mainGUI, 
+            int deviceNo, OSP_enums.EBD_Row row, byte[] message, int msgSN) 
+    {
         this.mainGUI = mainGUI;
         this.deviceNo = (byte) deviceNo;
         this.message = message;
@@ -56,6 +58,7 @@ public class SendEBDMessageTask implements Runnable {
                 }
             }
             ++sendCount;
+            System.out.println("send count: " + sendCount);
             mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket().getOutputStream()
                     .write(message);
             

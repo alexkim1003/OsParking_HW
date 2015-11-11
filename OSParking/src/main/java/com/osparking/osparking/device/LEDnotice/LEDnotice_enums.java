@@ -22,6 +22,22 @@ package com.osparking.osparking.device.LEDnotice;
  */
 public class LEDnotice_enums {
     
+    public enum RoomType {
+        GENERAL_TEXT(0x30), // 일반 텍스트
+        RAM(0x31), // Ram
+        INTERRUPT_TEXT(0x32); // 인터럽트 텍스트
+        
+        private int value;
+
+        RoomType(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }       
+    }            
+    
     public enum DisplayArea {
         TOP_ROW(1), 
         BOTTOM_ROW(2), 
@@ -92,6 +108,7 @@ public class LEDnotice_enums {
     
     public enum MsgType {
         DEL_TEXT_ONE (0x31), // delete individual text
+        DEL_GROUP (0x32), // 그룹 메모리 삭제
         DEL_TEXT_ALL (0x33),  // delete whole text
         INTR_TXT_ON (0x3c),  // set interrupt text on
         INTR_TXT_OFF (0x3d),  // set interrupt text off
