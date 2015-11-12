@@ -118,7 +118,6 @@ import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.BOTTOM_ROW;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.TOP_ROW;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
 import com.osparking.osparking.device.SendEBDMessageTask;
@@ -1750,36 +1749,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
-    private byte[] getLEDnoticeDefaultMessage(EBD_Row row) {
-        int setFont = 1; // getLEDrowFont();
-
-        int startSpeed = 15; // 1 ~ 31
-        int stopTime = 5; // 1 ~ 10
-        int endSpeed = 15;
-        int repeatCnt = 2;
-        String displayText = null;
-        
-        if (row == EBD_Row.TOP) {
-            displayText = ledNoticeProtocol.textType(0, // memory room number (range: 0~31)
-                    (row == EBD_Row.TOP ? DisplayArea.TOP_ROW : DisplayArea.BOTTOM_ROW), 
-                    EffectType.STOP_MOVING, startSpeed, stopTime, 
-                    EffectType.NONE, endSpeed, repeatCnt, setFont, 
-                    "환영합니다!");
-        } else {
-            startSpeed = 15; // 1 ~ 31
-            stopTime = 5; // 1 ~ 10
-            endSpeed = 15;
-            repeatCnt = 2;
-
-            displayText = ledNoticeProtocol.textType(1, // memory room number (range: 0~31)
-                    BOTTOM_ROW, 
-                    EffectType.FLOW_RtoL, startSpeed, stopTime, 
-                    EffectType.FLOW_DOWN, endSpeed, repeatCnt, setFont,
-                    "OzParking");
-        }
-        return ledNoticeProtocol.hexToByteArray(displayText);
-    }
-    
     class ManageArrivalList extends Thread {
         public void run() {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
@@ -2986,9 +2955,10 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         byte[] result;
 
         switch (gateDeviceTypes[deviceNo].eBoardType) {
-            case LEDnotice:
-                result = getLEDnoticeDefaultMessage(row);
-                break;
+//            case LEDnotice:
+//                result = ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][deviceNo]).
+//                        getLEDnoticeDefaultMsg(row);
+//                break;
 
             default:
                 result = getEBDSimulatorDefaultMessage(deviceNo, row, msgSN);
@@ -3074,7 +3044,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 parentGUI = mainForm;
                 mainForm.recordSystemStart();
                 mainForm.setVisible(true);
-                Globals.shortLicenseDialog(mainForm);
+                if (!DEBUG)
+                    Globals.shortLicenseDialog(mainForm);
             }
         });
     }

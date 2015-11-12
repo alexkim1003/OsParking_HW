@@ -16,7 +16,6 @@
  */
 package com.osparking.osparking.device;
 
-import com.osparking.global.Globals;
 import java.awt.Font;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,13 +30,6 @@ import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.deviceIP;
-import com.osparking.global.names.DeviceManager;
-import com.osparking.global.names.OSP_enums;
-import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
-import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.sendDefaultText_ScreenSize;
-import com.osparking.osparking.device.LEDnotice.LedProtocol;
-import static com.osparking.osparking.device.LEDnotice.LedProtocol.LED_COLUMN_CNT;
-import java.util.logging.Logger;
 
 /**
  * 
@@ -89,7 +81,6 @@ public class ConnectDeviceTask implements Runnable {
                         System.out.println("It is null");
                     }
                     managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID].setSocket(deviceSocket);
-                    initializeDeviceIfNeeded(deviceType, deviceID);
                     managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
                 }
                 return;
@@ -114,27 +105,6 @@ public class ConnectDeviceTask implements Runnable {
                 }
                 //</editor-fold>
             } 
-        }
-    }
-
-    private void initializeDeviceIfNeeded(DeviceType deviceType, byte gateNo) {
-        if (deviceType == DeviceType.E_Board) {
-            DeviceManager manager = managerGUI.getDeviceManagers()[deviceType.ordinal()][gateNo];
-            
-            switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
-                case LEDnotice:
-                    LEDnoticeManager ledNoticeManager = (LEDnoticeManager)manager;
-                    LedProtocol protocol = ledNoticeManager.ledNoticeProtocol;
-                    String data = protocol.getScreenSetString(1, LED_COLUMN_CNT, 2);
-                    System.out.println("screen set dat: " + data);
-                    byte[] msg = protocol.hexToByteArray(protocol.getScreenSetString(1, LED_COLUMN_CNT, 2));
-                    
-                    sendDefaultText_ScreenSize(managerGUI, gateNo, OSP_enums.EBD_Row.TOP, msg);
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 }

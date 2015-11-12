@@ -31,6 +31,7 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.S
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_COMM_SPD;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_ID;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_MONITOR;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,7 +45,7 @@ import java.util.logging.Logger;
  * @author Open Source Parking Inc.
  */
 public class LedProtocol {
-    final public static int LED_COLUMN_CNT = 6; // LEDnotice 제품의 열 개수.
+    final public static int LED_COLUMNS = 6; // LEDnotice 제품의 열 개수.
     final public static int STOP_TIME_MIN = 1;
     
     final static String STX = "02";                   //데이터 전송 시작 코드
@@ -488,23 +489,15 @@ public class LedProtocol {
     }
 
     /**
-     * 개별 Text 삭제.
+     * 개별 텍스트 삭제
      * 
-     * @param a 삭제할 Text의 타입
-     * @param b Text의 방번호
+     * @param roomType 일반텍스트, Ram, Interrupt Text 
+     * @param roomNo 0 ~ 31
      * @return 
-     *  a = 1 일반텍스트
-     *  a = 2 Ram
-     *  a = 3 Interrupt Text 
-     * 
-     *  b => 0 ~ 31
-     * 
      */
-    public String delData(int a, int b) {
+    public String delData(RoomType roomType, int roomNo) {
 
-        String A = String.format("%02X", a+47);
-        String B = String.format("%02X", b);
-        String dataVariable = A + B;
+        String dataVariable = String.format("%02X", roomType.getValue()) + String.format("%02X", roomNo);
         String forlength = Integer.toHexString(DEL_TEXT_ONE.getValue()) + dataVariable;
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, Integer.toHexString(DEL_TEXT_ONE.getValue()), dataVariable);

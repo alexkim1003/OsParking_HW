@@ -45,22 +45,29 @@ public class SendEBDMessageTask implements Runnable {
         this.message = message;
         this.rowNo = row;
         this.msgSN = msgSN;
+        System.out.println("msg SN: " + msgSN);
+System.out.println("point 1: ");
     }
 
     @Override
     public synchronized void run() {
         try {
+System.out.println("point 2: ");
             synchronized(mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
             {
+System.out.println("point 3: ");
                 if (! isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket())) 
                 {
+System.out.println("point: 4");
                     mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+System.out.println("point: 5");
                 }
             }
             ++sendCount;
-            System.out.println("send count: " + sendCount);
+System.out.println("point: 6");
             mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket().getOutputStream()
                     .write(message);
+System.out.println("point: 7");
             
         } catch (IOException e) {
             mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].finishConnection(e, 

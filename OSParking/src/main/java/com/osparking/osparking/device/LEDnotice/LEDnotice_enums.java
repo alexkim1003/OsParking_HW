@@ -21,7 +21,6 @@ package com.osparking.osparking.device.LEDnotice;
  * @author Open Source Parking Inc.
  */
 public class LEDnotice_enums {
-    
     public enum RoomType {
         GENERAL_TEXT(0x30), // 일반 텍스트
         RAM(0x31), // Ram
@@ -52,7 +51,7 @@ public class LEDnotice_enums {
             return value;
         }
     }    
-
+    
     public enum EffectType {
         NONE (0x3f), // 효과 없음
         

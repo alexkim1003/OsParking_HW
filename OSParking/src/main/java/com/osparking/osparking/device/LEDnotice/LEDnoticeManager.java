@@ -19,22 +19,27 @@ package com.osparking.osparking.device.LEDnotice;
 import com.osparking.osparking.device.*;
 import com.osparking.osparking.ControlGUI;
 import com.osparking.global.names.DeviceManager;
-import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
-import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.EBD_Row;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.BOTTOM_ROW;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_MONITOR;
-import static com.osparking.osparking.device.LEDnotice.LedProtocol.STX;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType.GENERAL_TEXT;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.LED_COLUMNS;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.util.LinkedList;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -58,33 +63,97 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
      */
     ParkingTimer timerSendOpenCmd = null;
     
-    //</editor-fold>    
-
     byte [] cmdIDarr = new byte[4]; // open command ID
     byte [] fiveByteArr =new byte[5]; // storage for (code + ID)
     
     boolean justBooted = true;
     private boolean neverConnected = true;
-
     public LedProtocol ledNoticeProtocol = new LedProtocol(); 
+    
+    static final int TOPTEXT_ROOM = 0; // 1
+    static final int BOTTEXT_ROOM = 1; // 2
+    static final int TOP_BOT_TEXT_ROOM = 2;    
+    
+    //</editor-fold>    
     
     /**
      * 
      * @param mainForm main GUI form of the whole manager program
      * @param deviceNo ID of the E-Board to manage
      */
-    public LEDnoticeManager(ControlGUI mainForm, byte deviceNo)
+    public LEDnoticeManager(final ControlGUI mainForm, final byte deviceNo)
     {
         super("osp_EBD_" + deviceNo + "_Manager");
         this.mainForm = mainForm; 
         this.deviceNo = deviceNo;
-    }    
+        
+        (new Thread("LEDnoticeWorkerThread")
+        {
+            public void run() {
+                while (true) {
+                    try {
+                        synchronized (msgQdoor) {
+                            msgQdoor.wait();
+                        }
+                    } catch (InterruptedException ex) {
+                        logParkingException(Level.SEVERE, ex, "waiting message queue not empty", deviceNo);
+                    }
+                    while (!ledNoticeMessages.isEmpty()) {
+                        MsgItem currItem = ledNoticeMessages.peek();
+                        
+                        if (isConnected(socket)) {
+                            try {
+                                socket.getOutputStream().write(currItem.getMessage());
+                                ledNoticeMessages.peek().incSendCount();
+                                System.out.println("written: " + currItem.getHexStr());
+                            } catch (IOException ex) {
+                                logParkingException(Level.SEVERE, ex, "writing message to LEDnotice", deviceNo);
+                            }
+                        } else {
+                            try {
+                                synchronized (mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) {
+                                    mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                                }
+                            } catch (InterruptedException ex) {
+                                logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket connection", deviceNo);
+                            }
+                        }
+                        //<editor-fold desc="-- Delay some milliseconds by message type">
+                        try {
+                            switch (currItem.getType()) {
+                                case SET_MONITOR: 
+                                    Thread.sleep(RESEND_PERIOD * 5);
+                                    break;
+                                    
+                                case DEL_TEXT_ONE:
+                                case DEL_GROUP:
+                                case DEL_TEXT_ALL:
+                                    Thread.sleep(RESEND_PERIOD * 30);
+                                    break;
+                                
+                                case SAVE_TEXT:
+                                    Thread.sleep(RESEND_PERIOD * 15);
+                                    break;
+                                    
+                                default:
+                                    Thread.sleep(RESEND_PERIOD);
+                                    break;
+                            }
+                            //</editor-fold>
+                        } catch (InterruptedException ex) {
+                            logParkingException(Level.SEVERE, ex, "taking a rest between two sending", deviceNo);
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
     
     public void run()
     {   
         byte[] preMsg = new byte[3];
         byte typeInt;
-        byte posiETX; // jbpark03
+        byte posiETX;
         
         byte[] MsgPost = new byte[100];
                     
@@ -97,6 +166,7 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
             int msgLength = -2;
             // read device message as long as connection is good
             
+            //<editor-fold desc="-- Repeat processing one message from LEDnotice">
             try {
                 synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo])  
                 {
@@ -105,20 +175,32 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     {
                         mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
                         neverConnected = false;
-                    
-                        if (justBooted) {
-                            justBooted = false;
-                            byte[] message = mainForm.getDefaultMessage(
-                                    deviceNo, OSP_enums.EBD_Row.TOP, --mainForm.msgSNs[deviceNo]);
-                            sendDefaultText_ScreenSize(mainForm, deviceNo, OSP_enums.EBD_Row.TOP, message);
-                            
-                            message = mainForm.getDefaultMessage(
-                                    deviceNo, OSP_enums.EBD_Row.BOTTOM, --mainForm.msgSNs[deviceNo]);
-//                            sendDefaultText_ScreenSize(mainForm, deviceNo, OSP_enums.EBD_Row.BOTTOM, message);
-                        } 
                     }
                     //</editor-fold>
                 } 
+                if (justBooted) {
+                    //<editor-fold desc="-- Handle first connection processing">
+                    justBooted = false;
+
+                    // 전광판 모니터 크기 설정을 지시한다.
+                    ledNoticeMessages.add(new MsgItem(SET_MONITOR, 
+                            ledNoticeProtocol.getScreenSetString(1, LED_COLUMNS, 2)));
+                    
+                    // 다음, 전광판의 기본 표시 문구를 전송한다.
+                    // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+                    ledNoticeMessages.add(new MsgItem(DEL_TEXT_ONE, 
+                            ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+                    // 상단 행, 실제 표시할 문구를 전송한다.
+                    ledNoticeMessages.add(new MsgItem(SAVE_TEXT, getLEDnoticeDefaultMsg(EBD_Row.TOP)));
+                    
+                    // 하단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+                    ledNoticeMessages.add(new MsgItem(DEL_TEXT_ONE, 
+                            ledNoticeProtocol.delData(GENERAL_TEXT, BOTTEXT_ROOM)));
+                    // 하단 행, 실제 표시할 문구를 전송한다.
+                    ledNoticeMessages.add(new MsgItem(SAVE_TEXT, getLEDnoticeDefaultMsg(EBD_Row.BOTTOM)));
+                    //</editor-fold>
+                } 
+                //<editor-fold desc="-- Read arriving message from LEDnotice">
                 // SocketTimeoutException will arise when no data on the socket during 1 second
                 msgLength = socket.getInputStream().read(preMsg); // waits for PULSE_PERIOD miliseconds 
                 typeInt = preMsg[2];  
@@ -138,8 +220,8 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                         }
                         MsgPost[mIdx++] = posiETX;
                     }
-                }     
-                
+                }
+                //</editor-fold>
                 //<editor-fold defaultstate="collapsed" desc="-- Handle message arrived">
                 if (msgLength == -1) {
                     // 'End of stream' means other party closed socket. So, I need to close it from my side.
@@ -154,22 +236,31 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                         for (i = 0; i < mIdx; i++) { data_Test += String.format("%02X", MsgPost[i]); }
                         System.out.println("msg came: " + data_Test);
                         
+                        if (data_Test.equals("02313103")) {
+                            System.out.println("");
+                        }
+                        
                         if (typeUint == GET_ID.getValue()) {
                             // process LEDnotice device heartbeat
                             mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
-                        } else if (typeUint == SET_MONITOR.getValue()) {
-                            ParkingTimer msgSendingTimer 
-                                    = mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()];
-                            if (msgSendingTimer.hasTask()) {
-                                msgSendingTimer.cancelTask();
-                                System.out.println("monitor size setting timer task cancelled");
-                            }
                         } else {
-                            if (typeUint == SAVE_TEXT.getValue()) {
-                                ParkingTimer msgSendingTimer 
-                                        = mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()];
-                                if (msgSendingTimer.hasTask()) {
-                                    msgSendingTimer.cancelTask();
+                            if (typeUint == SET_MONITOR.getValue()) {
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (ledNoticeMessages.peek().getType() == SET_MONITOR) {
+                                    MsgItem item = ledNoticeMessages.remove();
+                                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
+                                }
+                            } else if (typeUint == DEL_TEXT_ONE.getValue()) { 
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (ledNoticeMessages.peek().getType() == DEL_TEXT_ONE) {
+                                    MsgItem item = ledNoticeMessages.remove();
+                                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
+                                }
+                            } else if (typeUint == SAVE_TEXT.getValue()) {
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (ledNoticeMessages.peek().getType() == SAVE_TEXT) {
+                                    MsgItem item = ledNoticeMessages.remove();
+                                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
                                 }
                             }
                         }
@@ -258,23 +349,6 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         }
     }
 
-    public static void sendDefaultText_ScreenSize(ControlGUI mainForm, 
-            byte deviceNo, EBD_Row row, byte[] message) 
-    {
-        while (mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask()) 
-        {
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException ex) {
-                logParkingException(Level.SEVERE, ex, "default text sender sleeping");
-            }
-        }
-        
-        mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
-                new SendEBDMessageTask(
-                        mainForm, deviceNo, row, message, mainForm.msgSNs[deviceNo]));
-    }
-
     @Override
     public boolean isNeverConnected() {
         return neverConnected;
@@ -295,4 +369,96 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
             return false;
         }
     }
+
+    public String getLEDnoticeDefaultMsg(EBD_Row row) {
+        int setFont = 1; // getLEDrowFont();
+
+        int startSpeed = 15; // 1 ~ 31
+        int stopTime = 1; // 1 ~ 10
+        int endSpeed = 15;
+        int repeatCnt = 1;
+        String displayText = null;
+        
+        if (row == EBD_Row.TOP) {
+            displayText =                     
+                    ledNoticeProtocol.textType(TOPTEXT_ROOM, // memory room number (range: 0~31)
+                    (row == EBD_Row.TOP ? DisplayArea.TOP_ROW : DisplayArea.BOTTOM_ROW), 
+                    EffectType.VERTICAL_ADD, startSpeed, stopTime, 
+                    EffectType.NONE, endSpeed, repeatCnt, setFont, 
+                    "오픈소스파킹");
+        } else {
+            startSpeed = 15; // 1 ~ 31
+            stopTime = 5; // 1 ~ 10
+            endSpeed = 15;
+            repeatCnt = 2;
+
+            displayText = ledNoticeProtocol.textType(1, // memory room number (range: 0~31)
+                    BOTTOM_ROW, 
+                    LEDnotice_enums.EffectType.FLOW_RtoL, startSpeed, stopTime, 
+                    LEDnotice_enums.EffectType.FLOW_DOWN, endSpeed, repeatCnt, setFont,
+                    "OzParking");
+        }
+        return displayText;
+    }
+
+    class MsgItem {
+        private MsgType type;
+        private String hexStr;
+        private byte[] message;
+        private int sendCount = 0;
+        
+        MsgItem(MsgType type, String hexStr) {
+            this.type = type;
+            this.hexStr = hexStr;
+            message = ledNoticeProtocol.hexToByteArray(hexStr);
+        }
+
+        /**
+         * @return the message
+         */
+        public byte[] getMessage() {
+            return message;
+        }
+
+        /**
+         * @return the type
+         */
+        public MsgType getType() {
+            return type;
+        }
+
+        /**
+         * @return the hexStr
+         */
+        public String getHexStr() {
+            return hexStr;
+        }
+        
+        public void incSendCount() {
+            sendCount++;
+        }
+
+        /**
+         * @return the sendCount
+         */
+        public int getSendCount() {
+            return sendCount;
+        }
+    }
+    
+    class MessageQueue extends LinkedList<MsgItem> {
+        @Override
+        public boolean add(MsgItem item) {
+            super.add(item);
+            System.out.println("Added: " + item.getType() + ", Hex: " + item.getHexStr());
+            
+            synchronized(msgQdoor) {
+                msgQdoor.notify(); // wake up someone sleeping on this queue
+            }
+            return true;
+        }
+    }
+    
+    Object msgQdoor = new Object();
+    MessageQueue ledNoticeMessages = new MessageQueue();
 }
