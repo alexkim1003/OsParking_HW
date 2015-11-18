@@ -17,7 +17,6 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
-import com.osparking.global.Globals.GateDeviceType;
 import static com.osparking.global.Globals.OSP_FALSE;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -51,6 +50,7 @@ public class DB_Access {
      * <p>
      * a flag that shows if major operation performance evaluation is needed or not.
      */
+    public static String parkingLotName = "";
     public static boolean storePassingDelay = false;
     
     /**
@@ -240,6 +240,7 @@ public class DB_Access {
             selectStmt = conn.createStatement();
             rs = selectStmt.executeQuery("SELECT * FROM SettingsTable");
             if (rs.next()) {
+                parkingLotName = rs.getString("Lot_Name");
                 if (Globals.DEBUG || rs.getInt("perfEvalNeeded") == 1)
                     storePassingDelay = true;
                 else 
@@ -555,13 +556,13 @@ public class DB_Access {
                 deviceIP[GateBar.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
                 
                 strField = rs.getString("cameraPort");
-                devicePort[Camera.ordinal()][gateID] = (strField == null ? "8080" : strField);
+                devicePort[Camera.ordinal()][gateID] = getPortNumber(strField);
                 
                 strField = rs.getString("e_boardPort");
-                devicePort[E_Board.ordinal()][gateID] = (strField == null ? "8080" : strField);
+                devicePort[E_Board.ordinal()][gateID] = getPortNumber(strField);
                 
                 strField = rs.getString("gatebarPort");
-                devicePort[GateBar.ordinal()][gateID] = (strField == null ? "8080" : strField);
+                devicePort[GateBar.ordinal()][gateID] = getPortNumber(strField);
                 
                 passingCountCurrent[gateID] = rs.getInt("passingCountCurrent");
                 
@@ -607,5 +608,14 @@ public class DB_Access {
             }
             closeDBstuff(conn, pStmt, null, "(record passing delay statistics)");
         }          
+    }
+
+    private static String getPortNumber(String strField) {
+        if (strField == null) 
+            return "8080";
+        else if (strField.length() == 0)
+            return "8080";
+        else 
+            return strField;
     }
 }

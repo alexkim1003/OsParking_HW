@@ -52,10 +52,10 @@ public class LED_Task extends TimerTask {
     byte[] ledNoticeGetIDmsg;
     
     /**
-     * Initializes this task with the main GUI and a manager array.
+     * Initializes this task with the main GUI and a managerLEDnotice array.
      * 
      * @param guiMain GUI form frame on which it's device connection status is to be displayed
-     * @param gateManagerArr manager array through which their sockets are accessed 
+     * @param gateManagerArr managerLEDnotice array through which their sockets are accessed 
      */
     public LED_Task(ControlGUI guiMain, DeviceManager[][] deviceManagers) {
         this.controlGUI = guiMain;

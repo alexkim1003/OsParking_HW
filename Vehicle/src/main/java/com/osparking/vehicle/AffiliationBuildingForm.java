@@ -1280,7 +1280,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         int modal_Index = UnitTable.convertRowIndexToModel(uIndex);                
         int seqNo = (Integer)UnitTable.getModel().getValueAt(modal_Index, 2);
         int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete the following roon number?" + System.getProperty("line.separator") 
+                "Want to delete the following room number?" + System.getProperty("line.separator") 
                         + " -Room No.: " + unitNo, 
                 "Room Delete Confirmation", JOptionPane.YES_NO_OPTION); 
         

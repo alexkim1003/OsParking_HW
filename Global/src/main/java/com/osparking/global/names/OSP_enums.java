@@ -37,9 +37,34 @@ public class OSP_enums {
         }            
     }
     
+    public enum ConnectionType {
+        TCP_IP("TCP/IP"), 
+        RS_232("RS-232");
+        
+        private String label;
+        
+        ConnectionType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }          
+    }
+    
     public enum E_BoardType {
-        Simulator,
-        LEDnotice,
+        Simulator("모의장치"), 
+        LEDnotice("LEDnotice");
+        
+        private String label;
+        
+        E_BoardType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }          
     }
     
     public enum GateBarType {
@@ -260,4 +285,19 @@ public class OSP_enums {
         BLACK,
         BLUE
     }
+    
+    public enum DisplayArea {
+        TOP_ROW(1), 
+        BOTTOM_ROW(2), 
+        WHOLE_AREA(3);
+        
+        int value;
+        DisplayArea(int value) {
+            this.value = value;
+        }
+        
+        int getValue() {
+            return value;
+        }
+    }       
 }

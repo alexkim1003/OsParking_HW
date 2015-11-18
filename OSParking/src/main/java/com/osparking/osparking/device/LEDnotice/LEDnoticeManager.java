@@ -16,7 +16,6 @@
  */
 package com.osparking.osparking.device.LEDnotice;
 
-import com.osparking.osparking.device.*;
 import com.osparking.osparking.ControlGUI;
 import com.osparking.global.names.DeviceManager;
 import java.net.Socket;
@@ -25,17 +24,46 @@ import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
+import com.osparking.global.names.OSP_enums;
+import com.osparking.global.names.OSP_enums.DisplayArea;
+import static com.osparking.global.names.OSP_enums.DisplayArea.BOTTOM_ROW;
+import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
+import com.osparking.global.names.OSP_enums.EBD_DisplayUsage;
 import com.osparking.global.names.OSP_enums.EBD_Row;
-import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.BOTTOM_ROW;
+import com.osparking.osparking.Settings_System;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Green;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Red;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.NONE;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.RASER;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.STOP_MOVING;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.FontBox.Gothic;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE.INTR_GROUP;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE.TEXT_GROUP;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.IntOnType.Unlimited;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_GROUP;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ALL;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_OFF;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_ON;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_INTR;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_MONITOR;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType.GENERAL_TEXT;
-import static com.osparking.osparking.device.LEDnotice.LedProtocol.LED_COLUMNS;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.delGroup;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.delTextOne;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.getID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.intrTxtOff;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.intrTxtOn;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.saveIntr;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.saveText;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.setMonitor;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.LED_COLUMN_CNT;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.MAX_SPEED;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.MIN_PAUSE;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.STOP_TIME_MIN;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -68,12 +96,19 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     
     boolean justBooted = true;
     private boolean neverConnected = true;
-    public LedProtocol ledNoticeProtocol = new LedProtocol(); 
+    static public LedProtocol ledNoticeProtocol = new LedProtocol(); 
     
     static final int TOPTEXT_ROOM = 0; // 1
     static final int BOTTEXT_ROOM = 1; // 2
     static final int TOP_BOT_TEXT_ROOM = 2;    
     
+    static StringBuffer ledNoticeBlankString = new StringBuffer(); 
+    static {
+        for (int i = 0; i < LED_COLUMN_CNT; i++ )
+            ledNoticeBlankString.append("  ");        
+    }
+    
+    public static LEDnoticeSettings[] ledNoticeSettings; // = new LEDnoticeSettings[gateCount];
     //</editor-fold>    
     
     /**
@@ -87,25 +122,27 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         this.mainForm = mainForm; 
         this.deviceNo = deviceNo;
         
-        (new Thread("LEDnoticeWorkerThread")
+        (new Thread("osp_LEDnoticeWorkerThread")
         {
             public void run() {
                 while (true) {
                     try {
                         synchronized (msgQdoor) {
+                            System.out.println("before worker wait");
                             msgQdoor.wait();
+                            System.out.println("after worker wait");
                         }
                     } catch (InterruptedException ex) {
                         logParkingException(Level.SEVERE, ex, "waiting message queue not empty", deviceNo);
                     }
                     while (!ledNoticeMessages.isEmpty()) {
-                        MsgItem currItem = ledNoticeMessages.peek();
+                        MsgItem currItem = getLedNoticeMessages().peek();
                         
                         if (isConnected(socket)) {
                             try {
+                                System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
                                 socket.getOutputStream().write(currItem.getMessage());
-                                ledNoticeMessages.peek().incSendCount();
-                                System.out.println("written: " + currItem.getHexStr());
+                                getLedNoticeMessages().peek().incSendCount();
                             } catch (IOException ex) {
                                 logParkingException(Level.SEVERE, ex, "writing message to LEDnotice", deviceNo);
                             }
@@ -132,11 +169,12 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                                     break;
                                 
                                 case SAVE_TEXT:
+                                case SAVE_INTR:
                                     Thread.sleep(RESEND_PERIOD * 15);
                                     break;
                                     
                                 default:
-                                    Thread.sleep(RESEND_PERIOD);
+                                    Thread.sleep(RESEND_PERIOD * 10);
                                     break;
                             }
                             //</editor-fold>
@@ -147,6 +185,8 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 }
             }
         }).start();
+        
+        readLEDnoticeSettings();
     }
     
     public void run()
@@ -183,21 +223,12 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     justBooted = false;
 
                     // 전광판 모니터 크기 설정을 지시한다.
-                    ledNoticeMessages.add(new MsgItem(SET_MONITOR, 
-                            ledNoticeProtocol.getScreenSetString(1, LED_COLUMNS, 2)));
+                    getLedNoticeMessages().add(new MsgItem(SET_MONITOR, 
+                            ledNoticeProtocol.getScreenSetString(1, LED_COLUMN_CNT, 2)));
                     
-                    // 다음, 전광판의 기본 표시 문구를 전송한다.
-                    // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
-                    ledNoticeMessages.add(new MsgItem(DEL_TEXT_ONE, 
-                            ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
-                    // 상단 행, 실제 표시할 문구를 전송한다.
-                    ledNoticeMessages.add(new MsgItem(SAVE_TEXT, getLEDnoticeDefaultMsg(EBD_Row.TOP)));
-                    
-                    // 하단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
-                    ledNoticeMessages.add(new MsgItem(DEL_TEXT_ONE, 
-                            ledNoticeProtocol.delData(GENERAL_TEXT, BOTTEXT_ROOM)));
-                    // 하단 행, 실제 표시할 문구를 전송한다.
-                    ledNoticeMessages.add(new MsgItem(SAVE_TEXT, getLEDnoticeDefaultMsg(EBD_Row.BOTTOM)));
+                    showLEDnoticeDefaultMessage(EBD_Row.TOP);
+                    showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
+
                     //</editor-fold>
                 } 
                 //<editor-fold desc="-- Read arriving message from LEDnotice">
@@ -229,40 +260,76 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 } else {
                     if (validMessage(preMsg, MsgPost[mIdx - 1])) 
                     {
-                        String data_Test = "";
+                        String msgCame = "";
                         int i = 0;
                         
-                        for ( ; i < preMsg.length; i++) { data_Test += String.format("%02X", preMsg[i]); }
-                        for (i = 0; i < mIdx; i++) { data_Test += String.format("%02X", MsgPost[i]); }
-                        System.out.println("msg came: " + data_Test);
+                        for ( ; i < preMsg.length; i++) { msgCame += String.format("%02X", preMsg[i]); }
+                        for (i = 0; i < mIdx; i++) { msgCame += String.format("%02X", MsgPost[i]); }
                         
-                        if (data_Test.equals("02313103")) {
-                            System.out.println("");
-                        }
+                        if (typeUint != getID)
+                            System.out.println("<~~: " + msgCame);
                         
-                        if (typeUint == GET_ID.getValue()) {
-                            // process LEDnotice device heartbeat
-                            mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
-                        } else {
-                            if (typeUint == SET_MONITOR.getValue()) {
+                        switch (typeUint) {
+                            case getID:
+                                // process LEDnotice device heartbeat
+                                mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
+                                break;
+                                
+                            case saveIntr:
                                 // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
-                                if (ledNoticeMessages.peek().getType() == SET_MONITOR) {
-                                    MsgItem item = ledNoticeMessages.remove();
+                                if (getLedNoticeMessages().peek().getType() == SAVE_INTR) {
+                                    MsgItem item = getLedNoticeMessages().remove();
+                                    System.out.println("LED interrupt written after " + item.getSendCount() + " trials.");
+                                }
+                                break;
+                                
+                            case intrTxtOn:
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (getLedNoticeMessages().peek().getType() == INTR_TXT_ON) {
+                                    MsgItem item = getLedNoticeMessages().remove();
+                                    System.out.println("LED interrupt ON after " + item.getSendCount() + " trials.");
+                                }
+                                break;
+                                
+                            case intrTxtOff:
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (getLedNoticeMessages().peek().getType() == INTR_TXT_OFF) {
+                                    MsgItem item = getLedNoticeMessages().remove();
+                                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
+                                }
+                                break;
+                                
+                            case delGroup:
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (getLedNoticeMessages().peek().getType() == DEL_GROUP) {
+                                    MsgItem item = getLedNoticeMessages().remove();
+                                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
+                                }
+                                break;
+                                
+                            case setMonitor:
+                                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                                if (getLedNoticeMessages().peek().getType() == SET_MONITOR) {
+                                    MsgItem item = getLedNoticeMessages().remove();
                                     System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
                                 }
-                            } else if (typeUint == DEL_TEXT_ONE.getValue()) { 
+                                break;
+
+                            case delTextOne:
                                 // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
-                                if (ledNoticeMessages.peek().getType() == DEL_TEXT_ONE) {
-                                    MsgItem item = ledNoticeMessages.remove();
+                                if (getLedNoticeMessages().peek().getType() == DEL_TEXT_ONE) {
+                                    MsgItem item = getLedNoticeMessages().remove();
                                     System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
                                 }
-                            } else if (typeUint == SAVE_TEXT.getValue()) {
+                                break;
+
+                            case saveText:
                                 // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
-                                if (ledNoticeMessages.peek().getType() == SAVE_TEXT) {
-                                    MsgItem item = ledNoticeMessages.remove();
+                                if (getLedNoticeMessages().peek().getType() == SAVE_TEXT) {
+                                    MsgItem item = getLedNoticeMessages().remove();
                                     System.out.println("LED text written after " + item.getSendCount() + " trials.");
                                 }
-                            }
+                                break;
                         }
                     }
                 }
@@ -370,44 +437,246 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         }
     }
 
-    public String getLEDnoticeDefaultMsg(EBD_Row row) {
-        int setFont = 1; // getLEDrowFont();
-
-        int startSpeed = 15; // 1 ~ 31
-        int stopTime = 1; // 1 ~ 10
-        int endSpeed = 15;
-        int repeatCnt = 1;
-        String displayText = null;
+    public String getLEDnoticeDefaultMsg(EBD_Row row, int pauseTime, String displayText,
+            EffectType startEffect, EffectType finishEffect, ColorFont colorFont, boolean isFastVersion) 
+    {
+        int roomNo; // memory room number (range: 0~31)
+        DisplayArea displayRow;
         
         if (row == EBD_Row.TOP) {
-            displayText =                     
-                    ledNoticeProtocol.textType(TOPTEXT_ROOM, // memory room number (range: 0~31)
-                    (row == EBD_Row.TOP ? DisplayArea.TOP_ROW : DisplayArea.BOTTOM_ROW), 
-                    EffectType.VERTICAL_ADD, startSpeed, stopTime, 
-                    EffectType.NONE, endSpeed, repeatCnt, setFont, 
-                    "오픈소스파킹");
+            roomNo = TOPTEXT_ROOM;
+            displayRow = TOP_ROW;
         } else {
-            startSpeed = 15; // 1 ~ 31
-            stopTime = 5; // 1 ~ 10
-            endSpeed = 15;
-            repeatCnt = 2;
-
-            displayText = ledNoticeProtocol.textType(1, // memory room number (range: 0~31)
-                    BOTTOM_ROW, 
-                    LEDnotice_enums.EffectType.FLOW_RtoL, startSpeed, stopTime, 
-                    LEDnotice_enums.EffectType.FLOW_DOWN, endSpeed, repeatCnt, setFont,
-                    "OzParking");
+            roomNo = BOTTEXT_ROOM;
+            displayRow = BOTTOM_ROW;
         }
-        return displayText;
+        
+        int startSpeed = 15; // 1 ~ 31
+        int endSpeed = 15;
+        final int repeatCnt = 1;
+        
+        if (isFastVersion) {
+            startSpeed = 31;
+//            endSpeed = 31;
+        }
+        
+        return ledNoticeProtocol.textType(roomNo, displayRow, startEffect, startSpeed, pauseTime, 
+                finishEffect, endSpeed, repeatCnt, colorFont.getHexStr(), displayText);
     }
 
-    class MsgItem {
+    /**
+     * @return the ledNoticeMessages
+     */
+    public MessageQueue getLedNoticeMessages() {
+        return ledNoticeMessages;
+    }
+
+    public void sendCarArrival_interruptMessage(byte gateNo, String tagNumber, int delay) {
+        MessageQueue mQueue = getLedNoticeMessages();
+        int room = 3;
+        
+        mQueue.add(new MsgItem(SAVE_INTR, getMsgHexString(EBD_Row.TOP, room, tagNumber)));
+        mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, room, 1)));
+        mainForm.getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
+                new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.BOTTOM), delay);    
+        System.out.println("scheduled after ms: " + delay);
+    }
+
+    private String getMsgHexString(EBD_Row row, int roomNumber, String message) {
+        final int repeatCnt = 1;
+            
+        DisplayArea area;
+        
+        if (row == EBD_Row.TOP)
+            area = DisplayArea.TOP_ROW;
+        else 
+            area = DisplayArea.BOTTOM_ROW;
+        
+        String text = ledNoticeProtocol.interruptText(roomNumber, area, RASER, MAX_SPEED, 
+                STOP_TIME_MIN, NONE, MAX_SPEED, repeatCnt, ColorFont.RedGothic, message);
+        return text;
+    }    
+    
+    Thread demoThread = null;
+    
+    private ColorFont getColorFont( int colorIdx, int fontIdx) {
+        if (fontIdx == Gothic.ordinal()) { 
+            if (colorIdx == Red.ordinal()) { // 빨강
+                return ColorFont.RedGothic;
+            }else if (colorIdx == Green.ordinal()) { // 초록
+                return ColorFont.GreenGothic;
+            }else{
+                return ColorFont.OrangeGothic;
+            }
+        } else { // 명조 (Ming font)
+            if (colorIdx == Red.ordinal()) { 
+                return ColorFont.RedMing;
+            } else if (colorIdx == Green.ordinal()) {
+                return ColorFont.GreenMing;
+            } else {
+                return ColorFont.OrangeMing;
+            }
+        }    
+    }
+    
+    public void showAllEffects(int tabIdx, int colorIdx, int fontIdx) {
+        final String setFont = getColorFont(colorIdx, fontIdx).getHexStr();
+        
+        try{
+            demoThread = new Thread("ospEBD_effectDemo") {
+            
+                public void run() {
+                    int startSpeed = 15; // 1 ~ 31
+                    int stopTime = 5; // 1 ~ 10
+                    int endSpeed = 15;
+                    int repeatCnt = 1;
+
+                    String displayText; // First delete all rooms for the general text.
+
+                    // 다음, 전광판의 기본 표시 문구를 전송한다.
+                    // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+                    getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
+                    try {
+                        int totalCount = EffectType.values().length;
+                        int seqNo = 1;
+                        for (EffectType effect : EffectType.values()) {
+                            
+                            // first display demo effect sequence number 
+                            displayText = 
+                                    ledNoticeProtocol.textType(TOPTEXT_ROOM, TOP_ROW, STOP_MOVING, 
+                                            MAX_SPEED, stopTime, EffectType.NONE, MAX_SPEED, 1, setFont, 
+                                            (seqNo++) + "/" + totalCount + "-th") ;
+                            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));
+                            
+                            
+                            int startIdx = effect.getLabel().length() - LED_COLUMN_CNT * 2;
+                            String displayCore = 
+                                    effect.getLabel().substring(startIdx < 0 ? 0 : startIdx, effect.getLabel().length());
+
+                            displayText = 
+                                    ledNoticeProtocol.textType(TOPTEXT_ROOM + 1, TOP_ROW, effect, startSpeed, stopTime, 
+                                    EffectType.NONE, endSpeed, repeatCnt, setFont, displayCore);
+                            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));
+
+                            Thread.sleep(15000);
+                            
+                            getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+                                    ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+                            getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+                                    ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM + 1)));
+                        }
+                    } catch (InterruptedException ex) {
+                        getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
+//                        getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+//                                ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+                        demoThread = null;
+                        return;
+                    }
+                };
+            };
+            demoThread.start();
+        } catch (NullPointerException e){
+            logParkingException(Level.SEVERE, e, "Null, demo every effects");
+        }          
+    }
+
+    public void finishShowingDemoEffect(Settings_System aThis, int index) {
+        if (demoThread != null) {
+            demoThread.interrupt();
+        }
+        showLEDnoticeDefaultMessage(EBD_Row.TOP);
+        showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
+    }
+
+    public void showLEDnoticeDefaultMessage(EBD_Row row) {
+        // 다음, 전광판의 기본 표시 문구를 전송한다.
+        if (row == EBD_Row.TOP) {
+            // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+            getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+                    ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+            // 상단 행, 실제 표시할 문구를 전송한다.
+            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+                    getLEDnoticeDefaultMsg(EBD_Row.TOP, 1, "주차장의 안드로이드", EffectType.FLOW_RtoL,
+                            EffectType.NONE, ColorFont.OrangeMing, false)));
+        } else {
+            // 하단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+            getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+                    ledNoticeProtocol.delData(GENERAL_TEXT, BOTTEXT_ROOM)));
+            // 하단 행, 실제 표시할 문구를 전송한다.
+            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+                    getLEDnoticeDefaultMsg(EBD_Row.BOTTOM, 5, "오픈소스파킹", EffectType.FLOW_UP,
+                            EffectType.FLOW_DOWN, ColorFont.GreenGothic, false)));
+        }
+    }
+
+    public void showCurrentEffect(Settings_System aThis, int tabIndex, int typeIndex, String displayText, 
+            int startIndex, int pauseIndex, int finishIndex, int colorIndex, int fontIndex ) {
+        
+        String pureContent = null;
+         switch (LEDnotice_enums.LEDnoticeDefaultContentType.values()[typeIndex]) {
+             case Verbatim: 
+                 pureContent = displayText;
+                 break;
+             default:
+                 pureContent = "Other content";
+                 break;
+         }
+    
+        // 다음, 전광판의 기본 표시 문구를 전송한다.
+        // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+        getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
+         
+//        getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+//                ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+        
+        EBD_Row row = (tabIndex % 2 == 0 ? EBD_Row.TOP : EBD_Row.BOTTOM);
+        
+        // 일단 빈 문자열을 전광판에 기록한다.
+//        int room = 3;
+//        
+//        getLedNoticeMessages().add(new MsgItem(SAVE_INTR, 
+//                getMsgHexString(EBD_Row.TOP, room, ledNoticeBlankString.toString())));
+//        getLedNoticeMessages().add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, room, 1)));        
+//        
+//        getLedNoticeMessages().add(new MsgItem(INTR_TXT_OFF, ledNoticeProtocol.intOff()));
+//        getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(INTR_GROUP)));        
+        
+    //        getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+    //                getLEDnoticeDefaultMsg(row, pauseIndex + 1, ledNoticeBlankString.toString(), 
+    //                EffectType.values()[startIndex], EffectType.values()[finishIndex], 
+    //                getColorFont(colorIndex, fontIndex) )));
+        
+//        getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
+//                ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+                
+        // 상단 행, 실제 표시할 문구를 전송한다.
+
+        int pausePeriod = pauseIndex + 1;
+        
+        if (row == EBD_Row.TOP && tabIndex % 2 == 1)
+            pausePeriod = MIN_PAUSE;
+      
+        getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+                getLEDnoticeDefaultMsg(row, pausePeriod, pureContent, 
+                EffectType.values()[startIndex + 1], EffectType.values()[finishIndex], 
+                getColorFont(colorIndex, fontIndex), true )));
+    }
+
+    private void readLEDnoticeSettings() {
+        int count = EBD_DisplayUsage.values().length;
+        ledNoticeSettings = new LEDnoticeSettings[count];
+        for (int i = 0; i < count; i++) {
+            ledNoticeSettings[i] = new LEDnoticeSettings();
+        }
+    }
+
+    public static class MsgItem {
         private MsgType type;
         private String hexStr;
         private byte[] message;
         private int sendCount = 0;
         
-        MsgItem(MsgType type, String hexStr) {
+        public MsgItem(MsgType type, String hexStr) {
             this.type = type;
             this.hexStr = hexStr;
             message = ledNoticeProtocol.hexToByteArray(hexStr);
@@ -446,7 +715,7 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         }
     }
     
-    class MessageQueue extends LinkedList<MsgItem> {
+    public class MessageQueue extends LinkedList<MsgItem> {
         @Override
         public boolean add(MsgItem item) {
             super.add(item);
@@ -460,5 +729,5 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     }
     
     Object msgQdoor = new Object();
-    MessageQueue ledNoticeMessages = new MessageQueue();
+    private MessageQueue ledNoticeMessages = new MessageQueue();
 }

@@ -95,6 +95,7 @@ import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_TO
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_Row;
+import com.osparking.global.names.OSP_enums.E_BoardType;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
@@ -115,10 +116,8 @@ import com.osparking.osparking.device.ConnectDeviceTask;
 import com.osparking.osparking.device.EBoardManager;
 import com.osparking.osparking.device.GateBarManager;
 import com.osparking.osparking.device.LED_Task;
+import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
-import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.BOTTOM_ROW;
-import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
 import com.osparking.osparking.device.SendEBDMessageTask;
 import com.osparking.osparking.device.SendGateOpenTask;
@@ -1878,6 +1877,12 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 connectDeviceTimer[type.ordinal()][gateNo].cancel();
                 connectDeviceTimer[type.ordinal()][gateNo].cancelTask();
                 connectDeviceTimer[type.ordinal()][gateNo].purge();
+                
+                // Handle some specific real hardware
+                if (Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) {
+                    getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
+                        new FinishLEDnoticeIntrTask(this, gateNo, EBD_Row.BOTTOM), 0);                        
+                }
             }
         }
         
@@ -2178,11 +2183,11 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         PermissionType permission = enteranceAllowed(tagRecognized, tagEnteredAs, remark);
         int carPassingDelayMs = rand.nextInt(MAX_PASSING_DELAY)  + CAR_PERIOD;
 
-        
+        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
+                carPassingDelayMs);
+        System.out.println("delay: " + carPassingDelayMs);
         if (permission == ALLOWED || autoGateOpenCheckBox.isSelected()) {
-//            interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-//                    carPassingDelayMs);
-//            getPassingDelayStat()[cameraID].setAccumulatable(true);
+            getPassingDelayStat()[cameraID].setAccumulatable(true);
         } else {
             getPassingDelayStat()[cameraID].setAccumulatable(false);
         }
@@ -2697,27 +2702,50 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         {  
             long currTimeMs = System.currentTimeMillis();
 
-            eBoardMsgSentMs[gateNo][EBD_Row.TOP.ordinal()] = currTimeMs;
-            eBoardMsgSentMs[gateNo][EBD_Row.BOTTOM.ordinal()] = currTimeMs;
+            //<editor-fold desc="-- Init debug information">
+            if (DEBUG) {
+                eBoardMsgSentMs[gateNo][EBD_Row.TOP.ordinal()] = currTimeMs;
+                eBoardMsgSentMs[gateNo][EBD_Row.BOTTOM.ordinal()] = currTimeMs;
+            }
+            //</editor-fold>
             
-            getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reschedule(new SendEBDMessageTask(
-                            this, gateNo, EBD_Row.TOP, 
-                            getIntMessage(tagNumber, gateNo, EBD_Row.TOP, 
-                                    imageSN * 2 + EBD_Row.TOP.ordinal(), 
-                                    carPassingDelayMs), 
-                            imageSN * 2 + EBD_Row.TOP.ordinal()));
+            // check E-Board type and process accordingly
+            switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
+                case LEDnotice:
+                    //<editor-fold desc="-- Car arrival interrupt message for the LEDnotice hardware">
+                    LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo];
+                    manager.sendCarArrival_interruptMessage(gateNo, tagNumber, carPassingDelayMs);               
+                    //</editor-fold>
+                    break;
 
-            getSendEBDmsgTimer()[gateNo][EBD_Row.BOTTOM.ordinal()].reschedule(new SendEBDMessageTask(
-                            this, gateNo, EBD_Row.BOTTOM, 
-                            getIntMessage(tagNumber, gateNo, EBD_Row.BOTTOM, 
-                                    imageSN * 2 + EBD_Row.BOTTOM.ordinal(), 
-                                    carPassingDelayMs), 
-                            imageSN * 2 + EBD_Row.BOTTOM.ordinal()));
+                default:
+                    //<editor-fold desc="-- Car arrival interrupt message for the e-board simulator">
+                    getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reschedule(
+                            new SendEBDMessageTask(
+                                    this, gateNo, EBD_Row.TOP, 
+                                    getIntMessage(tagNumber, gateNo, EBD_Row.TOP, 
+                                            imageSN * 2 + EBD_Row.TOP.ordinal(), carPassingDelayMs), 
+                                    imageSN * 2 + EBD_Row.TOP.ordinal()
+                            )
+                    );
+
+                    getSendEBDmsgTimer()[gateNo][EBD_Row.BOTTOM.ordinal()].reschedule(
+                            new SendEBDMessageTask(
+                                    this, gateNo, EBD_Row.BOTTOM, 
+                                    getIntMessage(tagNumber, gateNo, EBD_Row.BOTTOM, 
+                                            imageSN * 2 + EBD_Row.BOTTOM.ordinal(), carPassingDelayMs), 
+                                    imageSN * 2 + EBD_Row.BOTTOM.ordinal()
+                            )
+                    );
+                    //</editor-fold>
+                    break;
+            }
             
+            //<editor-fold desc="-- Save debug information">
             if (DEBUG) 
             {
                 /**
-                 * Save gate open command ID for a book keeping
+                 * Save EBD interrupt message serial numbers for book keeping
                  */
                 try {
                     getIDLogFile()[E_Board.ordinal()][gateNo]
@@ -2730,6 +2758,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                             GENERAL_DEVICE);
                 }    
             }
+            //</editor-fold>
         } else {
             statusTextField.setText("E-Board #" + gateNo + " manager isn't alive");
         }        

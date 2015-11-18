@@ -16,9 +16,17 @@
  */
 package com.osparking.osparking.device.LEDnotice;
 
-import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.DisplayArea.WHOLE_AREA;
+import com.osparking.global.names.OSP_enums.DisplayArea;
+import static com.osparking.global.names.OSP_enums.DisplayArea.BOTTOM_ROW;
+import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
+import static com.osparking.global.names.OSP_enums.DisplayArea.WHOLE_AREA;
+import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeBlankString;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.IntOnType;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_GROUP;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ALL;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
@@ -45,7 +53,7 @@ import java.util.logging.Logger;
  * @author Open Source Parking Inc.
  */
 public class LedProtocol {
-    final public static int LED_COLUMNS = 6; // LEDnotice 제품의 열 개수.
+    final public static int LED_COLUMN_CNT = 6; // LEDnotice 제품의 열 개수.
     final public static int STOP_TIME_MIN = 1;
     
     final static String STX = "02";                   //데이터 전송 시작 코드
@@ -59,25 +67,68 @@ public class LedProtocol {
     final static String R9  = "000000000000000000";   // 9자리 예약 공간 표시
     final static String type2 = "41";
     
+    static final int ROOM_START = 0x30;
+    
     final static int SUCCESS = 0x31;                   // success: 0x31
     final static int FAILURE = 0x30;                   // failure: 0x30
+    
+    final static int MAX_SPEED = 31;                 // 가장 빠른 시작 및 종료 효과 속도
+    final static int MIN_PAUSE = 1;                 // 가장 빠른 시작 및 종료 효과 속도
 
     public static int byteToUint(byte b) {
         return b & 0xFF;
     }    
     
     /**
+     * Interrupt Text Display Settings.
+     * 
+     * @param indexInterruptTextRoomNo 인터럽트 텍스트를 저장할 방 번호
+     * @param pos
+     * @param se
+     * @param ss
+     * @param st
+     * @param ee
+     * @param es
+     * @param re
+     * @param colorFont
+     * @param text
+     * @return 
+     */
+    public String interruptText(int indexInterruptTextRoomNo, DisplayArea pos, 
+            LEDnotice_enums.EffectType se, int ss, int st, 
+            LEDnotice_enums.EffectType ee, int es, int re, ColorFont colorFont, String text)   
+    {
+        String dataVariable = null;
+        try {
+            String index = String.format("%02X", indexInterruptTextRoomNo);
+            String Coordinate = setCoordinate(pos);
+            String effect = setEffect(se, ss, st, ee, es, re);
+            String stringData = (byteArrayToHex(text.getBytes("x-windows-949"))).toUpperCase();
+            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + 
+                    Integer.toHexString(colorFont.getValue()) + stringData;
+            System.out.println("");
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return getStringToTransmit(SAVE_INTR, dataVariable);     
+    }     
+    
+    /**
      * hex String을 Byte Array로 변환하기 위한 코드
      * @param hex
      * @return 
      */
-    public byte[] hexToByteArray(String hex) {
+    public static byte[] hexToByteArray(String hex) {
         if (hex == null || hex.length() == 0) {
             return null;
         }
         byte[] ba = new byte[hex.length() / 2];
         for (int i = 0; i < ba.length; i++) {
-            ba[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+            try {
+                ba[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+            } catch (Exception ex ) {
+                System.out.println("");
+            }
         }
         return ba;
     }
@@ -256,22 +307,54 @@ public class LedProtocol {
      * @param text
      * @return
      */
-    public String textType(int roomNum, DisplayArea pos, LEDnotice_enums.EffectType se, int ss, int st, 
-        LEDnotice_enums.EffectType ee, int es, int re, int setF, String text)  {
+    public String textType(int roomNum, DisplayArea pos, EffectType startEffect, int ss, int st, 
+        EffectType endingEffect, int es, int re, String colorFont, String displayCore)  
+    {
         
+        String blankString = ledNoticeBlankString.toString();
+    
+        int contentWidth = getViewWidth(displayCore);
+        int padBlankCount = LedProtocol.LED_COLUMN_CNT * 2 - contentWidth;
+        
+        displayCore = displayCore + blankString.substring(0, (padBlankCount < 0 ? 0 : padBlankCount));        
+        
+        if (contentWidth > LedProtocol.LED_COLUMN_CNT * 2) {
+            startEffect = EffectType.FLOW_RtoL;
+        }
+                
         // Display text storage room number
-        String index = String.format("%02X", roomNum + 0x30); // (0~31) starts with 0x30
+        String index = String.format("%02X", roomNum + ROOM_START); // (0~31) starts with 0x30
         String Coordinate = setCoordinate(pos);
-        String effect = setEffect(se, ss, st, ee, es, re);
-        String font = setFonts(setF);
-        byte [] message = text.getBytes();
+        String effect = setEffect(startEffect, ss, st, endingEffect, es, re);
+        byte [] message = displayCore.getBytes();
         String stringData = (byteArrayToHex(message)).toUpperCase();
         String dataVariable = null;
-        dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
+        dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect +
+                colorFont + stringData;
 
-        return sendMSG(SAVE_TEXT, dataVariable);    
-
+        return getStringToTransmit(SAVE_TEXT, dataVariable);   
     }
+        
+    private int getViewWidth(String effectLabel) {
+        int length = effectLabel.length();
+        
+        for (int i = 0; i < effectLabel.length(); i++) {
+            if (isHangulCh(effectLabel.charAt(i)))
+                length++;
+        }
+        return length;
+    }  
+    
+    private static boolean isHangulCh(char c){
+        String uncodeBlock = Character.UnicodeBlock.of(c).toString();
+        if(uncodeBlock.equals("HANGUL_SYLLABLES") ||
+                uncodeBlock.equals("HANGUL_JAMO") ||
+                uncodeBlock.equals("Hangul_Compatibility_Jamo") ||
+                uncodeBlock.equals("HANGUL_COMPATILITY_JAMO"))
+            return true;
+        else
+            return false;
+    }        
     
     /**
      * Interrupt Text Display Settings.
@@ -508,14 +591,13 @@ public class LedProtocol {
     }
     
     // a = 1 광고그룹 삭제, a = 5 인터럽트 텍스트 삭제, a = 6 RAM 삭제
-    public String delGroup(int a)  { 
+    public String delGroup(GROUP_TYPE group)  { 
 
-        String A = String.format("%02X", a+112);
-        String dataVariable = A + "00";
-        String typesG = "32";
-        String forlength = typesG + dataVariable;
+        String data = String.format("%02X", group.getValue()) + "00";
+        String types = Integer.toHexString(DEL_GROUP.getValue());
+        String forlength = types + data;
         String dLength = String.format("%04X", forlength.length() / 2);
-        String ckSum = checkSum(dLength, typesG, dataVariable);
+        String ckSum = checkSum(dLength, types, data);
         String delData = dLength + forlength + ckSum;
         String dataOut = STX + removeSpecialCharacter(delData) + ETX;   
 
@@ -554,16 +636,20 @@ public class LedProtocol {
         return dataOut;
     }
 
-    // type = 1 oneShotMode, type = 2 UnlimitedLoop
-    // index = 0 ~ 4, count 0~31 
-    public String intOn(int type, int index, int count) {
-        String tp = String.format("%02X", type + 64);
-        String id = String.format("%02X", index + 80);
-        String ct = String.format("%02X", count + 48);
+    /**
+     * 
+     * @param type either "One Shot" or "Unlimited Loop"
+     * @param index 인터럽트 텍스트를 저장할 방 번호 // index = 0 ~ 4,
+     * @param count 인터럽트 텍스트의 디스플레이할 방의 개수 //  count 0~31 
+     * @return 
+     */
+    public String intOn(IntOnType type, int index, int count) {
+        String id = String.format("%02X", index);
+        String ct = String.format("%02X", count);
 
-        String dataVariable = tp + id + ct;
+        String dataVariable = type.getHexStr() + id + ct;
 
-        return sendMSG(INTR_TXT_ON, dataVariable);    
+        return getStringToTransmit(INTR_TXT_ON, dataVariable);    
     }
 
     public String intOff() {

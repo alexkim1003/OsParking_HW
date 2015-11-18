@@ -31,7 +31,6 @@ import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -50,6 +49,9 @@ import static com.osparking.global.names.OSP_enums.EBD_Effects.*;
 import static com.osparking.global.names.DB_Access.*;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
+import com.osparking.global.names.OSP_enums.DisplayArea;
+import static com.osparking.global.names.OSP_enums.DisplayArea.BOTTOM_ROW;
+import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,11 +151,11 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         
         // create a reader for the socket to the manager and start it
         //</editor-fold>                
-        defaultDisplaySettings[TOP_ROW] = readEBoardUsageSettings(DEFAULT_TOP_ROW);
-        defaultDisplaySettings[BOTTOM_ROW] = readEBoardUsageSettings(DEFAULT_BOTTOM_ROW);        
+        defaultDisplaySettings[TOP_ROW.ordinal()] = readEBoardUsageSettings(DEFAULT_TOP_ROW);
+        defaultDisplaySettings[BOTTOM_ROW.ordinal()] = readEBoardUsageSettings(DEFAULT_BOTTOM_ROW);        
         
-        changeE_BoardDisplay(TOP_ROW, defaultDisplaySettings[TOP_ROW]);
-        changeE_BoardDisplay(BOTTOM_ROW, defaultDisplaySettings[BOTTOM_ROW]);
+        changeE_BoardDisplay(TOP_ROW, defaultDisplaySettings[TOP_ROW.ordinal()]);
+        changeE_BoardDisplay(BOTTOM_ROW, defaultDisplaySettings[BOTTOM_ROW.ordinal()]);
         
         if (DEBUG)
             System.out.println("E Board #" + ID + " started");
@@ -543,7 +545,7 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         return finishingOperation;
     }
 
-    synchronized void  changeE_BoardDisplay(byte row, EBD_DisplaySetting rowSetting)
+    synchronized void  changeE_BoardDisplay(DisplayArea row, EBD_DisplaySetting rowSetting)
     {
         JTextField rowTextField = (row == TOP_ROW ? topTextField : botTextField);
          
@@ -575,12 +577,12 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
         }   
         //</editor-fold>        
         
-        ParkingTimer outerTaskTimer = parking_Display_OuterTimer[row];
+        ParkingTimer outerTaskTimer = parking_Display_OuterTimer[row.ordinal()];
         if (outerTaskTimer.hasTask()) {
             outerTaskTimer.cancelTask();
         }
     
-        ParkingTimer innerTaskTimer = parking_Display_InnerTimer[row]; 
+        ParkingTimer innerTaskTimer = parking_Display_InnerTimer[row.ordinal()]; 
         if (innerTaskTimer.hasTask()) {
             innerTaskTimer.cancelTask();
         }        
@@ -589,13 +591,13 @@ public class A_EBD_GUI extends javax.swing.JFrame implements DeviceGUI {
             rowTextField.setMargin(new Insets(2, 2, 2, 2) );            
             rowTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         } else {
-            outerCycleTask[row] = new OuterCycleTask(this, row, rowSetting);
+            outerCycleTask[row.ordinal()] = new OuterCycleTask(this, row, rowSetting);
             if (rowSetting.displayPattern == BLINKING) {
                 rowTextField.setMargin(new Insets(2, 2, 2, 2) );            
                 rowTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);            
-                outerTaskTimer.reschedule(outerCycleTask[row], 0, rowSetting.displayCycle);
+                outerTaskTimer.reschedule(outerCycleTask[row.ordinal()], 0, rowSetting.displayCycle);
             } else {
-                outerTaskTimer.runOnce(outerCycleTask[row]);
+                outerTaskTimer.runOnce(outerCycleTask[row.ordinal()]);
             }
         }
         

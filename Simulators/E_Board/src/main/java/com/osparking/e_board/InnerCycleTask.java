@@ -17,9 +17,10 @@
 package com.osparking.e_board;
 
 import com.osparking.global.names.EBD_DisplaySetting;
+import com.osparking.global.names.OSP_enums.DisplayArea;
+import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
 import java.awt.Insets;
 import javax.swing.JTextField;
-import static com.osparking.global.Globals.*;
 import com.osparking.global.names.OSP_enums.EBD_Effects;
 import static com.osparking.global.names.OSP_enums.EBD_Effects.BLINKING;
 
@@ -29,7 +30,7 @@ import static com.osparking.global.names.OSP_enums.EBD_Effects.BLINKING;
  */
 public class InnerCycleTask implements Runnable {
     A_EBD_GUI mainform;
-    private byte row;
+    private DisplayArea row;
     EBD_DisplaySetting rowSetting;
     int textWidth, flowDelta;    
     
@@ -40,7 +41,7 @@ public class InnerCycleTask implements Runnable {
     int bot_count = 1;
     int count = 1;
     
-    public InnerCycleTask(A_EBD_GUI mainform, byte row, EBD_DisplaySetting rowSetting, int textWidth, 
+    public InnerCycleTask(A_EBD_GUI mainform, DisplayArea row, EBD_DisplaySetting rowSetting, int textWidth, 
             int flowDelta, JTextField eBoardRow){
         this.mainform = mainform;
         this.row = row;
@@ -64,8 +65,8 @@ public class InnerCycleTask implements Runnable {
                         mainform.botTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
                         
                 }else{
-                    mainform.parking_Display_InnerTimer[row].cancelTask();
-                    mainform.parking_Display_OuterTimer[row].reRunOnce();
+                    mainform.parking_Display_InnerTimer[row.ordinal()].cancelTask();
+                    mainform.parking_Display_OuterTimer[row.ordinal()].reRunOnce();
                 }
                 break;
                 
@@ -77,8 +78,8 @@ public class InnerCycleTask implements Runnable {
                         mainform.botTextField.setMargin(new Insets(topMG, leftMG, botMG, rightMG -= flowDelta));
                     }                    
                 }else{
-                    mainform.parking_Display_InnerTimer[row].cancelTask();
-                    mainform.parking_Display_OuterTimer[row].reRunOnce();                    
+                    mainform.parking_Display_InnerTimer[row.ordinal()].cancelTask();
+                    mainform.parking_Display_OuterTimer[row.ordinal()].reRunOnce();                    
                 }
                 break;
                 

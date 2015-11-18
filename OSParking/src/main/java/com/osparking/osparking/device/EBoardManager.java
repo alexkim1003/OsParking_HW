@@ -180,17 +180,15 @@ public class EBoardManager extends Thread implements DeviceManager {
                                     if (codeAcked == EBD_INTERRUPT1.ordinal() || 
                                             codeAcked == EBD_INTERRUPT2.ordinal() ) 
                                     {
-                                        long currTmMs = System.currentTimeMillis();
-                                        long ackDelay 
-                                                = (int)(currTmMs - mainForm.eBoardMsgSentMs[deviceNo][row.ordinal()]);
-                                        int resendCnt = ( (SendEBDMessageTask)msgSendingTimer.getParkingTask() )
-                                                .getResendCount();
-
                                         if (DEBUG) {
+                                            long currTmMs = System.currentTimeMillis();
+                                            long ackDelay 
+                                                    = (int)(currTmMs - mainForm.eBoardMsgSentMs[deviceNo][row.ordinal()]);
+                                            int resendCnt = ( (SendEBDMessageTask)msgSendingTimer.getParkingTask() )
+                                                    .getResendCount();
+
                                             mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]
                                                     .addAckSpeedStatistics((int)ackDelay, resendCnt);
-//                                            System.out.println(timeFormat.format(new Date()) + "--row:" + row 
-//                                                    + ", resent: " + resendCnt + ", delay:$ " + ackDelay);
                                         }
                                     }
                                     //</editor-fold>
