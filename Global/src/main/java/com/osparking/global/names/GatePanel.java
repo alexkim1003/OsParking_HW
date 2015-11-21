@@ -17,6 +17,7 @@
 package com.osparking.global.names;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,10 +28,14 @@ import javax.swing.JPanel;
  * @author Open Source Parking Inc.
  */
 public abstract class GatePanel extends javax.swing.JPanel{
-    public abstract JLabel getPictureLabel(int gateNo);
+    //public abstract JLabel getCarPicLabels(int gateNo);
+    public abstract JLabel[] getCarPicLabels();
+
     public abstract JPanel getPanel_Gate(int gateNo);
     public abstract void resizeComponents(Dimension panelSize);
     public abstract void displaySizes();
     public abstract JList getEntryList(int gateNo);
     public abstract DefaultListModel getDefaultListModel(int gateNo);
+    public abstract BufferedImage[] getGateImages();
+    public abstract void setGateImage(byte gateNo, BufferedImage gateImage);
 }

@@ -335,7 +335,7 @@ public class LedProtocol {
         return getStringToTransmit(SAVE_TEXT, dataVariable);   
     }
         
-    private int getViewWidth(String effectLabel) {
+    public static int getViewWidth(String effectLabel) {
         int length = effectLabel.length();
         
         for (int i = 0; i < effectLabel.length(); i++) {

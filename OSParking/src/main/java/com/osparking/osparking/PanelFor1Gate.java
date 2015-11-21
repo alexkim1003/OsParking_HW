@@ -42,7 +42,9 @@ public class PanelFor1Gate extends GatePanel {
     final DefaultListModel model_1 = new DefaultListModel();    
     JList entryList[] = new JList[3];
     DefaultListModel models[] = new DefaultListModel[3];
-    //BufferedImage noPictureImg[] = new BufferedImage[2];
+    
+    private BufferedImage gateImages[] = new BufferedImage[2]; 
+    private JLabel[] CarPicLabels = new JLabel[2];
     
     /**
      * Creates new form PanelFor1Gate
@@ -71,6 +73,11 @@ public class PanelFor1Gate extends GatePanel {
         PanelRestArea = new javax.swing.JPanel();
         RestAreaPicLabel = new javax.swing.JLabel();
 
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
         setLayout(new java.awt.BorderLayout());
 
         Panel_Gate1.setBackground(MainBackground);
@@ -82,7 +89,6 @@ public class PanelFor1Gate extends GatePanel {
 
         CarPicLabel1.setBackground(MainBackground);
         CarPicLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CarPicLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         CarPicLabel1.setAlignmentX(0.5F);
         CarPicLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CarPicLabel1.setDoubleBuffered(true);
@@ -140,8 +146,18 @@ public class PanelFor1Gate extends GatePanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CarPicLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CarPicLabel1MouseClicked
-        show100percentSizeImageOfGate(1, getNoPictureImg());
+        show100percentSizeImageOfGate(1, getGateImages()[1]);
     }//GEN-LAST:event_CarPicLabel1MouseClicked
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        int gateNo = 1;
+        
+        if (getEntryList(gateNo).getModel().getSize() > 0) 
+        {
+            getEntryList(gateNo).setSelectedIndex(0);
+            ControlGUI.showImage(gateNo);
+        }           
+    }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CarPicLabel1;
@@ -152,11 +168,6 @@ public class PanelFor1Gate extends GatePanel {
     private javax.swing.JScrollPane ScrollPane_Gate1;
     private javax.swing.Box.Filler filler1;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public JLabel getPictureLabel(int gateNo) {
-        return CarPicLabel1;        
-    }
 
     @Override
     public void resizeComponents(Dimension gatesPanelSize) {
@@ -187,17 +198,17 @@ public class PanelFor1Gate extends GatePanel {
                 new Dimension(picWidthNew, gatesPanelSize.height));
         this.Panel_Gate1.revalidate();
 
-        setComponentSize(CarPicLabels[1], new Dimension(picWidthNew, picHeightNew));
+        setComponentSize(getCarPicLabels()[1], new Dimension(picWidthNew, picHeightNew));
 
         // <editor-fold defaultstate="collapsed" desc="-- stretch image for each window resizing">
         if (originalImgWidth[1] > 0)
         {
             //originalImg = ImageIO.read(new File(getDisplayedImagePath(1)));
-            ImageIcon iIcon = createStretchedIcon(CarPicLabels[1].getPreferredSize(), 
+            ImageIcon iIcon = createStretchedIcon(getCarPicLabels()[1].getPreferredSize(), 
                     getNoPictureImg(), false); // after components resized
-            CarPicLabels[1].setIcon(iIcon);
+            getCarPicLabels()[1].setIcon(iIcon);
         }
-        CarPicLabels[1].revalidate();
+        getCarPicLabels()[1].revalidate();
         revalidate();
         // </editor-fold>
 
@@ -242,7 +253,7 @@ public class PanelFor1Gate extends GatePanel {
         sb.append(getSizeString(Panel_Gate1));
         sb.append(System.lineSeparator());
         sb.append("PIC = ");        
-        sb.append(getSizeString(CarPicLabels[1]));
+        sb.append(getSizeString(getCarPicLabels()[1]));
         sb.append(System.lineSeparator());
         sb.append("ScL = ");        
         sb.append(getSizeString(ScrollPane_Gate1));
@@ -281,5 +292,20 @@ public class PanelFor1Gate extends GatePanel {
     @Override
     public JPanel getPanel_Gate(int gateNo) {
         return Panel_Gate1;
+    }
+
+    @Override
+    public BufferedImage[] getGateImages() {
+        return gateImages;
+    }
+
+    @Override
+    public void setGateImage(byte gateNo, BufferedImage gateImage) {
+        this.gateImages[gateNo] = gateImage;
+    }
+
+    @Override
+    public JLabel[] getCarPicLabels() {
+        return CarPicLabels;
     }
 }

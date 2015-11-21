@@ -21,6 +21,10 @@ package com.osparking.osparking.device.LEDnotice;
  * @author Open Source Parking Inc.
  */
 public class LEDnoticeSettings {
-    public boolean isUsed;
-    public int contentTypeIdx;
+    public boolean isUsed = true;
+    public int contentTypeIdx = 0;
+    public String verbatimContent = "not initialized yet";
+    public LEDnoticeSettings () {
+        
+    }
 }

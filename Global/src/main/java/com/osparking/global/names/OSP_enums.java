@@ -22,21 +22,6 @@ package com.osparking.global.names;
  */
 public class OSP_enums {
     
-    public enum EBD_Row {
-        TOP(1), 
-        BOTTOM(2);
-        
-        private int value;
-        
-        EBD_Row(int numVal) {
-            this.value = numVal;
-        }
-
-        public int getValue() {
-            return value;
-        }            
-    }
-    
     public enum ConnectionType {
         TCP_IP("TCP/IP"), 
         RS_232("RS-232");
@@ -50,6 +35,21 @@ public class OSP_enums {
         public String getLabel() {
             return label;
         }          
+    }
+    
+    public enum EBD_Row {
+        TOP(1), 
+        BOTTOM(2);
+        
+        private int value;
+        
+        EBD_Row(int numVal) {
+            this.value = numVal;
+        }
+
+        public int getValue() {
+            return value;
+        }            
     }
     
     public enum E_BoardType {
@@ -254,13 +254,23 @@ public class OSP_enums {
     }
 
     public enum EBD_ContentType {
-        VERBATIM,            // display as it is (character by character)
-        VEHICLE_TAG,        // car license tag number
-        REGISTRATION_STAT,      // registered, un-registered, parking-restricted
-        GATE_NAME,        // gate name which is stored in the system settings already 
-        CURRENT_DATE,     // format: 20XX-12-31(Mon.)
-        CURRENT_TIME,     // format: AM/PM HH:MM:SS
-        CURRENT_DATE_TIME // format: 20XX-12-31(Mon.) HH:MM:SS AM/PM
+        VERBATIM("Exact Words"),           // display as it is (character by character)
+        VEHICLE_TAG("Plate Number"),        // car license tag number
+        REGISTRATION_STAT("Registration Status"),      // registered, un-registered, parking-restricted
+        GATE_NAME("Gate Name"),        // gate name which is stored in the system settings already 
+        CURRENT_DATE("Current Date"),     // format: 20XX-12-31(Mon.)
+        CURRENT_TIME("Current Time"),     // format: AM/PM HH:MM:SS
+        CURRENT_DATE_TIME("Current Date and Time"); // format: 20XX-12-31(Mon.) HH:MM:SS AM/PM
+        
+        private String label;
+        
+        EBD_ContentType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }           
     };
             
     public enum EBD_Effects {

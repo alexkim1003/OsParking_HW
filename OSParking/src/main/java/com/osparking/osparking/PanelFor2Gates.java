@@ -32,6 +32,7 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import com.osparking.global.names.GatePanel;
 import static com.osparking.global.Globals.*;
+import static com.osparking.osparking.ControlGUI.getGatePanel;
 
 /**
  *
@@ -43,6 +44,7 @@ public class PanelFor2Gates extends GatePanel {
     final DefaultListModel model_2 = new DefaultListModel();  
     DefaultListModel models[] = new DefaultListModel[5];
     private JPanel[] Panel_Gates = new JPanel[5];
+    private JLabel[] CarPicLabels = new JLabel[3];
 
     /**
      * Creates new form PanelFor2Gates
@@ -59,17 +61,8 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gates[2] = Panel_Gate2;
     }
     
-    @Override   
-    public JLabel getPictureLabel(int gateNo) {
-        switch (gateNo) 
-        {
-            case 1: return CarPicLabel1;
-            case 2: return CarPicLabel2;
-            default:
-                return null;
-        }
-    } 
-    
+    int prevWidth = 0;
+
     @Override
     public void resizeComponents(Dimension gatesPanelSize) 
     {
@@ -96,24 +89,26 @@ public class PanelFor2Gates extends GatePanel {
         setComponentSize(Panel_Gate1, 
                 new Dimension(picWidthNew + 23, gatesPanelSize.height));
         setComponentSize(Panel_Gate2, 
-                new Dimension(picWidthNew + 23, gatesPanelSize.height));
+                new Dimension(picWidthNew + 23, gatesPanelSize.height));           
 
-        for (int gateNo = 1; gateNo <= 2; gateNo++)
-        {
-            setComponentSize(
-                    CarPicLabels[gateNo], new Dimension(picWidthNew, picHeightNew));
-
-            if (originalImgWidth[gateNo] > 0)
+        if ((int)gatesPanelSize.getWidth() != prevWidth) {
+            prevWidth = (int)gatesPanelSize.getWidth();
+            
+            for (int gateNo = 1; gateNo <= 2; gateNo++)
             {
-                ImageIcon iIcon = createStretchedIcon(CarPicLabels[gateNo].getPreferredSize(), 
-                        getNoPictureImg(), false); // after components resized
-                CarPicLabels[gateNo].setIcon(null);
-                CarPicLabels[gateNo].revalidate();
-                CarPicLabels[gateNo].setIcon(iIcon);
+                setComponentSize(getCarPicLabels()[gateNo], new Dimension(picWidthNew, picHeightNew));
+
+                if (originalImgWidth[gateNo] > 0)
+                {
+                    ImageIcon iIcon = createStretchedIcon(getCarPicLabels()[gateNo].getPreferredSize(), 
+                            getNoPictureImg(), false); // after components resized
+                    getCarPicLabels()[gateNo].setIcon(null);
+                    getCarPicLabels()[gateNo].revalidate();
+                    getCarPicLabels()[gateNo].setIcon(iIcon);
+                }
             }
         }
         revalidate();
-
         int width = gatesPanelSize.width - picWidthNew * 2;
 
         if (width > 60)
@@ -139,6 +134,7 @@ public class PanelFor2Gates extends GatePanel {
         }
     }
     
+    private BufferedImage gateImages[] = new BufferedImage[3];
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -162,6 +158,11 @@ public class PanelFor2Gates extends GatePanel {
         MarginLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                formComponentResized(evt);
+            }
+        });
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         Panel_Gate1.setBackground(MainBackground);
@@ -172,18 +173,17 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gate1.setLayout(new javax.swing.BoxLayout(Panel_Gate1, javax.swing.BoxLayout.Y_AXIS));
 
         CarPicLabel1.setBackground(MainBackground);
+        CarPicLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         CarPicLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CarPicLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         CarPicLabel1.setAlignmentX(0.5F);
         CarPicLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CarPicLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         CarPicLabel1.setIconTextGap(0);
         CarPicLabel1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-        CarPicLabel1.setMinimumSize(new java.awt.Dimension(100, 100));
+        CarPicLabel1.setMinimumSize(new java.awt.Dimension(200, 200));
         CarPicLabel1.setName(""); // NOI18N
         CarPicLabel1.setOpaque(true);
-        CarPicLabel1.setPreferredSize(new java.awt.Dimension(303, 200));
-        CarPicLabel1.setVerifyInputWhenFocusTarget(false);
+        CarPicLabel1.setPreferredSize(new java.awt.Dimension(200, 200));
         CarPicLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         CarPicLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -216,18 +216,18 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gate2.setLayout(new javax.swing.BoxLayout(Panel_Gate2, javax.swing.BoxLayout.Y_AXIS));
 
         CarPicLabel2.setBackground(MainBackground);
+        CarPicLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         CarPicLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CarPicLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         CarPicLabel2.setAlignmentX(0.5F);
         CarPicLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CarPicLabel2.setDoubleBuffered(true);
         CarPicLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         CarPicLabel2.setIconTextGap(0);
         CarPicLabel2.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
-        CarPicLabel2.setMinimumSize(new java.awt.Dimension(100, 100));
+        CarPicLabel2.setMinimumSize(new java.awt.Dimension(200, 100));
         CarPicLabel2.setName(""); // NOI18N
         CarPicLabel2.setOpaque(true);
-        CarPicLabel2.setPreferredSize(new java.awt.Dimension(303, 200));
+        CarPicLabel2.setPreferredSize(new java.awt.Dimension(200, 200));
         CarPicLabel2.setVerifyInputWhenFocusTarget(false);
         CarPicLabel2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         CarPicLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -276,12 +276,21 @@ public class PanelFor2Gates extends GatePanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CarPicLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CarPicLabel1MouseClicked
-        show100percentSizeImageOfGate(1, getNoPictureImg());
+        show100percentSizeImageOfGate(1, getGateImages()[1]);
     }//GEN-LAST:event_CarPicLabel1MouseClicked
 
     private void CarPicLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CarPicLabel2MouseClicked
-        show100percentSizeImageOfGate(2, getNoPictureImg());
+        show100percentSizeImageOfGate(2, getGateImages()[2]);
     }//GEN-LAST:event_CarPicLabel2MouseClicked
+
+    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
+        for (int gateNo = 1; gateNo <= 2; gateNo++)
+            if (getEntryList(gateNo).getModel().getSize() > 0) 
+            {
+                getEntryList(gateNo).setSelectedIndex(0);
+                ControlGUI.showImage(gateNo);
+            }        
+    }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel CarPicLabel1;
@@ -369,5 +378,22 @@ public class PanelFor2Gates extends GatePanel {
     @Override
     public JPanel getPanel_Gate(int gateNo) {
         return Panel_Gates[gateNo];
+    }
+
+    /**
+     * @return the gateImages
+     */
+    public BufferedImage[] getGateImages() {
+        return gateImages;
+    }
+
+    @Override
+    public void setGateImage(byte gateNo, BufferedImage gateImage) {
+        this.gateImages[gateNo] = gateImage;
+    }
+
+    @Override
+    public JLabel[] getCarPicLabels() {
+        return CarPicLabels;
     }
 }

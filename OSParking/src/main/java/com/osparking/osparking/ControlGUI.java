@@ -23,7 +23,6 @@ import com.osparking.attendant.LoginWindowEvent;
 import com.osparking.global.Globals;
 import static com.osparking.global.Globals.CAMERA_GUI_WIDTH;
 import static com.osparking.global.Globals.CAR_PERIOD;
-import static com.osparking.global.Globals.CarPicLabels;
 import static com.osparking.global.Globals.DEBUG;
 import static com.osparking.global.Globals.ERROR_RATE;
 import static com.osparking.global.Globals.GATE_BAR_HEIGHT;
@@ -347,11 +346,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         wholePane.setBackground(MainBackground);
         
         startClock();
-        
         initMessagelLines();
-        
-        formComponentResized(null);
-        
         initCarEntryList();
         
         Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -365,7 +360,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         String message = "System started";
         addMessageLine(MessageTextArea, message);
         logParkingOperation(OpLogLevel.LogAlways, message);
-        
         
         int deviceCount = DeviceType.values().length; // dc: Device (type)  Count
         tolerance = new ToleranceLevel[deviceCount][gateCount + 1];
@@ -477,8 +471,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
             interruptsAcked[gateNo] = true;
             
-//            for (int row = TOP_ROW; row <= BOTTOM_ROW; row++) {
-            for (OSP_enums.EBD_Row row : OSP_enums.EBD_Row.values()) {
+            for (EBD_Row row : EBD_Row.values()) {
                 String timerName = "ospEBD" + gateNo + "_R" + row.getValue() + "_msgTimer";
                 sendEBDmsgTimer[gateNo][row.ordinal()] 
                         = new ParkingTimer(timerName, false, null, 0L, RESEND_PERIOD); 
@@ -536,9 +529,9 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }    
 
     static void show100percentSizeImageOfGate(int gateNo, BufferedImage originalImage) {
-        if (CarPicLabels[gateNo].getIcon() != null)
+        if (getGatePanel().getCarPicLabels()[gateNo].getIcon() != null)
         {
-            int picIconWidth = CarPicLabels[gateNo].getIcon().getIconWidth();
+            int picIconWidth = getGatePanel().getCarPicLabels()[gateNo].getIcon().getIconWidth();
             if (originalImgWidth[gateNo] * 0.95 > picIconWidth)
             {
                 ImageDisplay bigImage = new ImageDisplay(originalImage,
@@ -1484,7 +1477,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         showLoginRecordForm.getDatesRefreshTable();
         showLoginRecordForm.setVisible(true);        
     }//GEN-LAST:event_LoginRecordItemActionPerformed
-    
+        
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
 
         // get the size of this frame
@@ -1498,21 +1491,10 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             @Override
             public void run() {
                 long startMil = System.currentTimeMillis();
-                
                 Dimension contentPanel = getContentPane().getSize();
-                Dimension gatesPanelSize = 
-                        new Dimension(contentPanel.width - 290, contentPanel.height - 68);
-                
-                switch (gateCount) {
-                    
-                    case 1: 
-                        getGatePanel().resizeComponents(gatesPanelSize);
-                        break;
-                        
-                    case 2: 
-                        getGatePanel().resizeComponents(gatesPanelSize);
-                        break;                        
-                }
+                Dimension gatesPanelSize = new Dimension(contentPanel.width - 290, contentPanel.height - 68);
+
+                getGatePanel().resizeComponents(gatesPanelSize);
                 resizedEventDisabled = false;
             }
         });                
@@ -1696,7 +1678,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
 
-    private byte[] getEBDSimulatorDefaultMessage(byte deviceNo, EBD_Row row, int msgSN) {
+    private byte[] getEBDSimulatorDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
         EBD_DisplaySetting setting = null;
         String displayText = null;
         
@@ -2350,10 +2332,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         for (int gateNo = 1; gateNo <= gateCount; gateNo++)
         {
             listSelectionModel[gateNo] = getGatePanel().getEntryList(gateNo).getSelectionModel();
-            listSelectionModel[gateNo].addListSelectionListener(
-                    new ListSelectionChangeHandler(gateNo));
-            getGatePanel().getEntryList(gateNo).addKeyListener(
-                    new KeyPressedEventHandler (gateNo));       
+            listSelectionModel[gateNo].addListSelectionListener(new ListSelectionChangeHandler(gateNo));
+            getGatePanel().getEntryList(gateNo).addKeyListener(new KeyPressedEventHandler (gateNo));       
             loadPreviousEntries(gateNo);
         }
     }
@@ -2394,10 +2374,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 barOptn = rs.getString("BarOptn");
                 arrSeqNo = rs.getLong("arrseqno");
                 listModel.addElement(new CarAdmission(msgLine + barOptn, arrSeqNo));
-            }
-            if (!listModel.isEmpty()) {
-                getGatePanel().getEntryList(gateNo).setSelectedIndex(0);
-                showImage(gateNo);
             }
         } catch (SQLException se) {
             logParkingException(Level.SEVERE, se, 
@@ -2941,7 +2917,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 {
                     getShownImageRow()[gateNo] = getGatePanel().getEntryList(gateNo).getSelectedIndex();
 
-                    JLabel picLabel = getGatePanel().getPictureLabel(gateNo);
+                    JLabel picLabel = getGatePanel().getCarPicLabels()[gateNo];
+//                    System.out.println("gate: " + gateNo + ", w: " + picLabel.getSize().width + ", h: " + picLabel.getHeight());
                     CarAdmission carEntry = (CarAdmission)getGatePanel().getEntryList(gateNo).getSelectedValue();
 
                     String sql = new String( "Select imageblob from car_arrival where ArrSeqNo = ?");
@@ -2957,12 +2934,20 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                         if (rs.next()) {
                             try {
                                 InputStream imageInStream = rs.getBinaryStream("ImageBlob");
-                                BufferedImage imageRead = ImageIO.read(imageInStream);
-                                closeInputStream(imageInStream, "(image loading from DB)");
-
-                                picLabel.setIcon(createStretchedIcon(picLabel.getSize(), imageRead, false));
-                                noPictureImg = imageRead;
-                                originalImgWidth[gateNo] = imageRead.getWidth();             
+                                
+                                if (imageInStream == null) {
+//                                    picLabel.setIcon(createStretchedIcon(picLabel.getSize(), noPictureImg, false));
+//                                    originalImgWidth[gateNo] = noPictureImg.getWidth(); 
+                                    picLabel.setIcon(null);
+                                    picLabel.setText("No Image Exists");
+                                } else {
+                                    picLabel.setText(null);
+                                    BufferedImage imageRead = ImageIO.read(imageInStream);
+                                    picLabel.setIcon(createStretchedIcon(picLabel.getSize(), imageRead, false));
+                                    closeInputStream(imageInStream, "(image loading from DB)");
+                                    originalImgWidth[gateNo] = imageRead.getWidth(); 
+                                    gatePanel.setGateImage((byte)gateNo, imageRead);
+                                }
                             } catch (IOException ex) {
                                 logParkingException(Level.SEVERE, ex, "(image loading from DB)");
                             }

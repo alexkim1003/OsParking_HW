@@ -121,6 +121,13 @@ public class Globals {
     public static SimpleDateFormat timeFormatMMSS = new SimpleDateFormat("mm_ss"); 
     public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
 
+//    /**
+//     * @return the CarPicLabels
+//     */
+//    public static JLabel[] getCarPicLabels() {
+//        return CarPicLabels;
+//    }
+
     public static class GateDeviceType {
         public OSP_enums.CameraType cameraType = OSP_enums.CameraType.Simulator;
         public OSP_enums.E_BoardType eBoardType = OSP_enums.E_BoardType.Simulator;
@@ -562,7 +569,7 @@ public class Globals {
      */
     public final static int FRAME_HEIGHT = 287;
     
-    public static JLabel[] CarPicLabels = new JLabel[5];
+    private static JLabel[] CarPicLabels = new JLabel[5];
     
     public static int[] originalImgWidth = new int[5];
     public static BufferedImage[] originalImg = new BufferedImage[5];
@@ -780,25 +787,6 @@ public class Globals {
     {
         return new Dimension(PIC_WIDTH, PIC_HEIGHT);
     } 
-    
-//    public static void setConfig(Connection conn) {
-//        String query = " SET lc_time_names = 'ko_KR' ";
-//        try {
-//            Statement setStmt = conn.createStatement();
-//            setStmt.execute(query); 
-//            setStmt.close();
-//        } catch (SQLException ex) {
-//            logParkingException(Level.SEVERE, ex, "(time lang setting 1)");
-//        }
-//        query = " SET NAMES 'utf8'; ";
-//        try {
-//            Statement setStmt = conn.createStatement();
-//            setStmt.execute(query); 
-//            setStmt.close();
-//        } catch (SQLException ex) {
-//            logParkingException(Level.SEVERE, ex, "(time lang setting 2)");
-//        }        
-//    }    
     
     /**
      * Associate a text file for today to a event logger.

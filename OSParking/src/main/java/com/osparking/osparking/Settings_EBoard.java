@@ -45,7 +45,7 @@ import com.osparking.global.names.OSP_enums.EBD_Fonts;
 import com.osparking.global.names.OSP_enums.EBD_Effects;
 import static com.osparking.osparking.device.EBoardManager.sendEBoardDefaultSetting;
 import static com.osparking.global.names.DB_Access.gateCount;
-import com.osparking.global.names.OSP_enums.EBD_Row;
+import com.osparking.global.names.OSP_enums.FormMode;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 
 /**
@@ -57,6 +57,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
     private HashMap<String,Component> componentMap;
     private EBD_DisplayUsage currentTab = DEFAULT_TOP_ROW, previousTab = DEFAULT_TOP_ROW;
     Settings_System parent = null;
+    FormMode formMode = FormMode.SEARCHING;
     /**
      * Creates new form TestDisplay
      */
@@ -92,7 +93,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         /**
          * Set icon for the simulated camera program
          */
-        setIconImages(OSPiconList);                
+        setIconImages(OSPiconList);                  
     }
 
     /**
@@ -106,6 +107,8 @@ public class Settings_EBoard extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         wholePanel = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
         eboardTabbedPanel = new javax.swing.JTabbedPane();
         eBoardTabPane1 = new javax.swing.JTabbedPane();
         eBoardPanel0 = new javax.swing.JPanel();
@@ -164,7 +167,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         buttonPanel = new javax.swing.JPanel();
         btn_Exit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Electronic Display Settings");
         setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -174,7 +177,9 @@ public class Settings_EBoard extends javax.swing.JFrame {
             }
         });
 
-        wholePanel.setLayout(new java.awt.BorderLayout());
+        wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.PAGE_AXIS));
+        wholePanel.add(filler1);
+        wholePanel.add(filler2);
 
         eboardTabbedPanel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         eboardTabbedPanel.setName("eboardTabbedPanel"); // NOI18N
@@ -254,9 +259,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_DisplayEffect0.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_DisplayEffect0.setName("combo_DisplayEffect" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
         combo_DisplayEffect0.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_DisplayEffect0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_DisplayEffect0ActionPerformed(evt);
+        combo_DisplayEffect0.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_DisplayEffect0PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -271,9 +280,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextColor0.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_TextColor0.setName("combo_TextColor" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
         combo_TextColor0.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_TextColor0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextColor0ActionPerformed(evt);
+        combo_TextColor0.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextColor0PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -288,9 +301,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextFont0.setMinimumSize(new java.awt.Dimension(158, 21));
         combo_TextFont0.setName("combo_TextFont" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
         combo_TextFont0.setPreferredSize(new java.awt.Dimension(143, 25));
-        combo_TextFont0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextFont0ActionPerformed(evt);
+        combo_TextFont0.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextFont0PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -314,6 +331,15 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_ContentType0.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         combo_ContentType0.setName("combo_ContentType" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
         combo_ContentType0.setPreferredSize(new java.awt.Dimension(154, 25));
+        combo_ContentType0.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_ContentType0PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
         combo_ContentType0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_ContentType0ActionPerformed(evt);
@@ -332,10 +358,10 @@ public class Settings_EBoard extends javax.swing.JFrame {
         btn_Save0.setText("Save");
         btn_Save0.setEnabled(false);
         btn_Save0.setInheritsPopupMenu(true);
-        btn_Save0.setMaximumSize(new java.awt.Dimension(73, 35));
-        btn_Save0.setMinimumSize(new java.awt.Dimension(73, 35));
+        btn_Save0.setMaximumSize(new java.awt.Dimension(85, 35));
+        btn_Save0.setMinimumSize(new java.awt.Dimension(85, 35));
         btn_Save0.setName("btn_Save" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
-        btn_Save0.setPreferredSize(new java.awt.Dimension(73, 30));
+        btn_Save0.setPreferredSize(new java.awt.Dimension(85, 35));
         btn_Save0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_Save0ActionPerformed(evt);
@@ -345,7 +371,6 @@ public class Settings_EBoard extends javax.swing.JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 170, 0, 0);
         eBoardPanel0.add(btn_Save0, gridBagConstraints);
@@ -354,10 +379,10 @@ public class Settings_EBoard extends javax.swing.JFrame {
         btn_Cancel0.setMnemonic('c');
         btn_Cancel0.setText("Cancel");
         btn_Cancel0.setEnabled(false);
-        btn_Cancel0.setMaximumSize(new java.awt.Dimension(73, 35));
-        btn_Cancel0.setMinimumSize(new java.awt.Dimension(73, 35));
+        btn_Cancel0.setMaximumSize(new java.awt.Dimension(85, 35));
+        btn_Cancel0.setMinimumSize(new java.awt.Dimension(85, 35));
         btn_Cancel0.setName("btn_Cancel" + EBD_DisplayUsage.DEFAULT_TOP_ROW.ordinal());
-        btn_Cancel0.setPreferredSize(new java.awt.Dimension(73, 30));
+        btn_Cancel0.setPreferredSize(new java.awt.Dimension(85, 35));
         btn_Cancel0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_Cancel0ActionPerformed(evt);
@@ -366,7 +391,6 @@ public class Settings_EBoard extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         eBoardPanel0.add(btn_Cancel0, gridBagConstraints);
@@ -443,9 +467,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_DisplayEffect1.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_DisplayEffect1.setName("combo_DisplayEffect" + EBD_DisplayUsage.DEFAULT_BOTTOM_ROW.ordinal());
         combo_DisplayEffect1.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_DisplayEffect1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_DisplayEffect1ActionPerformed(evt);
+        combo_DisplayEffect1.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_DisplayEffect1PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -461,9 +489,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextColor1.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_TextColor1.setName("combo_TextColor" + EBD_DisplayUsage.DEFAULT_BOTTOM_ROW.ordinal());
         combo_TextColor1.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_TextColor1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextColor1ActionPerformed(evt);
+        combo_TextColor1.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextColor1PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -479,9 +511,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextFont1.setMinimumSize(new java.awt.Dimension(158, 21));
         combo_TextFont1.setName("combo_TextFont" + EBD_DisplayUsage.DEFAULT_BOTTOM_ROW.ordinal());
         combo_TextFont1.setPreferredSize(new java.awt.Dimension(143, 25));
-        combo_TextFont1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextFont1ActionPerformed(evt);
+        combo_TextFont1.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextFont1PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -506,6 +542,15 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_ContentType1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "VERBATIM", "VEHICLE TAG", "REGISTRATION STAT", "GATE NAME", "CURRENT DATE", "CURRENT TIME", "CURRENT DATE TIME" }));
         combo_ContentType1.setName("combo_ContentType" + EBD_DisplayUsage.DEFAULT_BOTTOM_ROW.ordinal());
         combo_ContentType1.setPreferredSize(new java.awt.Dimension(154, 25));
+        combo_ContentType1.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_ContentType1PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
         combo_ContentType1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_ContentType1ActionPerformed(evt);
@@ -640,9 +685,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_DisplayEffect2.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_DisplayEffect2.setName("combo_DisplayEffect" + EBD_DisplayUsage.CAR_ENTRY_TOP_ROW.ordinal());
         combo_DisplayEffect2.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_DisplayEffect2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_DisplayEffect2ActionPerformed(evt);
+        combo_DisplayEffect2.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_DisplayEffect2PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -658,9 +707,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextColor2.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_TextColor2.setName("combo_TextColor" + EBD_DisplayUsage.CAR_ENTRY_TOP_ROW.ordinal());
         combo_TextColor2.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_TextColor2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextColor2ActionPerformed(evt);
+        combo_TextColor2.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextColor2PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -676,9 +729,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextFont2.setMinimumSize(new java.awt.Dimension(158, 21));
         combo_TextFont2.setName("combo_TextFont" + EBD_DisplayUsage.CAR_ENTRY_TOP_ROW.ordinal());
         combo_TextFont2.setPreferredSize(new java.awt.Dimension(143, 25));
-        combo_TextFont2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextFont2ActionPerformed(evt);
+        combo_TextFont2.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextFont2PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -703,6 +760,15 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_ContentType2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "VERBATIM", "VEHICLE TAG", "REGISTRATION STAT", "GATE NAME", "CURRENT DATE", "CURRENT TIME", "CURRENT DATE TIME" }));
         combo_ContentType2.setName("combo_ContentType" + EBD_DisplayUsage.CAR_ENTRY_TOP_ROW.ordinal());
         combo_ContentType2.setPreferredSize(new java.awt.Dimension(154, 25));
+        combo_ContentType2.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_ContentType2PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
         combo_ContentType2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_ContentType2ActionPerformed(evt);
@@ -830,9 +896,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_DisplayEffect3.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_DisplayEffect3.setName("combo_DisplayEffect" + EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW.ordinal());
         combo_DisplayEffect3.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_DisplayEffect3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_DisplayEffect3ActionPerformed(evt);
+        combo_DisplayEffect3.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_DisplayEffect3PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -848,9 +918,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextColor3.setMinimumSize(new java.awt.Dimension(100, 25));
         combo_TextColor3.setName("combo_TextColor" + EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW.ordinal());
         combo_TextColor3.setPreferredSize(new java.awt.Dimension(100, 25));
-        combo_TextColor3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextColor3ActionPerformed(evt);
+        combo_TextColor3.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextColor3PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -866,9 +940,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_TextFont3.setMinimumSize(new java.awt.Dimension(158, 21));
         combo_TextFont3.setName("combo_TextFont" + EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW.ordinal());
         combo_TextFont3.setPreferredSize(new java.awt.Dimension(143, 25));
-        combo_TextFont3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                combo_TextFont3ActionPerformed(evt);
+        combo_TextFont3.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_TextFont3PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -893,6 +971,15 @@ public class Settings_EBoard extends javax.swing.JFrame {
         combo_ContentType3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "VERBATIM", "VEHICLE TAG", "REGISTRATION STAT", "GATE NAME", "CURRENT DATE", "CURRENT TIME", "CURRENT DATE TIME" }));
         combo_ContentType3.setName("combo_ContentType" + EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW.ordinal());
         combo_ContentType3.setPreferredSize(new java.awt.Dimension(154, 25));
+        combo_ContentType3.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                combo_ContentType3PopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
         combo_ContentType3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 combo_ContentType3ActionPerformed(evt);
@@ -952,163 +1039,98 @@ public class Settings_EBoard extends javax.swing.JFrame {
 
         eboardTabbedPanel.addTab("Vehicle", eBoardTabPane2);
 
-        wholePanel.add(eboardTabbedPanel, java.awt.BorderLayout.CENTER);
-
-        buttonPanel.setLayout(new java.awt.GridBagLayout());
-
         btn_Exit.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         btn_Exit.setMnemonic('c');
         btn_Exit.setText("Close");
-        btn_Exit.setMaximumSize(new java.awt.Dimension(73, 35));
-        btn_Exit.setMinimumSize(new java.awt.Dimension(73, 35));
-        btn_Exit.setPreferredSize(new java.awt.Dimension(73, 30));
+        btn_Exit.setMaximumSize(new java.awt.Dimension(85, 35));
+        btn_Exit.setMinimumSize(new java.awt.Dimension(85, 35));
+        btn_Exit.setPreferredSize(new java.awt.Dimension(85, 35));
         btn_Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_ExitActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.ipadx = 20;
-        gridBagConstraints.insets = new java.awt.Insets(0, 450, 0, 0);
-        buttonPanel.add(btn_Exit, gridBagConstraints);
 
-        wholePanel.add(buttonPanel, java.awt.BorderLayout.PAGE_END);
+        javax.swing.GroupLayout buttonPanelLayout = new javax.swing.GroupLayout(buttonPanel);
+        buttonPanel.setLayout(buttonPanelLayout);
+        buttonPanelLayout.setHorizontalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, buttonPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_Exit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+        buttonPanelLayout.setVerticalGroup(
+            buttonPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(btn_Exit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
-        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(buttonPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(eboardTabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(wholePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(eboardTabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(wholePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void changeEnabled_of_SaveCancelButtons() {
-        boolean yesNo = checkPanel(currentTab);
-        ((JButton) getComponentByName("btn_Save" + currentTab.ordinal())).setEnabled(yesNo);
-        ((JButton) getComponentByName("btn_Cancel" + currentTab.ordinal())).setEnabled(yesNo);
-        btn_Exit.setEnabled(!yesNo);
-        
-    }    
     
     private void changeEnabled_of_SaveCancelButtons(boolean onOff) {
+        if (onOff) {
+            formMode = FormMode.MODIFICATION;
+        } else {
+            formMode = FormMode.SEARCHING;
+        }
         ((JButton) getComponentByName("btn_Save" + currentTab.ordinal())).setEnabled(onOff);
         ((JButton) getComponentByName("btn_Cancel" + currentTab.ordinal())).setEnabled(onOff);        
         btn_Exit.setEnabled(!onOff);
     }    
     
-    private void tf_VerbatimContent0KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent0KeyReleased
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_tf_VerbatimContent0KeyReleased
-
-    private void combo_DisplayEffect0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_DisplayEffect0ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_DisplayEffect0ActionPerformed
-
-    private void combo_TextColor0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextColor0ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextColor0ActionPerformed
-
-    private void combo_TextFont0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextFont0ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextFont0ActionPerformed
-
-    private void combo_ContentType0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType0ActionPerformed
-        checkContentType();
-    }//GEN-LAST:event_combo_ContentType0ActionPerformed
-
     private void btn_Save0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Save0ActionPerformed
-
         showDialog(currentTab);
     }//GEN-LAST:event_btn_Save0ActionPerformed
 
     private void btn_Cancel0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Cancel0ActionPerformed
-
         cancelBtnClick();
     }//GEN-LAST:event_btn_Cancel0ActionPerformed
 
     private void btn_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExitActionPerformed
-        parent.setEBDsettings(null);
-        this.dispose();
+        tryToCloseEBDSettingsForm();
     }//GEN-LAST:event_btn_ExitActionPerformed
 
     private void btn_Cancel2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Cancel2ActionPerformed
-
         cancelBtnClick();
     }//GEN-LAST:event_btn_Cancel2ActionPerformed
 
     private void btn_Save2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Save2ActionPerformed
-
         showDialog(currentTab);
     }//GEN-LAST:event_btn_Save2ActionPerformed
 
-    private void combo_ContentType2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType2ActionPerformed
-
-        checkContentType();
-    }//GEN-LAST:event_combo_ContentType2ActionPerformed
-
-    private void combo_TextFont2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextFont2ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextFont2ActionPerformed
-
-    private void combo_TextColor2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextColor2ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextColor2ActionPerformed
-
-    private void combo_DisplayEffect2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_DisplayEffect2ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_DisplayEffect2ActionPerformed
-
-    private void tf_VerbatimContent2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent2KeyReleased
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_tf_VerbatimContent2KeyReleased
-
     private void btn_Cancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Cancel1ActionPerformed
-
         cancelBtnClick();
     }//GEN-LAST:event_btn_Cancel1ActionPerformed
 
     private void btn_Save1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Save1ActionPerformed
-
         showDialog(currentTab);
     }//GEN-LAST:event_btn_Save1ActionPerformed
-
-    private void combo_ContentType1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType1ActionPerformed
-
-        checkContentType();
-    }//GEN-LAST:event_combo_ContentType1ActionPerformed
-
-    private void combo_TextFont1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextFont1ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextFont1ActionPerformed
-
-    private void combo_TextColor1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextColor1ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextColor1ActionPerformed
-
-    private void combo_DisplayEffect1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_DisplayEffect1ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_DisplayEffect1ActionPerformed
-
-    private void tf_VerbatimContent1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent1KeyReleased
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_tf_VerbatimContent1KeyReleased
-
-    private void tf_VerbatimContent3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent3KeyReleased
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_tf_VerbatimContent3KeyReleased
-
-    private void combo_DisplayEffect3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_DisplayEffect3ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_DisplayEffect3ActionPerformed
-
-    private void combo_TextColor3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextColor3ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextColor3ActionPerformed
-
-    private void combo_TextFont3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_TextFont3ActionPerformed
-        changeEnabled_of_SaveCancelButtons();
-    }//GEN-LAST:event_combo_TextFont3ActionPerformed
-
-    private void combo_ContentType3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType3ActionPerformed
-        checkContentType();
-    }//GEN-LAST:event_combo_ContentType3ActionPerformed
 
     private void btn_Save3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_Save3ActionPerformed
         showDialog(currentTab);
@@ -1119,8 +1141,104 @@ public class Settings_EBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_Cancel3ActionPerformed
 
     private void formClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formClosing
-        parent.setEBDsettings(null);
+        tryToCloseEBDSettingsForm();        
     }//GEN-LAST:event_formClosing
+
+    private void combo_ContentType3PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_ContentType3PopupMenuWillBecomeInvisible
+        setButtonEnabledIfContentTypeChanged(EBD_DisplayUsage.values()[3]);
+    }//GEN-LAST:event_combo_ContentType3PopupMenuWillBecomeInvisible
+
+    private void combo_ContentType0PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_ContentType0PopupMenuWillBecomeInvisible
+        setButtonEnabledIfContentTypeChanged(EBD_DisplayUsage.values()[0]);
+    }//GEN-LAST:event_combo_ContentType0PopupMenuWillBecomeInvisible
+
+    private void combo_ContentType1PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_ContentType1PopupMenuWillBecomeInvisible
+        setButtonEnabledIfContentTypeChanged(EBD_DisplayUsage.values()[1]);
+    }//GEN-LAST:event_combo_ContentType1PopupMenuWillBecomeInvisible
+
+    private void combo_ContentType2PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_ContentType2PopupMenuWillBecomeInvisible
+        setButtonEnabledIfContentTypeChanged(EBD_DisplayUsage.values()[2]);
+    }//GEN-LAST:event_combo_ContentType2PopupMenuWillBecomeInvisible
+
+    private void combo_TextColor0PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextColor0PopupMenuWillBecomeInvisible
+        setButtonEnabledIfColorChanged(EBD_DisplayUsage.values()[0]);
+    }//GEN-LAST:event_combo_TextColor0PopupMenuWillBecomeInvisible
+
+    private void combo_TextColor1PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextColor1PopupMenuWillBecomeInvisible
+        setButtonEnabledIfColorChanged(EBD_DisplayUsage.values()[1]);
+    }//GEN-LAST:event_combo_TextColor1PopupMenuWillBecomeInvisible
+
+    private void combo_TextColor2PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextColor2PopupMenuWillBecomeInvisible
+        setButtonEnabledIfColorChanged(EBD_DisplayUsage.values()[2]);
+    }//GEN-LAST:event_combo_TextColor2PopupMenuWillBecomeInvisible
+
+    private void combo_TextColor3PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextColor3PopupMenuWillBecomeInvisible
+        setButtonEnabledIfColorChanged(EBD_DisplayUsage.values()[3]);
+    }//GEN-LAST:event_combo_TextColor3PopupMenuWillBecomeInvisible
+
+    private void combo_DisplayEffect0PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_DisplayEffect0PopupMenuWillBecomeInvisible
+        setButtonEnabledIfEffectChanged(EBD_DisplayUsage.values()[0]);
+    }//GEN-LAST:event_combo_DisplayEffect0PopupMenuWillBecomeInvisible
+
+    private void combo_DisplayEffect1PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_DisplayEffect1PopupMenuWillBecomeInvisible
+        setButtonEnabledIfEffectChanged(EBD_DisplayUsage.values()[1]);
+    }//GEN-LAST:event_combo_DisplayEffect1PopupMenuWillBecomeInvisible
+
+    private void combo_DisplayEffect2PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_DisplayEffect2PopupMenuWillBecomeInvisible
+        setButtonEnabledIfEffectChanged(EBD_DisplayUsage.values()[2]);
+    }//GEN-LAST:event_combo_DisplayEffect2PopupMenuWillBecomeInvisible
+
+    private void combo_DisplayEffect3PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_DisplayEffect3PopupMenuWillBecomeInvisible
+        setButtonEnabledIfEffectChanged(EBD_DisplayUsage.values()[3]);
+    }//GEN-LAST:event_combo_DisplayEffect3PopupMenuWillBecomeInvisible
+
+    private void combo_TextFont0PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextFont0PopupMenuWillBecomeInvisible
+        setButtonEnabledIfFontChanged(EBD_DisplayUsage.values()[0]);
+    }//GEN-LAST:event_combo_TextFont0PopupMenuWillBecomeInvisible
+
+    private void combo_TextFont1PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextFont1PopupMenuWillBecomeInvisible
+        setButtonEnabledIfFontChanged(EBD_DisplayUsage.values()[1]);
+    }//GEN-LAST:event_combo_TextFont1PopupMenuWillBecomeInvisible
+
+    private void combo_TextFont2PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextFont2PopupMenuWillBecomeInvisible
+        setButtonEnabledIfFontChanged(EBD_DisplayUsage.values()[2]);
+    }//GEN-LAST:event_combo_TextFont2PopupMenuWillBecomeInvisible
+
+    private void combo_TextFont3PopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_combo_TextFont3PopupMenuWillBecomeInvisible
+        setButtonEnabledIfFontChanged(EBD_DisplayUsage.values()[3]);
+    }//GEN-LAST:event_combo_TextFont3PopupMenuWillBecomeInvisible
+
+    private void tf_VerbatimContent0KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent0KeyReleased
+        changeButtonEnabled_IfVebarimChanged(0);
+    }//GEN-LAST:event_tf_VerbatimContent0KeyReleased
+
+    private void tf_VerbatimContent1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent1KeyReleased
+        changeButtonEnabled_IfVebarimChanged(1);
+    }//GEN-LAST:event_tf_VerbatimContent1KeyReleased
+
+    private void tf_VerbatimContent2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent2KeyReleased
+        changeButtonEnabled_IfVebarimChanged(2);
+    }//GEN-LAST:event_tf_VerbatimContent2KeyReleased
+
+    private void tf_VerbatimContent3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_VerbatimContent3KeyReleased
+        changeButtonEnabled_IfVebarimChanged(3);
+    }//GEN-LAST:event_tf_VerbatimContent3KeyReleased
+
+    private void combo_ContentType1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType1ActionPerformed
+        checkContentType(1);
+    }//GEN-LAST:event_combo_ContentType1ActionPerformed
+
+    private void combo_ContentType0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType0ActionPerformed
+        checkContentType(0);
+    }//GEN-LAST:event_combo_ContentType0ActionPerformed
+
+    private void combo_ContentType3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType3ActionPerformed
+        checkContentType(3);
+    }//GEN-LAST:event_combo_ContentType3ActionPerformed
+
+    private void combo_ContentType2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_combo_ContentType2ActionPerformed
+        checkContentType(2);
+    }//GEN-LAST:event_combo_ContentType2ActionPerformed
 
      // <editor-fold defaultstate="collapsed" desc="Generated Code">  
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1157,6 +1275,8 @@ public class Settings_EBoard extends javax.swing.JFrame {
     private javax.swing.JTabbedPane eBoardTabPane1;
     private javax.swing.JTabbedPane eBoardTabPane2;
     private javax.swing.JTabbedPane eboardTabbedPanel;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel label_Color0;
     private javax.swing.JLabel label_Color1;
     private javax.swing.JLabel label_Color2;
@@ -1186,23 +1306,21 @@ public class Settings_EBoard extends javax.swing.JFrame {
    // </editor-fold>
     
     /**
-     *  decide whether or not to use the TextField to compare the contentType.
+     *  Decide whether to use the verbatim text field after checking the content type.
      */
-    public void checkContentType(){
-        if(((JComboBox) getComponentByName("combo_ContentType" + currentTab.ordinal())).getSelectedIndex() 
+    public void checkContentType(int index){
+        if (((JComboBox)getComponentByName("combo_ContentType" + index)).getSelectedIndex() 
                 == EBD_ContentType.VERBATIM.ordinal())
         {
-            ((JTextField) getComponentByName("tf_VerbatimContent" + currentTab.ordinal())).setEnabled(true);
-            ((JTextField) getComponentByName("tf_VerbatimContent" + currentTab.ordinal())).setText(
-                ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].verbatimContent);
+            ((JTextField) getComponentByName("tf_VerbatimContent" + index)).setEnabled(true);
+            ((JTextField) getComponentByName("tf_VerbatimContent" + index)).setText(
+                ControlGUI.EBD_DisplaySettings[index].verbatimContent);
         }
         else
         {
-            ((JTextField) getComponentByName("tf_VerbatimContent" + currentTab.ordinal())).setEnabled(false);
-            ((JTextField) getComponentByName("tf_VerbatimContent" + currentTab.ordinal())).setText(null);
+            ((JTextField) getComponentByName("tf_VerbatimContent" + index)).setEnabled(false);
+            ((JTextField) getComponentByName("tf_VerbatimContent" + index)).setText(null);
         }
-        
-        changeEnabled_of_SaveCancelButtons();       
     }
     
     /**
@@ -1336,7 +1454,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
      * @param name
      * @return 
      */
-    public Component getComponentByName(String name) {
+    private Component getComponentByName(String name) {
         if (componentMap.containsKey(name)) 
             return (Component) componentMap.get(name);
         else 
@@ -1443,7 +1561,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
     public void showDialog(EBD_DisplayUsage usage_row){
         String[] message = new String[1];
 
-        if(textFieldCheck(message, usage_row))
+        if (textFieldCheck(message, usage_row))
         {
             if (!overlapCheck(message, usage_row))
             {
@@ -1471,19 +1589,19 @@ public class Settings_EBoard extends javax.swing.JFrame {
                         null,
                         save_Options,
                         save_Options[0]);
-                    changeEnabled_of_SaveCancelButtons();
+                    changeEnabled_of_SaveCancelButtons(false);
                 }
                 else if(n == JOptionPane.NO_OPTION) {
-                    eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() <= 2 ? 0 : 1);
-                    if (usage_row.ordinal()%2 == 1)
+                    eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() < 2 ? 0 : 1);
+                    if (usage_row.ordinal() % 2 == 0)
                     {
                         ((JTabbedPane) eboardTabbedPanel
-                                .getSelectedComponent()).setSelectedIndex(EBD_Row.TOP.getValue());
+                                .getSelectedComponent()).setSelectedIndex(OSP_enums.EBD_Row.TOP.getValue());
                     }
                     else
                     {
                         ((JTabbedPane) eboardTabbedPanel
-                                .getSelectedComponent()).setSelectedIndex(EBD_Row.BOTTOM.getValue());
+                                .getSelectedComponent()).setSelectedIndex(OSP_enums.EBD_Row.BOTTOM.getValue());
                     }
                 }
             }
@@ -1499,13 +1617,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
                     null,
                     null,
                     null);
-            eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() <= 2 ? 0 : 1);
-            if(usage_row.ordinal()%2 == 1)
+            eboardTabbedPanel.setSelectedIndex(usage_row.ordinal() < 2 ? 0 : 1);
+            if(usage_row.ordinal() % 2 == 0) // top rows
                 ((JTabbedPane) eboardTabbedPanel.getSelectedComponent())
-                        .setSelectedIndex(EBD_Row.TOP.getValue());
+                        .setSelectedIndex(OSP_enums.EBD_Row.TOP.ordinal());
             else
                 ((JTabbedPane) eboardTabbedPanel.getSelectedComponent())
-                        .setSelectedIndex(EBD_Row.BOTTOM.getValue());
+                        .setSelectedIndex(OSP_enums.EBD_Row.BOTTOM.ordinal());
         }
     }
     
@@ -1631,18 +1749,13 @@ public class Settings_EBoard extends javax.swing.JFrame {
             {
                 wrongFields.append("  - Please enter a message\n");
                 ((JTextField) getComponentByName(
-                    "tf_VerbatimContent" +  usage_row.ordinal())).requestFocus();;
+                    "tf_VerbatimContent" +  usage_row.ordinal())).requestFocus();
             }
         }
-        
         if (wrongFields.length() == 0) 
         {
             result = true;
         } 
-        else 
-        {
-            result = false;
-        }
         errorMsg[0] = wrongFields.toString();
         return result;
     }    
@@ -1654,46 +1767,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
             
             comboBox.removeAllItems();
             for (EBD_ContentType aType : EBD_ContentType.values()) {
-                
-                //<editor-fold desc="-- determine label for each item value">
-                String label;
-                
-                switch (aType) {
-                    case CURRENT_DATE: 
-                        label = "Current Date";
-                        break;
-                        
-                    case CURRENT_TIME: 
-                        label = "Current Time";
-                        break;
-                        
-                    case CURRENT_DATE_TIME:
-                        label = "Current Date and Time";
-                        break;
-                        
-                    case GATE_NAME: 
-                        label = "Gate Name";
-                        break;
-                        
-                    case REGISTRATION_STAT: 
-                        label = "Registration Status"; // Vehicle Registration Status 
-                        break;
-                        
-                    case VEHICLE_TAG: // Vehicle Plate Number
-                        label = "Plate Number";
-                        break;
-                        
-                    case VERBATIM: // display in the exact words
-                        label = "Exact Words"; 
-                        break;
-                        
-                    default:
-                        label = "";
-                        break;
-                }
-                //</editor-fold>
-                
-                comboBox.addItem(new ConvComboBoxItem(aType, label));
+                comboBox.addItem(new ConvComboBoxItem(aType, aType.getLabel()));
             }
         }
     }
@@ -1788,6 +1862,75 @@ public class Settings_EBoard extends javax.swing.JFrame {
                 //</editor-fold>                
                 comboBox.addItem(new ConvComboBoxItem(aFont, label));
             }
+        }
+    }
+
+    private void setButtonEnabledIfContentTypeChanged(EBD_DisplayUsage usage) {
+        JComboBox typeCBox = (JComboBox) getComponentByName("combo_ContentType" + usage.ordinal());
+        EBD_ContentType selectedType 
+                = (EBD_ContentType) ((ConvComboBoxItem)typeCBox.getSelectedItem()).getValue();
+        if (selectedType == ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].contentType) {
+            changeEnabled_of_SaveCancelButtons(false);
+        }
+        else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }
+    }
+
+    private void setButtonEnabledIfColorChanged(EBD_DisplayUsage usage) {
+        JComboBox colorCBox = (JComboBox) getComponentByName("combo_TextColor" + usage.ordinal());
+        EBD_Colors selectedColor = (EBD_Colors) ((ConvComboBoxItem)colorCBox.getSelectedItem()).getValue();
+        
+        if (selectedColor == ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].textColor) {
+            changeEnabled_of_SaveCancelButtons(false);
+        }
+        else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }
+    }
+
+    private void setButtonEnabledIfEffectChanged(EBD_DisplayUsage usage) {
+        JComboBox effectCBox = (JComboBox) getComponentByName("combo_DisplayEffect" + usage.ordinal());
+        EBD_Effects selectedEffect = (EBD_Effects) ((ConvComboBoxItem)effectCBox.getSelectedItem()).getValue();
+        
+        if (selectedEffect == ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].displayPattern) {
+            changeEnabled_of_SaveCancelButtons(false);
+        }
+        else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }
+    }
+
+    private void setButtonEnabledIfFontChanged(EBD_DisplayUsage usage) {
+        JComboBox fontCBox = (JComboBox) getComponentByName("combo_TextFont" + usage.ordinal());
+        EBD_Fonts selectedFont = (EBD_Fonts) ((ConvComboBoxItem)fontCBox.getSelectedItem()).getValue();
+        
+        if (selectedFont == ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].textFont) {
+            changeEnabled_of_SaveCancelButtons(false);
+        }
+        else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }
+    }
+
+    private void changeButtonEnabled_IfVebarimChanged(int index) {
+        JTextField verbatimContent = (JTextField) getComponentByName("tf_VerbatimContent" + index);
+        String content = verbatimContent.getText().trim();
+        if (content.equals(ControlGUI.EBD_DisplaySettings[currentTab.ordinal()].verbatimContent)) {
+            changeEnabled_of_SaveCancelButtons(false);
+        } else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }
+    }
+
+    private void tryToCloseEBDSettingsForm() {
+        if (formMode == FormMode.MODIFICATION) {
+            JOptionPane.showMessageDialog(this, 
+                    "E-Board settings is being modified," + System.lineSeparator()
+                            + "Either [Save] or [Cancel] current changes!"); 
+        } else {
+            parent.setEBDsettings(null);    
+            this.dispose();    
         }
     }
 }
