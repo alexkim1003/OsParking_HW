@@ -108,6 +108,12 @@ public class Settings_System extends javax.swing.JFrame {
         addOperationLoggingLevelOptions();
         loadComponentValues();
         makeEnterActAsTab();
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                EBoardSettingsButtonActionPerformed(null);
+            }
+        });          
     }
 
     /**
@@ -167,8 +173,8 @@ public class Settings_System extends javax.swing.JFrame {
         GateBar1_Port_TextField = new javax.swing.JTextField();
         E_Board1_Port_TextField = new javax.swing.JTextField();
         jLabel40 = new javax.swing.JLabel();
-        EBD1_TypeComboBox = new javax.swing.JComboBox();
-        EBD1connTypeCBox = new javax.swing.JComboBox();
+        EBD1_TypeCBox = new javax.swing.JComboBox();
+        EBD1_connTypeCBox = new javax.swing.JComboBox();
         gate2Panel = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         TextFieldGateName2 = new javax.swing.JTextField();
@@ -237,7 +243,6 @@ public class Settings_System extends javax.swing.JFrame {
         setTitle("System Settings -- OSParking");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMinimumSize(new java.awt.Dimension(775, 880));
-        setPreferredSize(new java.awt.Dimension(775, 880));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 finishSettingsForm(evt);
@@ -869,18 +874,23 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
         gate1Panel.add(jLabel40, gridBagConstraints);
 
-        EBD1_TypeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
-        EBD1_TypeComboBox.setToolTipText("");
-        EBD1_TypeComboBox.setMinimumSize(new java.awt.Dimension(100, 23));
-        EBD1_TypeComboBox.setName("EBD1_TypeComboBox"); // NOI18N
-        EBD1_TypeComboBox.setPreferredSize(new java.awt.Dimension(100, 23));
-        EBD1_TypeComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        EBD1_TypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
+        EBD1_TypeCBox.setToolTipText("");
+        EBD1_TypeCBox.setMinimumSize(new java.awt.Dimension(100, 23));
+        EBD1_TypeCBox.setName("EBD1_TypeCBox"); // NOI18N
+        EBD1_TypeCBox.setPreferredSize(new java.awt.Dimension(100, 23));
+        EBD1_TypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                EBD1_TypeComboBoxPopupMenuWillBecomeInvisible(evt);
+                EBD1_TypeCBoxPopupMenuWillBecomeInvisible(evt);
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        EBD1_TypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EBD1_TypeCBoxActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -888,19 +898,19 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.gridy = 4;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 0);
-        gate1Panel.add(EBD1_TypeComboBox, gridBagConstraints);
+        gate1Panel.add(EBD1_TypeCBox, gridBagConstraints);
 
-        EBD1connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
-        EBD1connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
-        EBD1connTypeCBox.setName("EBD1connTypeCBox"); // NOI18N
-        EBD1connTypeCBox.setPreferredSize(new java.awt.Dimension(80, 23));
+        EBD1_connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
+        EBD1_connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
+        EBD1_connTypeCBox.setName("EBD1_connTypeCBox"); // NOI18N
+        EBD1_connTypeCBox.setPreferredSize(new java.awt.Dimension(80, 23));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
-        gate1Panel.add(EBD1connTypeCBox, gridBagConstraints);
+        gate1Panel.add(EBD1_connTypeCBox, gridBagConstraints);
 
         GatesTabbedPane.addTab("Gate1", gate1Panel);
 
@@ -1759,12 +1769,14 @@ public class Settings_System extends javax.swing.JFrame {
     private void EBoardSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBoardSettingsButtonActionPerformed
         
         int tabIndex = GatesTabbedPane.getSelectedIndex();
-        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + (tabIndex + 1) + "_TypeComboBox");
+        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + (tabIndex + 1) + "_TypeCBox");
         
-        if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) { 
-            setEBDsettings(new Settings_EBoard(mainForm, this));
-        } else if (typeCBox.getSelectedIndex() == E_BoardType.LEDnotice.ordinal()) {        
-            setEBDsettings(new Settings_LEDnotice(mainForm, this, null, tabIndex + 1));
+        if (eBDsettings == null) {
+            if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) { 
+                setEBDsettings(new Settings_EBoard(mainForm, this));
+            } else if (typeCBox.getSelectedIndex() == E_BoardType.LEDnotice.ordinal()) {        
+                setEBDsettings(new Settings_LEDnotice(mainForm, this, null, tabIndex + 1));
+            }
         }
         
         Point panelPoint = new Point();
@@ -2305,9 +2317,23 @@ public class Settings_System extends javax.swing.JFrame {
         checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 3);
     }//GEN-LAST:event_E_Board3_Port_TextFieldKeyReleased
 
-    private void EBD1_TypeComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_EBD1_TypeComboBoxPopupMenuWillBecomeInvisible
-        reflectE_BoardTypeChange(1);
-    }//GEN-LAST:event_EBD1_TypeComboBoxPopupMenuWillBecomeInvisible
+    private void EBD1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_EBD1_TypeCBoxPopupMenuWillBecomeInvisible
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reflectE_BoardTypeChange(1);
+            }
+        });
+    }//GEN-LAST:event_EBD1_TypeCBoxPopupMenuWillBecomeInvisible
+
+    private void EBD1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBD1_TypeCBoxActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                reflectE_BoardTypeChange(1);
+            }
+        });
+    }//GEN-LAST:event_EBD1_TypeCBoxActionPerformed
                                               
     void stopOperation() {
         if(mainForm != null)
@@ -2379,8 +2405,8 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JTextField Camera4_Port_TextField;
     private javax.swing.JTextField Camera4_Port_TextField1;
     private com.toedter.components.JLocaleChooser DateChooserLangCBox;
-    private javax.swing.JComboBox EBD1_TypeComboBox;
-    private javax.swing.JComboBox EBD1connTypeCBox;
+    private javax.swing.JComboBox EBD1_TypeCBox;
+    private javax.swing.JComboBox EBD1_connTypeCBox;
     private javax.swing.JButton EBoardSettingsButton;
     private javax.swing.JTextField E_Board1_IP_TextField;
     private javax.swing.JTextField E_Board1_Port_TextField;
@@ -2498,9 +2524,6 @@ public class Settings_System extends javax.swing.JFrame {
             DateChooserLangCBox.setSelectedIndex(localeIndex - 2);
         DateChooserLangCBox.setSelectedIndex(localeIndex);
         
-//        DateChooserLangCBox.scrollRectToVisible(
-//                new Rectangle(DateChooserLangCBox.getCellRect(localeIndex, 2, true)));
-        
         StatPopSizeTextField.setText(Integer.toString(statCount));
         MessageMaxLineComboBox.setSelectedItem(String.valueOf(maxMessageLines));
         GateCountComboBox.setSelectedIndex(gateCount - 1);
@@ -2549,15 +2572,25 @@ public class Settings_System extends javax.swing.JFrame {
         }
         changeEnabled_of_SaveCancelButtons(false);
         
-        EBD1_TypeComboBox.removeAllItems();
-        for (E_BoardType type: E_BoardType.values()) {
-            EBD1_TypeComboBox.addItem(type.getLabel());
+        for (int gate = 1; gate <= gateCount; gate++) {
+            JComboBox ebdCBox = ((JComboBox)getComponentByName("EBD" +gate + "_TypeCBox"));
+            if (ebdCBox != null) {
+                ebdCBox.removeAllItems();
+                for (E_BoardType type: E_BoardType.values()) {
+                    ebdCBox.addItem(type.getLabel());
+                }
+                ebdCBox.setSelectedIndex(DB_Access.e_boardType[gate]);
+            }
+            
+            ebdCBox = ((JComboBox)getComponentByName("EBD" +gate + "_connTypeCBox"));
+            if (ebdCBox != null) {
+                ebdCBox.removeAllItems();
+                for (ConnectionType type: ConnectionType.values()) {
+                    ebdCBox.addItem(type.getLabel());
+                }        
+                ebdCBox.setSelectedIndex(DB_Access.e_boardConnType[gate]);
+            }
         }
-        
-        EBD1connTypeCBox.removeAllItems();
-        for (ConnectionType type: ConnectionType.values()) {
-            EBD1connTypeCBox.addItem(type.getLabel());
-        }        
     }
     
     /**
@@ -2758,13 +2791,17 @@ public class Settings_System extends javax.swing.JFrame {
         
         //<editor-fold desc="-- Create update statement">
         StringBuffer sb = new StringBuffer("Update gatedevices SET ");
-        sb.append("  gatename = ?");
-        sb.append("  , cameraIP = ?");
-        sb.append("  , e_boardIP = ?");
+        sb.append("  gatename = ? ");
+        sb.append("  , cameraIP = ? ");
         sb.append("  , gatebarIP = ? ");
         sb.append("  , cameraPort = ?");
-        sb.append("  , e_boardPort = ?");
         sb.append("  , gatebarPort = ? ");
+        sb.append("  , e_boardIP = ? ");
+        sb.append("  , e_boardPort = ? ");
+        
+        sb.append("  , e_boardType = ? ");
+        sb.append("  , e_boardConnType = ? ");
+        
         sb.append("WHERE GateID = ?");
         //</editor-fold>
 
@@ -2783,20 +2820,38 @@ public class Settings_System extends javax.swing.JFrame {
                         ((JTextField) componentMap.get("Camera" + gateID + "_IP_TextField"))
                                 .getText().trim());
                 updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("E_Board" + gateID + "_IP_TextField"))
-                                .getText().trim());
-                updateSettings.setString(pIndex++, 
                         ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField"))
                                 .getText().trim());
+                
                 updateSettings.setString(pIndex++, 
                         ((JTextField) componentMap.get("Camera" + gateID + "_Port_TextField"))
                                 .getText().trim());
                 updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("E_Board" + gateID + "_Port_TextField"))
-                                .getText().trim());
-                updateSettings.setString(pIndex++, 
                         ((JTextField) componentMap.get("GateBar" + gateID + "_Port_TextField"))
                                 .getText().trim());
+                
+                updateSettings.setString(pIndex++, 
+                        ((JTextField) componentMap.get("E_Board" + gateID + "_IP_TextField"))
+                                .getText().trim());
+                updateSettings.setString(pIndex++, 
+                        ((JTextField) componentMap.get("E_Board" + gateID + "_Port_TextField"))
+                                .getText().trim());
+                
+                JComboBox cBox = (JComboBox)componentMap.get("EBD" + gateID + "_TypeCBox");
+                
+                if (cBox == null) {
+                    updateSettings.setInt(pIndex++, 0);
+                } else {
+                    updateSettings.setInt(pIndex++, cBox.getSelectedIndex());
+                }
+                
+                cBox = (JComboBox)componentMap.get("EBD" + gateID + "_connTypeCBox");
+                if (cBox == null) {
+                    updateSettings.setInt(pIndex++, 0);
+                } else {
+                    updateSettings.setInt(pIndex++, cBox.getSelectedIndex());
+                }
+                
                 updateSettings.setInt(pIndex++, gateID);
                 // </editor-fold>
 
@@ -2948,7 +3003,7 @@ public class Settings_System extends javax.swing.JFrame {
     }
 
     private void reflectE_BoardTypeChange(int gateNo) {
-        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + gateNo + "_TypeComboBox");
+        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + gateNo + "_TypeCBox");
         
         if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) { 
             EBoardSettingsButton.setText("Content Settings");
@@ -2957,6 +3012,12 @@ public class Settings_System extends javax.swing.JFrame {
             EBoardSettingsButton.setText("LEDnotice Settings");
             changeCycleCBoxEnabled(false);
         }
+        
+        if (typeCBox.getSelectedIndex() == DB_Access.e_boardType[gateNo]) {
+            changeEnabled_of_SaveCancelButtons(false);
+        } else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }        
     }
 
     private void changeCycleCBoxEnabled(boolean b) {

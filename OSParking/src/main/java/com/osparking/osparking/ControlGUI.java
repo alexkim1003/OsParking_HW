@@ -52,7 +52,6 @@ import static com.osparking.global.Globals.getPathAndDay;
 import static com.osparking.global.Globals.getPlusIcon;
 import static com.osparking.global.Globals.getTagNumber;
 import static com.osparking.global.Globals.OSPiconList;
-import static com.osparking.global.Globals.gateDeviceTypes;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.isManager;
 import static com.osparking.global.Globals.isConnected;
@@ -61,7 +60,6 @@ import static com.osparking.global.Globals.logParkingExceptionStatus;
 import static com.osparking.global.Globals.logParkingOperation;
 import static com.osparking.global.Globals.loginID;
 import static com.osparking.global.Globals.loginPW;
-import static com.osparking.global.Globals.noPictureImg;
 import static com.osparking.global.Globals.originalImgWidth;
 import static com.osparking.global.Globals.sdf;
 import static com.osparking.global.Globals.showLicensePanel;
@@ -91,12 +89,8 @@ import static com.osparking.global.names.OSP_enums.EBD_ContentType.VEHICLE_TAG;
 import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_TOP_ROW;
-import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
-import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.E_BoardType;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT1;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
@@ -117,6 +111,7 @@ import com.osparking.osparking.device.GateBarManager;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
+import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeSettings;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
 import com.osparking.osparking.device.SendEBDMessageTask;
 import com.osparking.osparking.device.SendGateOpenTask;
@@ -465,7 +460,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         msgSNs = new int[gateCount + 1];        
         interruptsAcked = new boolean[gateCount + 1];        
         eBoardMsgSentMs = new long[gateCount + 1][2];
-        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][2]; // 2: for two rows of each elec' board.
+        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][3]; // 2: for two rows of each elec' board.
         
         interruptsAcked[0] = true;           
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
@@ -483,6 +478,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
          */
         LED_Timer = new Timer("ospLEDtimer", true);
         LED_Timer.schedule(new LED_Task(this, getDeviceManagers()), 0, LED_PERIOD);
+        
+        processLogIn(null); // shortcut
     }
     
     private void prepareIDLogFile(DeviceType devType, int gateNo) {
@@ -1404,11 +1401,12 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         getLoginForm().setVisible(true);        
 
         // <editor-fold defaultstate="collapsed" desc="-- automatic login during development">        
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                loginForm.handleLoginAttempt();              
-//            }
-//        });  
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                loginForm.handleLoginAttempt();       
+                //SettingsItemActionPerformed(null);
+            }
+        });  
         //</editor-fold>        
         
     }//GEN-LAST:event_processLogIn
@@ -1622,6 +1620,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                     perfDesc.append("            ");
                     perfDesc.append(type + " #" + gateNo 
                             + getSockConnStat()[type.ordinal()][gateNo].getPerformanceDescription());
+                    if (type == DeviceType.E_Board &&
+                            Globals.gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) 
+                    {
+                        perfDesc.append("      ");
+                        perfDesc.append("LEDnt #" + gateNo 
+                                + " " + ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo])
+                                .getAckStatistics((byte)gateNo));
+                    }
                 }
                 perfDesc.append(System.lineSeparator());
             }
@@ -1677,56 +1683,56 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private void CarIOListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarIOListButtonActionPerformed
         new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
-
-    private byte[] getEBDSimulatorDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
-        EBD_DisplaySetting setting = null;
-        String displayText = null;
-        
-        setting = EBD_DisplaySettings
-                [row == EBD_Row.TOP ? DEFAULT_TOP_ROW.ordinal() : DEFAULT_BOTTOM_ROW.ordinal()];
-            
-        //<editor-fold desc="-- determind display text using e-board settings(contentType, type, etc.)">
-        switch (setting.contentType) {
-            case VERBATIM:
-                displayText = setting.verbatimContent;
-                break;
-                
-            case GATE_NAME:
-                displayText = gateNames[deviceNo];
-                break;
-                
-            default:
-                displayText = "";
-                break;
-        }
-        //</editor-fold>       
-        
-        byte[] displayTextBytes = displayText.getBytes();
-        int displayTextLength = displayTextBytes .length;
-        
-        // <code:1><length:2><row:1><text:?><type:1><color:1><font:1><pattern:1><cycle:4><check:2>
-        byte code = (byte)(row == EBD_Row.TOP ? EBD_DEFAULT1.ordinal() : EBD_DEFAULT2.ordinal());
-        short wholeMessageLen // length of 9 fields from <length> to <check>
-                = (short)(displayTextLength + 17); // 13 == sum of 8 fields == 9 fields except <text>
-        byte[] lenBytes //  {--Len[1], --Len[0]}
-                = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
-        byte[] wholeMessageBytes = new byte[wholeMessageLen + 1]; // 1 is for the very first <code>
-        
-        formMessageExceptCheckShort(code, lenBytes, row, msgSN, displayTextBytes, setting, 0,
-                wholeMessageBytes);        
-        
-        //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
-        // calculate 2 check bytes by adding all bytes in the of 9 fields: from <code:1> to <delay:4>
-        byte[] check = new byte[2];
-        addUpBytes(wholeMessageBytes, check);
-        
-        int idx = wholeMessageBytes.length - 2;
-        wholeMessageBytes[idx++] = check[0];
-        wholeMessageBytes[idx++] = check[1];
-        //</editor-fold>
-        
-        return wholeMessageBytes;             
-    }
+//
+//    private byte[] getEBDSimulatorDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
+//        EBD_DisplaySetting setting = null;
+//        String displayText = null;
+//        
+//        setting = EBD_DisplaySettings
+//                [row == EBD_Row.TOP ? DEFAULT_TOP_ROW.ordinal() : DEFAULT_BOTTOM_ROW.ordinal()];
+//            
+//        //<editor-fold desc="-- determind display text using e-board settings(contentType, type, etc.)">
+//        switch (setting.contentType) {
+//            case VERBATIM:
+//                displayText = setting.verbatimContent;
+//                break;
+//                
+//            case GATE_NAME:
+//                displayText = gateNames[deviceNo];
+//                break;
+//                
+//            default:
+//                displayText = "";
+//                break;
+//        }
+//        //</editor-fold>       
+//        
+//        byte[] displayTextBytes = displayText.getBytes();
+//        int displayTextLength = displayTextBytes .length;
+//        
+//        // <code:1><length:2><row:1><text:?><type:1><color:1><font:1><pattern:1><cycle:4><check:2>
+//        byte code = (byte)(row == EBD_Row.TOP ? EBD_DEFAULT1.ordinal() : EBD_DEFAULT2.ordinal());
+//        short wholeMessageLen // length of 9 fields from <length> to <check>
+//                = (short)(displayTextLength + 17); // 13 == sum of 8 fields == 9 fields except <text>
+//        byte[] lenBytes //  {--Len[1], --Len[0]}
+//                = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
+//        byte[] wholeMessageBytes = new byte[wholeMessageLen + 1]; // 1 is for the very first <code>
+//        
+//        formMessageExceptCheckShort(code, lenBytes, row, msgSN, displayTextBytes, setting, 0,
+//                wholeMessageBytes);        
+//        
+//        //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
+//        // calculate 2 check bytes by adding all bytes in the of 9 fields: from <code:1> to <delay:4>
+//        byte[] check = new byte[2];
+//        addUpBytes(wholeMessageBytes, check);
+//        
+//        int idx = wholeMessageBytes.length - 2;
+//        wholeMessageBytes[idx++] = check[0];
+//        wholeMessageBytes[idx++] = check[1];
+//        //</editor-fold>
+//        
+//        return wholeMessageBytes;             
+//    }
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
@@ -1861,7 +1867,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 connectDeviceTimer[type.ordinal()][gateNo].purge();
                 
                 // Handle some specific real hardware
-                if (Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) {
+                if (type == E_Board &&
+                        Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) {
                     getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
                         new FinishLEDnoticeIntrTask(this, gateNo, EBD_Row.BOTTOM), 0);                        
                 }
@@ -2165,8 +2172,8 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         PermissionType permission = enteranceAllowed(tagRecognized, tagEnteredAs, remark);
         int carPassingDelayMs = rand.nextInt(MAX_PASSING_DELAY)  + CAR_PERIOD;
 
-        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-                carPassingDelayMs);
+        interruptEBoardDisplay(cameraID, tagRecognized, permission, remark.toString(), tagEnteredAs.toString(),
+                imageSN, carPassingDelayMs);
         System.out.println("delay: " + carPassingDelayMs);
         if (permission == ALLOWED || autoGateOpenCheckBox.isSelected()) {
             getPassingDelayStat()[cameraID].setAccumulatable(true);
@@ -2664,7 +2671,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     Random rand = new Random();
     
     public synchronized void interruptEBoardDisplay(byte gateNo, String tagRecognized, 
-            PermissionType permission, String tagEnteredAs, int imageSN, int carPassingDelayMs)
+            PermissionType permission, String remark, String tagEnteredAs, int imageSN, int carPassingDelayMs)
     {
         String tagNumber = tagRecognized;
         
@@ -2690,7 +2697,11 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 case LEDnotice:
                     //<editor-fold desc="-- Car arrival interrupt message for the LEDnotice hardware">
                     LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo];
-                    manager.sendCarArrival_interruptMessage(gateNo, tagNumber, carPassingDelayMs);               
+                    manager.sendCarArrival_interruptMessage(
+                            ledNoticeSettings[CAR_ENTRY_TOP_ROW.ordinal()],
+                            ledNoticeSettings[CAR_ENTRY_BOTTOM_ROW.ordinal()],
+                            gateNo, tagNumber, permission, remark, 
+                            carPassingDelayMs);
                     //</editor-fold>
                     break;
 
@@ -2963,22 +2974,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 }
             }
         });
-    }
-    
-    public byte[] getDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
-        byte[] result;
-
-        switch (gateDeviceTypes[deviceNo].eBoardType) {
-//            case LEDnotice:
-//                result = ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][deviceNo]).
-//                        getLEDnoticeDefaultMsg(row);
-//                break;
-
-            default:
-                result = getEBDSimulatorDefaultMessage(deviceNo, row, msgSN);
-                break;
-        }
-        return result;
     }
     
     private void formMessageExceptCheckShort(byte code, byte[] lenBytes, EBD_Row row, int msgSN, 

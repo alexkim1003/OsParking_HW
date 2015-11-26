@@ -16,33 +16,38 @@
  */
 package com.osparking.osparking.device.LEDnotice;
 
+import com.osparking.global.Globals;
 import com.osparking.osparking.ControlGUI;
 import com.osparking.global.names.DeviceManager;
 import java.net.Socket;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
+import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
+import static com.osparking.global.names.DB_Access.gateNames;
+import com.osparking.global.names.JDBCMySQL;
 import com.osparking.global.names.OSP_enums.DisplayArea;
 import static com.osparking.global.names.OSP_enums.DisplayArea.BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_DisplayUsage;
+import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
+import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_Row;
-import com.osparking.osparking.Settings_System;
+import com.osparking.global.names.OSP_enums.PermissionType;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Green;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Red;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.NONE;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.RASER;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType.STOP_MOVING;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.FontBox.Gothic;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE.TEXT_GROUP;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.IntOnType.Unlimited;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeDefaultContentType;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeVehicleContentType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeVehicleContentType.VehicleTag;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_GROUP;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ALL;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_OFF;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_ON;
@@ -61,11 +66,19 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.setMonito
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.LED_COLUMN_CNT;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.MAX_SPEED;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.MIN_PAUSE;
-import static com.osparking.osparking.device.LEDnotice.LedProtocol.STOP_TIME_MIN;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.MIN_SPEED;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.SUCCESS;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.getViewWidth;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.isLtoRFlowType;
+import static com.osparking.osparking.device.LEDnotice.LedProtocol.isRtoLFlowType;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
+import java.util.logging.Logger;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -75,7 +88,8 @@ import java.util.LinkedList;
  * @author Open Source Parking Inc.
  */
 public class LEDnoticeManager extends Thread implements DeviceManager {
-    //<editor-fold desc="--class variables">
+
+   //<editor-fold desc="--class variables">
     private byte deviceNo = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
     private ControlGUI mainForm; // main form of the gate bar simulator.
     
@@ -106,8 +120,15 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
             ledNoticeBlankString.append("  ");        
     }
     
-    public static LEDnoticeSettings[] ledNoticeSettings; // = new LEDnoticeSettings[gateCount];
+    public static LEDnoticeSettings[] ledNoticeSettings; 
+    static {
+        int count = EBD_DisplayUsage.values().length;
+        ledNoticeSettings = new LEDnoticeSettings[count];
+        readLEDnoticeSettings(ledNoticeSettings);
+    }
+    
     //</editor-fold>    
+    private Object threadWaitingForACK = new Object();    
     
     /**
      * 
@@ -130,63 +151,104 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                             msgQdoor.wait();
                             System.out.println("after worker wait");
                         }
-                    } catch (InterruptedException ex) {
-                        logParkingException(Level.SEVERE, ex, "waiting message queue not empty", deviceNo);
-                    }
-                    while (!ledNoticeMessages.isEmpty()) {
-                        MsgItem currItem = getLedNoticeMessages().peek();
                         
-                        if (isConnected(socket)) {
-                            try {
-                                System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
-                                socket.getOutputStream().write(currItem.getMessage());
-                                getLedNoticeMessages().peek().incSendCount();
-                            } catch (IOException ex) {
-                                logParkingException(Level.SEVERE, ex, "writing message to LEDnotice", deviceNo);
-                            }
-                        } else {
-                            try {
-                                synchronized (mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) {
-                                    mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                        while (!ledNoticeMessages.isEmpty()) {
+                            MsgItem currItem = getLedNoticeMessages().peek();
+
+                            //<editor-fold desc="-- Write message to LEDnotice if connected">
+                            if (isConnected(socket)) {
+                                try {
+                                    System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
+                                    socket.getOutputStream().write(currItem.getMessage());
+                                    getLedNoticeMessages().peek().incSendCount();
+                                } catch (IOException ex) {
+                                    logParkingException(Level.SEVERE, ex, "writing message to LEDnotice", deviceNo);
                                 }
-                            } catch (InterruptedException ex) {
-                                logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket connection", deviceNo);
-                            }
-                        }
-                        //<editor-fold desc="-- Delay some milliseconds by message type">
-                        try {
-                            switch (currItem.getType()) {
-                                case SET_MONITOR: 
-                                    Thread.sleep(RESEND_PERIOD * 5);
-                                    break;
-                                    
-                                case DEL_TEXT_ONE:
-                                case DEL_GROUP:
-                                case DEL_TEXT_ALL:
-                                    Thread.sleep(RESEND_PERIOD * 30);
-                                    break;
-                                
-                                case SAVE_TEXT:
-                                case SAVE_INTR:
-                                    Thread.sleep(RESEND_PERIOD * 15);
-                                    break;
-                                    
-                                default:
-                                    Thread.sleep(RESEND_PERIOD * 10);
-                                    break;
+                            } else {
+                                try {
+                                    synchronized (mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) {
+                                        System.out.println("before wait");
+                                        mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                                        System.out.println("after woke up");
+                                    }
+                                } catch (InterruptedException ex) {
+                                    logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket connection", deviceNo);
+                                }
                             }
                             //</editor-fold>
-                        } catch (InterruptedException ex) {
-                            logParkingException(Level.SEVERE, ex, "taking a rest between two sending", deviceNo);
+                            try {
+                                //<editor-fold desc="-- Delay some milliseconds by message type">
+                                switch (currItem.getType()) {
+//                                    case SET_MONITOR: 
+//                                        Thread.sleep(RESEND_PERIOD * 5);
+//                                        break;
+//
+//                                    case DEL_TEXT_ONE:
+//                                    case DEL_GROUP:
+//                                    case DEL_TEXT_ALL:
+//                                        Thread.sleep(RESEND_PERIOD * 30);
+//                                        break;
+//
+//                                    case SAVE_TEXT:
+//                                    case SAVE_INTR:
+//                                        Thread.sleep(RESEND_PERIOD * 15);
+//                                        break;
+
+                                    default:
+//                                        Thread.sleep(RESEND_PERIOD * 30); // 10
+                                        Thread.sleep(100);
+                                        break;
+                                }
+                                //</editor-fold>
+                            } catch (InterruptedException ex) {
+                                logParkingException(Level.SEVERE, ex, "taking a rest between two sending", deviceNo);
+                                try {
+                                    throw ex;
+                                } catch (InterruptedException ex1) {
+                                    logParkingException(Level.SEVERE, ex, "rethrowing exception to outer", deviceNo);
+                                }
+                            }
                         }
+                    } catch (InterruptedException ex) {
+                        logParkingException(Level.SEVERE, ex, "waiting message queue not empty", deviceNo);
+                        return;
                     }
                 }
             }
-        }).start();
-        
-        readLEDnoticeSettings();
+        }).start();       
     }
     
+    public static void readLEDnoticeSettings(LEDnoticeSettings[] ledNoticeSettings) {
+        Connection conn = null;
+        Statement selectStmt = null;
+        ResultSet rs = null;
+        
+        try{
+            conn = JDBCMySQL.getConnection();
+            selectStmt = conn.createStatement();
+            rs = selectStmt.executeQuery("Select * From eboard_lednotice");
+            
+            while(rs.next()){
+                int row = rs.getByte("usage_row");
+                int used = rs.getByte("row_used");
+                String content = rs.getString("verbatim_content");
+                int type = rs.getByte("display_type");
+                int startEffect = rs.getByte("start_effect");
+                int pauseTime = rs.getByte("pause_time");
+                int finishEffect = rs.getByte("finish_effect");
+                int color = rs.getByte("text_color");
+                int font = rs.getByte("text_font");
+                
+                ledNoticeSettings[row] = new LEDnoticeSettings(
+                        used, type, content, startEffect, pauseTime, finishEffect, color, font);
+            }
+        } catch (SQLException ex) {
+            Globals.logParkingException(Level.SEVERE, ex, "while reading e-board settings");  
+        } finally {
+            closeDBstuff(conn, selectStmt, rs, "Resource return used in eboard setting loading for ROW: ");
+        }        
+    }
+
     public void run()
     {   
         byte[] preMsg = new byte[3];
@@ -420,11 +482,6 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     }
 
     private boolean validMessage(byte[] preMsg, byte possibleETX) {
-//        if (preMsg[1] == SUCCESS) {
-//            System.out.println("success");
-//        } else {
-//            System.out.println("fail");
-//        }
         if (preMsg[0] == LedProtocol.intSTX 
                 && possibleETX == LedProtocol.intETX
                 && preMsg[1] == SUCCESS) 
@@ -455,11 +512,14 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         
         if (isFastVersion) {
             startSpeed = 31;
-//            endSpeed = 31;
+        }
+        
+        if (row == EBD_Row.BOTTOM) {
+            endSpeed = MIN_SPEED;
         }
         
         return ledNoticeProtocol.textType(roomNo, displayRow, startEffect, startSpeed, pauseTime, 
-                finishEffect, endSpeed, repeatCnt, colorFont.getHexStr(), displayText);
+                finishEffect, endSpeed, repeatCnt, colorFont.getHexStr(), displayText, false);
     }
 
     /**
@@ -469,39 +529,68 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         return ledNoticeMessages;
     }
 
-    public void sendCarArrival_interruptMessage(byte gateNo, String tagNumber, int delay) {
+    static int interruptRoom = 0;
+    
+    public void sendCarArrival_interruptMessage(LEDnoticeSettings topSetting, LEDnoticeSettings bottomSetting,
+            byte gateNo, String tagNumber, 
+            PermissionType permission,
+            String remark, int delay) 
+    {
         MessageQueue mQueue = getLedNoticeMessages();
-        int room = 3;
+
+        interruptRoom = interruptRoom++ % 5;
         
-        mQueue.add(new MsgItem(SAVE_INTR, getMsgHexString(EBD_Row.TOP, room, tagNumber)));
-        mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, room, 1)));
+        int startEffIdx = (int)topSetting.startEffectIdx;
+        EffectType startEffect = EffectType.values()[startEffIdx + 1];
+        final int startSpeed = 15; // 1 ~ 31
+        int stopTime = 1; // 1 ~ 10
+        
+        int endEffIdx = (int)topSetting.finishEffectIdx;
+        EffectType endEffect = EffectType.values()[endEffIdx];
+        final int endSpeed = 15;
+        final int repeatCnt = 1;  
+        
+        int colorIdx = topSetting.colorIdx;
+        int fontIdx = topSetting.fontIdx;
+        ColorFont topFont = getColorFont(colorIdx, fontIdx);
+        
+        String topMsg = getInterruptMessage(topSetting, bottomSetting, 
+                EBD_Row.TOP, tagNumber, permission, remark);
+        
+        colorIdx = bottomSetting.colorIdx;
+        fontIdx = bottomSetting.fontIdx;
+        ColorFont bottomFont = getColorFont(colorIdx, fontIdx);
+        String bottomMsg = getInterruptMessage(topSetting, bottomSetting, 
+                EBD_Row.BOTTOM, tagNumber, permission, remark);
+
+        // 긴 문장이 있으면 시작 효과를 좌로 흐름으로 변경
+        if ((getViewWidth(topMsg) > LedProtocol.LED_COLUMN_CNT * 2) ||
+                (getViewWidth(bottomMsg) > LedProtocol.LED_COLUMN_CNT * 2)) 
+        {
+            if (!isRtoLFlowType(startEffect) && !isLtoRFlowType(startEffect)) {
+                startEffect = EffectType.FLOW_RtoL;
+            }
+        }
+            
+        mQueue.add(new MsgItem(SAVE_INTR, ledNoticeProtocol.interruptBothRows(interruptRoom, 
+                DisplayArea.WHOLE_AREA, 
+                startEffect, startSpeed, stopTime,  
+                endEffect, endSpeed, repeatCnt,
+                topFont, topMsg, bottomFont, bottomMsg)));
+        
+        mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, interruptRoom, 1)));
         mainForm.getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
                 new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.BOTTOM), delay);    
         System.out.println("scheduled after ms: " + delay);
     }
 
-    private String getMsgHexString(EBD_Row row, int roomNumber, String message) {
-        final int repeatCnt = 1;
-            
-        DisplayArea area;
-        
-        if (row == EBD_Row.TOP)
-            area = DisplayArea.TOP_ROW;
-        else 
-            area = DisplayArea.BOTTOM_ROW;
-        
-        String text = ledNoticeProtocol.interruptText(roomNumber, area, RASER, MAX_SPEED, 
-                STOP_TIME_MIN, NONE, MAX_SPEED, repeatCnt, ColorFont.RedGothic, message);
-        return text;
-    }    
-    
     Thread demoThread = null;
     
     private ColorFont getColorFont( int colorIdx, int fontIdx) {
         if (fontIdx == Gothic.ordinal()) { 
-            if (colorIdx == Red.ordinal()) { // 빨강
+            if (colorIdx == Red.ordinal()) {
                 return ColorFont.RedGothic;
-            }else if (colorIdx == Green.ordinal()) { // 초록
+            }else if (colorIdx == Green.ordinal()) {
                 return ColorFont.GreenGothic;
             }else{
                 return ColorFont.OrangeGothic;
@@ -522,7 +611,6 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         
         try{
             demoThread = new Thread("ospEBD_effectDemo") {
-            
                 public void run() {
                     int startSpeed = 15; // 1 ~ 31
                     int stopTime = stopIndex + 1; // 1 ~ 10
@@ -537,25 +625,39 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                     try {
                         int totalCount = EffectType.values().length;
                         int seqNo = 1;
-                        for (EffectType effect : EffectType.values()) {
-                            
+                        EffectType finishEffect; 
+                        
+                        for (EffectType startEffect : EffectType.values()) {
                             // first display demo effect sequence number 
                             displayText = ledNoticeProtocol.textType(TOPTEXT_ROOM, TOP_ROW, 
-                                    EffectType.STOP_MOVING, MAX_SPEED, 1, EffectType.STOP_MOVING, 
-                                    MAX_SPEED, 1, setFont, (seqNo++) + "/" + totalCount + "-th") ;
+                                    EffectType.NONE, MAX_SPEED, 3, EffectType.NONE, 
+                                    MAX_SPEED, 1, setFont, (seqNo++) + "/" + totalCount + "-th", false) ;
                             getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));
-                            Thread.sleep(3000);
+//                            Thread.sleep(3000);
                             getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
-                                    ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
+                                    ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));                           
                             
+                            int startIdx = startEffect.getLabel().length() - LED_COLUMN_CNT * 2;
+                            String displayCore = startEffect.getLabel().substring(
+                                    startIdx < 0 ? 0 : startIdx, startEffect.getLabel().length());
                             
-                            int startIdx = effect.getLabel().length() - LED_COLUMN_CNT * 2;
-                            String displayCore = effect.getLabel().substring(
-                                    startIdx < 0 ? 0 : startIdx, effect.getLabel().length());
-                            displayText = ledNoticeProtocol.textType(TOPTEXT_ROOM + 1, TOP_ROW, effect, 
-                                    startSpeed, stopTime, EffectType.NONE, endSpeed, repeatCnt, setFont, displayCore);
+                            if (startEffect == EffectType.FLOW_DOWN) {
+                                finishEffect = startEffect;
+                                startEffect = EffectType.NONE;
+                            } else if (startEffect == EffectType.FLOW_UP) {
+                                finishEffect = startEffect;
+                                startEffect = EffectType.NONE;
+                            } else {
+                                finishEffect = EffectType.NONE;
+                            }
+                            displayText = ledNoticeProtocol.textType(TOPTEXT_ROOM + 1, TOP_ROW, 
+                                    startEffect, startSpeed, stopTime, finishEffect, 
+                                    endSpeed, repeatCnt, setFont, displayCore, true);
                             getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));
                             Thread.sleep(15000);
+
+                            // first, clear the LED row with a blank line
+                            clearDefaultDisplay(TOPTEXT_ROOM + 1, TOP_ROW);
                             
                             getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
                         }
@@ -563,11 +665,12 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                         // first, clear the LED row with a blank line
                         displayText = ledNoticeProtocol.textType(TOPTEXT_ROOM, TOP_ROW, 
                                 EffectType.STOP_MOVING, MAX_SPEED, 1, EffectType.STOP_MOVING, 
-                                MAX_SPEED, 1, setFont, ledNoticeBlankString.toString()) ;
+                                MAX_SPEED, 1, setFont, ledNoticeBlankString.toString(), false);
                         getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));
                             
                         // delete text memory 
-                        getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
+                        getLedNoticeMessages().add(
+                                new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
                         
                         // display default message
                         showLEDnoticeDefaultMessage(EBD_Row.TOP);
@@ -576,12 +679,26 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                         return;
                     }
                 };
+
+             
             };
             demoThread.start();
         } catch (NullPointerException e){
             logParkingException(Level.SEVERE, e, "Null, demo every effects");
         }          
     }
+
+    private void clearDefaultDisplay(int room, DisplayArea displayArea) {
+        String emptyText = ledNoticeProtocol.textType(room, displayArea, 
+                EffectType.STOP_MOVING, MAX_SPEED, 1, EffectType.STOP_MOVING, 
+                MAX_SPEED, 1, ColorFont.GreenGothic.getHexStr(), ledNoticeBlankString.toString(), false) ;
+        getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, emptyText));
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(LEDnoticeManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }       
 
     public void finishShowingDemoEffect(int index) {
         if (demoThread != null) {
@@ -591,73 +708,160 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
             showLEDnoticeDefaultMessage(EBD_Row.TOP);
             showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
         }
-        
     }
 
     public void showLEDnoticeDefaultMessage(EBD_Row row) {
         // 다음, 전광판의 기본 표시 문구를 전송한다.
         if (row == EBD_Row.TOP) {
-            // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+            // 상단 행 문구 표시 전에 일단 현재 내용을 제거한다.
             getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
                     ledNoticeProtocol.delData(GENERAL_TEXT, TOPTEXT_ROOM)));
-            // 상단 행, 실제 표시할 문구를 전송한다.
-            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
-                    getLEDnoticeDefaultMsg(EBD_Row.TOP, 1, "주차장의 안드로이드", EffectType.FLOW_RtoL,
-                            EffectType.NONE, ColorFont.OrangeMing, false)));
+            
+            LEDnoticeSettings setting = ledNoticeSettings[DEFAULT_TOP_ROW.ordinal()];
+            
+            // 상단 행 실제 표시할 문구를 전송한다.
+            if (setting.isUsed) {
+                ColorFont colorFont = getColorFont(setting.colorIdx, setting.fontIdx);
+                getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+                        getLEDnoticeDefaultMsg(EBD_Row.TOP, 1, 
+                                getDefaultContent(setting), 
+                                EffectType.values()[setting.startEffectIdx + 1],
+                                EffectType.values()[setting.finishEffectIdx],
+                                colorFont,
+                                false)));
+            }
         } else {
             // 하단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
             getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, 
                     ledNoticeProtocol.delData(GENERAL_TEXT, BOTTEXT_ROOM)));
+            
+            LEDnoticeSettings setting = ledNoticeSettings[DEFAULT_BOTTOM_ROW.ordinal()];
+            
             // 하단 행, 실제 표시할 문구를 전송한다.
-            getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
-                    getLEDnoticeDefaultMsg(EBD_Row.BOTTOM, 5, "오픈소스파킹", EffectType.FLOW_UP,
-                            EffectType.FLOW_DOWN, ColorFont.GreenGothic, false)));
+            if (setting.isUsed) {
+                ColorFont colorFont = getColorFont(setting.colorIdx, setting.fontIdx);
+                getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
+                        getLEDnoticeDefaultMsg(EBD_Row.BOTTOM, 5, // pause time
+                                getDefaultContent(setting), 
+                                EffectType.values()[setting.startEffectIdx + 1],
+                                EffectType.values()[setting.finishEffectIdx],
+                                colorFont,
+                                false)));
+            }
         }
     }
 
-    public void showCurrentEffect(int tabIndex, int typeIndex, String displayText, 
-            int startIndex, int pauseIndex, int finishIndex, int colorIndex, int fontIndex ) {
-        
-        String pureContent = null;
-         switch (LEDnotice_enums.LEDnoticeDefaultContentType.values()[typeIndex]) {
-             case Verbatim: 
-                 pureContent = displayText;
-                 break;
-             default:
-                 pureContent = "Other content";
-                 break;
-         }
+    public String getAckStatistics(byte deviceNo) {
+        return " AckAvg:" + (delayTotal[deviceNo] / delayCount[deviceNo]) + "ms/cnt:" + delayCount[deviceNo]
+                + System.lineSeparator();
+    }    
     
-        // first, clear the LED row with a blank line
-        displayText = ledNoticeProtocol.textType(TOPTEXT_ROOM, TOP_ROW, 
-                EffectType.STOP_MOVING, MAX_SPEED, 1, EffectType.STOP_MOVING, 
-                MAX_SPEED, 1, ColorFont.GreenGothic.getHexStr(), ledNoticeBlankString.toString()) ;
-        getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, displayText));     
+    public void showCurrentEffect(EBD_DisplayUsage usage, LEDnoticeSettings ledNoticeSetting ) {
+        String pureContent = null;
+        int room;         EBD_Row row;         DisplayArea area;
+        
+        if (usage.ordinal() % 2 == 0) {
+            room = TOPTEXT_ROOM;             area = TOP_ROW;             row = EBD_Row.TOP;
+        } else {
+            room = BOTTEXT_ROOM;             area = BOTTOM_ROW;         row = EBD_Row.BOTTOM;
+        }
 
-        // 다음, 전광판의 기본 표시 문구를 전송한다.
-        // 상단 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
-        getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
-         
-        EBD_Row row = (tabIndex % 2 == 0 ? EBD_Row.TOP : EBD_Row.BOTTOM);
+        pureContent = getDefaultContent(ledNoticeSetting);
         
-        // 상단 행, 실제 표시할 문구를 전송한다.
-        int pausePeriod = pauseIndex + 1;
+        // first, clear the LED row with a blank line
+        clearDefaultDisplay(room, area);
+        String emptyText = ledNoticeProtocol.textType(room, area, 
+                EffectType.STOP_MOVING, MAX_SPEED, 1, EffectType.STOP_MOVING, 
+                MAX_SPEED, 1, ColorFont.GreenGothic.getHexStr(), ledNoticeBlankString.toString(), false) ;
+        getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, emptyText));
+
+        // 표시할 행, 문구를 표시하기 전에 일단 현재 내용을 제거한다.
+        getLedNoticeMessages().add(new MsgItem(DEL_TEXT_ONE, ledNoticeProtocol.delData(GENERAL_TEXT, room)));                
         
-        if (row == EBD_Row.TOP && tabIndex % 2 == 1)
+        // 표시할 행, 실제 표시할 문구를 전송한다.
+        int pausePeriod = ledNoticeSetting.pauseTimeIdx + 1;
+        
+        if (row == EBD_Row.TOP && usage.ordinal() % 2 == 1)
             pausePeriod = MIN_PAUSE;
       
         getLedNoticeMessages().add(new MsgItem(SAVE_TEXT, 
                 getLEDnoticeDefaultMsg(row, pausePeriod, pureContent, 
-                EffectType.values()[startIndex + 1], EffectType.values()[finishIndex], 
-                getColorFont(colorIndex, fontIndex), true )));
+                EffectType.values()[ledNoticeSetting.startEffectIdx + 1], 
+                EffectType.values()[ledNoticeSetting.finishEffectIdx], 
+                getColorFont(ledNoticeSetting.colorIdx, ledNoticeSetting.fontIdx), true )));
     }
 
-    private void readLEDnoticeSettings() {
-        int count = EBD_DisplayUsage.values().length;
-        ledNoticeSettings = new LEDnoticeSettings[count];
-        for (int i = 0; i < count; i++) {
-            ledNoticeSettings[i] = new LEDnoticeSettings();
+    private String getInterruptMessage(LEDnoticeSettings topSetting, LEDnoticeSettings bottomSetting,
+            EBD_Row ebd_Row, String tagNumber, PermissionType permission, String remark) 
+    {
+        LEDnoticeSettings setting;
+        String result;
+        
+        if (ebd_Row == EBD_Row.TOP)
+            setting = topSetting;
+        else
+            setting = bottomSetting;
+        
+        int firstHalfLen = LEDnoticeVehicleContentType.values().length;
+        if (setting.contentTypeIdx < firstHalfLen) {
+            switch (LEDnoticeVehicleContentType.values()[setting.contentTypeIdx]) {
+                case VehicleTag:
+                    result = tagNumber;
+                    break;
+                    
+                case RegistrationStat:
+                    if (permission == PermissionType.ALLOWED) 
+                        result = "등록차량";
+                    else if (permission == PermissionType.UNREGISTERED)
+                        result = "방문차량";
+                    else
+                        result = "주차제한차량";
+                    break;
+                    
+                case VehicleRemark:
+                    if (permission == PermissionType.ALLOWED) 
+                        result = "등록차량";
+                    else if (permission == PermissionType.UNREGISTERED)
+                        result = "방문차량";
+                    else {
+                        if (remark == null || remark.length() == 0) 
+                            result = "주차제한차량";
+                        else
+                            result = remark;
+                    }
+                    break;
+                default:
+                    result = "";
+                    break;
+            }
+            return result;
+        } else {
+            setting.contentTypeIdx -= firstHalfLen;
+            return getDefaultContent(setting);
         }
+    }
+    
+    private String getDefaultContent(LEDnoticeSettings ledNoticeSetting) {
+        int index = ledNoticeSetting.contentTypeIdx;
+        String result;
+        switch (LEDnoticeDefaultContentType.values()[index]) {
+            case GateName:
+                result = gateNames[deviceNo];
+                break;
+            
+            case ParkingLotName:
+                result = DB_Access.parkingLotName;
+                break;
+                
+            case ParkingLot_GateName:
+                result = DB_Access.parkingLotName + "-" + gateNames[deviceNo];
+                break;
+
+            default:
+                result = ledNoticeSetting.verbatimContent;
+                break;
+        }
+        return result;
     }
 
     public static class MsgItem {
@@ -665,6 +869,7 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
         private String hexStr;
         private byte[] message;
         private int sendCount = 0;
+        private long timeAddedMs;
         
         public MsgItem(MsgType type, String hexStr) {
             this.type = type;
@@ -708,15 +913,26 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
     public class MessageQueue extends LinkedList<MsgItem> {
         @Override
         public boolean add(MsgItem item) {
+            item.timeAddedMs = System.currentTimeMillis();
             super.add(item);
             System.out.println("Added: " + item.getType() + ", Hex: " + item.getHexStr());
-            
             synchronized(msgQdoor) {
                 msgQdoor.notify(); // wake up someone sleeping on this queue
             }
             return true;
         }
+        
+        public MsgItem remove() {
+            long currDelay = System.currentTimeMillis() - peek().timeAddedMs;
+            delayTotal[deviceNo] += currDelay;
+            System.out.println("delay: " + currDelay);
+            delayCount[deviceNo]++;
+            return super.remove();
+        }
     }
+    
+    static long[] delayTotal = new long[gateCount + 1];
+    static int[] delayCount = new int[gateCount + 1];
     
     Object msgQdoor = new Object();
     private MessageQueue ledNoticeMessages = new MessageQueue();

@@ -73,6 +73,7 @@ public class LedProtocol {
     final static int FAILURE = 0x30;                   // failure: 0x30
     
     final static int MAX_SPEED = 31;                 // 가장 빠른 시작 및 종료 효과 속도
+    final static int MIN_SPEED = 1;                 // 가장 빠른 시작 및 종료 효과 속도
     final static int MIN_PAUSE = 1;                 // 가장 빠른 시작 및 종료 효과 속도
 
     public static int byteToUint(byte b) {
@@ -111,6 +112,44 @@ public class LedProtocol {
             Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
         }
        return getStringToTransmit(SAVE_INTR, dataVariable);     
+    }     
+    
+    /**
+     * 
+     * @param roomNumber interrupt text room number (0~4)
+     * @param area display area (top, bottom, whole area)
+     * @param startEffect starting effect of the interrupt message 
+     * @param ss 
+     * @param st
+     * @param ee
+     * @param es
+     * @param re
+     * @param topFontColor
+     * @param topMessage
+     * @param bottomFontColor
+     * @param bottomMessage
+     * @return 
+     */
+    public String interruptBothRows(int roomNumber, DisplayArea area, LEDnotice_enums.EffectType startEffect, 
+            int ss, int st, LEDnotice_enums.EffectType ee, int es, int re, ColorFont topFontColor, String topMessage, 
+            ColorFont bottomFontColor, String bottomMessage)  {
+        String dataVariable = null;
+                
+        try {
+            String index = String.format("%02X", roomNumber);
+            String Coordinate = setCoordinate(area);
+            String effect = setEffect(startEffect, ss, st, ee, es, re);
+            String stringData = (byteArrayToHex(topMessage.getBytes("x-windows-949"))).toUpperCase();
+            String stringData2 = (byteArrayToHex(bottomMessage.getBytes("x-windows-949"))).toUpperCase();
+            
+            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + 
+                    topFontColor.getHexStr() + stringData + bottomFontColor.getHexStr(true) + stringData2;
+            
+            
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return getStringToTransmit(SAVE_INTR, dataVariable);
     }     
     
     /**
@@ -308,7 +347,7 @@ public class LedProtocol {
      * @return
      */
     public String textType(int roomNum, DisplayArea pos, EffectType startEffect, int ss, int st, 
-        EffectType endingEffect, int es, int re, String colorFont, String displayCore)  
+        EffectType endingEffect, int es, int re, String colorFont, String displayCore, boolean fullDemo)  
     {
         
         String blankString = ledNoticeBlankString.toString();
@@ -316,17 +355,26 @@ public class LedProtocol {
         int contentWidth = getViewWidth(displayCore);
         int padBlankCount = LedProtocol.LED_COLUMN_CNT * 2 - contentWidth;
         
-        displayCore = displayCore + blankString.substring(0, (padBlankCount < 0 ? 0 : padBlankCount));        
+        String displayReal = displayCore + blankString.substring(0, (padBlankCount < 0 ? 0 : padBlankCount));
         
         if (contentWidth > LedProtocol.LED_COLUMN_CNT * 2) {
             startEffect = EffectType.FLOW_RtoL;
         }
                 
+//        if (fullDemo) 
+//        {
+//            if (isLtoRFlowType(startEffect)) {
+//                displayReal = blankString.substring(0, 10) + displayCore;
+//            } else if (isRtoLFlowType(startEffect)) {
+//                displayReal = displayCore + blankString.substring(0, 10);
+//            }
+//        }
+        
         // Display text storage room number
         String index = String.format("%02X", roomNum + ROOM_START); // (0~31) starts with 0x30
         String Coordinate = setCoordinate(pos);
         String effect = setEffect(startEffect, ss, st, endingEffect, es, re);
-        byte [] message = displayCore.getBytes();
+        byte [] message = displayReal.getBytes();
         String stringData = (byteArrayToHex(message)).toUpperCase();
         String dataVariable = null;
         dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect +
@@ -685,5 +733,23 @@ public class LedProtocol {
 
         return sendMSG(GET_VERSION, dataVariable);    
 
+    }
+
+    public static boolean isRtoLFlowType(EffectType startEffect) {
+        if (startEffect == EffectType.FLOW_RtoL 
+                || startEffect == EffectType.BLINK_RtoL_GREEN 
+                || startEffect == EffectType.BLINK_RtoL_RED)
+            return true;
+        else
+            return false;
+    }
+    
+    public static boolean isLtoRFlowType(EffectType startEffect) {
+        if ( startEffect == EffectType.FLOW_LtoR 
+                || startEffect == EffectType.BLINK_LtoR_GREEN 
+                || startEffect == EffectType.BLINK_LtoR_RED)
+            return true;
+        else
+            return false;
     }
 }

@@ -23,8 +23,23 @@ package com.osparking.osparking.device.LEDnotice;
 public class LEDnoticeSettings {
     public boolean isUsed = true;
     public int contentTypeIdx = 0;
-    public String verbatimContent = "not initialized yet";
-    public LEDnoticeSettings () {
-        
+    public String verbatimContent = "";
+    public int startEffectIdx = 0;
+    public int pauseTimeIdx = 0;
+    public int finishEffectIdx = 0;
+    public int colorIdx = 0;
+    public int fontIdx = 0;
+  
+    public LEDnoticeSettings
+        (int used, int type, String content, int startEffect, int pauseTime, int finishEffect, int color, int font) 
+    {
+        isUsed= (used == 1 ? true : false);
+        contentTypeIdx = type;
+        verbatimContent = content;
+        startEffectIdx = startEffect;
+        pauseTimeIdx = pauseTime;
+        finishEffectIdx = finishEffect;
+        colorIdx = color;
+        fontIdx = font;        
     }
 }

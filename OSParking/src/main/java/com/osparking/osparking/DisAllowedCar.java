@@ -230,7 +230,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         recogTextField.setEditable(false);
         recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
         recogTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        recogTextField.setText("30MO8186");
+        recogTextField.setText("30모8186");
         recogTextField.setMaximumSize(new java.awt.Dimension(200, 50));
         recogTextField.setMinimumSize(new java.awt.Dimension(200, 50));
         recogTextField.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -257,7 +257,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         regisTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
         regisTextField.setForeground(java.awt.Color.gray);
         regisTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        regisTextField.setText("30MO8186");
+        regisTextField.setText("30모8186");
         regisTextField.setMaximumSize(new java.awt.Dimension(200, 50));
         regisTextField.setMinimumSize(new java.awt.Dimension(200, 50));
         regisTextField.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -488,7 +488,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DisAllowedCar(null, "30MO8186", new Date(), "30MO8186", "testing",
+                new DisAllowedCar(null, "30모8186", new Date(), "30모8186", "testing",
                     (byte)1, 1000000, "abc.jpg", null, null, 8000).setVisible(true);
                 
             }

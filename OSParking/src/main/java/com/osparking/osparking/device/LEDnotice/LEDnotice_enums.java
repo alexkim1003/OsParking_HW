@@ -49,13 +49,19 @@ public class LEDnotice_enums {
     };
     
     public enum LEDnoticeVehicleContentType {
-        VERBATIM,            // display as it is (character by character)
-        VEHICLE_TAG,        // car license tag number
-        REGISTRATION_STAT,      // registered, un-registered, parking-restricted
-        GATE_NAME,        // gate name which is stored in the system settings already 
-        CURRENT_DATE,     // format: 20XX-12-31(Mon.)
-        CURRENT_TIME,     // format: AM/PM HH:MM:SS
-        CURRENT_DATE_TIME // format: 20XX-12-31(Mon.) HH:MM:SS AM/PM
+        VehicleTag("차량번호"),
+        RegistrationStat("등록상태"),
+        VehicleRemark("불허사유");
+        
+        private String label;
+
+        LEDnoticeVehicleContentType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }
     };
     
     public enum GROUP_TYPE {
@@ -200,7 +206,6 @@ public class LEDnotice_enums {
         
         STOP_MOVING (0x44, "멈춤 상태"),
         BLINKING (0x45, "깜박임"),
-        BLINKING_R_TO_L (0x45, "긴깜박임 좌로흘림"),
         REVERSE (0x46, "화려한 반전"),
         
         FLASHING (0x47, "플레싱"),

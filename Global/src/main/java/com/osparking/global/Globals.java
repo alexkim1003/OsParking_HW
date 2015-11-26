@@ -80,6 +80,7 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import static com.osparking.global.names.DB_Access.deviceIP;
 import static com.osparking.global.names.DB_Access.devicePort;
+import static com.osparking.global.names.DB_Access.e_boardType;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.maxMessageLines;
@@ -88,6 +89,7 @@ import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.OSP_enums.EBD_ContentType;
+import com.osparking.global.names.OSP_enums.E_BoardType;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.VersionType;
 import javax.imageio.ImageIO;
@@ -121,13 +123,6 @@ public class Globals {
     public static SimpleDateFormat timeFormatMMSS = new SimpleDateFormat("mm_ss"); 
     public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
 
-//    /**
-//     * @return the CarPicLabels
-//     */
-//    public static JLabel[] getCarPicLabels() {
-//        return CarPicLabels;
-//    }
-
     public static class GateDeviceType {
         public OSP_enums.CameraType cameraType = OSP_enums.CameraType.Simulator;
         public OSP_enums.E_BoardType eBoardType = OSP_enums.E_BoardType.Simulator;
@@ -141,10 +136,8 @@ public class Globals {
         
         for (int gateID = 1; gateID <= gateCount; gateID++) {
             gateDeviceTypes[gateID] = new GateDeviceType();
+            gateDeviceTypes[gateID].eBoardType = E_BoardType.values()[e_boardType[gateID]];
         }
-        
-        // Modify/Add/Delete whenever a device type changes (simulator <==> real hardware)
-        gateDeviceTypes[1].eBoardType = OSP_enums.E_BoardType.LEDnotice;  // 1:gateID
     }  
     
     public static int getGateDevicePortNo(DeviceType deviceType, byte deviceID) {
@@ -346,17 +339,17 @@ public class Globals {
         String tagNumber = null;
         
         if (picNo == 1)
-            tagNumber = "52GA8648"; 
+            tagNumber = "52가8648"; 
         else if (picNo == 2)
-            tagNumber = "47NU8868";
+            tagNumber = "47누8868";
         else if (picNo == 3)
-            tagNumber = "SEOUL31NA3416"; 
+            tagNumber = "서울31나3416"; 
         else if (picNo == 4)
-            tagNumber = "GYEONG42GO6003"; 
+            tagNumber = "경기42고6003"; 
         else if (picNo == 5)
-            tagNumber = "30MO8186"; 
+            tagNumber = "30모8186"; 
         else if (picNo ==  6)
-            tagNumber = "SEOUL32GA1234"; 
+            tagNumber = "서울32가1234"; 
         
         return tagNumber;
     }      

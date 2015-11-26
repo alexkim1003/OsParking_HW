@@ -290,7 +290,7 @@
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size+12)" type="code"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="30MO8186"/>
+                    <Property name="text" type="java.lang.String" value="30&#xbaa8;8186"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[200, 50]"/>
                     </Property>
@@ -391,7 +391,7 @@
                       <Color blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="30MO8186"/>
+                    <Property name="text" type="java.lang.String" value="30&#xbaa8;8186"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[200, 50]"/>
                     </Property>

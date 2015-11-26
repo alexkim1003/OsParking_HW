@@ -21,12 +21,17 @@ import com.osparking.global.names.DeviceManager;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.Date;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
+import static com.osparking.global.names.DB_Access.gateNames;
+import com.osparking.global.names.EBD_DisplaySetting;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.GATE_NAME;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
+import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
+import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_ACK;
@@ -36,6 +41,8 @@ import static com.osparking.global.names.OSP_enums.MsgCode.EBD_ID_ACK;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
+import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
+import java.nio.ByteBuffer;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -45,6 +52,92 @@ import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
  * @author Open Source Parking Inc.
  */
 public class EBoardManager extends Thread implements DeviceManager {
+
+    private static byte[] getEBDSimulatorDefaultMessage(byte deviceNo, EBD_Row row, int msgSN) {
+        EBD_DisplaySetting setting = null;
+        String displayText = null;
+        
+        setting = EBD_DisplaySettings
+                [row == EBD_Row.TOP ? DEFAULT_TOP_ROW.ordinal() : DEFAULT_BOTTOM_ROW.ordinal()];
+            
+        //<editor-fold desc="-- determind display text using e-board settings(contentType, type, etc.)">
+        switch (setting.contentType) {
+            case VERBATIM:
+                displayText = setting.verbatimContent;
+                break;
+                
+            case GATE_NAME:
+                displayText = gateNames[deviceNo];
+                break;
+                
+            default:
+                displayText = "";
+                break;
+        }
+        //</editor-fold>       
+        
+        byte[] displayTextBytes = displayText.getBytes();
+        int displayTextLength = displayTextBytes .length;
+        
+        // <code:1><length:2><row:1><text:?><type:1><color:1><font:1><pattern:1><cycle:4><check:2>
+        byte code = (byte)(row == EBD_Row.TOP ? EBD_DEFAULT1.ordinal() : EBD_DEFAULT2.ordinal());
+        short wholeMessageLen // length of 9 fields from <length> to <check>
+                = (short)(displayTextLength + 17); // 13 == sum of 8 fields == 9 fields except <text>
+        byte[] lenBytes //  {--Len[1], --Len[0]}
+                = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
+        byte[] wholeMessageBytes = new byte[wholeMessageLen + 1]; // 1 is for the very first <code>
+        
+        formMessageExceptCheckShort(code, lenBytes, row, msgSN, displayTextBytes, setting, 0,
+                wholeMessageBytes);        
+        
+        //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
+        // calculate 2 check bytes by adding all bytes in the of 9 fields: from <code:1> to <delay:4>
+        byte[] check = new byte[2];
+        addUpBytes(wholeMessageBytes, check);
+        
+        int idx = wholeMessageBytes.length - 2;
+        wholeMessageBytes[idx++] = check[0];
+        wholeMessageBytes[idx++] = check[1];
+        //</editor-fold>
+        
+        return wholeMessageBytes;             
+    }
+
+    private static void formMessageExceptCheckShort(byte code, byte[] lenBytes, EBD_Row row, int msgSN, 
+            byte[] coreMsg, EBD_DisplaySetting setting, int delay, byte[] wholeMessageBytes) 
+    {
+        int idx = 0;
+        
+        wholeMessageBytes[idx++] = code;
+        wholeMessageBytes[idx++] = lenBytes[0];
+        wholeMessageBytes[idx++] = lenBytes[1];
+        wholeMessageBytes[idx++] = (byte)row.ordinal();
+
+        for (byte dByte : ByteBuffer.allocate(4).putInt(msgSN).array()) {
+            wholeMessageBytes[idx++] = dByte;
+        }        
+        
+        if (coreMsg != null) {
+            for (byte aByte: coreMsg) {
+                wholeMessageBytes[idx++] = aByte;
+            }
+        }
+        wholeMessageBytes[idx++] = (byte)setting.contentType.ordinal();
+        wholeMessageBytes[idx++] = (byte)setting.textColor.ordinal();
+        wholeMessageBytes[idx++] = (byte)setting.textFont.ordinal();
+        wholeMessageBytes[idx++] = (byte)setting.displayPattern.ordinal();
+
+        if (code == EBD_INTERRUPT1.ordinal() || code == EBD_INTERRUPT2.ordinal()) {
+            for (byte cByte : ByteBuffer.allocate(4).putInt(setting.displayCycle).array()) {
+                wholeMessageBytes[idx++] = cByte;
+            }
+        }
+        
+        for (byte dByte : ByteBuffer.allocate(4).putInt(delay).array()) {
+            wholeMessageBytes[idx++] = dByte;
+        }
+    }        
+    
     //<editor-fold desc="--class variables">
     private byte deviceNo = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
     private ControlGUI mainForm; // main form of the gate bar simulator.
@@ -303,9 +396,10 @@ public class EBoardManager extends Thread implements DeviceManager {
             mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].reschedule(
                         new SendEBDMessageTask(
                             mainForm, deviceNo, row, 
-                            mainForm.getDefaultMessage(
-                                    deviceNo, row,
-                                    --mainForm.msgSNs[deviceNo]), 
+                            getEBDSimulatorDefaultMessage(deviceNo, row, --mainForm.msgSNs[deviceNo]),
+//                            mainForm.getDefaultMessage(
+//                                    deviceNo, row,
+//                                    --mainForm.msgSNs[deviceNo]), 
                             mainForm.msgSNs[deviceNo]));
         }    
     }

@@ -39,7 +39,8 @@ public class OSP_enums {
     
     public enum EBD_Row {
         TOP(1), 
-        BOTTOM(2);
+        BOTTOM(2),
+        BOTH(3);
         
         private int value;
         

@@ -54,28 +54,20 @@ public class FinishLEDnoticeIntrTask extends TimerTask {
             {
                 if (! isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket())) 
                 {
-        System.out.println("point 1");
                     mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
                 }
             }
             ++sendCount;
-        System.out.println("point 2");
             
             LEDnoticeManager manager 
                     = (LEDnoticeManager) mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo];
-        System.out.println("point 3");
             
             manager.getLedNoticeMessages().add(new MsgItem(INTR_TXT_OFF, 
                     manager.ledNoticeProtocol.intOff()));
-        System.out.println("point 4");
 
             manager.getLedNoticeMessages().add(new MsgItem(DEL_GROUP, 
                     manager.ledNoticeProtocol.delGroup(INTR_GROUP)));
-        System.out.println("point 5");
             
-//        } catch (IOException e) {
-//            mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].finishConnection(e, 
-//                    "LED notice interrupt finish message sent", deviceNo);
         } catch (InterruptedException ex) {
             logParkingException(Level.SEVERE, ex, "LEDnotice Board #" + deviceNo + " sender wait socket conn'");
         }          
