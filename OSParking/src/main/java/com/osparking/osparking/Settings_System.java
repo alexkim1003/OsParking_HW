@@ -3143,19 +3143,20 @@ public class Settings_System extends javax.swing.JFrame {
         //<editor-fold desc="-- Create update statement">
         StringBuffer sb = new StringBuffer("Update gatedevices SET ");
         sb.append("  gatename = ? ");
+        
+        sb.append("  , cameraType = ?");
         sb.append("  , cameraIP = ? ");
         sb.append("  , cameraPort = ?");
-        sb.append("  , cameraType = ?");
         
-        sb.append("  , e_boardIP = ? ");
-        sb.append("  , e_boardPort = ? ");
         sb.append("  , e_boardType = ? ");
         sb.append("  , e_boardConnType = ? ");
+        sb.append("  , e_boardIP = ? ");
+        sb.append("  , e_boardPort = ? ");
         
-        sb.append("  , gatebarIP = ? ");
-        sb.append("  , gatebarPort = ? ");
         sb.append("  , gatebarType = ? ");
         sb.append("  , gatebarConnType = ? ");
+        sb.append("  , gatebarIP = ? ");
+        sb.append("  , gatebarPort = ? ");
         
         sb.append("WHERE GateID = ?");
         //</editor-fold>
@@ -3174,34 +3175,17 @@ public class Settings_System extends javax.swing.JFrame {
                         ((JTextField) componentMap.get("TextFieldGateName" + gateID)).getText().trim());
                 
                 for (DeviceType type : DeviceType.values()) {
-//                    updateSettings.setString(pIndex++, 
-//                            ((JTextField) componentMap.get("Camera" + gateID + "_IP_TextField")).getText().trim());
-//                    updateSettings.setString(pIndex++, 
-//                            ((JTextField) componentMap.get("Camera" + gateID + "_Port_TextField")).getText().trim());
-//                    cBox = (JComboBox) componentMap.get("Camera" + gateID + "_TypeCBox");
-//                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
-
-                    updateSettings.setString(pIndex++, 
-                            ((JTextField) componentMap.get(type.toString() + gateID + "_IP_TextField")).getText().trim());
-                    updateSettings.setString(pIndex++, 
-                            ((JTextField) componentMap.get(type.toString() + gateID + "_Port_TextField")).getText().trim());
                     cBox = (JComboBox)componentMap.get(type.toString() + gateID + "_TypeCBox");
                     updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
                     if (type != Camera) {
                         cBox = (JComboBox)componentMap.get(type.toString() + gateID + "_connTypeCBox");
                         updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
                     }
-
-//                    updateSettings.setString(pIndex++, 
-//                            ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField")).getText().trim());
-//                    updateSettings.setString(pIndex++, 
-//                            ((JTextField) componentMap.get("GateBar" + gateID + "_Port_TextField")).getText().trim());
-//                    cBox = (JComboBox)componentMap.get("GateBar" + gateID + "_TypeCBox");
-//                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
-//                    cBox = (JComboBox)componentMap.get("GateBar" + gateID + "_connTypeCBox");
-                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
+                    updateSettings.setString(pIndex++, 
+                            ((JTextField) componentMap.get(type.toString() + gateID + "_IP_TextField")).getText().trim());
+                    updateSettings.setString(pIndex++, 
+                            ((JTextField) componentMap.get(type.toString() + gateID + "_Port_TextField")).getText().trim());
                 }
-                
                 updateSettings.setInt(pIndex++, gateID);
                 // </editor-fold>
 

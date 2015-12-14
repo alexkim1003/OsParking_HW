@@ -244,7 +244,7 @@ public class OSP_enums {
     }      
     
     public enum DeviceType {
-        Camera, GateBar, E_Board
+        Camera, E_Board, GateBar
     }    
     
     public enum EBD_CycleType {
