@@ -54,7 +54,7 @@ import com.osparking.global.names.OSP_enums.OpLogLevel;
  */
 public class Settings_EBoard extends javax.swing.JFrame {
     public static ControlGUI mainForm = null;
-    private HashMap<String,Component> componentMap;
+    private HashMap<String,Component> componentMap = new HashMap<String,Component>();
     private EBD_DisplayUsage currentTab = DEFAULT_TOP_ROW, previousTab = DEFAULT_TOP_ROW;
     Settings_System parent = null;
     FormMode formMode = FormMode.SEARCHING;
@@ -67,7 +67,7 @@ public class Settings_EBoard extends javax.swing.JFrame {
         this.parent = parent;
         setResizable(false);
         
-        makeComponentMap();
+        augmentComponentMap(this, componentMap);
         
         addContentTypeItems();
         addDisplayEffectItems();
@@ -1414,38 +1414,6 @@ public class Settings_EBoard extends javax.swing.JFrame {
                 .setSelectedIndex(ControlGUI.EBD_DisplaySettings[usage_row.ordinal()].textFont.ordinal());
         
         changeEnabled_of_SaveCancelButtons(false);
-    }
-    
-    /**
-     * register the component that belong to the panel to hashmap.
-     * 
-     */
-    private void makeComponentMap(){
-        componentMap = new HashMap<String,Component>();
-        for (Component outerCompo : eboardTabbedPanel.getComponents()) 
-        {
-            for (Component inCompo : ((JTabbedPane)outerCompo).getComponents()) 
-            {
-                for (Component innerCompo : ((JPanel) inCompo).getComponents()) 
-                {
-                    if (innerCompo instanceof JTextField) 
-                    {
-                        JTextField aTextField = (JTextField)innerCompo;
-                        componentMap.put(aTextField.getName(), aTextField);
-                    }
-                    else if (innerCompo instanceof JComboBox)
-                    {
-                        JComboBox aComboBox = (JComboBox) innerCompo;
-                        componentMap.put(aComboBox.getName(), aComboBox);
-                    }
-                    else if (innerCompo instanceof JButton)
-                    {
-                        JButton aJButton = (JButton) innerCompo;
-                        componentMap.put(aJButton.getName(), aJButton);
-                    }
-                }
-            }
-        }
     }
     
     /**

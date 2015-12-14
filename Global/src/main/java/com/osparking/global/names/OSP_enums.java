@@ -69,11 +69,33 @@ public class OSP_enums {
     }
     
     public enum GateBarType {
-        Simulator,
+        Simulator("모의장치"), 
+        NaraCorp("Nara Bar");
+        
+        private String label;
+        
+        GateBarType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }         
     }
     
     public enum CameraType {
-        Simulator,
+        Simulator("모의장치"), 
+        NaraCorp("Point Grey");
+        
+        private String label;
+        
+        CameraType(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }            
     }
 
     public enum VehicleCol {

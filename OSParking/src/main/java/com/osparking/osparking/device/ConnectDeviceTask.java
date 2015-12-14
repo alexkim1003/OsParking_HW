@@ -30,6 +30,15 @@ import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.deviceIP;
+import static com.osparking.global.names.DB_Access.connectionType;
+import com.osparking.global.names.DeviceManager;
+import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.UnsupportedCommOperationException;
 
 /**
  * 
@@ -59,29 +68,61 @@ public class ConnectDeviceTask implements Runnable {
                             "Socket() IP: " + deviceIP[deviceType.ordinal()][deviceID] + ", port: " + 
                                     portNo + " (" + seq + "-th)");      
                 }
+                if (managerGUI.isSHUT_DOWN()) {
+                    break;
+                }
                 synchronized (managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID]) 
-                {                
-                    Socket deviceSocket = new Socket();
-                    deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], portNo),
-                            LED_PERIOD);  
+                {    
+                    DeviceManager manager = managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID];
+                    
+                    if (connectionType[deviceType.ordinal()][deviceID] == TCP_IP.ordinal()) 
+                    {
+                        //<editor-fold desc="-- Request socket connection">
+                        Socket deviceSocket = new Socket();
+                        deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], portNo),
+                                LED_PERIOD);
 
+                        deviceSocket.setTcpNoDelay(true);
+                        deviceSocket.setSoTimeout(PULSE_PERIOD);
+
+                        if (manager == null) {
+                            System.out.println("It is null");
+                        }
+                        manager.setSocket(deviceSocket);
+                        //</editor-fold>
+                    } else { // serial port 
+                        //<editor-fold desc="-- Open serial port">
+                        if (manager.getPortIdentifier().isCurrentlyOwned()) {
+                            System.out.println("currently owned");
+                        } else {
+                            manager.setCommPort(manager.getPortIdentifier().open(this.getClass().getName(), 1000));
+                        }
+
+                        if (manager.getCommPort() instanceof SerialPort) {
+                            SerialPort serialPort = (SerialPort) manager.getCommPort();
+                            serialPort.setSerialPortParams(115200,	// 통신속도
+                                            SerialPort.DATABITS_8, 	// 데이터 비트
+                                            SerialPort.STOPBITS_1,	// stop 비트
+                                            SerialPort.PARITY_NONE);	// 패리티
+                            if (manager == null) {
+                                logParkingException(Level.INFO, null, "null manager", deviceID);
+                            } else {
+                                manager.setSerialPort(serialPort);
+                            }
+                        } else {
+                            logParkingException(Level.INFO, null, "Only serial ports are handled", deviceID);
+                        }
+                        //</editor-fold>
+                    }
                     managerGUI.getSockConnStat()[deviceType.ordinal()][deviceID].recordSocketConnection(
-                            System.currentTimeMillis());               
-
-                    deviceSocket.setTcpNoDelay(true);
-                    deviceSocket.setSoTimeout(PULSE_PERIOD);
+                            System.currentTimeMillis());
                     managerGUI.getStatusTextField().setFont(new Font(
                             managerGUI.getStatusTextField().getFont().getFontName(), Font.PLAIN, 
                             managerGUI.getStatusTextField().getFont().getSize()));  
-                    //</editor-fold>
 
-                    managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();
-                    // ...
-                    if (managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID] == null) {
-                        System.out.println("It is null");
-                    }
-                    managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID].setSocket(deviceSocket);
+                    managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();  
                     managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
+                    System.out.println("after notify all");
                 }
                 return;
             } catch (SocketTimeoutException ex) {
@@ -104,7 +145,11 @@ public class ConnectDeviceTask implements Runnable {
                     }
                 }
                 //</editor-fold>
-            } 
+            } catch (PortInUseException ex) {
+                logParkingException(Level.SEVERE, ex, "IOEx getting serial port", deviceID);
+            } catch (UnsupportedCommOperationException ex) {
+                logParkingException(Level.SEVERE, ex, "IOEx getting serial port", deviceID);
+            }
         }
     }
 }

@@ -114,11 +114,12 @@ public class DB_Access {
     
     public static String[][] deviceIP = null;
     
-    public static byte [] e_boardType = null;    
+    public static byte [][] deviceType = null;    
     
-    public static byte [] e_boardConnType = null;    
+//    public static String [] e_boardPortNumber = null;  
     
     public static String[][] devicePort = null;
+    public static byte [][] connectionType = null;  
     
     public static boolean passwordMatched(String userID, String passwd) 
     {
@@ -540,8 +541,8 @@ public class DB_Access {
             gateNames = new String[gateCount + 1];   // textual gate names assigned
             deviceIP = new String[DeviceType.values().length][gateCount + 1];
             devicePort = new String[DeviceType.values().length][gateCount + 1];
-            e_boardType = new byte[gateCount + 1];
-            e_boardConnType = new byte[gateCount + 1];
+            deviceType = new byte[DeviceType.values().length][gateCount + 1];
+            connectionType = new byte[DeviceType.values().length][gateCount + 1];
             passingCountCurrent = new int[gateCount + 1];
             passingDelayCurrentTotalMs = new int[gateCount + 1];
             
@@ -555,24 +556,23 @@ public class DB_Access {
                 
                 strField = rs.getString("cameraIP");
                 deviceIP[Camera.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
+                strField = rs.getString("cameraPort");
+                devicePort[Camera.ordinal()][gateID] = getPortNumber(strField);
+                deviceType[Camera.ordinal()][gateID] = (byte) rs.getInt("cameraType");
                 
                 strField = rs.getString("e_boardIP");
                 deviceIP[E_Board.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
-                
                 strField = rs.getString("e_boardPort");
                 devicePort[E_Board.ordinal()][gateID] = getPortNumber(strField);
-                
-                e_boardType[gateID] = (byte) rs.getInt("e_boardType");
-                e_boardConnType[gateID] = (byte) rs.getInt("e_boardConnType");
+                deviceType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardType");
+                connectionType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardConnType");
                 
                 strField = rs.getString("gatebarIP");
                 deviceIP[GateBar.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
-                
-                strField = rs.getString("cameraPort");
-                devicePort[Camera.ordinal()][gateID] = getPortNumber(strField);
-                
                 strField = rs.getString("gatebarPort");
                 devicePort[GateBar.ordinal()][gateID] = getPortNumber(strField);
+                deviceType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarType");
+                connectionType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarConnType");
                 
                 passingCountCurrent[gateID] = rs.getInt("passingCountCurrent");
                 

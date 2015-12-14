@@ -16,18 +16,27 @@
  */
 package com.osparking.global.names;
 
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
 import java.net.Socket;
+import gnu.io.SerialPort;
+
 
 /**
  *
  * @author Open Source Parking Inc.
  */
 public interface DeviceManager {
-    Socket getSocket();
     void finishConnection(Exception e, String description, byte deviceNo);
     void setPriority(int newPriority);
     void start();
     public void stopOperation(String reason);
     public void setSocket(Socket eBoardSocket);
+    Socket getSocket();
+    public void setSerialPort(SerialPort serialPort);
+    public SerialPort getSerialPort();    
     boolean isNeverConnected();
+    public CommPortIdentifier getPortIdentifier();
+    public CommPort getCommPort();
+    public void setCommPort(CommPort open);
 }

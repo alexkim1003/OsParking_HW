@@ -27,7 +27,6 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.D
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_OFF;
 import java.util.TimerTask;
 import java.util.logging.Level;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,9 +51,11 @@ public class FinishLEDnoticeIntrTask extends TimerTask {
         {
             synchronized(mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
             {
-                if (! isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket())) 
+                if (!isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket(), 
+                        mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSerialPort(),
+                        E_Board, deviceNo, mainGUI.tolerance))
                 {
-                    mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                        mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
                 }
             }
             ++sendCount;
@@ -81,8 +82,9 @@ public class FinishLEDnoticeIntrTask extends TimerTask {
      */
     public int getResendCount() {
         if (sendCount - 1 < 0) {
-            JOptionPane.showMessageDialog(null, "negative resend count");
-        }        
-        return sendCount - 1;  // first send shouldn't be counted
-    }        
+            return 0;
+        } else {
+            return sendCount - 1;  // first send shouldn't be counted
+        }
+    }
 }

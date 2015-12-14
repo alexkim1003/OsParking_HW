@@ -36,6 +36,9 @@ import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.CarImage;
 import static com.osparking.global.names.OSP_enums.MsgCode.IAmHere;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
 
 /**
  * Maintains communication with a camera  thru a socket as long as the socket is connected,
@@ -326,11 +329,11 @@ public class CameraManager extends Thread implements DeviceManager {
             }
         }
             
-        if (mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID] == null) {
-            System.out.println("this never ever happens");
-        } else {
-            mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID].reRunOnce();
-//            addMessageLine(mainForm.getMessageTextArea(), "M5'. Cam#" + cameraID + " conn' resch'ed");
+        if (mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID] != null) {
+            if (!mainForm.isSHUT_DOWN()) {
+                mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID].reRunOnce();
+                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + cameraID);
+            }
         }
     }
 
@@ -356,5 +359,30 @@ public class CameraManager extends Thread implements DeviceManager {
             picNo = 6;
         
         return picNo;
+    }
+
+    @Override
+    public void setSerialPort(SerialPort serialPort) {
+        
+    }
+
+    @Override
+    public SerialPort getSerialPort() {
+        return null;
+    }
+
+    @Override
+    public CommPortIdentifier getPortIdentifier() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CommPort getCommPort() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setCommPort(CommPort open) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -97,15 +97,6 @@ public class PanelFor2Gates extends GatePanel {
             for (int gateNo = 1; gateNo <= 2; gateNo++)
             {
                 setComponentSize(getCarPicLabels()[gateNo], new Dimension(picWidthNew, picHeightNew));
-
-                if (originalImgWidth[gateNo] > 0)
-                {
-                    ImageIcon iIcon = createStretchedIcon(getCarPicLabels()[gateNo].getPreferredSize(), 
-                            getNoPictureImg(), false); // after components resized
-                    getCarPicLabels()[gateNo].setIcon(null);
-                    getCarPicLabels()[gateNo].revalidate();
-                    getCarPicLabels()[gateNo].setIcon(iIcon);
-                }
             }
         }
         revalidate();

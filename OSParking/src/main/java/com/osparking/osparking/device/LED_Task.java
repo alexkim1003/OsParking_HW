@@ -24,14 +24,20 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingExceptionStatus;
+import static com.osparking.global.names.DB_Access.connectionType;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
+import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
 import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
-import static com.osparking.osparking.Settings_System.mainForm;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeManager.MsgItem;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 //<editor-fold desc="-- Class LED_Task">
 /**
@@ -50,6 +56,7 @@ public class LED_Task extends TimerTask {
 
     LedProtocol ledNoticeProtocol; 
     byte[] ledNoticeGetIDmsg;
+    String getID_HexString;
     
     /**
      * Initializes this task with the main GUI and a managerLEDnotice array.
@@ -63,7 +70,8 @@ public class LED_Task extends TimerTask {
         ledNoticeProtocol = new LedProtocol();
         
         // Initialize some repeatedly used messages.
-        ledNoticeGetIDmsg = ledNoticeProtocol.hexToByteArray(ledNoticeProtocol.getId());
+        getID_HexString = ledNoticeProtocol.getId();
+        ledNoticeGetIDmsg = ledNoticeProtocol.hexToByteArray(getID_HexString);
     }
     
     /**
@@ -84,7 +92,10 @@ public class LED_Task extends TimerTask {
                     {
                         //<editor-fold desc="--decrease alpha value of odd row LED label">
                         if (deviceManagers[typeNo][gateNo] != null 
-                                && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
+                                && isConnected(deviceManagers[typeNo][gateNo].getSocket(), 
+                                        deviceManagers[typeNo][gateNo].getSerialPort() , 
+                                        type, gateNo, controlGUI.tolerance))
+                        {
 
                             sendHeartBeat(type, gateNo);
                             controlGUI.tolerance[type.ordinal()][gateNo].decrease();
@@ -107,8 +118,10 @@ public class LED_Task extends TimerTask {
                     } else {
                         //<editor-fold desc="--decrease alpha value of even row LED label">
                         if (deviceManagers[typeNo][gateNo] != null 
-                                && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
-
+                                && isConnected(deviceManagers[typeNo][gateNo].getSocket(), 
+                                        deviceManagers[typeNo][gateNo].getSerialPort() , 
+                                        type, gateNo, controlGUI.tolerance))
+                        {
                             sendHeartBeat(type, gateNo);                        
                             controlGUI.tolerance[type.ordinal()][gateNo].decrease();
 
@@ -138,27 +151,38 @@ public class LED_Task extends TimerTask {
     }
     
     private void sendHeartBeat(DeviceType type, byte gateNo) {
-        byte typeNo= (byte)type.ordinal();
+        OutputStream outStream;
+        byte[] msgBytes = null;
+        
+        if (type == E_Board) {
+            switch (gateDeviceTypes[gateNo].eBoardType) {
+                case LEDnotice:
+                    msgBytes = ledNoticeGetIDmsg;
+                    break;
+
+                default:
+                    msgBytes = ByteBuffer.allocate(1).put((byte)EBD_GetID.ordinal()).array();
+                    break;
+            }
+        } else {
+            try {
+                msgBytes = ByteBuffer.allocate(1).put((byte)AreYouThere.ordinal()).array();
+            } catch (Exception exc) {
+                System.out.println("exc");
+            }
+        }
         
         try {
-            if (type == E_Board) {
-                switch (gateDeviceTypes[gateNo].eBoardType) {
-                    case LEDnotice:
-                        deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(ledNoticeGetIDmsg);
-                        break;
-
-                    default:
-                        deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(EBD_GetID.ordinal());
-                        break;
-                }
-                
+            if (connectionType[type.ordinal()][gateNo] == RS_232.ordinal()) {
+                LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[type.ordinal()][gateNo];
+//                outStream = deviceManagers[type.ordinal()][gateNo].getSerialPort().getOutputStream();
+                manager.getLedNoticeMessages().add(new MsgItem(GET_ID, getID_HexString));
             } else {
-                deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(AreYouThere.ordinal());
+                outStream = deviceManagers[type.ordinal()][gateNo].getSocket().getOutputStream();
+                outStream.write(msgBytes);
             }
-            
-            
         } catch (IOException e) {
-            deviceManagers[typeNo][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
+            deviceManagers[type.ordinal()][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
         }           
     }
 }

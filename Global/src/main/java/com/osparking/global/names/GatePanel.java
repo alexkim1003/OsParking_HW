@@ -28,7 +28,6 @@ import javax.swing.JPanel;
  * @author Open Source Parking Inc.
  */
 public abstract class GatePanel extends javax.swing.JPanel{
-    //public abstract JLabel getCarPicLabels(int gateNo);
     public abstract JLabel[] getCarPicLabels();
 
     public abstract JPanel getPanel_Gate(int gateNo);

@@ -201,13 +201,6 @@ public class PanelFor1Gate extends GatePanel {
         setComponentSize(getCarPicLabels()[1], new Dimension(picWidthNew, picHeightNew));
 
         // <editor-fold defaultstate="collapsed" desc="-- stretch image for each window resizing">
-        if (originalImgWidth[1] > 0)
-        {
-            //originalImg = ImageIO.read(new File(getDisplayedImagePath(1)));
-            ImageIcon iIcon = createStretchedIcon(getCarPicLabels()[1].getPreferredSize(), 
-                    getNoPictureImg(), false); // after components resized
-            getCarPicLabels()[1].setIcon(iIcon);
-        }
         getCarPicLabels()[1].revalidate();
         revalidate();
         // </editor-fold>

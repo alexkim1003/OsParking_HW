@@ -148,14 +148,8 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
             } else {
                 LEDnoticeManager manager = (LEDnoticeManager)mainForm
                         .getDeviceManagers()[E_Board.ordinal()][gateNo];           
-                
-                if (isConnected(manager.getSocket())) {
-                    LEDnoticeSettings aSetting = getLEDnoticeSetting(usage);
-
-                    manager.showCurrentEffect(usage, aSetting); 
-                } else {
-                    JOptionPane.showMessageDialog(this, "LEDnotice 장치가 연결되지 않았습니다!");
-                }
+                LEDnoticeSettings aSetting = getLEDnoticeSetting(usage);
+                manager.showCurrentEffect(usage, aSetting); 
             }
         }
     }
@@ -165,11 +159,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         
         LEDnoticeManager manager = (LEDnoticeManager)mainForm
                 .getDeviceManagers()[E_Board.ordinal()][gateNo];
-        if (isConnected(manager.getSocket())) {
-            manager.finishShowingDemoEffect(index);
-        } else {
-            JOptionPane.showMessageDialog(this, "LEDnotice 장치가 연결되지 않았습니다!");
-        }
+        manager.finishShowingDemoEffect(index);
     }
 
     private void demoAllEffects(int tabIndex) {
@@ -191,11 +181,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
                 LEDnoticeManager manager = (LEDnoticeManager)mainForm.getDeviceManagers()[
                         E_Board.ordinal()][gateNo];
 
-                if (isConnected(manager.getSocket())) {
-                    manager.showAllEffects(tabIndex, stopIndex, colorIdx, fontIdx);
-                } else {
-                    JOptionPane.showMessageDialog(this, "LEDnotice 장치가 연결되지 않았습니다!");
-                }
+                manager.showAllEffects(tabIndex, stopIndex, colorIdx, fontIdx);
             }
         }    
     }

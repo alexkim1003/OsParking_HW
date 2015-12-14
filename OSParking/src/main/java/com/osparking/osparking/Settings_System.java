@@ -29,10 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.WARNING_MESSAGE;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.names.DB_Access.EBD_blinkCycle;
@@ -62,12 +60,18 @@ import static com.osparking.global.names.OSP_enums.OpLogLevel.EBDsettingsChange;
 import com.osparking.global.names.PasswordValidator;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import com.osparking.attendant.PWHelpJDialog;
+import com.osparking.global.names.ChangeSettings;
 import com.osparking.global.names.DB_Access;
+import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.devicePort;
+import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.parkingLotName;
+import com.osparking.global.names.OSP_enums.CameraType;
 import com.osparking.global.names.OSP_enums.ConnectionType;
+import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.global.names.OSP_enums.E_BoardType;
+import com.osparking.global.names.OSP_enums.GateBarType;
 import com.osparking.global.names.OSP_enums.PWStrengthLevel;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
@@ -89,8 +93,9 @@ public class Settings_System extends javax.swing.JFrame {
     private static Logger logException = null;
     private static Logger logOperation = null;
     public static ControlGUI mainForm = null;
-    private HashMap<String,Component> componentMap;
+    private HashMap<String, Component> componentMap = new HashMap<String,Component>();
     public short maxArrivalCBoxIndex = 0;
+    private Set<String> changedControls = new HashSet<String>();    
     
     /**
      * Initialize some controls on the system settings change GUI. 
@@ -98,7 +103,12 @@ public class Settings_System extends javax.swing.JFrame {
     public Settings_System(ControlGUI mainForm) {
         initComponents();
         setIconImages(OSPiconList);                
-        makeComponentMap();
+        augmentComponentMap(this, componentMap);
+        
+//        for (Map.Entry<String, Component> comp : componentMap.entrySet()) {
+//            System.out.println("name: " + comp.getKey());
+//        }     
+        
         this.mainForm = mainForm;
         if (mainForm == null)
             isStand_Alone = true;
@@ -109,11 +119,11 @@ public class Settings_System extends javax.swing.JFrame {
         loadComponentValues();
         makeEnterActAsTab();
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                EBoardSettingsButtonActionPerformed(null);
-            }
-        });          
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                EBoardSettingsButtonActionPerformed(null);
+//            }
+//        });          
     }
 
     /**
@@ -127,11 +137,6 @@ public class Settings_System extends javax.swing.JFrame {
         java.awt.GridBagConstraints gridBagConstraints;
 
         wholePanel = new javax.swing.JPanel();
-        topPanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        StatPopSizeTextField = new javax.swing.JTextField();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
-        RecordPassingDelayCBox = new javax.swing.JCheckBox();
         parkinglotOptionPanel = new javax.swing.JPanel();
         PWStrengthChoiceComboBox = new javax.swing.JComboBox<ConvComboBoxItem>();
         jLabel1 = new javax.swing.JLabel();
@@ -157,24 +162,44 @@ public class Settings_System extends javax.swing.JFrame {
         LanguageSelectionlHelpButton = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         lotNameTextField = new javax.swing.JTextField();
+        StatPopSizeTextField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        RecordPassingDelayCBox = new javax.swing.JCheckBox();
         gateSettingPanel = new javax.swing.JPanel();
         GatesTabbedPane = new javax.swing.JTabbedPane();
         gate1Panel = new javax.swing.JPanel();
-        jLabel27 = new javax.swing.JLabel();
+        gate_name_p = new javax.swing.JPanel();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(50, 32767));
+        gateName = new javax.swing.JLabel();
         TextFieldGateName1 = new javax.swing.JTextField();
+        topLabelsPanel = new javax.swing.JPanel();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        device1_Label = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
-        Camera1_IP_TextField = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
-        GateBar1_IP_TextField = new javax.swing.JTextField();
+        cameraPan = new javax.swing.JPanel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
         jLabel30 = new javax.swing.JLabel();
-        E_Board1_IP_TextField = new javax.swing.JTextField();
-        jLabel37 = new javax.swing.JLabel();
+        Camera1_TypeCBox = new javax.swing.JComboBox();
+        Camera1_connTypeCBox = new javax.swing.JComboBox();
+        Camera1_IP_TextField = new javax.swing.JTextField();
         Camera1_Port_TextField = new javax.swing.JTextField();
-        GateBar1_Port_TextField = new javax.swing.JTextField();
+        eBoardPan = new javax.swing.JPanel();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        jLabel37 = new javax.swing.JLabel();
+        E_Board1_TypeCBox = new javax.swing.JComboBox();
+        E_Board1_connTypeCBox = new javax.swing.JComboBox();
+        E_Board1_IP_TextField = new javax.swing.JTextField();
         E_Board1_Port_TextField = new javax.swing.JTextField();
-        jLabel40 = new javax.swing.JLabel();
-        EBD1_TypeCBox = new javax.swing.JComboBox();
-        EBD1_connTypeCBox = new javax.swing.JComboBox();
+        gateBarPan = new javax.swing.JPanel();
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        ebdLbl = new javax.swing.JLabel();
+        GateBar1_TypeCBox = new javax.swing.JComboBox();
+        GateBar1_connTypeCBox = new javax.swing.JComboBox();
+        GateBar1_IP_TextField = new javax.swing.JTextField();
+        GateBar1_Port_TextField = new javax.swing.JTextField();
         gate2Panel = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         TextFieldGateName2 = new javax.swing.JTextField();
@@ -218,31 +243,49 @@ public class Settings_System extends javax.swing.JFrame {
         E_Board4_Port_TextField1 = new javax.swing.JTextField();
         jLabel39 = new javax.swing.JLabel();
         eBoardSettingPanel = new javax.swing.JPanel();
-        jLabel34 = new javax.swing.JLabel();
-        jLabel32 = new javax.swing.JLabel();
-        jLabel33 = new javax.swing.JLabel();
+        E_BoardSettingsButtonPanel = new javax.swing.JPanel();
+        EBD_settings_label = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
+        EBD_settings = new javax.swing.JPanel();
         EBoardSettingsButton = new javax.swing.JButton();
+        allCyclesPanel = new javax.swing.JPanel();
+        cycleLabel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        BlinkingComboBox = new javax.swing.JComboBox();
+        twoCycles = new javax.swing.JPanel();
+        filler13 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
+        real2Pan = new javax.swing.JPanel();
+        flowPanel = new javax.swing.JPanel();
+        flowing = new javax.swing.JPanel();
+        filler14 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(30, 32767));
+        jLabel31 = new javax.swing.JLabel();
+        cBoxPanel = new javax.swing.JPanel();
+        filler18 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(30, 32767));
         FlowingComboBox = new javax.swing.JComboBox();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(1, 0), new java.awt.Dimension(1, 0), new java.awt.Dimension(1, 32767));
+        jLabel33 = new javax.swing.JLabel();
+        blinkPanel = new javax.swing.JPanel();
+        blinkingP = new javax.swing.JPanel();
+        filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(30, 32767));
+        blinkingL = new javax.swing.JLabel();
+        cBoxPan = new javax.swing.JPanel();
+        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(30, 32767));
+        BlinkingComboBox = new javax.swing.JComboBox();
+        jLabel32 = new javax.swing.JLabel();
         bottomPanel = new javax.swing.JPanel();
         SettingsSaveButton = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         SettingsCancelButton = new javax.swing.JButton();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 0), new java.awt.Dimension(20, 32767));
         SettingsCloseButton = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 40), new java.awt.Dimension(32767, 20));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(32767, 20));
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(10, 32767));
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(40, 0), new java.awt.Dimension(10, 32767));
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 40), new java.awt.Dimension(32767, 20));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("System Settings -- OSParking");
+        setTitle("System Settings -- OsParking");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(new java.awt.Dimension(775, 880));
+        setMinimumSize(new java.awt.Dimension(775, 800));
+        setPreferredSize(new java.awt.Dimension(786, 880));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 finishSettingsForm(evt);
@@ -250,53 +293,17 @@ public class Settings_System extends javax.swing.JFrame {
         });
 
         wholePanel.setMinimumSize(new java.awt.Dimension(630, 738));
-        wholePanel.setPreferredSize(new java.awt.Dimension(462, 800));
+        wholePanel.setPreferredSize(new java.awt.Dimension(702, 800));
         wholePanel.setLayout(new javax.swing.BoxLayout(wholePanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-        topPanel.setPreferredSize(new java.awt.Dimension(460, 35));
-
-        jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("Statistics Population Size");
-        topPanel.add(jLabel4);
-
-        StatPopSizeTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        StatPopSizeTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        StatPopSizeTextField.setText("100");
-        StatPopSizeTextField.setToolTipText("");
-        StatPopSizeTextField.setMinimumSize(new java.awt.Dimension(6, 25));
-        StatPopSizeTextField.setName(""); // NOI18N
-        StatPopSizeTextField.setPreferredSize(new java.awt.Dimension(70, 25));
-        StatPopSizeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                StatPopSizeTextFieldKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                StatPopSizeTextFieldKeyTyped(evt);
-            }
-        });
-        topPanel.add(StatPopSizeTextField);
-        topPanel.add(filler1);
-
-        RecordPassingDelayCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        RecordPassingDelayCBox.setText("Record Passing Delay");
-        RecordPassingDelayCBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        RecordPassingDelayCBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RecordPassingDelayCBoxActionPerformed(evt);
-            }
-        });
-        topPanel.add(RecordPassingDelayCBox);
-
-        wholePanel.add(topPanel);
-
-        parkinglotOptionPanel.setMinimumSize(new java.awt.Dimension(749, 300));
-        parkinglotOptionPanel.setPreferredSize(new java.awt.Dimension(460, 300));
+        parkinglotOptionPanel.setMinimumSize(new java.awt.Dimension(690, 300));
+        parkinglotOptionPanel.setPreferredSize(new java.awt.Dimension(0, 300));
         parkinglotOptionPanel.setLayout(new java.awt.GridBagLayout());
 
         PWStrengthChoiceComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         PWStrengthChoiceComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         PWStrengthChoiceComboBox.setMinimumSize(new java.awt.Dimension(150, 23));
+        PWStrengthChoiceComboBox.setName("PWStrengthChoiceComboBox"); // NOI18N
         PWStrengthChoiceComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
         PWStrengthChoiceComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -309,7 +316,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 40;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -322,7 +329,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel1.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel1, gridBagConstraints);
@@ -333,7 +340,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel2.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel2, gridBagConstraints);
@@ -341,6 +348,7 @@ public class Settings_System extends javax.swing.JFrame {
         OptnLoggingLevelComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         OptnLoggingLevelComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         OptnLoggingLevelComboBox.setMinimumSize(new java.awt.Dimension(150, 23));
+        OptnLoggingLevelComboBox.setName("OptnLoggingLevelComboBox"); // NOI18N
         OptnLoggingLevelComboBox.setPreferredSize(new java.awt.Dimension(150, 23));
         OptnLoggingLevelComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -353,7 +361,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 40;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -366,7 +374,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel3.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel3, gridBagConstraints);
@@ -376,7 +384,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel5.setText("Recent Event Line Max");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel5, gridBagConstraints);
@@ -384,6 +392,7 @@ public class Settings_System extends javax.swing.JFrame {
         MessageMaxLineComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         MessageMaxLineComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "100", "200", "300", "500", "1000" }));
         MessageMaxLineComboBox.setMinimumSize(new java.awt.Dimension(70, 23));
+        MessageMaxLineComboBox.setName("MessageMaxLineComboBox"); // NOI18N
         MessageMaxLineComboBox.setPreferredSize(new java.awt.Dimension(70, 23));
         MessageMaxLineComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -396,7 +405,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipadx = 19;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -417,7 +426,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         parkinglotOptionPanel.add(LoggingLevelHelpButton, gridBagConstraints);
@@ -437,7 +446,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         parkinglotOptionPanel.add(PWHelpButton, gridBagConstraints);
@@ -445,7 +454,7 @@ public class Settings_System extends javax.swing.JFrame {
         ImageDurationCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ImageDurationCBox.setToolTipText("");
         ImageDurationCBox.setMinimumSize(new java.awt.Dimension(80, 23));
-        ImageDurationCBox.setName(""); // NOI18N
+        ImageDurationCBox.setName("ImageDurationCBox"); // NOI18N
         ImageDurationCBox.setPreferredSize(new java.awt.Dimension(80, 23));
         ImageDurationCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -458,7 +467,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipadx = 19;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -470,7 +479,7 @@ public class Settings_System extends javax.swing.JFrame {
         ImageDurationLabel.setText("Image Keeping Duration");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(ImageDurationLabel, gridBagConstraints);
@@ -478,7 +487,7 @@ public class Settings_System extends javax.swing.JFrame {
         GateCountComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         GateCountComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1", "2", "3", "4" }));
         GateCountComboBox.setMinimumSize(new java.awt.Dimension(70, 23));
-        GateCountComboBox.setName(""); // NOI18N
+        GateCountComboBox.setName("GateCountComboBox"); // NOI18N
         GateCountComboBox.setPreferredSize(new java.awt.Dimension(70, 23));
         GateCountComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
@@ -491,7 +500,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 19;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -503,7 +512,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel6.setText("Number of Gates");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel6, gridBagConstraints);
@@ -514,7 +523,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel19.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.insets = new java.awt.Insets(10, 20, 0, 0);
         parkinglotOptionPanel.add(jLabel19, gridBagConstraints);
@@ -525,7 +534,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel11.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.insets = new java.awt.Insets(10, 30, 0, 0);
         parkinglotOptionPanel.add(jLabel11, gridBagConstraints);
 
@@ -535,7 +544,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel13.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         parkinglotOptionPanel.add(jLabel13, gridBagConstraints);
@@ -546,7 +555,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel12.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.insets = new java.awt.Insets(10, 30, 0, 0);
         parkinglotOptionPanel.add(jLabel12, gridBagConstraints);
 
@@ -556,13 +565,14 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel14.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(13, 0, 10, 0);
         parkinglotOptionPanel.add(jLabel14, gridBagConstraints);
 
         TextFieldPicWidth.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldPicWidth.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        TextFieldPicWidth.setName("TextFieldPicWidth"); // NOI18N
         TextFieldPicWidth.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextFieldPicWidthKeyReleased(evt);
@@ -573,7 +583,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 20);
@@ -581,6 +591,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         TextFieldPicHeight.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldPicHeight.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        TextFieldPicHeight.setName("TextFieldPicHeight"); // NOI18N
         TextFieldPicHeight.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextFieldPicHeightKeyReleased(evt);
@@ -591,7 +602,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipadx = 30;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 20);
@@ -599,7 +610,8 @@ public class Settings_System extends javax.swing.JFrame {
 
         DateChooserLangCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         DateChooserLangCBox.setMinimumSize(new java.awt.Dimension(294, 23));
-        DateChooserLangCBox.setPreferredSize(new java.awt.Dimension(280, 27));
+        DateChooserLangCBox.setName("DateChooserLangCBox"); // NOI18N
+        DateChooserLangCBox.setPreferredSize(new java.awt.Dimension(280, 25));
         DateChooserLangCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -611,7 +623,7 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -632,13 +644,15 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         parkinglotOptionPanel.add(LanguageSelectionlHelpButton, gridBagConstraints);
 
         jLabel42.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel42.setText("Parking Lot Name");
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
         parkinglotOptionPanel.add(jLabel42, gridBagConstraints);
@@ -646,6 +660,7 @@ public class Settings_System extends javax.swing.JFrame {
         lotNameTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         lotNameTextField.setToolTipText("");
         lotNameTextField.setMinimumSize(new java.awt.Dimension(250, 27));
+        lotNameTextField.setName("lotNameTextField"); // NOI18N
         lotNameTextField.setPreferredSize(new java.awt.Dimension(250, 27));
         lotNameTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -654,167 +669,219 @@ public class Settings_System extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
         parkinglotOptionPanel.add(lotNameTextField, gridBagConstraints);
 
-        wholePanel.add(parkinglotOptionPanel);
+        StatPopSizeTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        StatPopSizeTextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        StatPopSizeTextField.setText("100");
+        StatPopSizeTextField.setToolTipText("");
+        StatPopSizeTextField.setMinimumSize(new java.awt.Dimension(6, 25));
+        StatPopSizeTextField.setName("StatPopSizeTextField"); // NOI18N
+        StatPopSizeTextField.setPreferredSize(new java.awt.Dimension(70, 25));
+        StatPopSizeTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                StatPopSizeTextFieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                StatPopSizeTextFieldKeyTyped(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 5, 10);
+        parkinglotOptionPanel.add(StatPopSizeTextField, gridBagConstraints);
 
-        gateSettingPanel.setMinimumSize(new java.awt.Dimension(660, 250));
-        gateSettingPanel.setPreferredSize(new java.awt.Dimension(460, 250));
-        gateSettingPanel.setLayout(new javax.swing.BoxLayout(gateSettingPanel, javax.swing.BoxLayout.LINE_AXIS));
-
-        GatesTabbedPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        GatesTabbedPane.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        GatesTabbedPane.setMinimumSize(new java.awt.Dimension(400, 250));
-        GatesTabbedPane.setPreferredSize(new java.awt.Dimension(400, 250));
-
-        gate1Panel.setEnabled(false);
-        gate1Panel.setLayout(new java.awt.GridBagLayout());
-
-        jLabel27.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel27.setText("Gate Name");
-        jLabel27.setToolTipText("");
+        jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setText("Statistics Population Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipady = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(jLabel27, gridBagConstraints);
+        parkinglotOptionPanel.add(jLabel4, gridBagConstraints);
+
+        RecordPassingDelayCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        RecordPassingDelayCBox.setText("Record Passing Delay");
+        RecordPassingDelayCBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        RecordPassingDelayCBox.setName("RecordPassingDelayCBox"); // NOI18N
+        RecordPassingDelayCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RecordPassingDelayCBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        parkinglotOptionPanel.add(RecordPassingDelayCBox, gridBagConstraints);
+
+        wholePanel.add(parkinglotOptionPanel);
+
+        gateSettingPanel.setMinimumSize(new java.awt.Dimension(430, 250));
+        gateSettingPanel.setPreferredSize(new java.awt.Dimension(700, 250));
+
+        GatesTabbedPane.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        GatesTabbedPane.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        GatesTabbedPane.setMinimumSize(new java.awt.Dimension(300, 250));
+        GatesTabbedPane.setPreferredSize(new java.awt.Dimension(520, 250));
+
+        gate1Panel.setEnabled(false);
+        gate1Panel.setMinimumSize(new java.awt.Dimension(300, 115));
+        gate1Panel.setPreferredSize(new java.awt.Dimension(518, 196));
+        gate1Panel.setLayout(new javax.swing.BoxLayout(gate1Panel, javax.swing.BoxLayout.Y_AXIS));
+
+        gate_name_p.setAlignmentX(1.0F);
+        gate_name_p.setMinimumSize(new java.awt.Dimension(109, 20));
+        gate_name_p.setPreferredSize(new java.awt.Dimension(100, 20));
+        gate_name_p.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
+        gate_name_p.add(filler7);
+
+        gateName.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        gateName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        gateName.setText("Gate Name");
+        gateName.setToolTipText("");
+        gate_name_p.add(gateName);
 
         TextFieldGateName1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldGateName1.setText("Front Gate");
         TextFieldGateName1.setToolTipText("");
-        TextFieldGateName1.setMinimumSize(new java.awt.Dimension(30, 23));
+        TextFieldGateName1.setMinimumSize(new java.awt.Dimension(30, 25));
         TextFieldGateName1.setName("TextFieldGateName1"); // NOI18N
-        TextFieldGateName1.setPreferredSize(new java.awt.Dimension(120, 23));
+        TextFieldGateName1.setPreferredSize(new java.awt.Dimension(120, 27));
         TextFieldGateName1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextFieldGateName1KeyReleased(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 30;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(TextFieldGateName1, gridBagConstraints);
+        gate_name_p.add(TextFieldGateName1);
+
+        gate1Panel.add(gate_name_p);
+
+        topLabelsPanel.setMinimumSize(new java.awt.Dimension(266, 20));
+        topLabelsPanel.setPreferredSize(new java.awt.Dimension(100, 20));
+        topLabelsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 15));
+        topLabelsPanel.add(filler9);
+
+        device1_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        device1_Label.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        device1_Label.setText("Device");
+        device1_Label.setPreferredSize(new java.awt.Dimension(60, 15));
+        topLabelsPanel.add(device1_Label);
+
+        jLabel26.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel26.setText("Type");
+        jLabel26.setPreferredSize(new java.awt.Dimension(115, 15));
+        topLabelsPanel.add(jLabel26);
+
+        jLabel27.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel27.setText("Connection");
+        jLabel27.setPreferredSize(new java.awt.Dimension(90, 15));
+        topLabelsPanel.add(jLabel27);
 
         jLabel28.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel28.setText("Camera IP Address");
-        jLabel28.setToolTipText("");
-        jLabel28.setMaximumSize(new java.awt.Dimension(130, 15));
-        jLabel28.setPreferredSize(new java.awt.Dimension(130, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(jLabel28, gridBagConstraints);
+        jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel28.setText("IP address");
+        jLabel28.setPreferredSize(new java.awt.Dimension(125, 15));
+        topLabelsPanel.add(jLabel28);
+
+        jLabel29.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel29.setText("Port");
+        jLabel29.setPreferredSize(new java.awt.Dimension(45, 15));
+        topLabelsPanel.add(jLabel29);
+        jLabel29.getAccessibleContext().setAccessibleName("PortLbl");
+
+        gate1Panel.add(topLabelsPanel);
+
+        cameraPan.setAlignmentX(0.75F);
+        cameraPan.setMinimumSize(new java.awt.Dimension(426, 25));
+        cameraPan.setPreferredSize(new java.awt.Dimension(518, 25));
+        cameraPan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        cameraPan.add(filler10);
+
+        jLabel30.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel30.setText("Camera");
+        jLabel30.setPreferredSize(new java.awt.Dimension(60, 15));
+        cameraPan.add(jLabel30);
+
+        Camera1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        Camera1_TypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
+        Camera1_TypeCBox.setToolTipText("");
+        Camera1_TypeCBox.setLightWeightPopupEnabled(false);
+        Camera1_TypeCBox.setMinimumSize(new java.awt.Dimension(115, 25));
+        Camera1_TypeCBox.setName("Camera1_TypeCBox"); // NOI18N
+        Camera1_TypeCBox.setPreferredSize(new java.awt.Dimension(115, 27));
+        Camera1_TypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                Camera1_TypeCBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        Camera1_TypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Camera1_TypeCBoxActionPerformed(evt);
+            }
+        });
+        cameraPan.add(Camera1_TypeCBox);
+
+        Camera1_connTypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        Camera1_connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
+        Camera1_connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
+        Camera1_connTypeCBox.setName("Camera1_connTypeCBox"); // NOI18N
+        Camera1_connTypeCBox.setPreferredSize(new java.awt.Dimension(90, 27));
+        Camera1_connTypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                Camera1_connTypeCBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        Camera1_connTypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Camera1_connTypeCBoxActionPerformed(evt);
+            }
+        });
+        cameraPan.add(Camera1_connTypeCBox);
 
         Camera1_IP_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        Camera1_IP_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         Camera1_IP_TextField.setText("127.0.0.1");
-        Camera1_IP_TextField.setMinimumSize(new java.awt.Dimension(120, 27));
+        Camera1_IP_TextField.setToolTipText("");
+        Camera1_IP_TextField.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        Camera1_IP_TextField.setMinimumSize(new java.awt.Dimension(125, 25));
         Camera1_IP_TextField.setName("Camera1_IP_TextField"); // NOI18N
-        Camera1_IP_TextField.setPreferredSize(new java.awt.Dimension(90, 23));
+        Camera1_IP_TextField.setPreferredSize(new java.awt.Dimension(125, 27));
         Camera1_IP_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 Camera1_IP_TextFieldKeyReleased(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(Camera1_IP_TextField, gridBagConstraints);
-
-        jLabel29.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel29.setText("GateBar IP Address");
-        jLabel29.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(jLabel29, gridBagConstraints);
-
-        GateBar1_IP_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        GateBar1_IP_TextField.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        GateBar1_IP_TextField.setText("127.0.0.1");
-        GateBar1_IP_TextField.setMinimumSize(new java.awt.Dimension(120, 27));
-        GateBar1_IP_TextField.setName("GateBar1_IP_TextField"); // NOI18N
-        GateBar1_IP_TextField.setPreferredSize(new java.awt.Dimension(90, 23));
-        GateBar1_IP_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                GateBar1_IP_TextFieldKeyReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(GateBar1_IP_TextField, gridBagConstraints);
-
-        jLabel30.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel30.setText("E-Board IP Address");
-        jLabel30.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(jLabel30, gridBagConstraints);
-
-        E_Board1_IP_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        E_Board1_IP_TextField.setText("127.0.0.1");
-        E_Board1_IP_TextField.setMinimumSize(new java.awt.Dimension(120, 27));
-        E_Board1_IP_TextField.setName("E_Board1_IP_TextField"); // NOI18N
-        E_Board1_IP_TextField.setPreferredSize(new java.awt.Dimension(90, 23));
-        E_Board1_IP_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                E_Board1_IP_TextFieldKeyReleased(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(E_Board1_IP_TextField, gridBagConstraints);
-
-        jLabel37.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel37.setText("Port No");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(jLabel37, gridBagConstraints);
+        cameraPan.add(Camera1_IP_TextField);
 
         Camera1_Port_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        Camera1_Port_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         Camera1_Port_TextField.setText("8080");
         Camera1_Port_TextField.setToolTipText("");
-        Camera1_Port_TextField.setMinimumSize(new java.awt.Dimension(50, 27));
+        Camera1_Port_TextField.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        Camera1_Port_TextField.setMinimumSize(new java.awt.Dimension(40, 25));
         Camera1_Port_TextField.setName("Camera1_Port_TextField"); // NOI18N
-        Camera1_Port_TextField.setPreferredSize(new java.awt.Dimension(50, 27));
+        Camera1_Port_TextField.setPreferredSize(new java.awt.Dimension(45, 27));
         Camera1_Port_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 Camera1_Port_TextFieldKeyReleased(evt);
@@ -823,34 +890,87 @@ public class Settings_System extends javax.swing.JFrame {
                 Camera1_Port_TextFieldKeyTyped(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(Camera1_Port_TextField, gridBagConstraints);
+        cameraPan.add(Camera1_Port_TextField);
 
-        GateBar1_Port_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        GateBar1_Port_TextField.setMinimumSize(new java.awt.Dimension(50, 27));
-        GateBar1_Port_TextField.setName("GateBar1_Port_TextField"); // NOI18N
-        GateBar1_Port_TextField.setPreferredSize(new java.awt.Dimension(50, 27));
-        GateBar1_Port_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                GateBar1_Port_TextFieldKeyReleased(evt);
+        gate1Panel.add(cameraPan);
+
+        eBoardPan.setMinimumSize(new java.awt.Dimension(426, 25));
+        eBoardPan.setPreferredSize(new java.awt.Dimension(518, 25));
+        eBoardPan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        eBoardPan.add(filler11);
+
+        jLabel37.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel37.setText("E-board");
+        jLabel37.setPreferredSize(new java.awt.Dimension(60, 15));
+        eBoardPan.add(jLabel37);
+
+        E_Board1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        E_Board1_TypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
+        E_Board1_TypeCBox.setToolTipText("");
+        E_Board1_TypeCBox.setMinimumSize(new java.awt.Dimension(115, 25));
+        E_Board1_TypeCBox.setName("E_Board1_TypeCBox"); // NOI18N
+        E_Board1_TypeCBox.setPreferredSize(new java.awt.Dimension(115, 27));
+        E_Board1_TypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                GateBar1_Port_TextFieldKeyTyped(evt);
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                E_Board1_TypeCBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(GateBar1_Port_TextField, gridBagConstraints);
+        E_Board1_TypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                E_Board1_TypeCBoxActionPerformed(evt);
+            }
+        });
+        eBoardPan.add(E_Board1_TypeCBox);
+
+        E_Board1_connTypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        E_Board1_connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
+        E_Board1_connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
+        E_Board1_connTypeCBox.setName("E_Board1_connTypeCBox"); // NOI18N
+        E_Board1_connTypeCBox.setPreferredSize(new java.awt.Dimension(90, 27));
+        E_Board1_connTypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        E_Board1_connTypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                E_Board1_connTypeCBoxActionPerformed(evt);
+            }
+        });
+        eBoardPan.add(E_Board1_connTypeCBox);
+
+        E_Board1_IP_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        E_Board1_IP_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        E_Board1_IP_TextField.setText("127.0.0.1");
+        E_Board1_IP_TextField.setMinimumSize(new java.awt.Dimension(125, 25));
+        E_Board1_IP_TextField.setName("E_Board1_IP_TextField"); // NOI18N
+        E_Board1_IP_TextField.setPreferredSize(new java.awt.Dimension(125, 27));
+        E_Board1_IP_TextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                E_Board1_IP_TextFieldActionPerformed(evt);
+            }
+        });
+        E_Board1_IP_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                E_Board1_IP_TextFieldKeyReleased(evt);
+            }
+        });
+        eBoardPan.add(E_Board1_IP_TextField);
 
         E_Board1_Port_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        E_Board1_Port_TextField.setMinimumSize(new java.awt.Dimension(50, 27));
+        E_Board1_Port_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        E_Board1_Port_TextField.setMinimumSize(new java.awt.Dimension(40, 25));
         E_Board1_Port_TextField.setName("E_Board1_Port_TextField"); // NOI18N
-        E_Board1_Port_TextField.setPreferredSize(new java.awt.Dimension(50, 27));
+        E_Board1_Port_TextField.setPreferredSize(new java.awt.Dimension(45, 27));
         E_Board1_Port_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 E_Board1_Port_TextFieldKeyReleased(evt);
@@ -859,62 +979,99 @@ public class Settings_System extends javax.swing.JFrame {
                 E_Board1_Port_TextFieldKeyTyped(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        gate1Panel.add(E_Board1_Port_TextField, gridBagConstraints);
+        eBoardPan.add(E_Board1_Port_TextField);
 
-        jLabel40.setText("E-Board Type/Conn'");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
-        gate1Panel.add(jLabel40, gridBagConstraints);
+        gate1Panel.add(eBoardPan);
 
-        EBD1_TypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
-        EBD1_TypeCBox.setToolTipText("");
-        EBD1_TypeCBox.setMinimumSize(new java.awt.Dimension(100, 23));
-        EBD1_TypeCBox.setName("EBD1_TypeCBox"); // NOI18N
-        EBD1_TypeCBox.setPreferredSize(new java.awt.Dimension(100, 23));
-        EBD1_TypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+        gateBarPan.setMinimumSize(new java.awt.Dimension(426, 25));
+        gateBarPan.setPreferredSize(new java.awt.Dimension(518, 25));
+        gateBarPan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        gateBarPan.add(filler12);
+
+        ebdLbl.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        ebdLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ebdLbl.setText("Gate bar");
+        ebdLbl.setPreferredSize(new java.awt.Dimension(60, 15));
+        gateBarPan.add(ebdLbl);
+
+        GateBar1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        GateBar1_TypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "list e-board types" }));
+        GateBar1_TypeCBox.setToolTipText("");
+        GateBar1_TypeCBox.setMinimumSize(new java.awt.Dimension(115, 25));
+        GateBar1_TypeCBox.setName("GateBar1_TypeCBox"); // NOI18N
+        GateBar1_TypeCBox.setPreferredSize(new java.awt.Dimension(115, 27));
+        GateBar1_TypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                EBD1_TypeCBoxPopupMenuWillBecomeInvisible(evt);
+                GateBar1_TypeCBoxPopupMenuWillBecomeInvisible(evt);
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
-        EBD1_TypeCBox.addActionListener(new java.awt.event.ActionListener() {
+        GateBar1_TypeCBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EBD1_TypeCBoxActionPerformed(evt);
+                GateBar1_TypeCBoxActionPerformed(evt);
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 0);
-        gate1Panel.add(EBD1_TypeCBox, gridBagConstraints);
+        gateBarPan.add(GateBar1_TypeCBox);
 
-        EBD1_connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
-        EBD1_connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
-        EBD1_connTypeCBox.setName("EBD1_connTypeCBox"); // NOI18N
-        EBD1_connTypeCBox.setPreferredSize(new java.awt.Dimension(80, 23));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 20, 10);
-        gate1Panel.add(EBD1_connTypeCBox, gridBagConstraints);
+        GateBar1_connTypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        GateBar1_connTypeCBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TCP/IP", "RS-232" }));
+        GateBar1_connTypeCBox.setMinimumSize(new java.awt.Dimension(80, 23));
+        GateBar1_connTypeCBox.setName("GateBar1_connTypeCBox"); // NOI18N
+        GateBar1_connTypeCBox.setPreferredSize(new java.awt.Dimension(90, 27));
+        GateBar1_connTypeCBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        GateBar1_connTypeCBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GateBar1_connTypeCBoxActionPerformed(evt);
+            }
+        });
+        gateBarPan.add(GateBar1_connTypeCBox);
+
+        GateBar1_IP_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        GateBar1_IP_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        GateBar1_IP_TextField.setText("127.0.0.1");
+        GateBar1_IP_TextField.setMinimumSize(new java.awt.Dimension(125, 25));
+        GateBar1_IP_TextField.setName("GateBar1_IP_TextField"); // NOI18N
+        GateBar1_IP_TextField.setPreferredSize(new java.awt.Dimension(125, 27));
+        GateBar1_IP_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                GateBar1_IP_TextFieldKeyReleased(evt);
+            }
+        });
+        gateBarPan.add(GateBar1_IP_TextField);
+
+        GateBar1_Port_TextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        GateBar1_Port_TextField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        GateBar1_Port_TextField.setMinimumSize(new java.awt.Dimension(40, 25));
+        GateBar1_Port_TextField.setName("GateBar1_Port_TextField"); // NOI18N
+        GateBar1_Port_TextField.setPreferredSize(new java.awt.Dimension(45, 27));
+        GateBar1_Port_TextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                GateBar1_Port_TextFieldKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                GateBar1_Port_TextFieldKeyTyped(evt);
+            }
+        });
+        gateBarPan.add(GateBar1_Port_TextField);
+
+        gate1Panel.add(gateBarPan);
 
         GatesTabbedPane.addTab("Gate1", gate1Panel);
 
         gate2Panel.setEnabled(false);
+        gate2Panel.setMinimumSize(new java.awt.Dimension(300, 115));
+        gate2Panel.setPreferredSize(new java.awt.Dimension(518, 196));
         gate2Panel.setLayout(new java.awt.GridBagLayout());
 
         jLabel15.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1102,6 +1259,8 @@ public class Settings_System extends javax.swing.JFrame {
         GatesTabbedPane.addTab("Gate2", gate2Panel);
 
         gate3Panel.setEnabled(false);
+        gate3Panel.setMinimumSize(new java.awt.Dimension(300, 115));
+        gate3Panel.setPreferredSize(new java.awt.Dimension(518, 196));
         gate3Panel.setLayout(new java.awt.GridBagLayout());
 
         jLabel16.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1288,6 +1447,8 @@ public class Settings_System extends javax.swing.JFrame {
         GatesTabbedPane.addTab("Gate3", gate3Panel);
 
         gate4Panel.setEnabled(false);
+        gate4Panel.setMinimumSize(new java.awt.Dimension(300, 115));
+        gate4Panel.setPreferredSize(new java.awt.Dimension(518, 196));
         gate4Panel.setLayout(new java.awt.GridBagLayout());
 
         jLabel17.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1502,125 +1663,117 @@ public class Settings_System extends javax.swing.JFrame {
 
         GatesTabbedPane.addTab("Gate4", gate4Panel);
 
-        gateSettingPanel.add(GatesTabbedPane);
-
         eBoardSettingPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        eBoardSettingPanel.setMinimumSize(new java.awt.Dimension(250, 215));
-        eBoardSettingPanel.setLayout(new java.awt.GridBagLayout());
+        eBoardSettingPanel.setMinimumSize(new java.awt.Dimension(180, 215));
+        eBoardSettingPanel.setPreferredSize(new java.awt.Dimension(188, 250));
 
-        jLabel34.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel34.setText("Blinking");
-        jLabel34.setToolTipText("");
-        jLabel34.setMaximumSize(new java.awt.Dimension(80, 15));
-        jLabel34.setPreferredSize(new java.awt.Dimension(60, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        eBoardSettingPanel.add(jLabel34, gridBagConstraints);
-
-        jLabel32.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel32.setText("ms");
-        jLabel32.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        eBoardSettingPanel.add(jLabel32, gridBagConstraints);
-
-        jLabel33.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel33.setText("ms");
-        jLabel33.setToolTipText("");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        eBoardSettingPanel.add(jLabel33, gridBagConstraints);
+        E_BoardSettingsButtonPanel.setLayout(new javax.swing.BoxLayout(E_BoardSettingsButtonPanel, javax.swing.BoxLayout.Y_AXIS));
 
         jLabel20.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel20.setText("Electronic Display Board");
+        jLabel20.setText("Electronic Board");
         jLabel20.setToolTipText("");
         jLabel20.setMaximumSize(new java.awt.Dimension(300, 27));
-        jLabel20.setPreferredSize(new java.awt.Dimension(250, 27));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
-        eBoardSettingPanel.add(jLabel20, gridBagConstraints);
+        jLabel20.setPreferredSize(new java.awt.Dimension(150, 27));
+
+        javax.swing.GroupLayout EBD_settings_labelLayout = new javax.swing.GroupLayout(EBD_settings_label);
+        EBD_settings_label.setLayout(EBD_settings_labelLayout);
+        EBD_settings_labelLayout.setHorizontalGroup(
+            EBD_settings_labelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EBD_settings_labelLayout.createSequentialGroup()
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        EBD_settings_labelLayout.setVerticalGroup(
+            EBD_settings_labelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EBD_settings_labelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        E_BoardSettingsButtonPanel.add(EBD_settings_label);
+
+        EBoardSettingsButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        EBoardSettingsButton.setText("Settings");
+        EBoardSettingsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EBoardSettingsButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout EBD_settingsLayout = new javax.swing.GroupLayout(EBD_settings);
+        EBD_settings.setLayout(EBD_settingsLayout);
+        EBD_settingsLayout.setHorizontalGroup(
+            EBD_settingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EBD_settingsLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addComponent(EBoardSettingsButton))
+        );
+        EBD_settingsLayout.setVerticalGroup(
+            EBD_settingsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(EBD_settingsLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(EBoardSettingsButton))
+        );
+
+        E_BoardSettingsButtonPanel.add(EBD_settings);
+
+        allCyclesPanel.setLayout(new javax.swing.BoxLayout(allCyclesPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        cycleLabel.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel8.setText("Cycles");
+        jLabel8.setMaximumSize(new java.awt.Dimension(80, 15));
+        jLabel8.setMinimumSize(new java.awt.Dimension(80, 15));
+        jLabel8.setPreferredSize(new java.awt.Dimension(150, 15));
+
+        javax.swing.GroupLayout cycleLabelLayout = new javax.swing.GroupLayout(cycleLabel);
+        cycleLabel.setLayout(cycleLabelLayout);
+        cycleLabelLayout.setHorizontalGroup(
+            cycleLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cycleLabelLayout.createSequentialGroup()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
+        );
+        cycleLabelLayout.setVerticalGroup(
+            cycleLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(cycleLabelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        allCyclesPanel.add(cycleLabel);
+
+        twoCycles.setLayout(new javax.swing.BoxLayout(twoCycles, javax.swing.BoxLayout.LINE_AXIS));
+        twoCycles.add(filler13);
+
+        real2Pan.setLayout(new javax.swing.BoxLayout(real2Pan, javax.swing.BoxLayout.Y_AXIS));
+
+        flowPanel.setLayout(new javax.swing.BoxLayout(flowPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        flowing.setLayout(new java.awt.BorderLayout());
+        flowing.add(filler14, java.awt.BorderLayout.WEST);
 
         jLabel31.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel31.setText("Flowing");
         jLabel31.setToolTipText("");
         jLabel31.setMaximumSize(new java.awt.Dimension(80, 15));
-        jLabel31.setPreferredSize(new java.awt.Dimension(60, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        eBoardSettingPanel.add(jLabel31, gridBagConstraints);
+        jLabel31.setPreferredSize(new java.awt.Dimension(50, 15));
+        flowing.add(jLabel31, java.awt.BorderLayout.CENTER);
 
-        EBoardSettingsButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        EBoardSettingsButton.setText("Content Settings");
-        EBoardSettingsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EBoardSettingsButtonActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 10);
-        eBoardSettingPanel.add(EBoardSettingsButton, gridBagConstraints);
+        flowPanel.add(flowing);
 
-        jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel8.setText("Cycles");
-        jLabel8.setMaximumSize(new java.awt.Dimension(80, 15));
-        jLabel8.setMinimumSize(new java.awt.Dimension(80, 15));
-        jLabel8.setPreferredSize(new java.awt.Dimension(80, 15));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
-        eBoardSettingPanel.add(jLabel8, gridBagConstraints);
-
-        BlinkingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        BlinkingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "500", "750", "1,000", "1,250", "1,500" }));
-        ((JLabel) BlinkingComboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
-        BlinkingComboBox.setMinimumSize(new java.awt.Dimension(55, 23));
-        BlinkingComboBox.setPreferredSize(new java.awt.Dimension(55, 23));
-        BlinkingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
-            }
-            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
-                BlinkingComboBoxPopupMenuWillBecomeInvisible(evt);
-            }
-            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.ipadx = 25;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        eBoardSettingPanel.add(BlinkingComboBox, gridBagConstraints);
+        cBoxPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        cBoxPanel.add(filler18);
 
         FlowingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         FlowingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "4,000", "6,000", "8,000", "10,000", "12,000" }));
-        FlowingComboBox.setMinimumSize(new java.awt.Dimension(55, 23));
-        FlowingComboBox.setPreferredSize(new java.awt.Dimension(55, 23));
-        ((JLabel) FlowingComboBox.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        FlowingComboBox.setMinimumSize(new java.awt.Dimension(65, 25));
+        FlowingComboBox.setName("FlowingComboBox"); // NOI18N
+        FlowingComboBox.setPreferredSize(new java.awt.Dimension(80, 27));
         FlowingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
             public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
             }
@@ -1630,21 +1783,114 @@ public class Settings_System extends javax.swing.JFrame {
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.ipadx = 25;
-        gridBagConstraints.ipady = 5;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 10);
-        eBoardSettingPanel.add(FlowingComboBox, gridBagConstraints);
+        cBoxPanel.add(FlowingComboBox);
 
-        gateSettingPanel.add(eBoardSettingPanel);
-        gateSettingPanel.add(filler7);
+        jLabel33.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel33.setText("ms");
+        jLabel33.setToolTipText("");
+        cBoxPanel.add(jLabel33);
+
+        flowPanel.add(cBoxPanel);
+
+        real2Pan.add(flowPanel);
+
+        blinkPanel.setLayout(new javax.swing.BoxLayout(blinkPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        blinkingP.setLayout(new java.awt.BorderLayout());
+        blinkingP.add(filler15, java.awt.BorderLayout.WEST);
+
+        blinkingL.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        blinkingL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        blinkingL.setText("Blinking");
+        blinkingL.setToolTipText("");
+        blinkingL.setMaximumSize(new java.awt.Dimension(80, 15));
+        blinkingL.setPreferredSize(new java.awt.Dimension(50, 15));
+        blinkingP.add(blinkingL, java.awt.BorderLayout.CENTER);
+
+        blinkPanel.add(blinkingP);
+
+        cBoxPan.setPreferredSize(new java.awt.Dimension(133, 33));
+        cBoxPan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        cBoxPan.add(filler17);
+
+        BlinkingComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        BlinkingComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "500", "750", "1,000", "1,250", "1,500" }));
+        BlinkingComboBox.setMinimumSize(new java.awt.Dimension(65, 25));
+        BlinkingComboBox.setName("BlinkingComboBox"); // NOI18N
+        BlinkingComboBox.setPreferredSize(new java.awt.Dimension(80, 27));
+        BlinkingComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+                BlinkingComboBoxPopupMenuWillBecomeInvisible(evt);
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        cBoxPan.add(BlinkingComboBox);
+
+        jLabel32.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        jLabel32.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel32.setText("ms");
+        jLabel32.setToolTipText("");
+        cBoxPan.add(jLabel32);
+
+        blinkPanel.add(cBoxPan);
+
+        real2Pan.add(blinkPanel);
+
+        twoCycles.add(real2Pan);
+
+        allCyclesPanel.add(twoCycles);
+
+        javax.swing.GroupLayout eBoardSettingPanelLayout = new javax.swing.GroupLayout(eBoardSettingPanel);
+        eBoardSettingPanel.setLayout(eBoardSettingPanelLayout);
+        eBoardSettingPanelLayout.setHorizontalGroup(
+            eBoardSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(eBoardSettingPanelLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(eBoardSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(allCyclesPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(eBoardSettingPanelLayout.createSequentialGroup()
+                        .addComponent(E_BoardSettingsButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+        eBoardSettingPanelLayout.setVerticalGroup(
+            eBoardSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(eBoardSettingPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(E_BoardSettingsButtonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(allCyclesPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout gateSettingPanelLayout = new javax.swing.GroupLayout(gateSettingPanel);
+        gateSettingPanel.setLayout(gateSettingPanelLayout);
+        gateSettingPanelLayout.setHorizontalGroup(
+            gateSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gateSettingPanelLayout.createSequentialGroup()
+                .addComponent(GatesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 520, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(eBoardSettingPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 175, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        gateSettingPanelLayout.setVerticalGroup(
+            gateSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gateSettingPanelLayout.createSequentialGroup()
+                .addGroup(gateSettingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gateSettingPanelLayout.createSequentialGroup()
+                        .addComponent(GatesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(eBoardSettingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
 
         wholePanel.add(gateSettingPanel);
 
         bottomPanel.setMinimumSize(new java.awt.Dimension(275, 50));
-        bottomPanel.setPreferredSize(new java.awt.Dimension(460, 50));
+        bottomPanel.setPreferredSize(new java.awt.Dimension(700, 50));
 
         SettingsSaveButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsSaveButton.setMnemonic('s');
@@ -1766,33 +2012,6 @@ public class Settings_System extends javax.swing.JFrame {
     private JFrame eBDsettings = null;
 //    private ISettings_EBoard eBDsettings = null;
     
-    private void EBoardSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBoardSettingsButtonActionPerformed
-        
-        int tabIndex = GatesTabbedPane.getSelectedIndex();
-        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + (tabIndex + 1) + "_TypeCBox");
-        
-        if (eBDsettings == null) {
-            if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) { 
-                setEBDsettings(new Settings_EBoard(mainForm, this));
-            } else if (typeCBox.getSelectedIndex() == E_BoardType.LEDnotice.ordinal()) {        
-                setEBDsettings(new Settings_LEDnotice(mainForm, this, null, tabIndex + 1));
-            }
-        }
-        
-        Point panelPoint = new Point();
-        EBoardSettingsButton.getLocation(panelPoint);
-        
-        Point buttonPoint = new Point();
-        eBoardSettingPanel.getLocation(buttonPoint);
-        
-        Point framePoint = new Point();
-        this.getLocation(framePoint);
-        Point topLeft = new Point(framePoint.x + buttonPoint.x  + panelPoint.x+ EBoardSettingsButton.getSize().width + 130, 
-                framePoint.y + buttonPoint.y + eBDsettings.getSize().height + 120);
-        eBDsettings.setLocation(topLeft);
-        eBDsettings.setVisible(true);
-    }//GEN-LAST:event_EBoardSettingsButtonActionPerformed
-
     private void SettingsSaveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingsSaveButtonActionPerformed
         Connection conn = null;
         PreparedStatement updateSettings = null;
@@ -2021,7 +2240,10 @@ public class Settings_System extends javax.swing.JFrame {
             Globals.getOperationLog().setLevel(index2Level(opLoggingIndex));
             JOptionPane.showMessageDialog(this, "The system settings have been saved successfully.",
                 "Save Settings Results", JOptionPane.PLAIN_MESSAGE);
+            changedControls.clear();
             changeEnabled_of_SaveCancelButtons(false);
+            ChangeSettings.changeEnabled_of_SaveCancelButtons(SettingsSaveButton, SettingsCancelButton, 
+                    SettingsCloseButton, changedControls.size());            
         } else {
             JOptionPane.showMessageDialog(this, "The storage system settings failed.",
                 "Save Settings Results", JOptionPane.ERROR_MESSAGE);
@@ -2049,293 +2271,383 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_finishSettingsForm
 
     private void RecordPassingDelayCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecordPassingDelayCBoxActionPerformed
-        if (RecordPassingDelayCBox.isSelected() && !storePassingDelay || 
-            !RecordPassingDelayCBox.isSelected() && storePassingDelay) 
-        {
-            changeEnabled_of_SaveCancelButtons(true);
-        } else {
-            changeEnabled_of_SaveCancelButtons(false);
-        }
+        final String controlName = evt.getActionCommand();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, RecordPassingDelayCBox.isSelected(), storePassingDelay);
     }//GEN-LAST:event_RecordPassingDelayCBoxActionPerformed
 
-    private void TextFieldGateName1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName1KeyReleased
-        checkGateNameChangeAndChangeEnabled(1);
-    }//GEN-LAST:event_TextFieldGateName1KeyReleased
-
-    private void Camera1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(Camera, 1);        
-    }//GEN-LAST:event_Camera1_IP_TextFieldKeyReleased
-
-    private void GateBar1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(GateBar, 1);        
-    }//GEN-LAST:event_GateBar1_IP_TextFieldKeyReleased
-
-    private void E_Board1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(E_Board, 1);        
-    }//GEN-LAST:event_E_Board1_IP_TextFieldKeyReleased
-
-    private void TextFieldGateName2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName2KeyReleased
-        checkGateNameChangeAndChangeEnabled(2);
-    }//GEN-LAST:event_TextFieldGateName2KeyReleased
-
-    private void Camera2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(Camera, 2);        
-    }//GEN-LAST:event_Camera2_IP_TextFieldKeyReleased
-
-    private void GateBar2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(GateBar, 2);        
-    }//GEN-LAST:event_GateBar2_IP_TextFieldKeyReleased
-
-    private void E_Board2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(E_Board, 2);        
-    }//GEN-LAST:event_E_Board2_IP_TextFieldKeyReleased
-
-    private void TextFieldGateName3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName3KeyReleased
-        checkGateNameChangeAndChangeEnabled(3);        
-    }//GEN-LAST:event_TextFieldGateName3KeyReleased
-
-    private void Camera3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(Camera, 3);        
-    }//GEN-LAST:event_Camera3_IP_TextFieldKeyReleased
-
-    private void GateBar3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(GateBar, 3);        
-    }//GEN-LAST:event_GateBar3_IP_TextFieldKeyReleased
-
-    private void E_Board3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(E_Board, 3);
-    }//GEN-LAST:event_E_Board3_IP_TextFieldKeyReleased
-
-    private void TextFieldGateName4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName4KeyReleased
-        checkGateNameChangeAndChangeEnabled(4);        
-    }//GEN-LAST:event_TextFieldGateName4KeyReleased
-
-    private void Camera4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(Camera, 4);                
-    }//GEN-LAST:event_Camera4_IP_TextFieldKeyReleased
-
-    private void GateBar4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(GateBar, 4);
-    }//GEN-LAST:event_GateBar4_IP_TextFieldKeyReleased
-
-    private void E_Board4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board4_IP_TextFieldKeyReleased
-        checkDeviceIpChangeAndChangeEnabled(E_Board, 4);
-    }//GEN-LAST:event_E_Board4_IP_TextFieldKeyReleased
-
     private void ImageDurationCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_ImageDurationCBoxPopupMenuWillBecomeInvisible
-        if (maxArrivalCBoxIndex == ImageDurationCBox.getSelectedIndex()) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, ImageDurationCBox.getSelectedIndex(), maxArrivalCBoxIndex);
+        
     }//GEN-LAST:event_ImageDurationCBoxPopupMenuWillBecomeInvisible
 
     private void PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible
-        if (pwStrengthLevel == (short)(PWStrengthChoiceComboBox.getSelectedIndex())) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }        
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, PWStrengthChoiceComboBox.getSelectedIndex(), pwStrengthLevel);
     }//GEN-LAST:event_PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible
 
     private void MessageMaxLineComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_MessageMaxLineComboBoxPopupMenuWillBecomeInvisible
+//        short lines = (short) Integer.parseInt((String)MessageMaxLineComboBox.getSelectedItem());
+//        if (maxMessageLines == lines) {
+//            changeEnabled_of_SaveCancelButtons(false);
+//        } else {
+//            changeEnabled_of_SaveCancelButtons(true);
+//        }            
         short lines = (short) Integer.parseInt((String)MessageMaxLineComboBox.getSelectedItem());
-        if (maxMessageLines == lines) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, lines, maxMessageLines);        
     }//GEN-LAST:event_MessageMaxLineComboBoxPopupMenuWillBecomeInvisible
 
     private void OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible
-        if (opLoggingIndex == (short)(OptnLoggingLevelComboBox.getSelectedIndex())) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
+//        if (opLoggingIndex == (short)(OptnLoggingLevelComboBox.getSelectedIndex())) {
+//            changeEnabled_of_SaveCancelButtons(false);
+//        } else {
+//            changeEnabled_of_SaveCancelButtons(true);
+//        }    
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, OptnLoggingLevelComboBox.getSelectedIndex(), opLoggingIndex);        
     }//GEN-LAST:event_OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible
 
     private void DateChooserLangCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DateChooserLangCBoxPopupMenuWillBecomeInvisible
-        if (localeIndex == (short)(DateChooserLangCBox.getSelectedIndex())) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
+//        if (localeIndex == (short)(DateChooserLangCBox.getSelectedIndex())) {
+//            changeEnabled_of_SaveCancelButtons(false);
+//        } else {
+//            changeEnabled_of_SaveCancelButtons(true);
+//        }   
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, DateChooserLangCBox.getSelectedIndex(), localeIndex);        
     }//GEN-LAST:event_DateChooserLangCBoxPopupMenuWillBecomeInvisible
 
     private void GateCountComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateCountComboBoxPopupMenuWillBecomeInvisible
-        if (gateCount == Integer.parseInt((String)GateCountComboBox.getSelectedItem())) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
+//        if (gateCount == Integer.parseInt((String)GateCountComboBox.getSelectedItem())) {
+//            changeEnabled_of_SaveCancelButtons(false);
+//        } else {
+//            changeEnabled_of_SaveCancelButtons(true);
+//        }  
+        String gateCountStr = (String)GateCountComboBox.getSelectedItem();
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(gateCountStr), gateCount);        
     }//GEN-LAST:event_GateCountComboBoxPopupMenuWillBecomeInvisible
 
-    private void BlinkingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
-        String newBlinkCycleStr = ((String)BlinkingComboBox.getSelectedItem()).replace(",", "");
-        
-        if (EBD_blinkCycle == Integer.parseInt(newBlinkCycleStr)) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
-    }//GEN-LAST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
-
-    private void FlowingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
-        String newFlowCycleStr =((String) FlowingComboBox.getSelectedItem()).replace(",", "");
-
-        if (EBD_flowCycle == Integer.parseInt(newFlowCycleStr)) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }            
-    }//GEN-LAST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
-
     private void StatPopSizeTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldKeyReleased
-        if (statCount == Integer.parseInt(StatPopSizeTextField.getText().trim())) {
-           changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }   
+        String newStatPopStr = StatPopSizeTextField.getText().trim();
+        if(newStatPopStr.length() == 0){
+            newStatPopStr = "0";
+         }
+        final String controlName = evt.getComponent().getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(newStatPopStr), statCount);
     }//GEN-LAST:event_StatPopSizeTextFieldKeyReleased
 
     private void TextFieldPicWidthKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicWidthKeyReleased
-        if (PIC_WIDTH == Integer.parseInt(((String) TextFieldPicWidth.getText()).replace(",", ""))) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }  
+        String newPicWidthStr = ((String) TextFieldPicWidth.getText()).replace(",", "");
+        if(newPicWidthStr.length() == 0){
+            newPicWidthStr = "0";
+         }
+        final String controlName = evt.getComponent().getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(newPicWidthStr), PIC_WIDTH);
     }//GEN-LAST:event_TextFieldPicWidthKeyReleased
 
     private void TextFieldPicHeightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicHeightKeyReleased
-        if (PIC_HEIGHT == Integer.parseInt(((String) TextFieldPicHeight.getText()).replace(",", ""))) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        } 
+        String newPicHeightStr = ((String) TextFieldPicHeight.getText()).replace(",", "");
+        if(newPicHeightStr.length() == 0){
+            newPicHeightStr = "0";
+         }
+        final String controlName = evt.getComponent().getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(newPicHeightStr), PIC_HEIGHT);
     }//GEN-LAST:event_TextFieldPicHeightKeyReleased
 
     LEDnoticeManager managerLEDnotice = null;    
     
     private void lotNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lotNameTextFieldKeyReleased
-        if (lotNameTextField.getText().trim().equals(parkingLotName)) {
-            changeEnabled_of_SaveCancelButtons(false);            
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);            
-        }
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, "lotNameTextField", lotNameTextField.getText().trim(), parkingLotName);
     }//GEN-LAST:event_lotNameTextFieldKeyReleased
 
-    private void Camera1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_Camera1_Port_TextFieldKeyTyped
+    private void BlinkingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
+//        String newBlinkCycleStr = ((String)BlinkingComboBox.getSelectedItem()).replace(",", "");
+//
+//        if (EBD_blinkCycle == Integer.parseInt(newBlinkCycleStr)) {
+//            changeEnabled_of_SaveCancelButtons(false);
+//        } else {
+//            changeEnabled_of_SaveCancelButtons(true);
+//        }
+        String newBlinkCycleStr = ((String)BlinkingComboBox.getSelectedItem()).replace(",", "");
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(newBlinkCycleStr), EBD_blinkCycle);        
+    }//GEN-LAST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
 
-    private void GateBar1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_GateBar1_Port_TextFieldKeyTyped
+    private void FlowingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
+        String newFlowCycleStr =((String) FlowingComboBox.getSelectedItem()).replace(",", "");
+        final String controlName = ((JComboBox) evt.getSource()).getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, Integer.parseInt(newFlowCycleStr), EBD_flowCycle);
+    }//GEN-LAST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
 
-    private void E_Board1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_E_Board1_Port_TextFieldKeyTyped
+    private void EBoardSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBoardSettingsButtonActionPerformed
 
-    private void Camera2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_Camera2_Port_TextFieldKeyTyped
+        int tabIndex = GatesTabbedPane.getSelectedIndex();
+        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + (tabIndex + 1) + "_TypeCBox");
 
-    private void GateBar2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_GateBar2_Port_TextFieldKeyTyped
+        if (eBDsettings == null) {
+            if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) {
+                setEBDsettings(new Settings_EBoard(mainForm, this));
+            } else if (typeCBox.getSelectedIndex() == E_BoardType.LEDnotice.ordinal()) {
+                setEBDsettings(new Settings_LEDnotice(mainForm, this, null, tabIndex + 1));
+            }
+        }
 
-    private void E_Board2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_E_Board2_Port_TextFieldKeyTyped
+        Point panelPoint = new Point();
+        EBoardSettingsButton.getLocation(panelPoint);
 
-    private void Camera3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_Camera3_Port_TextFieldKeyTyped
+        Point buttonPoint = new Point();
+        eBoardSettingPanel.getLocation(buttonPoint);
 
-    private void GateBar3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_GateBar3_Port_TextFieldKeyTyped
-
-    private void E_Board3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_E_Board3_Port_TextFieldKeyTyped
-
-    private void Camera4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_Camera4_Port_TextFieldKeyTyped
-
-    private void GateBar4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_Port_TextFieldKeyTyped
-        rejectNonNumericKeys(evt);
-    }//GEN-LAST:event_GateBar4_Port_TextFieldKeyTyped
+        Point framePoint = new Point();
+        this.getLocation(framePoint);
+        Point topLeft = new Point(framePoint.x + buttonPoint.x  + panelPoint.x+ EBoardSettingsButton.getSize().width + 130,
+            framePoint.y + buttonPoint.y + eBDsettings.getSize().height + 120);
+        eBDsettings.setLocation(topLeft);
+        eBDsettings.setVisible(true);
+    }//GEN-LAST:event_EBoardSettingsButtonActionPerformed
 
     private void E_Board4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board4_Port_TextFieldKeyTyped
         rejectNonNumericKeys(evt);
     }//GEN-LAST:event_E_Board4_Port_TextFieldKeyTyped
 
-    private void Camera1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 1);
-    }//GEN-LAST:event_Camera1_Port_TextFieldKeyReleased
-
-    private void GateBar1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 1);
-    }//GEN-LAST:event_GateBar1_Port_TextFieldKeyReleased
-
-    private void E_Board1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 1);
-    }//GEN-LAST:event_E_Board1_Port_TextFieldKeyReleased
-
-    private void Camera2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 2);
-    }//GEN-LAST:event_Camera2_Port_TextFieldKeyReleased
-
-    private void GateBar2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 2);
-    }//GEN-LAST:event_GateBar2_Port_TextFieldKeyReleased
-
-    private void E_Board2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 2);
-    }//GEN-LAST:event_E_Board2_Port_TextFieldKeyReleased
-
-    private void Camera3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 3);
-    }//GEN-LAST:event_Camera3_Port_TextFieldKeyReleased
-
-    private void GateBar3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 3);
-    }//GEN-LAST:event_GateBar3_Port_TextFieldKeyReleased
-
-    private void Camera4_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 4);
-    }//GEN-LAST:event_Camera4_Port_TextFieldKeyReleased
+    private void GateBar4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_GateBar4_Port_TextFieldKeyTyped
 
     private void GateBar4_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_Port_TextFieldKeyReleased
         checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 4);
     }//GEN-LAST:event_GateBar4_Port_TextFieldKeyReleased
 
+    private void Camera4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_Camera4_Port_TextFieldKeyTyped
+
+    private void Camera4_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 4);
+    }//GEN-LAST:event_Camera4_Port_TextFieldKeyReleased
+
+    private void E_Board4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board4_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(E_Board, 4);
+    }//GEN-LAST:event_E_Board4_IP_TextFieldKeyReleased
+
+    private void GateBar4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(GateBar, 4);
+    }//GEN-LAST:event_GateBar4_IP_TextFieldKeyReleased
+
+    private void Camera4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(Camera, 4);
+    }//GEN-LAST:event_Camera4_IP_TextFieldKeyReleased
+
+    private void TextFieldGateName4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName4KeyReleased
+        checkGateNameChangeAndChangeEnabled(4);
+    }//GEN-LAST:event_TextFieldGateName4KeyReleased
+
+    private void E_Board3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_E_Board3_Port_TextFieldKeyTyped
+
     private void E_Board3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_Port_TextFieldKeyReleased
         checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 3);
     }//GEN-LAST:event_E_Board3_Port_TextFieldKeyReleased
 
-    private void EBD1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_EBD1_TypeCBoxPopupMenuWillBecomeInvisible
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                reflectE_BoardTypeChange(1);
-            }
-        });
-    }//GEN-LAST:event_EBD1_TypeCBoxPopupMenuWillBecomeInvisible
+    private void GateBar3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_GateBar3_Port_TextFieldKeyTyped
 
-    private void EBD1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBD1_TypeCBoxActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                reflectE_BoardTypeChange(1);
-            }
-        });
-    }//GEN-LAST:event_EBD1_TypeCBoxActionPerformed
+    private void GateBar3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 3);
+    }//GEN-LAST:event_GateBar3_Port_TextFieldKeyReleased
+
+    private void Camera3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_Camera3_Port_TextFieldKeyTyped
+
+    private void Camera3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 3);
+    }//GEN-LAST:event_Camera3_Port_TextFieldKeyReleased
+
+    private void E_Board3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(E_Board, 3);
+    }//GEN-LAST:event_E_Board3_IP_TextFieldKeyReleased
+
+    private void GateBar3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(GateBar, 3);
+    }//GEN-LAST:event_GateBar3_IP_TextFieldKeyReleased
+
+    private void Camera3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(Camera, 3);
+    }//GEN-LAST:event_Camera3_IP_TextFieldKeyReleased
+
+    private void TextFieldGateName3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName3KeyReleased
+        checkGateNameChangeAndChangeEnabled(3);
+    }//GEN-LAST:event_TextFieldGateName3KeyReleased
+
+    private void E_Board2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_E_Board2_Port_TextFieldKeyTyped
+
+    private void E_Board2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 2);
+    }//GEN-LAST:event_E_Board2_Port_TextFieldKeyReleased
+
+    private void GateBar2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_GateBar2_Port_TextFieldKeyTyped
+
+    private void GateBar2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 2);
+    }//GEN-LAST:event_GateBar2_Port_TextFieldKeyReleased
+
+    private void Camera2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_Camera2_Port_TextFieldKeyTyped
+
+    private void Camera2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 2);
+    }//GEN-LAST:event_Camera2_Port_TextFieldKeyReleased
+
+    private void E_Board2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(E_Board, 2);
+    }//GEN-LAST:event_E_Board2_IP_TextFieldKeyReleased
+
+    private void GateBar2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(GateBar, 2);
+    }//GEN-LAST:event_GateBar2_IP_TextFieldKeyReleased
+
+    private void Camera2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(Camera, 2);
+    }//GEN-LAST:event_Camera2_IP_TextFieldKeyReleased
+
+    private void TextFieldGateName2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName2KeyReleased
+        checkGateNameChangeAndChangeEnabled(2);
+    }//GEN-LAST:event_TextFieldGateName2KeyReleased
+
+    private void GateBar1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_GateBar1_Port_TextFieldKeyTyped
+
+    private void GateBar1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 1);
+    }//GEN-LAST:event_GateBar1_Port_TextFieldKeyReleased
+
+    private void GateBar1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(GateBar, 1);
+    }//GEN-LAST:event_GateBar1_IP_TextFieldKeyReleased
+
+    private void GateBar1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GateBar1_TypeCBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_GateBar1_TypeCBoxActionPerformed
+
+    private void E_Board1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_E_Board1_Port_TextFieldKeyTyped
+
+    private void E_Board1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 1);
+    }//GEN-LAST:event_E_Board1_Port_TextFieldKeyReleased
+
+    private void E_Board1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(E_Board, 1);
+    }//GEN-LAST:event_E_Board1_IP_TextFieldKeyReleased
+
+    private void E_Board1_IP_TextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_E_Board1_IP_TextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_E_Board1_IP_TextFieldActionPerformed
+
+    private void E_Board1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_E_Board1_TypeCBoxActionPerformed
+        changeSaveEnabledForDeviceType(E_Board, 1);
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                reflectE_BoardTypeChange(1);
+//            }
+//        });
+    }//GEN-LAST:event_E_Board1_TypeCBoxActionPerformed
+
+    private void Camera1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_Port_TextFieldKeyTyped
+        rejectNonNumericKeys(evt);
+    }//GEN-LAST:event_Camera1_Port_TextFieldKeyTyped
+
+    private void Camera1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_Port_TextFieldKeyReleased
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 1);
+    }//GEN-LAST:event_Camera1_Port_TextFieldKeyReleased
+
+    private void Camera1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_IP_TextFieldKeyReleased
+        changeSaveEnabledForDeviceIpChange(Camera, 1);
+    }//GEN-LAST:event_Camera1_IP_TextFieldKeyReleased
+
+    private void Camera1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Camera1_TypeCBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Camera1_TypeCBoxActionPerformed
+
+    private void TextFieldGateName1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName1KeyReleased
+        checkGateNameChangeAndChangeEnabled(1);
+    }//GEN-LAST:event_TextFieldGateName1KeyReleased
+
+    private void E_Board1_connTypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_E_Board1_connTypeCBoxActionPerformed
+        changeSaveEnabledForConnTypeChange(E_Board, 1);
+    }//GEN-LAST:event_E_Board1_connTypeCBoxActionPerformed
+
+    private void Camera1_connTypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Camera1_connTypeCBoxActionPerformed
+        changeSaveEnabledForConnTypeChange(Camera, 1);
+    }//GEN-LAST:event_Camera1_connTypeCBoxActionPerformed
+
+    private void GateBar1_connTypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GateBar1_connTypeCBoxActionPerformed
+        changeSaveEnabledForConnTypeChange(GateBar, 1);
+    }//GEN-LAST:event_GateBar1_connTypeCBoxActionPerformed
+
+    private void Camera1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera1_TypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), Camera1_TypeCBox.getSelectedIndex(), 
+                deviceType[Camera.ordinal()][1]);
+    }//GEN-LAST:event_Camera1_TypeCBoxPopupMenuWillBecomeInvisible
+
+    private void E_Board1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board1_TypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board1_TypeCBox.getSelectedIndex(), 
+                deviceType[E_Board.ordinal()][1]);
+    }//GEN-LAST:event_E_Board1_TypeCBoxPopupMenuWillBecomeInvisible
+
+    private void GateBar1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar1_TypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar1_TypeCBox.getSelectedIndex(), 
+                deviceType[GateBar.ordinal()][1]);
+    }//GEN-LAST:event_GateBar1_TypeCBoxPopupMenuWillBecomeInvisible
+
+    private void Camera1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera1_connTypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), Camera1_connTypeCBox.getSelectedIndex(), 
+                connectionType[Camera.ordinal()][1]);
+    }//GEN-LAST:event_Camera1_connTypeCBoxPopupMenuWillBecomeInvisible
+
+    private void E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board1_connTypeCBox.getSelectedIndex(), 
+                connectionType[E_Board.ordinal()][1]);
+    }//GEN-LAST:event_E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible
+
+    private void GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar1_connTypeCBox.getSelectedIndex(), 
+                connectionType[GateBar.ordinal()][1]);
+    }//GEN-LAST:event_GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible
                                               
-    void stopOperation() {
+    void closeSettingsForm() {
         if(mainForm != null)
             mainForm.setConfigureSettingsForm(null);
         if (eBDsettings != null) 
@@ -2397,6 +2709,8 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JComboBox BlinkingComboBox;
     private javax.swing.JTextField Camera1_IP_TextField;
     private javax.swing.JTextField Camera1_Port_TextField;
+    private javax.swing.JComboBox Camera1_TypeCBox;
+    private javax.swing.JComboBox Camera1_connTypeCBox;
     private javax.swing.JTextField Camera2_IP_TextField;
     private javax.swing.JTextField Camera2_Port_TextField;
     private javax.swing.JTextField Camera3_IP_TextField;
@@ -2405,11 +2719,13 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JTextField Camera4_Port_TextField;
     private javax.swing.JTextField Camera4_Port_TextField1;
     private com.toedter.components.JLocaleChooser DateChooserLangCBox;
-    private javax.swing.JComboBox EBD1_TypeCBox;
-    private javax.swing.JComboBox EBD1_connTypeCBox;
+    private javax.swing.JPanel EBD_settings;
+    private javax.swing.JPanel EBD_settings_label;
     private javax.swing.JButton EBoardSettingsButton;
     private javax.swing.JTextField E_Board1_IP_TextField;
     private javax.swing.JTextField E_Board1_Port_TextField;
+    private javax.swing.JComboBox E_Board1_TypeCBox;
+    private javax.swing.JComboBox E_Board1_connTypeCBox;
     private javax.swing.JTextField E_Board2_IP_TextField;
     private javax.swing.JTextField E_Board2_Port_TextField;
     private javax.swing.JTextField E_Board3_IP_TextField;
@@ -2417,9 +2733,12 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JTextField E_Board4_IP_TextField;
     private javax.swing.JTextField E_Board4_Port_TextField;
     private javax.swing.JTextField E_Board4_Port_TextField1;
+    private javax.swing.JPanel E_BoardSettingsButtonPanel;
     private javax.swing.JComboBox FlowingComboBox;
     private javax.swing.JTextField GateBar1_IP_TextField;
     private javax.swing.JTextField GateBar1_Port_TextField;
+    private javax.swing.JComboBox GateBar1_TypeCBox;
+    private javax.swing.JComboBox GateBar1_connTypeCBox;
     private javax.swing.JTextField GateBar2_IP_TextField;
     private javax.swing.JTextField GateBar2_Port_TextField;
     private javax.swing.JTextField GateBar3_IP_TextField;
@@ -2428,7 +2747,7 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JTextField GateBar4_Port_TextField;
     private javax.swing.JTextField GateBar4_Port_TextField1;
     private javax.swing.JComboBox GateCountComboBox;
-    private javax.swing.JTabbedPane GatesTabbedPane;
+    public javax.swing.JTabbedPane GatesTabbedPane;
     private javax.swing.JComboBox ImageDurationCBox;
     private javax.swing.JLabel ImageDurationLabel;
     private javax.swing.JButton LanguageSelectionlHelpButton;
@@ -2451,9 +2770,27 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JTextField TextFieldGateName4;
     private javax.swing.JTextField TextFieldPicHeight;
     private javax.swing.JTextField TextFieldPicWidth;
+    private javax.swing.JPanel allCyclesPanel;
+    private javax.swing.JPanel blinkPanel;
+    private javax.swing.JLabel blinkingL;
+    private javax.swing.JPanel blinkingP;
     private javax.swing.JPanel bottomPanel;
+    private javax.swing.JPanel cBoxPan;
+    private javax.swing.JPanel cBoxPanel;
+    private javax.swing.JPanel cameraPan;
+    private javax.swing.JPanel cycleLabel;
+    private javax.swing.JLabel device1_Label;
+    private javax.swing.JPanel eBoardPan;
     private javax.swing.JPanel eBoardSettingPanel;
-    private javax.swing.Box.Filler filler1;
+    private javax.swing.JLabel ebdLbl;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler12;
+    private javax.swing.Box.Filler filler13;
+    private javax.swing.Box.Filler filler14;
+    private javax.swing.Box.Filler filler15;
+    private javax.swing.Box.Filler filler17;
+    private javax.swing.Box.Filler filler18;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -2461,11 +2798,17 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JPanel flowPanel;
+    private javax.swing.JPanel flowing;
     private javax.swing.JPanel gate1Panel;
     private javax.swing.JPanel gate2Panel;
     private javax.swing.JPanel gate3Panel;
     private javax.swing.JPanel gate4Panel;
+    private javax.swing.JPanel gateBarPan;
+    private javax.swing.JLabel gateName;
     private javax.swing.JPanel gateSettingPanel;
+    private javax.swing.JPanel gate_name_p;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2484,6 +2827,7 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -2492,14 +2836,12 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
-    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
     private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel40;
     private javax.swing.JLabel jLabel42;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -2507,7 +2849,9 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JTextField lotNameTextField;
     private javax.swing.JPanel parkinglotOptionPanel;
-    private javax.swing.JPanel topPanel;
+    private javax.swing.JPanel real2Pan;
+    private javax.swing.JPanel topLabelsPanel;
+    private javax.swing.JPanel twoCycles;
     private javax.swing.JPanel wholePanel;
     // End of variables declaration//GEN-END:variables
     //</editor-fold>
@@ -2539,6 +2883,7 @@ public class Settings_System extends javax.swing.JFrame {
         }
         
         for (int i = 0; i < gateCount; i++) {
+            //<editor-fold desc="-- Init device IP address and Port numbers">
             GatesTabbedPane.setEnabledAt(i, true);
 
             // fill gate name textfields
@@ -2547,49 +2892,69 @@ public class Settings_System extends javax.swing.JFrame {
             // load 3 device IP address textfields
             ((JTextField)getComponentByName("Camera" +(i+1) + "_IP_TextField"))
                     .setText(deviceIP[Camera.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("Camera" +(i+1) + "_IP_TextField")).setColumns(12);
             
             ((JTextField)getComponentByName("GateBar" +(i+1) + "_IP_TextField"))
                     .setText(deviceIP[GateBar.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("GateBar" +(i+1) + "_IP_TextField")).setColumns(12);
             
             ((JTextField)getComponentByName("E_Board" +(i+1) + "_IP_TextField"))
                     .setText(deviceIP[E_Board.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("E_Board" +(i+1) + "_IP_TextField")).setColumns(12);
             
             // load 3 device port textfields
             ((JTextField)getComponentByName("Camera" +(i+1) + "_Port_TextField"))
                     .setText(devicePort[Camera.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("Camera" +(i+1) + "_Port_TextField")).setColumns(6);
             
             ((JTextField)getComponentByName("GateBar" +(i+1) + "_Port_TextField"))
                     .setText(devicePort[GateBar.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("GateBar" +(i+1) + "_Port_TextField")).setColumns(6);
             
             ((JTextField)getComponentByName("E_Board" +(i+1) + "_Port_TextField"))
                     .setText(devicePort[E_Board.ordinal() ][i+1]);
-            ((JTextField)getComponentByName("E_Board" +(i+1) + "_Port_TextField")).setColumns(6);
+            //</editor-fold>
         }
         changeEnabled_of_SaveCancelButtons(false);
         
-        for (int gate = 1; gate <= gateCount; gate++) {
-            JComboBox ebdCBox = ((JComboBox)getComponentByName("EBD" +gate + "_TypeCBox"));
-            if (ebdCBox != null) {
-                ebdCBox.removeAllItems();
-                for (E_BoardType type: E_BoardType.values()) {
-                    ebdCBox.addItem(type.getLabel());
+        for (int gate = 1; gate <= gateCount; gate++) { 
+            //<editor-fold desc="-- Combo Box item init for device and connection type of each gate">
+            JComboBox comboBx = ((JComboBox)getComponentByName("Camera" +gate + "_TypeCBox"));
+            if (comboBx != null) {
+                comboBx.removeAllItems();
+                for (CameraType type: CameraType.values()) {
+                    comboBx.addItem(type.getLabel());
                 }
-                ebdCBox.setSelectedIndex(DB_Access.e_boardType[gate]);
+                comboBx.setSelectedIndex(DB_Access.deviceType[Camera.ordinal()][gate]);
             }
             
-            ebdCBox = ((JComboBox)getComponentByName("EBD" +gate + "_connTypeCBox"));
-            if (ebdCBox != null) {
-                ebdCBox.removeAllItems();
-                for (ConnectionType type: ConnectionType.values()) {
-                    ebdCBox.addItem(type.getLabel());
-                }        
-                ebdCBox.setSelectedIndex(DB_Access.e_boardConnType[gate]);
+            comboBx = ((JComboBox)getComponentByName("E_Board" +gate + "_TypeCBox"));
+            if (comboBx != null) {
+                comboBx.removeAllItems();
+                for (E_BoardType type: E_BoardType.values()) {
+                    comboBx.addItem(type.getLabel());
+                }
+                comboBx.setSelectedIndex(DB_Access.deviceType[E_Board.ordinal()][gate]);
             }
+            
+            comboBx = ((JComboBox)getComponentByName("GateBar" +gate + "_TypeCBox"));
+            if (comboBx != null) {
+                comboBx.removeAllItems();
+                for (GateBarType type: GateBarType.values()) {
+                    comboBx.addItem(type.getLabel());
+                }
+                comboBx.setSelectedIndex(DB_Access.deviceType[GateBar.ordinal()][gate]);
+            }
+            
+            for (DeviceType devType: DeviceType.values()) {
+                comboBx = ((JComboBox)getComponentByName(devType.name() +gate + "_connTypeCBox"));
+                if (comboBx != null) {
+                    comboBx.removeAllItems();
+                    for (ConnectionType connType : ConnectionType.values()) {
+                        if (devType != Camera || connType == ConnectionType.TCP_IP) 
+                        {
+                            comboBx.addItem(connType.getLabel());
+                        }
+                    }
+                    comboBx.setSelectedIndex(DB_Access.connectionType[devType.ordinal()][gate]);
+                }
+            }
+            //</editor-fold>
         }
     }
     
@@ -2725,20 +3090,6 @@ public class Settings_System extends javax.swing.JFrame {
         
         return false;
     }
-
-    private void makeComponentMap() {
-        componentMap = new HashMap<String,Component>();
-        
-        for (Component outerCompo : GatesTabbedPane.getComponents()) {
-            for (Component innerCompo : ((JPanel) outerCompo).getComponents()) {
-                if (innerCompo instanceof JTextField ||
-                    innerCompo instanceof JComboBox) 
-                {
-                    componentMap.put(innerCompo.getName(), innerCompo);
-                }
-            }
-        }
-    }
     
     public Component getComponentByName(String name) {
         if (componentMap.containsKey(name)) {
@@ -2793,14 +3144,18 @@ public class Settings_System extends javax.swing.JFrame {
         StringBuffer sb = new StringBuffer("Update gatedevices SET ");
         sb.append("  gatename = ? ");
         sb.append("  , cameraIP = ? ");
-        sb.append("  , gatebarIP = ? ");
         sb.append("  , cameraPort = ?");
-        sb.append("  , gatebarPort = ? ");
+        sb.append("  , cameraType = ?");
+        
         sb.append("  , e_boardIP = ? ");
         sb.append("  , e_boardPort = ? ");
-        
         sb.append("  , e_boardType = ? ");
         sb.append("  , e_boardConnType = ? ");
+        
+        sb.append("  , gatebarIP = ? ");
+        sb.append("  , gatebarPort = ? ");
+        sb.append("  , gatebarType = ? ");
+        sb.append("  , gatebarConnType = ? ");
         
         sb.append("WHERE GateID = ?");
         //</editor-fold>
@@ -2812,44 +3167,39 @@ public class Settings_System extends javax.swing.JFrame {
                 updateSettings = conn.prepareStatement (sb.toString());
 
                 int pIndex = 1;
+                JComboBox cBox;
 
                 //<editor-fold defaultstate="collapsed" desc="--Provide actual values to the UPDATE">
                 updateSettings.setString(pIndex++, 
                         ((JTextField) componentMap.get("TextFieldGateName" + gateID)).getText().trim());
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("Camera" + gateID + "_IP_TextField"))
-                                .getText().trim());
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField"))
-                                .getText().trim());
                 
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("Camera" + gateID + "_Port_TextField"))
-                                .getText().trim());
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("GateBar" + gateID + "_Port_TextField"))
-                                .getText().trim());
-                
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("E_Board" + gateID + "_IP_TextField"))
-                                .getText().trim());
-                updateSettings.setString(pIndex++, 
-                        ((JTextField) componentMap.get("E_Board" + gateID + "_Port_TextField"))
-                                .getText().trim());
-                
-                JComboBox cBox = (JComboBox)componentMap.get("EBD" + gateID + "_TypeCBox");
-                
-                if (cBox == null) {
-                    updateSettings.setInt(pIndex++, 0);
-                } else {
-                    updateSettings.setInt(pIndex++, cBox.getSelectedIndex());
-                }
-                
-                cBox = (JComboBox)componentMap.get("EBD" + gateID + "_connTypeCBox");
-                if (cBox == null) {
-                    updateSettings.setInt(pIndex++, 0);
-                } else {
-                    updateSettings.setInt(pIndex++, cBox.getSelectedIndex());
+                for (DeviceType type : DeviceType.values()) {
+//                    updateSettings.setString(pIndex++, 
+//                            ((JTextField) componentMap.get("Camera" + gateID + "_IP_TextField")).getText().trim());
+//                    updateSettings.setString(pIndex++, 
+//                            ((JTextField) componentMap.get("Camera" + gateID + "_Port_TextField")).getText().trim());
+//                    cBox = (JComboBox) componentMap.get("Camera" + gateID + "_TypeCBox");
+//                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
+
+                    updateSettings.setString(pIndex++, 
+                            ((JTextField) componentMap.get(type.toString() + gateID + "_IP_TextField")).getText().trim());
+                    updateSettings.setString(pIndex++, 
+                            ((JTextField) componentMap.get(type.toString() + gateID + "_Port_TextField")).getText().trim());
+                    cBox = (JComboBox)componentMap.get(type.toString() + gateID + "_TypeCBox");
+                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
+                    if (type != Camera) {
+                        cBox = (JComboBox)componentMap.get(type.toString() + gateID + "_connTypeCBox");
+                        updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
+                    }
+
+//                    updateSettings.setString(pIndex++, 
+//                            ((JTextField) componentMap.get("GateBar" + gateID + "_IP_TextField")).getText().trim());
+//                    updateSettings.setString(pIndex++, 
+//                            ((JTextField) componentMap.get("GateBar" + gateID + "_Port_TextField")).getText().trim());
+//                    cBox = (JComboBox)componentMap.get("GateBar" + gateID + "_TypeCBox");
+//                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
+//                    cBox = (JComboBox)componentMap.get("GateBar" + gateID + "_connTypeCBox");
+                    updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
                 }
                 
                 updateSettings.setInt(pIndex++, gateID);
@@ -2913,67 +3263,32 @@ public class Settings_System extends javax.swing.JFrame {
                 "Confirm Request", JOptionPane.WARNING_MESSAGE);
             this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         } else {
-            stopOperation();
+            closeSettingsForm();
         }     
-    }
-
-    private void demoAllEffects(int tabIndex, int stopIndex, int colorIdx, int fontIdx) {
-        int gateNo = findGateNoUsingLEDnotice();
-        
-        if (gateNo == -1) {
-            JOptionPane.showMessageDialog(this, "설정된 LEDnotice 장치가 없습니다.");
-            return;
-        } else {
-            if (mainForm == null) {
-                JOptionPane.showMessageDialog(this, "메인 창이 열려있지 않습니다.");
-            } else {
-                LEDnoticeManager manager = (LEDnoticeManager)mainForm
-                        .getDeviceManagers()[E_Board.ordinal()][gateNo];
-
-                manager.showAllEffects(tabIndex, stopIndex, colorIdx, fontIdx);
-            }
-        }    
-    }
-
-    private int findGateNoUsingLEDnotice() {
-        int index = -1;
-        
-        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-            if (Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) {
-                index = gateNo;
-            }
-        }
-        return index;
     }
 
     private void checkGateNameChangeAndChangeEnabled(int gateNo) {
         JTextField gateNameField = (JTextField)componentMap.get("TextFieldGateName" + gateNo);
         
-        if (gateNameField.getText().equals(gateNames[gateNo])) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }
+        final String controlName = gateNameField.getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, gateNameField.getText().trim(), gateNames[gateNo]);
     }
 
-    private void checkDeviceIpChangeAndChangeEnabled(DeviceType device, int gateNo) {
+    private void changeSaveEnabledForDeviceIpChange(DeviceType device, int gateNo) {
         JTextField deviceIpField = (JTextField)componentMap.get(device.toString() + gateNo + "_IP_TextField");
         
-        if (deviceIpField.getText().equals(deviceIP[device.ordinal()][gateNo])) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }
+        final String controlName = deviceIpField.getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, deviceIpField.getText().trim(), deviceIP[device.ordinal()][gateNo]);
     }
 
     private void checkDevicePortChangeAndChangeButtonEnabledProperty(DeviceType device, int gateNo) {
         JTextField devicePortField = (JTextField)componentMap.get(device.toString() + gateNo + "_Port_TextField");
         
-        if (devicePortField.getText().trim().equals(devicePort[device.ordinal()][gateNo])) {
-            changeEnabled_of_SaveCancelButtons(false);
-        } else {
-            changeEnabled_of_SaveCancelButtons(true);
-        }
+        final String controlName = devicePortField.getName();
+        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, controlName, devicePortField.getText().trim(), devicePort[device.ordinal()][gateNo]);
     }
 
     private void makeEnterActAsTab() {
@@ -3003,17 +3318,17 @@ public class Settings_System extends javax.swing.JFrame {
     }
 
     private void reflectE_BoardTypeChange(int gateNo) {
-        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + gateNo + "_TypeCBox");
+        JComboBox typeCBox = (JComboBox)componentMap.get("E_Board" + gateNo + "_TypeCBox");
         
         if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) { 
-            EBoardSettingsButton.setText("Content Settings");
+            EBoardSettingsButton.setText("Simulator");
             changeCycleCBoxEnabled(true);
         } else if (typeCBox.getSelectedIndex() == E_BoardType.LEDnotice.ordinal()) {
-            EBoardSettingsButton.setText("LEDnotice Settings");
+            EBoardSettingsButton.setText("LEDnotice");
             changeCycleCBoxEnabled(false);
         }
         
-        if (typeCBox.getSelectedIndex() == DB_Access.e_boardType[gateNo]) {
+        if (typeCBox.getSelectedIndex() == deviceType[E_Board.ordinal()][gateNo]) {
             changeEnabled_of_SaveCancelButtons(false);
         } else {
             changeEnabled_of_SaveCancelButtons(true);
@@ -3023,5 +3338,38 @@ public class Settings_System extends javax.swing.JFrame {
     private void changeCycleCBoxEnabled(boolean b) {
         BlinkingComboBox.setEnabled(b);
         FlowingComboBox.setEnabled(b);
+    }
+
+    private void changeSaveEnabledForDeviceType(DeviceType currDevType, int gateNo) {
+        JComboBox cBox = (JComboBox)componentMap.get("" + currDevType + gateNo + "_TypeCBox");
+        
+        if (cBox.getSelectedIndex() == deviceType[currDevType.ordinal()][gateNo]) {
+            changeEnabled_of_SaveCancelButtons(false);
+        } else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }    
+    }
+
+    private void changeSaveEnabledForConnTypeChange(DeviceType currDevType, int gateNo) {
+        JComboBox cBox = (JComboBox)componentMap.get("" + currDevType + gateNo + "_connTypeCBox");
+        
+        if (cBox.getSelectedIndex() == connectionType[currDevType.ordinal()][gateNo]) {
+            changeEnabled_of_SaveCancelButtons(false);
+        } else {
+            changeEnabled_of_SaveCancelButtons(true);
+        }   
+        
+        JTextField txtField;
+        if (cBox.getSelectedIndex() == RS_232.ordinal()) {
+            txtField = (JTextField)componentMap.get(currDevType.toString() + gateNo + "_IP_TextField");
+            txtField.setEnabled(false);
+            txtField = (JTextField)componentMap.get(currDevType.toString() + gateNo + "_Port_TextField");
+            txtField.setEnabled(false);
+        } else {
+            txtField = (JTextField)componentMap.get(currDevType.toString() + gateNo + "_IP_TextField");
+            txtField.setEnabled(true);
+            txtField = (JTextField)componentMap.get(currDevType.toString() + gateNo + "_Port_TextField");
+            txtField.setEnabled(true);
+        }
     }
 }

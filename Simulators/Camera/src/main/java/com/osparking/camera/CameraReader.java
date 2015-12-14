@@ -174,7 +174,7 @@ public class CameraReader extends Thread implements DeviceReader{
                 disconnectSocket(null, "Manager isn't reaching at " + Camera + " #" + cameraGUI.getID());
             }
         }
-    }        
+    }
 
     /**
      * @return the managerSocket

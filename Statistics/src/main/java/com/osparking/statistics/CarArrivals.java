@@ -1738,11 +1738,11 @@ public class CarArrivals extends javax.swing.JFrame {
         barOptnTF.setText("");
         imgSizeTF.setText("");
         try {
-            originalImg = getNoPictureImg();
-            imageLabel.setIcon(createStretchedIcon(imageLabel.getSize(), originalImg, false));
+            imageLabel.setIcon(null);
+            imageLabel.setText("No Image Exists");
         } catch (Exception e) {
             logParkingException(Level.SEVERE, e, "(while reading no image picture)");
-        }                        
+        }
     }
 
     private void loadSearchControls() {

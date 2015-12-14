@@ -42,6 +42,9 @@ import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
+import gnu.io.CommPort;
+import gnu.io.CommPortIdentifier;
+import gnu.io.SerialPort;
 import java.nio.ByteBuffer;
 
 /**
@@ -146,6 +149,8 @@ public class EBoardManager extends Thread implements DeviceManager {
      * socket for the communication with the gate bar.
      */
     private Socket socket = null; // socket that connects with a e-board
+    
+    private SerialPort serialPort = null;
     
     /**
      * a timer employed to send Open commands to the designated gate bar for sure.
@@ -382,11 +387,11 @@ public class EBoardManager extends Thread implements DeviceManager {
             }
         }
             
-        if (mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo] == null) {
-            System.out.println("this never ever happens");
-        } else {
-            mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo].reRunOnce();
-            addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to E-Board #" + gateNo);
+        if (mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo] != null) {
+            if (!mainForm.isSHUT_DOWN()) {
+                mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo].reRunOnce();
+                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
+            }
         }
     }
 
@@ -407,5 +412,32 @@ public class EBoardManager extends Thread implements DeviceManager {
     @Override
     public boolean isNeverConnected() {
         return neverConnected;
+    }
+
+    @Override
+    public void setSerialPort(SerialPort serialPort) {
+        this.serialPort = serialPort;
+    }
+
+    /**
+     * @return the serialPort
+     */
+    public SerialPort getSerialPort() {
+        return serialPort;
+    }
+
+    @Override
+    public CommPortIdentifier getPortIdentifier() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CommPort getCommPort() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setCommPort(CommPort open) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

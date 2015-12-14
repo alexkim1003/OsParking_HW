@@ -65,6 +65,7 @@ import static com.osparking.global.Globals.sdf;
 import static com.osparking.global.Globals.showLicensePanel;
 import static com.osparking.global.Globals.testUniqueness;
 import com.osparking.global.names.CarAdmission;
+import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
@@ -78,6 +79,7 @@ import com.osparking.global.names.JDBCMySQL;
 import com.osparking.global.names.ManagerGUI;
 import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.BarOperation;
+import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
 
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
@@ -237,7 +239,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
      * Storage for vehicle processing performance by this system(Parking Manager).
      */
     private PassingDelayStat[] passingDelayStat = null;
-    
+        
     /**
      * @return the shownImageRow
      */
@@ -423,14 +425,20 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 }
                 // start server socket listeners for all types of devices
                 connectDeviceTimer[type.ordinal()][gateNo] = new ParkingTimer(
-                        "ospConnect_" + type + "_" + gateNo + "_timer", false); 
+                        "ospConnect_" + type + "_" + gateNo + "_timer", false);
                 connectDeviceTimer[type.ordinal()][gateNo].runOnce(new ConnectDeviceTask(this, type, gateNo));
                 
-                if (deviceManagers[type.ordinal()][gateNo] != null) 
-                    deviceManagers[type.ordinal()][gateNo].start();
+                if (deviceManagers[type.ordinal()][gateNo] != null) {
+                    // if serial port connection , don't start it
+                    // cause port listener will do reading the port
+                    if (connectionType[type.ordinal()][gateNo] != RS_232.ordinal()) 
+                    {
+                        deviceManagers[type.ordinal()][gateNo].start();
+                    }
+                }
             }
         }             
-        
+
         openCommandIDs = new int[gateCount + 1];        
         openCommAcked = new boolean[gateCount + 1];        
         BarConnection = new Object[gateCount + 1];
@@ -473,7 +481,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             }
         }             
         
-        /** 
+        /**
          * Start socket connection status display timer and schedule it.
          */
         LED_Timer = new Timer("ospLEDtimer", true);
@@ -1408,9 +1416,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
             }
         });  
         //</editor-fold>        
-        
     }//GEN-LAST:event_processLogIn
-  
     
     private void processCloseProgram(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processCloseProgram
         askUserIntentionOnProgramStop(false);
@@ -1620,14 +1626,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                     perfDesc.append("            ");
                     perfDesc.append(type + " #" + gateNo 
                             + getSockConnStat()[type.ordinal()][gateNo].getPerformanceDescription());
-                    if (type == DeviceType.E_Board &&
-                            Globals.gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) 
-                    {
-                        perfDesc.append("      ");
-                        perfDesc.append("LEDnt #" + gateNo 
-                                + " " + ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo])
-                                .getAckStatistics((byte)gateNo));
-                    }
                 }
                 perfDesc.append(System.lineSeparator());
             }
@@ -1640,6 +1638,14 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                         gateBar.append("            ");
                         gateBar.append(type + " #" + gateNo + "- "
                                 + getPerfomStatistics()[type.ordinal()][gateNo].getPerformanceDescription());
+                    }
+                    if (type == DeviceType.E_Board &&
+                            Globals.gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) 
+                    {
+                        perfDesc.append("      ");
+                        perfDesc.append("LEDnotice" + gateNo
+                                + " " + ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo])
+                                .getAckStatistics((byte)gateNo));
                     }
                 }   
             }
@@ -1683,56 +1689,6 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     private void CarIOListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarIOListButtonActionPerformed
         new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
-//
-//    private byte[] getEBDSimulatorDefaultMessage(byte deviceNo, OSP_enums.EBD_Row row, int msgSN) {
-//        EBD_DisplaySetting setting = null;
-//        String displayText = null;
-//        
-//        setting = EBD_DisplaySettings
-//                [row == EBD_Row.TOP ? DEFAULT_TOP_ROW.ordinal() : DEFAULT_BOTTOM_ROW.ordinal()];
-//            
-//        //<editor-fold desc="-- determind display text using e-board settings(contentType, type, etc.)">
-//        switch (setting.contentType) {
-//            case VERBATIM:
-//                displayText = setting.verbatimContent;
-//                break;
-//                
-//            case GATE_NAME:
-//                displayText = gateNames[deviceNo];
-//                break;
-//                
-//            default:
-//                displayText = "";
-//                break;
-//        }
-//        //</editor-fold>       
-//        
-//        byte[] displayTextBytes = displayText.getBytes();
-//        int displayTextLength = displayTextBytes .length;
-//        
-//        // <code:1><length:2><row:1><text:?><type:1><color:1><font:1><pattern:1><cycle:4><check:2>
-//        byte code = (byte)(row == EBD_Row.TOP ? EBD_DEFAULT1.ordinal() : EBD_DEFAULT2.ordinal());
-//        short wholeMessageLen // length of 9 fields from <length> to <check>
-//                = (short)(displayTextLength + 17); // 13 == sum of 8 fields == 9 fields except <text>
-//        byte[] lenBytes //  {--Len[1], --Len[0]}
-//                = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
-//        byte[] wholeMessageBytes = new byte[wholeMessageLen + 1]; // 1 is for the very first <code>
-//        
-//        formMessageExceptCheckShort(code, lenBytes, row, msgSN, displayTextBytes, setting, 0,
-//                wholeMessageBytes);        
-//        
-//        //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
-//        // calculate 2 check bytes by adding all bytes in the of 9 fields: from <code:1> to <delay:4>
-//        byte[] check = new byte[2];
-//        addUpBytes(wholeMessageBytes, check);
-//        
-//        int idx = wholeMessageBytes.length - 2;
-//        wholeMessageBytes[idx++] = check[0];
-//        wholeMessageBytes[idx++] = check[1];
-//        //</editor-fold>
-//        
-//        return wholeMessageBytes;             
-//    }
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
@@ -1857,20 +1813,28 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
 
         // Cancel timer here
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) { 
+            openGateCmdTimer[gateNo].cancelTask();
+            openGateCmdTimer[gateNo].cancel();
             openGateCmdTimer[gateNo].purge();
+            openGateCmdTimer[gateNo] = null;
         }
 
         for (DeviceType type: DeviceType.values()) {
             for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
-                connectDeviceTimer[type.ordinal()][gateNo].cancel();
                 connectDeviceTimer[type.ordinal()][gateNo].cancelTask();
+                connectDeviceTimer[type.ordinal()][gateNo].cancel();
                 connectDeviceTimer[type.ordinal()][gateNo].purge();
+                connectDeviceTimer[type.ordinal()][gateNo] = null;
                 
                 // Handle some specific real hardware
                 if (type == E_Board &&
-                        Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) {
+                        Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) 
+                {
                     getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
                         new FinishLEDnoticeIntrTask(this, gateNo, EBD_Row.BOTTOM), 0);                        
+                }
+                if (deviceManagers[type.ordinal()][gateNo] != null) {
+                    deviceManagers[type.ordinal()][gateNo].stopOperation("System shutdown");
                 }
             }
         }
@@ -2340,7 +2304,12 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         {
             listSelectionModel[gateNo] = getGatePanel().getEntryList(gateNo).getSelectionModel();
             listSelectionModel[gateNo].addListSelectionListener(new ListSelectionChangeHandler(gateNo));
-            getGatePanel().getEntryList(gateNo).addKeyListener(new KeyPressedEventHandler (gateNo));       
+            try {
+                KeyPressedEventHandler handler = new KeyPressedEventHandler (gateNo);
+                getGatePanel().getEntryList(gateNo).addKeyListener(handler);
+            } catch (Exception ex) {
+                System.out.println("");
+            }
             loadPreviousEntries(gateNo);
         }
     }
@@ -2681,8 +2650,11 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         interruptsAcked[gateNo] = false;
         
         if (deviceManagers[E_Board.ordinal()][gateNo] != null 
-                && isConnected(deviceManagers[E_Board.ordinal()][gateNo].getSocket() ))
-        {  
+                && (isConnected(deviceManagers[E_Board.ordinal()][gateNo].getSocket()) ||
+                        Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice
+                      )
+           )
+        {
             long currTimeMs = System.currentTimeMillis();
 
             //<editor-fold desc="-- Init debug information">

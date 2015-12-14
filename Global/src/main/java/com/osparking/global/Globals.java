@@ -80,19 +80,26 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import static com.osparking.global.names.DB_Access.deviceIP;
 import static com.osparking.global.names.DB_Access.devicePort;
-import static com.osparking.global.names.DB_Access.e_boardType;
+import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.maxMessageLines;
 import static com.osparking.global.names.DB_Access.opLoggingIndex;
 import com.osparking.global.names.OSP_enums;
+import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
+import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.OSP_enums.EBD_ContentType;
 import com.osparking.global.names.OSP_enums.E_BoardType;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.VersionType;
+import com.osparking.global.names.ToleranceLevel;
+import gnu.io.SerialPort;
+import java.awt.Container;
 import javax.imageio.ImageIO;
+import javax.swing.JComboBox;
 
 /**
  * Defines names and methods used globally in the Parking Lot manager application developed by 
@@ -123,6 +130,38 @@ public class Globals {
     public static SimpleDateFormat timeFormatMMSS = new SimpleDateFormat("mm_ss"); 
     public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
 
+    public static void augmentComponentMap(Object component, HashMap<String, Component> componentMap) {
+        if (component instanceof JTextField) {
+            String name = ((JTextField)component).getName();
+
+            if (name != null && name.length() > 0) {
+                componentMap.put(name, (JTextField)component);
+            }
+        } else if (component instanceof JComboBox) {
+            String name = ((JComboBox)component).getName();
+
+            if (name != null && name.length() > 0) {
+                componentMap.put(name, (JComboBox)component);
+            }
+        } else if (component instanceof JCheckBox) {
+            String name = ((JCheckBox)component).getName();
+
+            if (name != null && name.length() > 0) {
+                componentMap.put(name, (JCheckBox)component);
+            }
+        } else if (component instanceof JButton) {
+            String name = ((JButton)component).getName();
+
+            if (name != null && name.length() > 0) {
+                componentMap.put(name, (JButton)component);
+            }
+        } else if (component instanceof Container) {
+            for (Component innerComponent : ((Container)component).getComponents()) {
+                augmentComponentMap(innerComponent, componentMap);
+            }
+        }
+    }    
+    
     public static class GateDeviceType {
         public OSP_enums.CameraType cameraType = OSP_enums.CameraType.Simulator;
         public OSP_enums.E_BoardType eBoardType = OSP_enums.E_BoardType.Simulator;
@@ -136,7 +175,7 @@ public class Globals {
         
         for (int gateID = 1; gateID <= gateCount; gateID++) {
             gateDeviceTypes[gateID] = new GateDeviceType();
-            gateDeviceTypes[gateID].eBoardType = E_BoardType.values()[e_boardType[gateID]];
+            gateDeviceTypes[gateID].eBoardType = E_BoardType.values()[deviceType[E_Board.ordinal()][gateID]];
         }
     }  
     
@@ -281,19 +320,6 @@ public class Globals {
             return null;
         }
     }       
-    
-    public static BufferedImage noPictureImg = null;
-    static {
-        try {
-            noPictureImg = ImageIO.read(new Globals().getClass().getResource("/noPicture.jpg"));
-        } catch (IOException ex) {
-            logParkingException(Level.SEVERE, ex, "(while reading no image picture)");
-        }
-    }
-    
-    public static BufferedImage getNoPictureImg() {
-        return noPictureImg;
-    }    
     
     public static void shortLicenseDialog(JFrame parentForm, String name, String location) {
         
@@ -1395,37 +1421,31 @@ public class Globals {
     }
 
     public static final Object MUTEX_DEBUG_SEQ_VALUE = new Object();
-    
-//    public static int incAndGetSeqValue() {
-//        synchronized(MUTEX_DEBUG_SEQ_VALUE) 
-//        {
-//            int value = -1;
-//            Connection conn = null;
-//            Statement selectStmt = null;
-//            ResultSet rs = null;
-//            
-//            try {
-//                conn = JDBCMySQL.getConnection();
-//                selectStmt = conn.createStatement();
-//                rs = selectStmt.executeQuery("select incAndGetSeqValue() from dual");
-//                if (rs.next()) {
-//                    value = rs.getInt(1);
-//                }
-//            } catch (SQLException ex) {
-//                logParkingException(Level.SEVERE, ex, "(reading seq' number for debugging)");
-//            } finally {
-//                closeDBstuff(conn, selectStmt, rs, "get sequence value after increasing");
-//            }       
-//            
-//            return value;
-//        }
-//    }
        
     public static boolean isConnected(Socket socket) {
         if (socket == null || socket.isClosed() || !socket.isConnected()) {
             return false;
         } else {
             return true;
+        }
+    }
+
+    public static boolean isConnected
+        (Socket socket, SerialPort serialPort, DeviceType devType, byte deviceNo, ToleranceLevel[][] tolerance) 
+    {
+        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
+        {
+            if (serialPort == null || tolerance[devType.ordinal()][deviceNo].getLevel() < 0) 
+                return false;
+            else 
+                return true;
+        } else if (connectionType[devType.ordinal()][deviceNo] == TCP_IP.ordinal()) {
+            if (Globals.isConnected(socket))
+                return true;
+            else
+                return false;
+        } else {
+            return false;
         }
     }
     
