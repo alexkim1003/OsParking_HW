@@ -17,7 +17,6 @@
 package com.osparking.osparking.device;
 
 import com.osparking.global.Globals;
-import com.osparking.global.names.DeviceManager;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -32,6 +31,7 @@ import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.global.names.OSP_enums.MsgCode.Open_ACK;
 import com.osparking.global.names.ParkingTimer;
 import com.osparking.osparking.ControlGUI;
+import com.osparking.osparking.device.IDevice.ISocket;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -43,7 +43,7 @@ import gnu.io.SerialPort;
  * 
  * @author Open Source Parking Inc.
  */
-public class GateBarManager extends Thread implements DeviceManager {
+public class GateBarManager extends Thread implements IDevice.IManager, IDevice.ISocket {
     //<editor-fold desc="--class variables">
     private byte gateID = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
     private ControlGUI mainForm; // main form of the gate bar simulator.
@@ -53,11 +53,6 @@ public class GateBarManager extends Thread implements DeviceManager {
      */
     private Socket socket; // socket that connects with the gate bar
     
-    /**
-     * a common gate managers array. shared among all threads/timers for the gate bars
-     */
-    DeviceManager[] deviceManagers;
-        
     /**
      * a timer employed to send Open commands to the designated gate bar for sure.
      */
@@ -283,13 +278,13 @@ public class GateBarManager extends Thread implements DeviceManager {
             }                
         } 
         
-        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
-            if (!mainForm.isSHUT_DOWN()) {
-                getCommPort().close();
-                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
-                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
-            }
-        }        
+//        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
+//            if (!mainForm.isSHUT_DOWN()) {
+//                getCommPort().close();
+//                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
+//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
+//            }
+//        }        
     }
 
     /**
@@ -297,29 +292,5 @@ public class GateBarManager extends Thread implements DeviceManager {
      */
     public boolean isNeverConnected() {
         return neverConnected;
-    }
-
-    @Override
-    public void setSerialPort(SerialPort serialPort) {
-    }
-
-    @Override
-    public SerialPort getSerialPort() {
-        return null;
-    }
-
-    @Override
-    public CommPortIdentifier getPortIdentifier() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public CommPort getCommPort() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setCommPort(CommPort open) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

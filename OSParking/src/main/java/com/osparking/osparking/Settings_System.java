@@ -2397,7 +2397,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void EBoardSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBoardSettingsButtonActionPerformed
 
         int tabIndex = GatesTabbedPane.getSelectedIndex();
-        JComboBox typeCBox = (JComboBox)componentMap.get("EBD" + (tabIndex + 1) + "_TypeCBox");
+        JComboBox typeCBox = (JComboBox)componentMap.get("E_Board" + (tabIndex + 1) + "_TypeCBox");
 
         if (eBDsettings == null) {
             if (typeCBox.getSelectedIndex() == E_BoardType.Simulator.ordinal()) {

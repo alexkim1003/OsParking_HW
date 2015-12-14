@@ -16,7 +16,6 @@
  */
 package com.osparking.osparking.device;
 
-import com.osparking.global.names.DeviceManager;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
@@ -47,7 +46,7 @@ import gnu.io.SerialPort;
  * 
  * @author Open Source Parking Inc.
  */
-public class CameraManager extends Thread implements DeviceManager {
+public class CameraManager extends Thread implements IDevice.IManager, IDevice.ISocket {
     //<editor-fold desc="--class variables">
     private byte cameraID = 0;
     private ControlGUI mainForm;
@@ -359,30 +358,5 @@ public class CameraManager extends Thread implements DeviceManager {
             picNo = 6;
         
         return picNo;
-    }
-
-    @Override
-    public void setSerialPort(SerialPort serialPort) {
-        
-    }
-
-    @Override
-    public SerialPort getSerialPort() {
-        return null;
-    }
-
-    @Override
-    public CommPortIdentifier getPortIdentifier() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public CommPort getCommPort() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setCommPort(CommPort open) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

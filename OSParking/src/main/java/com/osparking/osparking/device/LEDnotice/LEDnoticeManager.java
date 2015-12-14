@@ -18,7 +18,6 @@ package com.osparking.osparking.device.LEDnotice;
 
 import com.osparking.global.Globals;
 import com.osparking.osparking.ControlGUI;
-import com.osparking.global.names.DeviceManager;
 import java.net.Socket;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
@@ -38,6 +37,7 @@ import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTT
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.PermissionType;
+import com.osparking.osparking.device.IDevice;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Green;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Red;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
@@ -95,7 +95,7 @@ import java.util.logging.Logger;
  * 
  * @author Open Source Parking Inc.
  */
-public class LEDnoticeManager extends Thread implements DeviceManager {
+public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevice.ISerial, IDevice.ISocket {
 
    //<editor-fold desc="--class variables">
     private byte deviceNo = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
@@ -996,6 +996,11 @@ public class LEDnoticeManager extends Thread implements DeviceManager {
                 break;
         }
     }    
+
+    @Override
+    public int getBaudRate() {
+        return 115200;
+    }
 
     public static class MsgItem {
         private MsgType type;

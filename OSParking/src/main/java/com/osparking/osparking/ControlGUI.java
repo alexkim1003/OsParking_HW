@@ -71,7 +71,6 @@ import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.readEBoardSettings;
 import static com.osparking.global.names.DB_Access.readSettings;
-import com.osparking.global.names.DeviceManager;
 import com.osparking.global.names.EBD_DisplaySetting;
 import com.osparking.global.names.GatePanel;
 import com.osparking.global.names.ImageDisplay;
@@ -110,11 +109,13 @@ import com.osparking.osparking.device.CameraMessage;
 import com.osparking.osparking.device.ConnectDeviceTask;
 import com.osparking.osparking.device.EBoardManager;
 import com.osparking.osparking.device.GateBarManager;
+import com.osparking.osparking.device.IDevice;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeSettings;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
+import com.osparking.osparking.device.NaraGBar.NaraManager;
 import com.osparking.osparking.device.SendEBDMessageTask;
 import com.osparking.osparking.device.SendGateOpenTask;
 import com.osparking.osparking.statistics.DeviceCommand;
@@ -182,7 +183,7 @@ import javax.swing.event.ListSelectionListener;
  * 
  * @author Open Source Parking Inc.
  */
-public class ControlGUI extends javax.swing.JFrame implements ActionListener, ManagerGUI, ParentGUI {
+public final class ControlGUI extends javax.swing.JFrame implements ActionListener, ManagerGUI, ParentGUI {
     
     private LoginForm loginForm = null;
     AttListForm attendantsListForm = null;
@@ -206,7 +207,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     /**
      * Data members for peripheral devices (camera, gate bar, e-board)
      */
-    private DeviceManager[][] deviceManagers = null;
+    private IDevice.IManager[][] deviceManagers = null;
     private JLabel[][] deviceConnectionLabels;
     public ToleranceLevel[][] tolerance = null;
     private Object[][] socketMutex = null;
@@ -375,7 +376,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
         
         sockConnStat = new SocketConnStat[DeviceType.values().length][gateCount + 1];
         connectDeviceTimer = new ParkingTimer[DeviceType.values().length][gateCount + 1];
-        deviceManagers = new DeviceManager[DeviceType.values().length][gateCount + 1]; 
+        deviceManagers = new IDevice.IManager[DeviceType.values().length][gateCount + 1]; 
         
         errorCheckBox.setEnabled(DEBUG);
         errIncButton.setEnabled(DEBUG);
@@ -402,25 +403,35 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
                 
                 switch (type) {
                     case Camera: 
-                        deviceManagers[type.ordinal()][gateNo] = (DeviceManager)new CameraManager(this, gateNo);
+                        deviceManagers[type.ordinal()][gateNo] = (IDevice.IManager)new CameraManager(this, gateNo);
                         break;
                         
                     case E_Board: 
                         switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
                             case LEDnotice:
                                 deviceManagers[type.ordinal()][gateNo] 
-                                        = (DeviceManager)new LEDnoticeManager(this, gateNo);
+                                        = (IDevice.IManager)new LEDnoticeManager(this, gateNo);
                                 break;
                                 
                             default:
                                 deviceManagers[type.ordinal()][gateNo] 
-                                        = (DeviceManager)new EBoardManager(this, gateNo);
+                                        = (IDevice.IManager)new EBoardManager(this, gateNo);
                                 break;
                         }
                         break;
                         
                     case GateBar: 
-                        deviceManagers[type.ordinal()][gateNo] = (DeviceManager)new GateBarManager(this, gateNo);
+                        switch (Globals.gateDeviceTypes[gateNo].gateBarType) {
+                            case NaraCorp:
+                                deviceManagers[type.ordinal()][gateNo] 
+                                        = (IDevice.IManager)new NaraManager(this, gateNo);
+                                break;
+                                
+                            default:
+                                deviceManagers[type.ordinal()][gateNo] 
+                                        = (IDevice.IManager)new GateBarManager(this, gateNo);
+                                break;
+                        }
                         break;
                 }
                 // start server socket listeners for all types of devices
@@ -2618,7 +2629,7 @@ public class ControlGUI extends javax.swing.JFrame implements ActionListener, Ma
     }
 
     @Override
-    public DeviceManager[][] getDeviceManagers() {
+    public IDevice[][] getDeviceManagers() {
         return deviceManagers;
     }
 

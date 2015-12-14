@@ -17,7 +17,6 @@
 package com.osparking.osparking.device;
 
 import static com.osparking.global.Globals.gateDeviceTypes;
-import com.osparking.global.names.DeviceManager;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.TimerTask;
@@ -48,7 +47,7 @@ import java.nio.ByteBuffer;
 public class LED_Task extends TimerTask {
 
     ControlGUI controlGUI = null;
-    DeviceManager[][] deviceManagers = null;
+    IDevice.IManager[][] deviceManagers = null;
     /**
      * used to give blinking effect to the status text label on the device socket connection
      */
@@ -64,7 +63,7 @@ public class LED_Task extends TimerTask {
      * @param guiMain GUI form frame on which it's device connection status is to be displayed
      * @param gateManagerArr managerLEDnotice array through which their sockets are accessed 
      */
-    public LED_Task(ControlGUI guiMain, DeviceManager[][] deviceManagers) {
+    public LED_Task(ControlGUI guiMain, IDevice.IManager[][] deviceManagers) {
         this.controlGUI = guiMain;
         this.deviceManagers = deviceManagers;
         ledNoticeProtocol = new LedProtocol();

@@ -31,7 +31,6 @@ import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.deviceIP;
 import static com.osparking.global.names.DB_Access.connectionType;
-import com.osparking.global.names.DeviceManager;
 import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -100,10 +99,10 @@ public class ConnectDeviceTask implements Runnable {
 
                         if (manager.getCommPort() instanceof SerialPort) {
                             SerialPort serialPort = (SerialPort) manager.getCommPort();
-                            serialPort.setSerialPortParams(115200,	// 통신속도
-                                            SerialPort.DATABITS_8, 	// 데이터 비트
-                                            SerialPort.STOPBITS_1,	// stop 비트
-                                            SerialPort.PARITY_NONE);	// 패리티
+                            serialPort.setSerialPortParams(manager.getBaudRate(), // 통신속도
+                                            SerialPort.DATABITS_8,                   // 데이터 비트
+                                            SerialPort.STOPBITS_1,                    // stop 비트
+                                            SerialPort.PARITY_NONE);                // 패리티
                             if (manager == null) {
                                 logParkingException(Level.INFO, null, "null manager", deviceID);
                             } else {

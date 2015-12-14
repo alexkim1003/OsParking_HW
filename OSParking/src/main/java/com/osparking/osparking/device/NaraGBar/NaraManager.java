@@ -5,6 +5,7 @@
  */
 package com.osparking.osparking.device.NaraGBar;
 
+import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.DeviceManager;
 import com.osparking.osparking.ControlGUI;
 import com.osparking.osparking.device.NaraGBar.NaraEnums.BarMessage;
@@ -31,6 +32,7 @@ import static com.osparking.osparking.device.NaraGBar.NaraEnums.up_lock;
 import static com.osparking.osparking.device.NaraGBar.NaraEnums.up_ok;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
+import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -38,23 +40,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.TooManyListenersException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Open Source Parking Inc.
  */
-class NaraManager extends Thread implements DeviceManager{
+public class NaraManager extends Thread implements DeviceManager{
+    private CommPortIdentifier portIdentifier;
     ControlGUI mainGUI;
+    byte deviceNo;
     private SerialPort serialPort = null;
-    private Object msgArrived = new Object();
-    private NaraEnums.BarMessage msg;
+    Object msgArrived = new Object();
+    NaraEnums.BarMessage msg;
     public long openOrderTmMs = 0;
     private BarStatus barState = UNKNOWN;    
     
-    NaraManager(ControlGUI mainGUI) {
+    public NaraManager(ControlGUI mainGUI, final byte deviceNo) {
         this.mainGUI = mainGUI;
+        this.deviceNo = deviceNo;
+        
+        String port = "COM6";
+        try {
+            portIdentifier = CommPortIdentifier.getPortIdentifier(port);
+        } catch (NoSuchPortException ex) {
+            JOptionPane.showMessageDialog(null, "No such port: " + port);
+            logParkingException(Level.SEVERE, ex, "prepare logging file", deviceNo);
+            
+            System.exit(-1);
+        }            
     }
     
     @Override
@@ -128,14 +145,58 @@ class NaraManager extends Thread implements DeviceManager{
     public boolean isNeverConnected() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void setSerialPort(SerialPort serialPort) {
+        try {
+            if (serialPort != null) {
+                serialPort.notifyOnDataAvailable(true);
+                serialPort.addEventListener(new RS_232_Manager(this, serialPort));
+            }
+        } catch (TooManyListenersException ex) {
+            logParkingException(Level.SEVERE, ex, "Serial port inputstream", deviceNo);
+        }
+        this.serialPort = serialPort;        
+    }
+
+    @Override
+    public SerialPort getSerialPort() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public CommPortIdentifier getPortIdentifier() {
+        return portIdentifier;
+    }
+
+    @Override
+    public CommPort getCommPort() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setCommPort(CommPort open) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getBaudRate() {
+        return 9600;
+    }
 }
 
 class RS_232_Manager implements SerialPortEventListener {
 
-    ControlGUI mainGUI;
+    NaraManager manager;
+    InputStream inStream;
     
-    RS_232_Manager(ControlGUI mainGUI) {
-        this.mainGUI = mainGUI;
+    RS_232_Manager(NaraManager manager, SerialPort port) {
+        try {
+            this.manager = manager;
+            inStream = port.getInputStream();
+        } catch (IOException ex) {
+            logParkingException(Level.SEVERE, ex, "Serial port inputstream", manager.deviceNo);
+        }
     }
     
     @Override
@@ -144,12 +205,12 @@ class RS_232_Manager implements SerialPortEventListener {
         switch(e.getEventType()) {
             case SerialPortEvent.DATA_AVAILABLE:
                 // 자료를 포트에서 읽어서 바른 차단기 메시지이면 차단기 명령 수신 대기자를 깨움
-//                msg = readDeliveredMessage();
-//                if (msg != Broken) {
-//                    synchronized(msgArrived) {
-//                        msgArrived.notify();
-//                    }
-//                }
+                manager.msg = readDeliveredMessage();
+                if (manager.msg != Broken) {
+                    synchronized(manager.msgArrived) {
+                        manager.msgArrived.notify();
+                    }
+                }
                 break;
 
             default:
@@ -168,7 +229,7 @@ class RS_232_Manager implements SerialPortEventListener {
         int byteIndex = 0;
         byte posiETX;
         
-        InputStream inStream = null;
+//        InputStream inStream = null;
 //        try {
 //            inStream = mainGUI.getSerialPort().getInputStream();
 //        } catch (IOException ex) {
@@ -191,15 +252,16 @@ class RS_232_Manager implements SerialPortEventListener {
                 }
             }
             catch (IOException ex) {
+                logParkingException(Level.SEVERE, ex, "reading serial port", manager.deviceNo);
 //                Logger.getLogger(RS_232_Manager.class.getName()).log(Level.SEVERE, null, ex);
                 break;
             }
         }
-        try {
-            inStream.close();
-        } catch (IOException ex) {
-            Logger.getLogger(RS_232_Manager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            inStream.close();
+//        } catch (IOException ex) {
+//            Logger.getLogger(RS_232_Manager.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return messageType;
     }
 
