@@ -696,11 +696,9 @@ errorCheckBox.addActionListener(new java.awt.event.ActionListener() {
                         if (getBarAngle() >=  Math.PI / 2) {
                             setBarAngle(Math.PI / 2);
                             barStatus = BarStatus.Closing;
-                            timerRotateBar.cancelTask();
-
-                            Random rand = new Random();
-
+                            
                             // schedule to close the gate bar
+                            timerRotateBar.cancelTask();
                             if (timerRotateBar == null) {
                                 timerRotateBar = new ParkingTimer("timerRotateBar_" + gateBarID, false, 
                                         new BarRotator(gateBar), 0, FigureRedrawPeriodMS);

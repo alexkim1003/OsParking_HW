@@ -66,6 +66,7 @@ import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.devicePort;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.parkingLotName;
+import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.CameraType;
 import com.osparking.global.names.OSP_enums.ConnectionType;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
@@ -2642,6 +2643,12 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible
 
     private void GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible
+        // 모의장치이면 연결유형이 TCP/IP가 아닌면 경고 창 보여줌.
+        if (GateBar1_TypeCBox.getSelectedIndex() == GateBarType.Simulator.ordinal() 
+                && GateBar1_connTypeCBox.getSelectedIndex() != OSP_enums.ConnectionType.TCP_IP.ordinal()) 
+        {
+            JOptionPane.showMessageDialog(this, "모의 장치는 연결이 TCP_IP 라야 됨!");
+        }
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
                 changedControls, ((JComboBox) evt.getSource()).getName(), GateBar1_connTypeCBox.getSelectedIndex(), 
                 connectionType[GateBar.ordinal()][1]);

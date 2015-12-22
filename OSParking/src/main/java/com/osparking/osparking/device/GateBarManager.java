@@ -16,6 +16,7 @@
  */
 package com.osparking.osparking.device;
 
+import com.osparking.global.names.IDevice;
 import com.osparking.global.Globals;
 import java.io.IOException;
 import java.net.Socket;
@@ -31,10 +32,6 @@ import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.global.names.OSP_enums.MsgCode.Open_ACK;
 import com.osparking.global.names.ParkingTimer;
 import com.osparking.osparking.ControlGUI;
-import com.osparking.osparking.device.IDevice.ISocket;
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -177,7 +174,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
                                                     .getResendCount();
 
                                             mainForm.getPerfomStatistics()[GateBar.ordinal()][gateID]
-                                                    .addAckSpeedStatistics(ackDelay, resendCnt);
+                                                    .addAckDelayStatistics(ackDelay, resendCnt);
                                         }
                                     }
                                     openGateTimer.cancelTask(); // Stop resending open command

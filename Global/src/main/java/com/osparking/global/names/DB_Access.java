@@ -169,7 +169,6 @@ public class DB_Access {
             // create the java statement
             conn = JDBCMySQL.getConnection();
             stmt = conn.prepareStatement(query);
-            //stmt.setInt(1, gateID);
 
             // execute the query, and get a java resultset
             rs = stmt.executeQuery(query);   
@@ -282,7 +281,7 @@ public class DB_Access {
      * Read Electrical Display Board Settings from the database
      * @param EBD_DisplaySettings global variable which needs to be filled -- Call by reference.
      */
-    public static void readEBoardSettings(EBD_DisplaySetting[] EBD_DisplaySettings){
+    public static void readEBoardSettings(EBD_DisplaySetting[] EBD_DisplaySettings) {
         Connection conn = null;
         Statement selectStmt = null;
         ResultSet rs = null;

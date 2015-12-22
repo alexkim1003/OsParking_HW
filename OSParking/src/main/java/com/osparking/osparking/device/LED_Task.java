@@ -16,25 +16,31 @@
  */
 package com.osparking.osparking.device;
 
+import com.osparking.global.names.IDevice;
 import static com.osparking.global.Globals.gateDeviceTypes;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.TimerTask;
 import java.util.logging.Level;
-import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingExceptionStatus;
-import static com.osparking.global.names.DB_Access.connectionType;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
-import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
+import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
+import com.osparking.global.names.IDevice.ISocket;
+import static com.osparking.global.names.OSP_enums.E_BoardType.LEDnotice;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
-import com.osparking.osparking.device.LEDnotice.LEDnoticeManager.MsgItem;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeMessageQueue.MsgItem;
+import com.osparking.osparking.device.NaraBar.NaraMessageQueue.NaraMsgItem;
+import com.osparking.osparking.device.NaraBar.NaraBarMan;
+import com.osparking.osparking.device.NaraBar.NaraEnums;
+import com.osparking.osparking.device.NaraBar.NaraEnums.Nara_MsgType;
+import com.osparking.osparking.device.NaraBar.NaraMessageQueue;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
@@ -81,8 +87,8 @@ public class LED_Task extends TimerTask {
      */
     public void run() {
 
-        for (DeviceType type : DeviceType.values()) {
-            byte typeNo= (byte)type.ordinal();
+        for (DeviceType devType : DeviceType.values()) {
+            byte typeNo= (byte)devType.ordinal();
             
             for (byte gateNo = 1; gateNo <= gateCount; gateNo++) // gn : gate number
             {
@@ -90,14 +96,14 @@ public class LED_Task extends TimerTask {
                     if (setHalfTransparent) 
                     {
                         //<editor-fold desc="--decrease alpha value of odd row LED label">
-                        if (deviceManagers[typeNo][gateNo] != null 
-                                && isConnected(deviceManagers[typeNo][gateNo].getSocket(), 
-                                        deviceManagers[typeNo][gateNo].getSerialPort() , 
-                                        type, gateNo, controlGUI.tolerance))
+                        if (deviceManagers[typeNo][gateNo] != null && 
+                                IDevice.isConnected(deviceManagers[typeNo][gateNo], devType, gateNo))
                         {
 
-                            sendHeartBeat(type, gateNo);
-                            controlGUI.tolerance[type.ordinal()][gateNo].decrease();
+                            sendHeartBeat(devType, gateNo);
+//                            System.out.println("type: " + devType + ", no: " + gateNo);
+//                            System.out.println("level: " + controlGUI.tolerance[devType.ordinal()][gateNo].getLevel());
+                            controlGUI.tolerance[devType.ordinal()][gateNo].decrease();
 
                             if (gateNo % 2 == 0 )
                                 controlGUI.getDeviceConnectionLEDs()[typeNo][gateNo]
@@ -116,13 +122,13 @@ public class LED_Task extends TimerTask {
                         //</editor-fold>
                     } else {
                         //<editor-fold desc="--decrease alpha value of even row LED label">
-                        if (deviceManagers[typeNo][gateNo] != null 
-                                && isConnected(deviceManagers[typeNo][gateNo].getSocket(), 
-                                        deviceManagers[typeNo][gateNo].getSerialPort() , 
-                                        type, gateNo, controlGUI.tolerance))
+                        if (deviceManagers[typeNo][gateNo] != null && 
+                                IDevice.isConnected(deviceManagers[typeNo][gateNo], devType, gateNo))
                         {
-                            sendHeartBeat(type, gateNo);                        
-                            controlGUI.tolerance[type.ordinal()][gateNo].decrease();
+                            sendHeartBeat(devType, gateNo);     
+//                            System.out.println("type: " + devType + ", no: " + gateNo);
+//                            System.out.println("level: " + controlGUI.tolerance[devType.ordinal()][gateNo].getLevel());
+                            controlGUI.tolerance[devType.ordinal()][gateNo].decrease();
 
                             if (gateNo % 2 == 0 ) 
                                 controlGUI.getDeviceConnectionLEDs()[typeNo][gateNo]
@@ -172,16 +178,29 @@ public class LED_Task extends TimerTask {
         }
         
         try {
-            if (connectionType[type.ordinal()][gateNo] == RS_232.ordinal()) {
+            if (type == DeviceType.E_Board && 
+                    gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) 
+            {
                 LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[type.ordinal()][gateNo];
-//                outStream = deviceManagers[type.ordinal()][gateNo].getSerialPort().getOutputStream();
-                manager.getLedNoticeMessages().add(new MsgItem(GET_ID, getID_HexString));
+                if (manager.getLedNoticeMessages().size() == 0) 
+                {
+                    manager.getLedNoticeMessages().add(new MsgItem(LED_MsgType.GET_ID, getID_HexString));
+                }
+            } else if (type == DeviceType.GateBar &&
+                    gateDeviceTypes[gateNo].gateBarType == OSP_enums.GateBarType.NaraBar) 
+            {
+                // send status message to the gate bar firmware
+                NaraBarMan manager = (NaraBarMan)deviceManagers[type.ordinal()][gateNo];
+                if (manager.getNaraBarMessages().size() == 0) 
+                {
+                    manager.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
+                }
             } else {
-                outStream = deviceManagers[type.ordinal()][gateNo].getSocket().getOutputStream();
+                outStream = ((ISocket)deviceManagers[type.ordinal()][gateNo]).getSocket().getOutputStream();
                 outStream.write(msgBytes);
             }
         } catch (IOException e) {
             deviceManagers[type.ordinal()][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
-        }           
+        }
     }
 }

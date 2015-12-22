@@ -16,6 +16,7 @@
  */
 package com.osparking.osparking.device;
 
+import com.osparking.global.names.IDevice;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;

@@ -16,11 +16,10 @@
  */
 package com.osparking.osparking.statistics;
 
-import java.util.logging.Level;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.GENERAL_DEVICE;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.logParkingOperation;
+import static com.osparking.global.names.DB_Access.statCount;
 import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 
@@ -35,9 +34,17 @@ public class DeviceCommand {
      */
     String commandName;
     int commandCount = 0;
+    int commandCountRunning = 0;
+    
     int commAckDelayTot = 0;
+    int commAckDelayTotRunning = 0;
+    
     int commAckDelayMax = 0;
+    int commAckDelayMaxRunning = 0;
+    
     int commResendCntTot = 0;
+    int commResendCntTotRunning = 0;
+    
     private int DECENT_LIMIT = 100; 
     
     
@@ -55,12 +62,22 @@ public class DeviceCommand {
         this.commandName = commandName;
     }
     
-    public void addAckSpeedStatistics (int delayMs, int resendCnt) {
-        commandCount++;
-        commAckDelayTot += delayMs;
-        commResendCntTot += resendCnt;
-        if (commAckDelayMax < delayMs)
-            commAckDelayMax = delayMs;
+    public void addAckDelayStatistics (int delayMs, int resendCnt) {
+        if (++commandCountRunning == statCount) {
+            commandCount = commandCountRunning;
+            commAckDelayTot = commAckDelayTotRunning;
+            commAckDelayMax = commAckDelayMaxRunning;
+            commResendCntTot = commResendCntTotRunning;
+            
+            commandCountRunning = 0;
+            commAckDelayTotRunning = 0;
+            commAckDelayMaxRunning = 0;
+            commResendCntTotRunning = 0;
+        };
+        commAckDelayTotRunning += delayMs;
+        if (commAckDelayMaxRunning < delayMs)
+            commAckDelayMaxRunning = delayMs;
+        commResendCntTotRunning += resendCnt;
         /**
          * save large disconnection period and occurrence time for debugging.
          */
@@ -81,18 +98,17 @@ public class DeviceCommand {
             sb.append("\tno Open command statistics");
         } else {
             sb.append(commandName);
-            sb.append(" commands: ");
+            sb.append("s: ");
             sb.append(commandCount);
             sb.append(System.lineSeparator());
 
             sb.append("      ACK delay--avg(ms): ");
-            float countF = (float)commandCount;
-            sb.append(getFormattedRealNumber(commAckDelayTot/countF, 1) + ", max: ");
+            sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", max: ");
             sb.append(commAckDelayMax);
             sb.append(System.lineSeparator());
 
             sb.append("      resend/open: ");
-            sb.append(getFormattedRealNumber(commResendCntTot/countF, 2));
+            sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
             sb.append(System.lineSeparator());
         }
         return sb.toString();

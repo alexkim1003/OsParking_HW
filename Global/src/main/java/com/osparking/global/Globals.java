@@ -93,6 +93,7 @@ import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.OSP_enums.EBD_ContentType;
 import com.osparking.global.names.OSP_enums.E_BoardType;
+import com.osparking.global.names.OSP_enums.GateBarType;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.VersionType;
 import com.osparking.global.names.ToleranceLevel;
@@ -176,6 +177,7 @@ public class Globals {
         for (int gateID = 1; gateID <= gateCount; gateID++) {
             gateDeviceTypes[gateID] = new GateDeviceType();
             gateDeviceTypes[gateID].eBoardType = E_BoardType.values()[deviceType[E_Board.ordinal()][gateID]];
+            gateDeviceTypes[gateID].gateBarType = GateBarType.values()[deviceType[GateBar.ordinal()][gateID]];
         }
     }  
     
@@ -1429,25 +1431,25 @@ public class Globals {
             return true;
         }
     }
-
-    public static boolean isConnected
-        (Socket socket, SerialPort serialPort, DeviceType devType, byte deviceNo, ToleranceLevel[][] tolerance) 
-    {
-        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
-        {
-            if (serialPort == null || tolerance[devType.ordinal()][deviceNo].getLevel() < 0) 
-                return false;
-            else 
-                return true;
-        } else if (connectionType[devType.ordinal()][deviceNo] == TCP_IP.ordinal()) {
-            if (Globals.isConnected(socket))
-                return true;
-            else
-                return false;
-        } else {
-            return false;
-        }
-    }
+        
+//    public static boolean isConnected
+//        (Socket socket, SerialPort serialPort, DeviceType devType, byte deviceNo, ToleranceLevel[][] tolerance) 
+//    {
+//        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
+//        {
+//            if (serialPort == null || tolerance[devType.ordinal()][deviceNo].getLevel() < 0) 
+//                return false;
+//            else 
+//                return true;
+//        } else if (connectionType[devType.ordinal()][deviceNo] == TCP_IP.ordinal()) {
+//            if (Globals.isConnected(socket))
+//                return true;
+//            else
+//                return false;
+//        } else {
+//            return false;
+//        }
+//    }
     
     /**
      * Check if some camera needs to be connected for the manager to be fully functional.

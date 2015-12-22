@@ -16,8 +16,8 @@
  */
 package com.osparking.osparking.device;
 
+import com.osparking.global.names.IDevice;
 import com.osparking.osparking.ControlGUI;
-import com.osparking.global.names.DeviceManager;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -54,7 +54,7 @@ import java.nio.ByteBuffer;
  * 
  * @author Open Source Parking Inc.
  */
-public class EBoardManager extends Thread implements DeviceManager {
+public class EBoardManager extends Thread implements IDevice.IManager, IDevice.ISocket {
 
     private static byte[] getEBDSimulatorDefaultMessage(byte deviceNo, EBD_Row row, int msgSN) {
         EBD_DisplaySetting setting = null;
@@ -286,7 +286,7 @@ public class EBoardManager extends Thread implements DeviceManager {
                                                     .getResendCount();
 
                                             mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]
-                                                    .addAckSpeedStatistics((int)ackDelay, resendCnt);
+                                                    .addAckDelayStatistics((int)ackDelay, resendCnt);
                                         }
                                     }
                                     //</editor-fold>
@@ -412,37 +412,5 @@ public class EBoardManager extends Thread implements DeviceManager {
     @Override
     public boolean isNeverConnected() {
         return neverConnected;
-    }
-
-    @Override
-    public void setSerialPort(SerialPort serialPort) {
-        this.serialPort = serialPort;
-    }
-
-    /**
-     * @return the serialPort
-     */
-    public SerialPort getSerialPort() {
-        return serialPort;
-    }
-
-    @Override
-    public CommPortIdentifier getPortIdentifier() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public CommPort getCommPort() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setCommPort(CommPort open) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getBaudRate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

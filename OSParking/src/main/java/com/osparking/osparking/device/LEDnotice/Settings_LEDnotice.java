@@ -18,6 +18,7 @@ package com.osparking.osparking.device.LEDnotice;
 
 import com.osparking.global.Globals;
 import static com.osparking.global.Globals.OSPiconList;
+import static com.osparking.global.Globals.augmentComponentMap;
 import static com.osparking.global.Globals.checkOptions;
 import static com.osparking.global.Globals.closeDBstuff;
 import static com.osparking.global.Globals.font_Size;
@@ -25,11 +26,15 @@ import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.getQuest20_Icon;
 import static com.osparking.global.Globals.initializeLoggers;
-import static com.osparking.global.Globals.isConnected;
+import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.readSettings;
+import com.osparking.global.names.IDevice;
+import com.osparking.global.names.IDevice.ISerial;
+import com.osparking.global.names.IDevice.ISocket;
 import com.osparking.global.names.JDBCMySQL;
 import com.osparking.global.names.OSP_enums;
+import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.global.names.OSP_enums.EBD_DisplayUsage;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW;
@@ -37,10 +42,8 @@ import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_TO
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
 import com.osparking.global.names.OSP_enums.PermissionType;
-import com.osparking.global.names.ParkingTimer;
 import com.osparking.osparking.ControlGUI;
 import com.osparking.osparking.Settings_System;
-import com.osparking.osparking.device.ConnectDeviceTask;
 import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeSettings;
 import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.readLEDnoticeSettings;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
@@ -58,7 +61,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
@@ -66,14 +68,15 @@ import javax.swing.JTextField;
  *
  * @author Open Source Parking Inc.
  */
-public class Settings_LEDnotice extends javax.swing.JFrame {
-    public static ControlGUI mainForm = null;
+public class Settings_LEDnotice extends javax.swing.JFrame { 
+    static LEDnoticeManager LEDmanager = null;    
+    ControlGUI mainForm = null;
     Settings_System parent = null;
     LEDnoticeManager manager;
     int gateNo;
     OSP_enums.FormMode formMode = OSP_enums.FormMode.SEARCHING;
 
-    private HashMap<String, Component> componentMap;
+    private HashMap<String, Component> componentMap = new HashMap<String,Component>();
     
     boolean[] inDemoMode = new boolean[EBD_DisplayUsage.values().length];
     
@@ -102,7 +105,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         }
         this.gateNo = gateNo;
         setIconImages(OSPiconList);
-        makeComponentMap();   
+        augmentComponentMap(this, componentMap);
         
         setLocation(1200, 350);       // delete after development completion
         initEffectComboBoxes();
@@ -2451,7 +2454,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         int prevTabIdx = (row == 0 ? 1 : 0);
         JButton saveButton = (JButton)componentMap.get("btn_Save" + prevTabIdx);
         
-        if (saveButton.isEnabled()) {
+        if (saveButton != null && saveButton.isEnabled()) {
             JOptionPane.showMessageDialog(this, 
                     "LEDnotice 설정이 변경 중입니다.," + System.lineSeparator()
                             + "[저장] 혹은 [취소] 중 하나를 선택하십시오!");
@@ -2692,14 +2695,15 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         JButton saveButtonTop = (JButton)componentMap.get("btn_Save" + (prevTabIdx * 2));
         JButton saveButtonBottom = (JButton)componentMap.get("btn_Save" + (prevTabIdx * 2 + 1));
         
-        final int row = ((JTabbedPane)ledNoticeTabbedPane.getSelectedComponent()).getSelectedIndex();
-        
-        if (saveButtonTop.isEnabled() || saveButtonBottom.isEnabled()) {
+        if ((saveButtonTop != null && saveButtonTop.isEnabled()) || 
+                (saveButtonBottom != null && saveButtonBottom.isEnabled())) {
             JOptionPane.showMessageDialog(this, 
                     "LEDnotice 설정이 변경 중입니다.," + System.lineSeparator()
                             + "[저장] 혹은 [취소] 중 하나를 선택하십시오!");
             ledNoticeTabbedPane.setSelectedIndex(prevTabIdx);
         }
+        final int row = ((JTabbedPane)ledNoticeTabbedPane.getSelectedComponent()).getSelectedIndex();
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -2718,7 +2722,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         int prevTabIdx = (row == 0 ? 1 : 0);
         JButton saveButton = (JButton)componentMap.get("btn_Save" + (2 + prevTabIdx));
         
-        if (saveButton.isEnabled()) {
+        if (saveButton != null && saveButton.isEnabled()) {
             JOptionPane.showMessageDialog(this, 
                     "LEDnotice 설정이 변경 중입니다.," + System.lineSeparator()
                             + "[저장] 혹은 [취소] 중 하나를 선택하십시오!");
@@ -2767,10 +2771,6 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         else 
             return null;
     }  
-        
-    static ControlGUI controlGUI;
-    static ParkingTimer connectDeviceTimer = null;
-    static LEDnoticeManager LEDmanager = null;
     
     /**
      * @param args the command line arguments
@@ -2799,7 +2799,6 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         }
         //</editor-fold>
         
-        connectDeviceTimer = new ParkingTimer("ospConnect_LEDnoticeTimer", false); 
         final byte gateNo = 1;
         
         initializeLoggers();
@@ -2810,10 +2809,9 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @SuppressWarnings("ResultOfObjectAllocationIgnored")
             public void run() {
-                controlGUI = new ControlGUI();
-                connectDeviceTimer.runOnce(new ConnectDeviceTask(controlGUI, E_Board, gateNo));
+                ControlGUI controlGUI = new ControlGUI();
                 Settings_LEDnotice settingsGUI = new Settings_LEDnotice(controlGUI, null, LEDmanager, gateNo);
-                //settingsGUI.setVisible(true);
+                settingsGUI.setVisible(true);
             }
         });
     }
@@ -2967,29 +2965,6 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         }    
     }    
 
-    private void makeComponentMap() {
-        componentMap = new HashMap<String,Component>();
-        
-        for (Component defVehPane : ledNoticeTabbedPane.getComponents()) {
-            for (Component upDnDefVehiche : ((JTabbedPane) defVehPane).getComponents()) {
-                for (Component leafCompo : ((JPanel) upDnDefVehiche).getComponents()) {
-                    if (leafCompo instanceof JCheckBox 
-                            || leafCompo instanceof JTextField 
-                            || leafCompo instanceof JComboBox
-                            || leafCompo instanceof JButton    ) 
-                    {
-                        if (leafCompo != null && 
-                                leafCompo.getName() != null && 
-                                leafCompo.getName().length() > 0) 
-                        {
-                            componentMap.put(leafCompo.getName(), leafCompo);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     private void tryToCloseEBDSettingsForm() {
         if (formMode == OSP_enums.FormMode.MODIFICATION) {
             JOptionPane.showMessageDialog(this, 
@@ -2998,12 +2973,16 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         } else {
             cancelDemoIfRunning();
             if (parent == null) {
-                connectDeviceTimer.cancel();
-                controlGUI.getDeviceManagers()[E_Board.ordinal()][1].setSocket(null);
-                controlGUI.stopRunningTheProgram();
+//                connectDeviceTimer.cancel();
+                if (connectionType[E_Board.ordinal()][gateNo] == TCP_IP.ordinal()) {
+                    ((ISocket) mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo]).setSocket(null);
+                } else {
+                    ((ISerial)mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo]).setSerialPort(null);
+                }
+                mainForm.stopRunningTheProgram();
 
                 manager.interrupt();
-                controlGUI.dispose();                
+                mainForm.dispose();                
             } else {
                 parent.setEBDsettings(null);
             }
@@ -3119,7 +3098,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         int ordinal = row + column * 2;
         
         JButton saveButton = (JButton)componentMap.get("btn_Save" + ordinal);
-        if (!saveButton.isEnabled()) {            
+        if (saveButton != null && !saveButton.isEnabled()) {            
             JCheckBox usChkBox = (JCheckBox)componentMap.get("useLEDnoticeCkBox" + ordinal);
             usChkBox.setSelected(ledNoticeSettings[ordinal].isUsed);
 
@@ -3229,7 +3208,8 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
             if (usage == DEFAULT_TOP_ROW.ordinal() || usage == DEFAULT_BOTTOM_ROW.ordinal()) 
             {
                 for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
-                    if (isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo].getSocket())) {
+                    //if (isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo].getSocket())) {
+                    if (IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo], E_Board, gateNo)) {
                         OSP_enums.EBD_Row row = OSP_enums.EBD_Row.BOTTOM;
                         
                         if (usage == DEFAULT_TOP_ROW.ordinal()) {

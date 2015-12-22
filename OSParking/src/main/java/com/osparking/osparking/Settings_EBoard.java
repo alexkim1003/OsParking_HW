@@ -47,6 +47,7 @@ import static com.osparking.osparking.device.EBoardManager.sendEBoardDefaultSett
 import static com.osparking.global.names.DB_Access.gateCount;
 import com.osparking.global.names.OSP_enums.FormMode;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
+import com.osparking.global.names.IDevice;
 
 /**
  *
@@ -1509,7 +1510,8 @@ public class Settings_EBoard extends javax.swing.JFrame {
                     || usage_row.ordinal() == DEFAULT_BOTTOM_ROW.ordinal()) 
             {
                 for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
-                    if (isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo].getSocket())) {
+                    if (IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo], E_Board, gateNo)) 
+                    {
                         OSP_enums.EBD_Row row = OSP_enums.EBD_Row.BOTTOM;
                         
                         if (usage_row.ordinal() == DEFAULT_TOP_ROW.ordinal())

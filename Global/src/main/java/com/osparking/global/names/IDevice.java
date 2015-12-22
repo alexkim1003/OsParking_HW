@@ -14,8 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.osparking.osparking.device;
+package com.osparking.global.names;
 
+import com.osparking.global.Globals;
+import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
+import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
+import com.osparking.global.names.OSP_enums.DeviceType;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
@@ -47,5 +52,25 @@ public class IDevice {
         public CommPort getCommPort();
         public void setCommPort(CommPort open);
         public int getBaudRate();
+    }   
+    
+    public static interface MessageQueue {
+        public String getAckStatistics();
     }    
+
+    public static boolean isConnected(IManager manager, DeviceType devType, byte deviceNo) 
+    {
+        if (manager == null) 
+            return false;
+        
+        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
+        {
+            if (((ISerial)manager).getSerialPort() == null)
+                return false;
+            else 
+                return true;
+        } else {
+            return Globals.isConnected(((ISocket)manager).getSocket());
+        }
+    }
 }

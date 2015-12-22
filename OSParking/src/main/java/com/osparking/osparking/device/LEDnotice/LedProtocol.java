@@ -25,20 +25,20 @@ import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.EffectType;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.IntOnType;
-import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_GROUP;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ALL;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_TEXT_ONE;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_ID;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.GET_VERSION;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_OFF;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_ON;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_INTR;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_RAM;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_COMM_SPD;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_ID;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SET_MONITOR;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_GROUP;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_TEXT_ALL;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_TEXT_ONE;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.GET_ID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.GET_VERSION;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.INTR_TXT_OFF;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.INTR_TXT_ON;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_INTR;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_RAM;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_TEXT;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_COMM_SPD;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_ID;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_MONITOR;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -320,7 +320,7 @@ public class LedProtocol {
         return String.format("%04X", length + type +variable);
     }
 
-    public String sendMSG(MsgType msgType, String dataVariable){
+    public String sendMSG(LED_MsgType msgType, String dataVariable){
         String typeANDdata = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
         String msgLen = String.format("%04X", typeANDdata.length() / 2);
         String ckSum = checkSum(msgLen, Integer.toHexString(msgType.getValue()), dataVariable);
@@ -532,7 +532,7 @@ public class LedProtocol {
         return getStringToTransmit(SET_MONITOR, dataVariable);
     }
 
-    public String getStringToTransmit(MsgType msgType, String dataVariable){
+    public String getStringToTransmit(LED_MsgType msgType, String dataVariable){
         String forlength = Integer.toHexString(msgType.getValue()) + dataVariable; // get data length string
         String dLength = String.format("%04X", forlength.length() / 2);
         String ckSum = checkSum(dLength, Integer.toHexString(msgType.getValue()), dataVariable);

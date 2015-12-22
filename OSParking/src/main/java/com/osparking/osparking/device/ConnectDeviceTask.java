@@ -16,6 +16,7 @@
  */
 package com.osparking.osparking.device;
 
+import com.osparking.global.names.IDevice;
 import java.awt.Font;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -32,12 +33,11 @@ import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.deviceIP;
 import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
+import com.osparking.global.names.IDevice.ISocket;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
+import javax.swing.JOptionPane;
 
 /**
  * 
@@ -71,8 +71,11 @@ public class ConnectDeviceTask implements Runnable {
                     break;
                 }
                 synchronized (managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID]) 
-                {    
-                    DeviceManager manager = managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID];
+                {
+                    IDevice.IManager manager = managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID];
+                    
+                    if (deviceType == DeviceType.GateBar && deviceID == 1) 
+                        System.out.println("");
                     
                     if (connectionType[deviceType.ordinal()][deviceID] == TCP_IP.ordinal()) 
                     {
@@ -87,29 +90,33 @@ public class ConnectDeviceTask implements Runnable {
                         if (manager == null) {
                             System.out.println("It is null");
                         }
-                        manager.setSocket(deviceSocket);
+                        ((ISocket)manager).setSocket(deviceSocket);
                         //</editor-fold>
                     } else { // serial port 
                         //<editor-fold desc="-- Open serial port">
-                        if (manager.getPortIdentifier().isCurrentlyOwned()) {
-                            System.out.println("currently owned");
+                        IDevice.ISerial serialMan = (IDevice.ISerial)manager;
+                        
+                        if (serialMan.getPortIdentifier().isCurrentlyOwned()) {
+                            System.out.println("owned...................................................");
+                            JOptionPane.showMessageDialog(managerGUI, "Gate #" + deviceID +" " 
+                                    + deviceType + " serial port is currently OWNed");
                         } else {
-                            manager.setCommPort(manager.getPortIdentifier().open(this.getClass().getName(), 1000));
-                        }
-
-                        if (manager.getCommPort() instanceof SerialPort) {
-                            SerialPort serialPort = (SerialPort) manager.getCommPort();
-                            serialPort.setSerialPortParams(manager.getBaudRate(), // 통신속도
-                                            SerialPort.DATABITS_8,                   // 데이터 비트
-                                            SerialPort.STOPBITS_1,                    // stop 비트
-                                            SerialPort.PARITY_NONE);                // 패리티
-                            if (manager == null) {
-                                logParkingException(Level.INFO, null, "null manager", deviceID);
+                            System.out.println("not owned+++++++++++++++++++");
+                            serialMan.setCommPort(serialMan.getPortIdentifier().open(this.getClass().getName(), 1000));
+                            if (serialMan.getCommPort() instanceof SerialPort) {
+                                SerialPort serialPort = (SerialPort) serialMan.getCommPort();
+                                serialPort.setSerialPortParams(serialMan.getBaudRate(), // 통신속도
+                                                SerialPort.DATABITS_8,                   // 데이터 비트
+                                                SerialPort.STOPBITS_1,                    // stop 비트
+                                                SerialPort.PARITY_NONE);                // 패리티
+                                if (manager == null) {
+                                    logParkingException(Level.INFO, null, "null manager", deviceID);
+                                } else {
+                                    serialMan.setSerialPort(serialPort);
+                                }
                             } else {
-                                manager.setSerialPort(serialPort);
+                                logParkingException(Level.INFO, null, "Only serial ports are handled", deviceID);
                             }
-                        } else {
-                            logParkingException(Level.INFO, null, "Only serial ports are handled", deviceID);
                         }
                         //</editor-fold>
                     }
@@ -123,6 +130,7 @@ public class ConnectDeviceTask implements Runnable {
                     managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
                     System.out.println("after notify all");
                 }
+                //</editor-fold>
                 return;
             } catch (SocketTimeoutException ex) {
             } catch (IOException e) {

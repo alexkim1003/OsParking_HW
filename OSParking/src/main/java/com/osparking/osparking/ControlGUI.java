@@ -54,7 +54,6 @@ import static com.osparking.global.Globals.getTagNumber;
 import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.isManager;
-import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.logParkingExceptionStatus;
 import static com.osparking.global.Globals.logParkingOperation;
@@ -66,6 +65,7 @@ import static com.osparking.global.Globals.showLicensePanel;
 import static com.osparking.global.Globals.testUniqueness;
 import com.osparking.global.names.CarAdmission;
 import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
@@ -109,13 +109,16 @@ import com.osparking.osparking.device.CameraMessage;
 import com.osparking.osparking.device.ConnectDeviceTask;
 import com.osparking.osparking.device.EBoardManager;
 import com.osparking.osparking.device.GateBarManager;
-import com.osparking.osparking.device.IDevice;
+import com.osparking.global.names.IDevice;
+import static com.osparking.global.names.OSP_enums.GateBarType.NaraBar;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeSettings;
 import com.osparking.osparking.device.LEDnotice.LedProtocol;
-import com.osparking.osparking.device.NaraGBar.NaraManager;
+import com.osparking.osparking.device.NaraBar.NaraBarMan;
+import com.osparking.osparking.device.NaraBar.NaraEnums.Nara_MsgType;
+import com.osparking.osparking.device.NaraBar.NaraMessageQueue.NaraMsgItem;
 import com.osparking.osparking.device.SendEBDMessageTask;
 import com.osparking.osparking.device.SendGateOpenTask;
 import com.osparking.osparking.statistics.DeviceCommand;
@@ -409,7 +412,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                     case E_Board: 
                         switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
                             case LEDnotice:
-                                deviceManagers[type.ordinal()][gateNo] 
+                                deviceManagers[type.ordinal()][gateNo]
                                         = (IDevice.IManager)new LEDnoticeManager(this, gateNo);
                                 break;
                                 
@@ -420,11 +423,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                         }
                         break;
                         
-                    case GateBar: 
+                    case GateBar: // deviceType[GateBar.ordinal()][gateID]
                         switch (Globals.gateDeviceTypes[gateNo].gateBarType) {
-                            case NaraCorp:
+                            case NaraBar:
                                 deviceManagers[type.ordinal()][gateNo] 
-                                        = (IDevice.IManager)new NaraManager(this, gateNo);
+                                        = (IDevice.IManager)new NaraBarMan(this, gateNo);
                                 break;
                                 
                             default:
@@ -440,12 +443,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 connectDeviceTimer[type.ordinal()][gateNo].runOnce(new ConnectDeviceTask(this, type, gateNo));
                 
                 if (deviceManagers[type.ordinal()][gateNo] != null) {
-                    // if serial port connection , don't start it
-                    // cause port listener will do reading the port
-                    if (connectionType[type.ordinal()][gateNo] != RS_232.ordinal()) 
-                    {
-                        deviceManagers[type.ordinal()][gateNo].start();
-                    }
+                    deviceManagers[type.ordinal()][gateNo].start();
                 }
             }
         }             
@@ -1645,18 +1643,12 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             for (DeviceType type : DeviceType.values()) {
                 for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
                     DeviceCommand deviceCommand = getPerfomStatistics()[type.ordinal()][gateNo];
-                    if (deviceCommand != null && deviceCommand.hasData()) {
-                        gateBar.append("            ");
-                        gateBar.append(type + " #" + gateNo + "- "
-                                + getPerfomStatistics()[type.ordinal()][gateNo].getPerformanceDescription());
-                    }
-                    if (type == DeviceType.E_Board &&
-                            Globals.gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) 
+                    
+                    if (deviceCommand != null && deviceCommand.hasData()) 
                     {
-                        perfDesc.append("      ");
-                        perfDesc.append("LEDnotice" + gateNo
-                                + " " + ((LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo])
-                                .getAckStatistics((byte)gateNo));
+                        gateBar.append("            ");
+                        gateBar.append(getDevType(type, (byte)gateNo) + "#" + gateNo + "- "
+                                + getPerfomStatistics()[type.ordinal()][gateNo].getPerformanceDescription());
                     }
                 }   
             }
@@ -1702,6 +1694,45 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     }//GEN-LAST:event_CarIOListButtonActionPerformed
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
+
+    private String getDevType(DeviceType type, byte gateNo) {
+        String typeName = "";
+        switch (type) {
+            case Camera:
+                switch (Globals.gateDeviceTypes[gateNo].cameraType) {
+                    case Simulator:
+                        typeName = "CamSim";
+                        break;
+                    default:
+                        typeName = Globals.gateDeviceTypes[gateNo].cameraType.toString();
+                        break;
+                } 
+                break;
+                
+            case E_Board:
+                switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
+                    case Simulator:
+                        typeName = "EBDsim";
+                        break;
+                    default:
+                        typeName = Globals.gateDeviceTypes[gateNo].eBoardType.toString();
+                        break;
+                } 
+                break;
+                
+            case GateBar:
+                switch (Globals.gateDeviceTypes[gateNo].gateBarType) {
+                    case Simulator:
+                        typeName = "BarSim";
+                        break;
+                    default:
+                        typeName = Globals.gateDeviceTypes[gateNo].gateBarType.toString();
+                        break;
+                } 
+                break;
+        }
+        return typeName;
+    }
 
     class ManageArrivalList extends Thread {
         public void run() {
@@ -2473,9 +2504,19 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     public void openGate(int gateNo, int openCmdID, int carPassingDelayMs) {
         
         openCommandIssuedMs[gateNo] = System.currentTimeMillis();
-        SendGateOpenTask sendOpenTask = 
-                new SendGateOpenTask(this, (byte) gateNo, openCmdID, carPassingDelayMs);
-        getOpenGateCmdTimer()[gateNo].reschedule(sendOpenTask);
+
+        if (connectionType[GateBar.ordinal()][gateNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
+            if (deviceType[GateBar.ordinal()][gateNo] == NaraBar.ordinal()) {
+                NaraBarMan gateMan = (NaraBarMan) getDeviceManagers()[GateBar.ordinal()][gateNo];
+                gateMan.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateUp));
+                // carPassingDelayMs ms 경과 후 차단기 닫는 명령을 add 하는 task run once 함
+                gateMan.scheduleGateCloseAction(gateMan, carPassingDelayMs);
+            }
+        } else {
+            SendGateOpenTask sendOpenTask = 
+                    new SendGateOpenTask(this, (byte) gateNo, openCmdID, carPassingDelayMs);
+            getOpenGateCmdTimer()[gateNo].reschedule(sendOpenTask);
+        }
     }    
     
     Object AckFileMutex = new Object();
@@ -2629,7 +2670,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     }
 
     @Override
-    public IDevice[][] getDeviceManagers() {
+    public IDevice.IManager[][] getDeviceManagers() {
         return deviceManagers;
     }
 
@@ -2659,79 +2700,78 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             tagNumber = tagEnteredAs;
         
         interruptsAcked[gateNo] = false;
-        
-        if (deviceManagers[E_Board.ordinal()][gateNo] != null 
-                && (isConnected(deviceManagers[E_Board.ordinal()][gateNo].getSocket()) ||
-                        Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice
-                      )
-           )
-        {
-            long currTimeMs = System.currentTimeMillis();
-
-            //<editor-fold desc="-- Init debug information">
-            if (DEBUG) {
-                eBoardMsgSentMs[gateNo][EBD_Row.TOP.ordinal()] = currTimeMs;
-                eBoardMsgSentMs[gateNo][EBD_Row.BOTTOM.ordinal()] = currTimeMs;
-            }
-            //</editor-fold>
-            
-            // check E-Board type and process accordingly
-            switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
-                case LEDnotice:
-                    //<editor-fold desc="-- Car arrival interrupt message for the LEDnotice hardware">
-                    LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo];
-                    manager.sendCarArrival_interruptMessage(
-                            ledNoticeSettings[CAR_ENTRY_TOP_ROW.ordinal()],
-                            ledNoticeSettings[CAR_ENTRY_BOTTOM_ROW.ordinal()],
-                            gateNo, tagNumber, permission, remark, 
-                            carPassingDelayMs);
-                    //</editor-fold>
-                    break;
-
-                default:
-                    //<editor-fold desc="-- Car arrival interrupt message for the e-board simulator">
-                    getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reschedule(
-                            new SendEBDMessageTask(
-                                    this, gateNo, EBD_Row.TOP, 
-                                    getIntMessage(tagNumber, gateNo, EBD_Row.TOP, 
-                                            imageSN * 2 + EBD_Row.TOP.ordinal(), carPassingDelayMs), 
-                                    imageSN * 2 + EBD_Row.TOP.ordinal()
-                            )
-                    );
-
-                    getSendEBDmsgTimer()[gateNo][EBD_Row.BOTTOM.ordinal()].reschedule(
-                            new SendEBDMessageTask(
-                                    this, gateNo, EBD_Row.BOTTOM, 
-                                    getIntMessage(tagNumber, gateNo, EBD_Row.BOTTOM, 
-                                            imageSN * 2 + EBD_Row.BOTTOM.ordinal(), carPassingDelayMs), 
-                                    imageSN * 2 + EBD_Row.BOTTOM.ordinal()
-                            )
-                    );
-                    //</editor-fold>
-                    break;
-            }
-            
-            //<editor-fold desc="-- Save debug information">
-            if (DEBUG) 
-            {
-                /**
-                 * Save EBD interrupt message serial numbers for book keeping
-                 */
-                try {
-                    getIDLogFile()[E_Board.ordinal()][gateNo]
-                            .write(imageSN * 2 + EBD_Row.TOP.ordinal() + System.lineSeparator());
-                    getIDLogFile()[E_Board.ordinal()][gateNo]
-                            .write(imageSN * 2 + EBD_Row.BOTTOM.ordinal() + System.lineSeparator());
-                    getIDLogFile()[E_Board.ordinal()][gateNo].flush();
-                } catch (IOException ex) {
-                    logParkingExceptionStatus(Level.SEVERE, ex, "saving open ID", getStatusTextField(), 
-                            GENERAL_DEVICE);
-                }    
-            }
-            //</editor-fold>
-        } else {
+        IDevice.IManager eManager = deviceManagers[E_Board.ordinal()][gateNo];
+        if (eManager == null) {
             statusTextField.setText("E-Board #" + gateNo + " manager isn't alive");
-        }        
+        } else {
+            if (IDevice.isConnected(eManager, E_Board, gateNo))
+//                    || Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice)
+            {
+                long currTimeMs = System.currentTimeMillis();
+
+                //<editor-fold desc="-- Init debug information">
+                if (DEBUG) {
+                    eBoardMsgSentMs[gateNo][EBD_Row.TOP.ordinal()] = currTimeMs;
+                    eBoardMsgSentMs[gateNo][EBD_Row.BOTTOM.ordinal()] = currTimeMs;
+                }
+                //</editor-fold>
+
+                // check E-Board type and process accordingly
+                switch (Globals.gateDeviceTypes[gateNo].eBoardType) {
+                    case LEDnotice:
+                        //<editor-fold desc="-- Car arrival interrupt message for the LEDnotice hardware">
+                        LEDnoticeManager manager = (LEDnoticeManager)deviceManagers[E_Board.ordinal()][gateNo];
+                        manager.sendCarArrival_interruptMessage(
+                                ledNoticeSettings[CAR_ENTRY_TOP_ROW.ordinal()],
+                                ledNoticeSettings[CAR_ENTRY_BOTTOM_ROW.ordinal()],
+                                gateNo, tagNumber, permission, remark, 
+                                carPassingDelayMs);
+                        //</editor-fold>
+                        break;
+
+                    default:
+                        //<editor-fold desc="-- Car arrival interrupt message for the e-board simulator">
+                        getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reschedule(
+                                new SendEBDMessageTask(
+                                        this, gateNo, EBD_Row.TOP, 
+                                        getIntMessage(tagNumber, gateNo, EBD_Row.TOP, 
+                                                imageSN * 2 + EBD_Row.TOP.ordinal(), carPassingDelayMs), 
+                                        imageSN * 2 + EBD_Row.TOP.ordinal()
+                                )
+                        );
+
+                        getSendEBDmsgTimer()[gateNo][EBD_Row.BOTTOM.ordinal()].reschedule(
+                                new SendEBDMessageTask(
+                                        this, gateNo, EBD_Row.BOTTOM, 
+                                        getIntMessage(tagNumber, gateNo, EBD_Row.BOTTOM, 
+                                                imageSN * 2 + EBD_Row.BOTTOM.ordinal(), carPassingDelayMs), 
+                                        imageSN * 2 + EBD_Row.BOTTOM.ordinal()
+                                )
+                        );
+                        //</editor-fold>
+                        break;
+                }
+
+                //<editor-fold desc="-- Save debug information">
+                if (DEBUG) 
+                {
+                    /**
+                     * Save EBD interrupt message serial numbers for book keeping
+                     */
+                    try {
+                        getIDLogFile()[E_Board.ordinal()][gateNo]
+                                .write(imageSN * 2 + EBD_Row.TOP.ordinal() + System.lineSeparator());
+                        getIDLogFile()[E_Board.ordinal()][gateNo]
+                                .write(imageSN * 2 + EBD_Row.BOTTOM.ordinal() + System.lineSeparator());
+                        getIDLogFile()[E_Board.ordinal()][gateNo].flush();
+                    } catch (IOException ex) {
+                        logParkingExceptionStatus(Level.SEVERE, ex, "saving open ID", getStatusTextField(), 
+                                GENERAL_DEVICE);
+                    }    
+                }
+                //</editor-fold>
+            }
+        }
     }
     
     byte[] getIntMessage(String  tagRecogedAs, byte deviceNo, EBD_Row row, int msgSN, int delay) {
@@ -2993,7 +3033,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             wholeMessageBytes[idx++] = dByte;
         }
     }
-
 
     /**
      * @param args the command line arguments

@@ -16,21 +16,17 @@
  */
 package com.osparking.global.names;
 
-import com.osparking.global.names.SocketConnStat;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import com.osparking.global.names.DeviceManager;
 import com.osparking.global.names.OSP_enums.DeviceType;
-import com.osparking.global.names.ParkingTimer;
-import com.osparking.global.names.ToleranceLevel;
 
 /**
  *
  * @author Open Source Parking Inc.
  */
 public interface ManagerGUI {
-    DeviceManager[][] getDeviceManagers();
+    IDevice.IManager[][] getDeviceManagers();
     JLabel[][] getDeviceConnectionLabels();
     ParkingTimer[][] getConnectDeviceTimer();
     SocketConnStat[][] getSockConnStat();            

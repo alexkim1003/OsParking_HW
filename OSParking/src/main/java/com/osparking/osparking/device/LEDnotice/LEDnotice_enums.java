@@ -21,9 +21,9 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Red;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.FontBox.Gothic;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.FontBox.Ming;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_INTR;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_RAM;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.SAVE_TEXT;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_INTR;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_RAM;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_TEXT;
 
 /**
  *
@@ -270,7 +270,7 @@ public class LEDnotice_enums {
     final static int saveRAM = 0x76;
     final static int setMonitor = 0X82;
     
-    public enum MsgType {
+    public enum LED_MsgType {
         DEL_TEXT_ONE (delTextOne), // delete individual text
         DEL_GROUP (delGroup), // 그룹 메모리 삭제
         DEL_TEXT_ALL (delTextAll),  // delete whole text
@@ -291,7 +291,7 @@ public class LEDnotice_enums {
         
         final private int value;
 
-        MsgType(int value) {
+        LED_MsgType(int value) {
             this.value = value;
         }
 

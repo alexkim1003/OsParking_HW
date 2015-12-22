@@ -44,8 +44,6 @@ public class RS_232_Manager implements SerialPortEventListener {
     @Override
     public void serialEvent(SerialPortEvent e) {
         try {
-//            SerialPort port = (SerialPort) e.getSource();
-
             byte[] preMsg = new byte[3];
             int msgLength = -2;
             byte typeInt;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.osparking.osparking.device.NaraGBar;
+package com.osparking.osparking.device.NaraBar;
 
 /**
  *
@@ -36,7 +36,7 @@ public class NaraEnums {
     final static String down_ok = "DOWN OK";
     final static String down_action = "DOWN ACTION";
     
-    public enum BarMessage {
+    public enum Nara_MsgType {
         Broken("", ""),
         Status(status, "상태검사"), 
         GateUp(gate_up, "개방지시"), 
@@ -46,9 +46,9 @@ public class NaraEnums {
         GateDownAction(gate_down_action, "폐쇄지시 접수"), 
         GateDownOK(gate_down_ok, "폐쇄 완료"),
         GateUnLOCK(unlock, "잠금해제"),
-        GateUpLOCK(up_lock, "개방&잠금"),
         SystemReset(system_reset, "시스템 재설정"),
         
+        GateState_UpLOCK(up_lock, "개방&잠금"),
         GateState_SYSTEM_INIT(system_init, "시스템 초기화"),
         GateState_UP_OK(up_ok, "개방 상태"),
         GateState_UP_ACTION(up_action, "바 개방 중"),
@@ -58,7 +58,7 @@ public class NaraEnums {
         private String message;
         private String messageUF;
 
-        BarMessage(String message, String messageUF) {
+        Nara_MsgType(String message, String messageUF) {
             this.message = message;
             this.messageUF = messageUF;
         } 

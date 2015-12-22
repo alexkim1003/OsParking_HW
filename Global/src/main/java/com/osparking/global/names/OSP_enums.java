@@ -70,7 +70,7 @@ public class OSP_enums {
     
     public enum GateBarType {
         Simulator("모의장치"), 
-        NaraCorp("Nara Bar");
+        NaraBar("Nara Bar");
         
         private String label;
         
@@ -85,7 +85,7 @@ public class OSP_enums {
     
     public enum CameraType {
         Simulator("모의장치"), 
-        NaraCorp("Point Grey");
+        PointGrey("Point Grey");
         
         private String label;
         

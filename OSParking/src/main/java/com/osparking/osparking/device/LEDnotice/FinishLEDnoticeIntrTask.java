@@ -16,15 +16,15 @@
  */
 package com.osparking.osparking.device.LEDnotice;
 
-import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
+import com.osparking.global.names.IDevice;
 import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
-import com.osparking.osparking.device.LEDnotice.LEDnoticeManager.MsgItem;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.GROUP_TYPE.INTR_GROUP;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.DEL_GROUP;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.MsgType.INTR_TXT_OFF;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_GROUP;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.INTR_TXT_OFF;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeMessageQueue.MsgItem;
 import java.util.TimerTask;
 import java.util.logging.Level;
 
@@ -49,19 +49,17 @@ public class FinishLEDnoticeIntrTask extends TimerTask {
     public synchronized void run() {
         try 
         {
+            LEDnoticeManager manager 
+                    = (LEDnoticeManager) mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo];
+            
             synchronized(mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
             {
-                if (!isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket(), 
-                        mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSerialPort(),
-                        E_Board, deviceNo, mainGUI.tolerance))
+                if (!IDevice.isConnected(manager, E_Board, deviceNo))
                 {
-                        mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                    mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
                 }
             }
             ++sendCount;
-            
-            LEDnoticeManager manager 
-                    = (LEDnoticeManager) mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo];
             
             manager.getLedNoticeMessages().add(new MsgItem(INTR_TXT_OFF, 
                     manager.ledNoticeProtocol.intOff()));
