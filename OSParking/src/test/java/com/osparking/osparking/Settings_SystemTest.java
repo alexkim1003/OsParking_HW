@@ -16,11 +16,9 @@
  */
 package com.osparking.osparking;
 
-import static com.sun.xml.internal.ws.dump.LoggingDumpTube.Position.Before;
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import org.jopendocument.dom.template.Test;
 
 /**
  *
