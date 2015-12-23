@@ -17,7 +17,6 @@
 package com.osparking.osparking.device.NaraBar;
 
 import com.osparking.osparking.device.LEDnotice.*;
-import com.osparking.global.names.DB_Access;
 import com.osparking.global.names.IDevice.MessageQueue;
 import com.osparking.osparking.device.NaraBar.NaraMessageQueue.NaraMsgItem;
 import com.osparking.osparking.device.NaraBar.NaraEnums.Nara_MsgType;

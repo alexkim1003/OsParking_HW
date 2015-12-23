@@ -46,6 +46,7 @@ public class NaraEnums {
         GateDownAction(gate_down_action, "폐쇄지시 접수"), 
         GateDownOK(gate_down_ok, "폐쇄 완료"),
         GateUnLOCK(unlock, "잠금해제"),
+        GateUpLOCK(up_lock, "개방&잠금"),
         SystemReset(system_reset, "시스템 재설정"),
         
         GateState_UpLOCK(up_lock, "개방&잠금"),

@@ -41,7 +41,7 @@ import com.osparking.osparking.ControlGUI;
  * @author Open Source Parking Inc.
  */
 public class GateBarManager extends Thread implements IDevice.IManager, IDevice.ISocket {
-    //<editor-fold desc="--class variables">
+    //<editor-fold desc="-- class variables">
     private byte gateID = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
     private ControlGUI mainForm; // main form of the gate bar simulator.
     
@@ -54,17 +54,12 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      * a timer employed to send Open commands to the designated gate bar for sure.
      */
     ParkingTimer openGateTimer = null;
-    
-    /**
-     * a timer used to send a heartbeat to the gate bar regularily.
-     */
-    public ParkingTimer timerAreYouThere = null;
-    //</editor-fold>    
 
     byte [] cmdIDarr = new byte[4]; // open command ID
     byte [] fiveByteArr =new byte[5]; // storage for (code + ID)
     
     private boolean neverConnected = true;
+    //</editor-fold>    
     
     /**
      * A unique constructor of the GateManager class.
@@ -229,9 +224,6 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      */
     @Override
     public void stopOperation(String reason) {
-        if (timerAreYouThere != null)
-            timerAreYouThere.cancelTask();
-        
         finishConnection(null, reason, gateID);
         interrupt();
     }

@@ -74,22 +74,15 @@ public class ConnectDeviceTask implements Runnable {
                 {
                     IDevice.IManager manager = managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID];
                     
-                    if (deviceType == DeviceType.GateBar && deviceID == 1) 
-                        System.out.println("");
-                    
                     if (connectionType[deviceType.ordinal()][deviceID] == TCP_IP.ordinal()) 
                     {
                         //<editor-fold desc="-- Request socket connection">
                         Socket deviceSocket = new Socket();
                         deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], portNo),
-                                LED_PERIOD);
+                                PULSE_PERIOD);
 
                         deviceSocket.setTcpNoDelay(true);
                         deviceSocket.setSoTimeout(PULSE_PERIOD);
-
-                        if (manager == null) {
-                            System.out.println("It is null");
-                        }
                         ((ISocket)manager).setSocket(deviceSocket);
                         //</editor-fold>
                     } else { // serial port 

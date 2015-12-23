@@ -21,50 +21,8 @@ import com.osparking.attendant.LoginEventListener;
 import com.osparking.attendant.LoginForm;
 import com.osparking.attendant.LoginWindowEvent;
 import com.osparking.global.Globals;
-import static com.osparking.global.Globals.CAMERA_GUI_WIDTH;
-import static com.osparking.global.Globals.CAR_PERIOD;
-import static com.osparking.global.Globals.DEBUG;
-import static com.osparking.global.Globals.ERROR_RATE;
-import static com.osparking.global.Globals.GATE_BAR_HEIGHT;
-import static com.osparking.global.Globals.GENERAL_DEVICE;
-import static com.osparking.global.Globals.IDBeforeLogin;
-import static com.osparking.global.Globals.LED_PERIOD;
-import static com.osparking.global.Globals.MAX_GATES;
-import static com.osparking.global.Globals.MAX_PASSING_DELAY;
-import static com.osparking.global.Globals.MainBackground;
-import static com.osparking.global.Globals.RECENT_COUNT;
-import static com.osparking.global.Globals.RESEND_PERIOD;
-import static com.osparking.global.Globals.TASK_BAR_HEIGHT;
-import static com.osparking.global.Globals.addMessageLine;
-import static com.osparking.global.Globals.addUpBytes;
-import static com.osparking.global.Globals.admissionListModel;
-import static com.osparking.global.Globals.checkOptions;
-import static com.osparking.global.Globals.closeDBstuff;
-import static com.osparking.global.Globals.closeInputStream;
-import static com.osparking.global.Globals.createStretchedIcon;
-import static com.osparking.global.Globals.font_Size;
-import static com.osparking.global.Globals.font_Style;
-import static com.osparking.global.Globals.font_Type;
-import static com.osparking.global.Globals.getBufferedImage;
-import static com.osparking.global.Globals.getFormattedRealNumber;
-import static com.osparking.global.Globals.getMinusIcon;
-import static com.osparking.global.Globals.getPathAndDay;
-import static com.osparking.global.Globals.getPlusIcon;
-import static com.osparking.global.Globals.getTagNumber;
-import static com.osparking.global.Globals.OSPiconList;
-import static com.osparking.global.Globals.initializeLoggers;
-import static com.osparking.global.Globals.isManager;
-import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.logParkingExceptionStatus;
-import static com.osparking.global.Globals.logParkingOperation;
-import static com.osparking.global.Globals.loginID;
-import static com.osparking.global.Globals.loginPW;
-import static com.osparking.global.Globals.originalImgWidth;
-import static com.osparking.global.Globals.sdf;
-import static com.osparking.global.Globals.showLicensePanel;
-import static com.osparking.global.Globals.testUniqueness;
+import static com.osparking.global.Globals.*;
 import com.osparking.global.names.CarAdmission;
-import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -78,8 +36,6 @@ import com.osparking.global.names.JDBCMySQL;
 import com.osparking.global.names.ManagerGUI;
 import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.BarOperation;
-import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
-
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
@@ -2504,14 +2460,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     public void openGate(int gateNo, int openCmdID, int carPassingDelayMs) {
         
         openCommandIssuedMs[gateNo] = System.currentTimeMillis();
-
-        if (connectionType[GateBar.ordinal()][gateNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            if (deviceType[GateBar.ordinal()][gateNo] == NaraBar.ordinal()) {
-                NaraBarMan gateMan = (NaraBarMan) getDeviceManagers()[GateBar.ordinal()][gateNo];
-                gateMan.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateUp));
-                // carPassingDelayMs ms 경과 후 차단기 닫는 명령을 add 하는 task run once 함
-                gateMan.scheduleGateCloseAction(gateMan, carPassingDelayMs);
-            }
+        if (deviceType[GateBar.ordinal()][gateNo] == NaraBar.ordinal()) {
+            NaraBarMan gateMan = (NaraBarMan) getDeviceManagers()[GateBar.ordinal()][gateNo];
+            gateMan.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateUp));
+            // carPassingDelayMs ms 경과 후 차단기 닫는 명령을 add 하는 task run once 함
+            gateMan.scheduleGateCloseAction(gateMan, carPassingDelayMs);
         } else {
             SendGateOpenTask sendOpenTask = 
                     new SendGateOpenTask(this, (byte) gateNo, openCmdID, carPassingDelayMs);
@@ -3075,8 +3028,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 parentGUI = mainForm;
                 mainForm.recordSystemStart();
                 mainForm.setVisible(true);
-                if (!DEBUG)
-                    Globals.shortLicenseDialog(mainForm);
+                Globals.shortLicenseDialog(mainForm);
             }
         });
     }

@@ -11,6 +11,7 @@ import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
 import com.osparking.global.names.IDevice;
+import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
 import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
 import com.osparking.global.names.ParkingTimer;
@@ -39,10 +40,13 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * 나라 차단기와 연결된 통신 선로를 통하여 다음 두 가지 기능을 하는 쓰레드를 포함
+ * 쓰레드 1(NaraBarMan): 차단기가 메시지를 전송할 때까지 기다리다가 메시지 별로 필요한 일처리 수행
+ * 쓰레드 2(NaraBarWriter): 차단기로 보내는 메시지 큐에 항목이 입력되면 하나씩 차단기로 ACK 가 올 때까지 
+ *                                 반복적으로 전송함.
  * @author Open Source Parking Inc.
  */
-public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISerial {
+public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISerial, IDevice.ISocket {
     private CommPortIdentifier portIdentifier;
     private CommPort commPort;
     
@@ -53,24 +57,30 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
     OutputStream oStrm;
     Thread msgSender = null;
     
-    Object msgArrived = new Object();
-    NaraEnums.Nara_MsgType msg;
+    private Object msgArrived = new Object();
+    private NaraEnums.Nara_MsgType msg;
     public long openOrderTmMs = 0;
     private BarStatus barState = UNKNOWN;    
     
     public NaraBarMan(final ControlGUI mainGUI, final byte deviceNo) {
         this.mainGUI = mainGUI;
         this.deviceNo = deviceNo;
-        naraBarMessages = new NaraMessageQueue(msgQdoor,
-                                mainGUI.getPerfomStatistics()[GateBar.ordinal()][deviceNo]);        
+        naraBarMessages = new NaraMessageQueue(getMsgQdoor(),
+                                mainGUI.getPerfomStatistics()[GateBar.ordinal()][deviceNo]);
         
-        String port = "COM6";
-        try {
-            portIdentifier = CommPortIdentifier.getPortIdentifier(port);
-        } catch (NoSuchPortException ex) {
-            JOptionPane.showMessageDialog(null, "No such port: " + port);
-            logParkingException(Level.SEVERE, ex, "prepare logging file", deviceNo);
-        }   
+        if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
+            String port = "COM6";
+            try {
+                portIdentifier = CommPortIdentifier.getPortIdentifier(port);
+            } catch (NoSuchPortException ex) {
+                JOptionPane.showMessageDialog(null, "No such port: " + port);
+                logParkingException(Level.SEVERE, ex, "prepare logging file", deviceNo);
+            }
+        } else {
+            // 차단기 연결 소켓을 통하여 들어오는 메시지를 읽은 쓰레드 생성 및 가동
+            SocketReader reader = new SocketReader(mainGUI, this, (byte)1);
+            reader.start();
+        }
         
         msgSender = new Thread("osp_NaraBarWriterThread")
         {
@@ -100,51 +110,61 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                             }
                         }
                         //</editor-fold>
-                        synchronized (msgQdoor) {
+                        synchronized (getMsgQdoor()) {
                             if (getNaraBarMessages().peek() == null)
-                                msgQdoor.wait();
-                        }                            
+                                getMsgQdoor().wait();
+                        }
                         
                         while (!naraBarMessages.isEmpty()) {
                             //<editor-fold desc="-- Write message to LEDnotice if connected">
                             NaraMsgItem currItem = getNaraBarMessages().peek();
                             
                             try {
+                                OutputStream oStream = null;
                                 if (connectionType[GateBar.ordinal()][deviceNo] == RS_232.ordinal()) 
                                 {
-                                    if (serialPort != null) 
-                                    {
-                                        switch (currItem.getType()) {
-                                            case GateDown:
-                                                if (barState == BarStatus.CLOSED || barState == BarStatus.CLOSING) {
-                                                    currItem = getNaraBarMessages().remove();
-                                                } else {
-                                                    serialPort.getOutputStream().write(getBarCommand(currItem.getType()));
-                                                    getNaraBarMessages().peek().incSendCount();
-                                                    System.out.println(currItem.getType().toString() + "~>");
-                                                }
-                                                break;
-                                            
-                                            case GateUp:
-                                                if (barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
-                                                    currItem = getNaraBarMessages().remove();
-                                                } else {
-                                                    serialPort.getOutputStream().write(getBarCommand(currItem.getType()));
-                                                    getNaraBarMessages().peek().incSendCount();
-                                                    System.out.println(currItem.getType().toString() + "~>");
-                                                }
-                                                break;
-                                                
-                                            default:
-                                                serialPort.getOutputStream().write(getBarCommand(currItem.getType()));
-                                                getNaraBarMessages().peek().incSendCount();
-                                                System.out.println(currItem.getType().toString() + "~>");
-                                                if (currItem.getType() == Nara_MsgType.Status) 
-                                                    currItem = getNaraBarMessages().remove();
-                                                break;
-                                        }
+                                    if (serialPort != null) {
+                                        oStream = serialPort.getOutputStream();
+                                    }
+                                } else {
+                                    if (socket != null) {
+                                        oStream = socket.getOutputStream();
                                     }
                                 }
+                                //<editor-fold desc="-- Handle Serial connection">
+                                if (oStream != null) 
+                                {
+                                    switch (currItem.getType()) {
+                                        case GateDown:
+                                            if (barState == BarStatus.CLOSED || barState == BarStatus.CLOSING) {
+                                                currItem = getNaraBarMessages().remove();
+                                            } else {
+                                                oStream.write(getBarCommand(currItem.getType()));
+                                                getNaraBarMessages().peek().incSendCount();
+                                                System.out.println(currItem.getType().toString() + "~>");
+                                            }
+                                            break;
+
+                                        case GateUp:
+                                            if (barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
+                                                currItem = getNaraBarMessages().remove();
+                                            } else {
+                                                oStream.write(getBarCommand(currItem.getType()));
+                                                getNaraBarMessages().peek().incSendCount();
+                                                System.out.println(currItem.getType().toString() + "~>");
+                                            }
+                                            break;
+
+                                        default:
+                                            oStream.write(getBarCommand(currItem.getType()));
+                                            getNaraBarMessages().peek().incSendCount();
+                                            System.out.println(currItem.getType().toString() + "~>");
+                                            if (currItem.getType() == Nara_MsgType.Status) 
+                                                currItem = getNaraBarMessages().remove();
+                                            break;
+                                    }
+                                }
+                                //</editor-fold>
                                 
                             } catch (IOException ex) {
                                 logParkingException(Level.SEVERE, ex, "writing LEDnotice serial port", deviceNo);
@@ -182,17 +202,17 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
     public void run() {
         
         while (true) {
-            synchronized(msgArrived) {
+            synchronized(getMsgArrived()) {
                 try {
                     // 포트에 메시지가 도달할 때까지 대기
-                    msgArrived.wait();
+                    getMsgArrived().wait();
                     mainGUI.tolerance[GateBar.ordinal()][deviceNo].assignMAX();
                 } catch (InterruptedException ex) {
                     logParkingException(Level.SEVERE, ex, "closing serial port", deviceNo);
                 }
             }
 
-            switch (msg) {
+            switch (getMsg()) {
                 //<editor-fold desc="-- 도착한 메시지를 처리">
                 case GateUpAction:
                     // 메시지 큐 맨 앞에 개방 명령있으면 이를 제거함
@@ -219,8 +239,9 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                                         .addAckDelayStatistics(ackDelay, item.getSendCount());
                             }
                         }
-//                        System.out.println("size: " + getNaraBarMessages().size());
                     }
+                    setBarState(BarStatus.OPENING);
+                    break;
 
                 case GateUpOK:
                 case GateState_UP_OK:
@@ -232,6 +253,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                     if (getNaraBarMessages().peek().getType() == GateDown) {
                         getNaraBarMessages().remove();
                     }
+                    setBarState(BarStatus.CLOSING);
                     break;
 
                 case GateDownOK:
@@ -243,7 +265,6 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                     break;
                 //</editor-fold> 
             }
-//            System.out.println("msg from bar: " + msg.getMessageUF() + suffixMsg);
         }
     }
 
@@ -372,7 +393,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         return barCommand;
     }
         
-    Object msgQdoor = new Object();
+    private Object msgQdoor = new Object();
     Object ackArrived = new Object();
     private NaraMessageQueue naraBarMessages;
 
@@ -401,6 +422,55 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
             gateCloser.cancelTask();
         }
         gateCloser.reschedule(carPassingDelayMs);
+    }
+
+    @Override
+    public void setSocket(Socket eBoardSocket) {
+        this.socket = eBoardSocket;
+    }
+
+    @Override
+    public Socket getSocket() {
+        return socket;
+    }
+
+    void setMsg(Nara_MsgType deliveredMessage) {
+        msg = deliveredMessage;
+    }
+
+    /**
+     * @return the msg
+     */
+    public NaraEnums.Nara_MsgType getMsg() {
+        return msg;
+    }
+
+    /**
+     * @return the msgQdoor
+     */
+    public Object getMsgQdoor() {
+        return msgQdoor;
+    }
+
+    /**
+     * @param msgQdoor the msgQdoor to set
+     */
+    public void setMsgQdoor(Object msgQdoor) {
+        this.msgQdoor = msgQdoor;
+    }
+
+    /**
+     * @return the msgArrived
+     */
+    public Object getMsgArrived() {
+        return msgArrived;
+    }
+
+    /**
+     * @param msgArrived the msgArrived to set
+     */
+    public void setMsgArrived(Object msgArrived) {
+        this.msgArrived = msgArrived;
     }
     
     private class GateCloser extends TimerTask
@@ -437,11 +507,11 @@ class RS_232_Manager implements SerialPortEventListener {
         switch(e.getEventType()) {
             case SerialPortEvent.DATA_AVAILABLE:
                 // 자료를 포트에서 읽어서 바른 차단기 메시지이면 차단기 명령 수신 대기자를 깨움
-                manager.msg = readDeliveredMessage();
-                if (manager.msg != Broken) {
-                    System.out.println("      <~ " + manager.msg);
-                    synchronized(manager.msgArrived) {
-                        manager.msgArrived.notify();
+                manager.setMsg(readDeliveredMessage(inStream));
+                if (manager.getMsg() != Broken) {
+                    System.out.println("      <~ " + manager.getMsg());
+                    synchronized(manager.getMsgArrived()) {
+                        manager.getMsgArrived().notify();
                     }
                 }
                 break;
@@ -456,7 +526,7 @@ class RS_232_Manager implements SerialPortEventListener {
      * @param inStream 시리얼 포트에 연결된 입력 스트림
      * @return 도달한 메시지 유형(타입), 메시지가 깨지거나 EOF 등 예외상황이 발생하면 Broken 값을 반환한다.
      */
-    private Nara_MsgType readDeliveredMessage() {
+    public static Nara_MsgType readDeliveredMessage(InputStream inStream) {
         Nara_MsgType messageType = Broken;
         byte[] barMessage = new byte[100];
         int byteIndex = 0;
@@ -479,12 +549,41 @@ class RS_232_Manager implements SerialPortEventListener {
                 }
             }
             catch (IOException ex) {
-                logParkingException(Level.SEVERE, ex, "reading serial port", manager.deviceNo);
                 break;
             }
         }
         return messageType;
-    }
+    }    
+//    public static Nara_MsgType readDeliveredMessage() {
+//        Nara_MsgType messageType = Broken;
+//        byte[] barMessage = new byte[100];
+//        int byteIndex = 0;
+//        byte posiETX;
+//        
+//        while ( true )
+//        {
+//            try {
+//                posiETX = (byte)(inStream.read());
+//                if (posiETX == -1) {
+//                    break;
+//                } 
+//                
+//                barMessage[byteIndex++] = posiETX;
+//                
+//                if (posiETX == 3) {
+//                    // 도착한 메시지 유형을 식별한다
+//                    messageType = getMessageType(barMessage, byteIndex - 1);
+//                    break;
+//                }
+//            }
+//            catch (IOException ex) {
+//                logParkingException(Level.SEVERE, ex, "reading serial port", manager.deviceNo);
+//                break;
+//            }
+//        }
+//        return messageType;
+//    }
+    
 
     /**
      * Identify message type out of byte array and its length.
@@ -492,7 +591,7 @@ class RS_232_Manager implements SerialPortEventListener {
      * @param length number of bytes in the message
      * @return Gate bar message type
      */
-    private Nara_MsgType getMessageType(byte[] barMessage, int length) {
+    public static Nara_MsgType getMessageType(byte[] barMessage, int length) {
         Nara_MsgType type = Broken;
         
         if (barMessage[0] == 2) {
@@ -500,39 +599,32 @@ class RS_232_Manager implements SerialPortEventListener {
             
             String msgCore = new String(byteCore);
             if (msgCore.substring(0, 5).equals("GATE=")) {
-                //<editor-fold desc="-- 상태 반환 값 식별">
                 String statusCore = null;
                 int commaLoc = msgCore.indexOf((int)',');
                 
                 if (commaLoc > -1) {
                     statusCore = msgCore.substring(5, commaLoc);
                     switch(statusCore) {
+                        case up_lock:
+                            type = GateUpLOCK;
+                            break;
                         case up_ok:
                             type = GateState_UP_OK;
-                            manager.setBarState(BarStatus.OPENED);
                             break;
                         case up_action:
                             type = GateState_UP_ACTION;
-                            manager.setBarState(BarStatus.OPENING);
                             break;
                         case down_ok:
                             type = GateState_DOWN_OK;
-                            manager.setBarState(BarStatus.CLOSED);
                             break;
                         case down_action:
                             type = GateState_DOWN_ACTION;
-                            manager.setBarState(BarStatus.CLOSING);
-                            break;
-                        case up_lock:
-                            type = GateState_UpLOCK;
                             break;
                         default:
                             break;
                     }
                 }
-                //</editor-fold>
             } else {
-                //<editor-fold desc="-- 명령 혹은 전원 반환 값 식별">                
                 switch(new String(byteCore)) {
                     case gate_up_action:
                         type = GateUpAction;
@@ -549,10 +641,72 @@ class RS_232_Manager implements SerialPortEventListener {
                     default:
                         break;
                 }
-                //</editor-fold>
             }
         }
-//        System.out.println("Response: " + type);
         return type;
     }
+    
+//    private Nara_MsgType getMessageType(byte[] barMessage, int length) {
+//        Nara_MsgType type = Broken;
+//        
+//        if (barMessage[0] == 2) {
+//            byte[] byteCore = Arrays.copyOfRange(barMessage, 1, length);
+//            
+//            String msgCore = new String(byteCore);
+//            if (msgCore.substring(0, 5).equals("GATE=")) {
+//                //<editor-fold desc="-- 상태 반환 값 식별">
+//                String statusCore = null;
+//                int commaLoc = msgCore.indexOf((int)',');
+//                
+//                if (commaLoc > -1) {
+//                    statusCore = msgCore.substring(5, commaLoc);
+//                    switch(statusCore) {
+//                        case up_ok:
+//                            type = GateState_UP_OK;
+//                            manager.setBarState(BarStatus.OPENED);
+//                            break;
+//                        case up_action:
+//                            type = GateState_UP_ACTION;
+//                            manager.setBarState(BarStatus.OPENING);
+//                            break;
+//                        case down_ok:
+//                            type = GateState_DOWN_OK;
+//                            manager.setBarState(BarStatus.CLOSED);
+//                            break;
+//                        case down_action:
+//                            type = GateState_DOWN_ACTION;
+//                            manager.setBarState(BarStatus.CLOSING);
+//                            break;
+//                        case up_lock:
+//                            type = GateState_UpLOCK;
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
+//                //</editor-fold>
+//            } else {
+//                //<editor-fold desc="-- 명령 혹은 전원 반환 값 식별">                
+//                switch(new String(byteCore)) {
+//                    case gate_up_action:
+//                        type = GateUpAction;
+//                        break;
+//                    case gate_up_ok:
+//                        type = GateUpOK;
+//                        break;
+//                    case gate_down_action:
+//                        type = GateDownAction;
+//                        break;
+//                    case gate_down_ok:
+//                        type = GateDownOK;
+//                        break;
+//                    default:
+//                        break;
+//                }
+//                //</editor-fold>
+//            }
+//        }
+////        System.out.println("Response: " + type);
+//        return type;
+//    }
 }
