@@ -5,11 +5,11 @@ OsParking (pronounced 'Oz' Parking, as in The Wizard of Oz) is an Open Source Pa
 
 OsParking software assumes the use of LPR (License Plate Recognition) function a external module to identify car tag numbers.
 
-As of Dec. 22nd, OsParking_HW supports LEDnotice E-board(Socket and Serial connection) and Nara gate bar(Serial connection) real hardware devices.
+As of Dec. 23rd, OsParking_HW supports LEDnotice E-board(both Socket and Serial connection) and Nara gate bar(both Serial and Socket connection) real hardware devices.
 
 Open source Parking, Inc.
 
-Dec. 22, 2015
+Dec. 23, 2015
 
 Company homepage(www.osparking.com) will open early November.
 
