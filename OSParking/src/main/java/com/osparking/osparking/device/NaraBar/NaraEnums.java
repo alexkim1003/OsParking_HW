@@ -12,8 +12,8 @@ package com.osparking.osparking.device.NaraBar;
 public class NaraEnums {
     
     public enum BarStatus {
-        UNKNOWN, OPENED, CLOSED,
-        OPENING, CLOSING
+        UNKNOWN, 
+        OPENED, CLOSED, OPENING, CLOSING
     }
     
     final static String status = "STATUS";

@@ -336,10 +336,38 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         sockConnStat = new SocketConnStat[DeviceType.values().length][gateCount + 1];
         connectDeviceTimer = new ParkingTimer[DeviceType.values().length][gateCount + 1];
         deviceManagers = new IDevice.IManager[DeviceType.values().length][gateCount + 1]; 
+        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][3]; // 2: for two rows of each elec' board.
         
         errorCheckBox.setEnabled(DEBUG);
         errIncButton.setEnabled(DEBUG);
         errDecButton.setEnabled(DEBUG);
+
+        openCommandIDs = new int[gateCount + 1];        
+        openCommAcked = new boolean[gateCount + 1];        
+        BarConnection = new Object[gateCount + 1];
+        passingDelayStat = new PassingDelayStat[gateCount + 1];
+        
+        openCommAcked[0] = true;        
+        
+        for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
+            openCommandIDs[gateNo] = 0;
+            openCommAcked[gateNo] = true;    
+            openGateCmdTimer[gateNo] 
+                    = new ParkingTimer("ospOpenBar" + gateNo + "Timer", false, null, 0, RESEND_PERIOD);            
+            BarConnection[gateNo] = new Object();
+            passingDelayStat[gateNo] = new PassingDelayStat();
+            
+            for (DeviceType type : DeviceType.values()) {     
+                connectDeviceTimer[type.ordinal()][gateNo] = new ParkingTimer(
+                        "ospConnect_" + type + "_" + gateNo + "_timer", false);            
+            }
+            
+            for (EBD_Row row : EBD_Row.values()) {
+                String timerName = "ospEBD" + gateNo + "_R" + row.getValue() + "_msgTimer";
+                sendEBDmsgTimer[gateNo][row.ordinal()] 
+                        = new ParkingTimer(timerName, false, null, 0L, RESEND_PERIOD); 
+            }            
+        }          
         
         for (DeviceType type : DeviceType.values()) {     
             for (int gNo = 1; gNo <= gateCount; gNo++) {
@@ -394,8 +422,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                         break;
                 }
                 // start server socket listeners for all types of devices
-                connectDeviceTimer[type.ordinal()][gateNo] = new ParkingTimer(
-                        "ospConnect_" + type + "_" + gateNo + "_timer", false);
                 connectDeviceTimer[type.ordinal()][gateNo].runOnce(new ConnectDeviceTask(this, type, gateNo));
                 
                 if (deviceManagers[type.ordinal()][gateNo] != null) {
@@ -404,22 +430,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             }
         }             
 
-        openCommandIDs = new int[gateCount + 1];        
-        openCommAcked = new boolean[gateCount + 1];        
-        BarConnection = new Object[gateCount + 1];
-        passingDelayStat = new PassingDelayStat[gateCount + 1];
-        
-        openCommAcked[0] = true;
-        
-        for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
-            openCommandIDs[gateNo] = 0;
-            openCommAcked[gateNo] = true;    
-            openGateCmdTimer[gateNo] 
-                    = new ParkingTimer("ospOpenBar" + gateNo + "Timer", false, null, 0, RESEND_PERIOD);            
-            BarConnection[gateNo] = new Object();
-            passingDelayStat[gateNo] = new PassingDelayStat();
-        }  
-        
         openCommandIssuedMs = new long[gateCount + 1];
         
         /**
@@ -433,17 +443,10 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         msgSNs = new int[gateCount + 1];        
         interruptsAcked = new boolean[gateCount + 1];        
         eBoardMsgSentMs = new long[gateCount + 1][2];
-        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][3]; // 2: for two rows of each elec' board.
         
         interruptsAcked[0] = true;           
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
             interruptsAcked[gateNo] = true;
-            
-            for (EBD_Row row : EBD_Row.values()) {
-                String timerName = "ospEBD" + gateNo + "_R" + row.getValue() + "_msgTimer";
-                sendEBDmsgTimer[gateNo][row.ordinal()] 
-                        = new ParkingTimer(timerName, false, null, 0L, RESEND_PERIOD); 
-            }
         }             
         
         /**

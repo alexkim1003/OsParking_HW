@@ -271,6 +271,7 @@ public class LEDnotice_enums {
     final static int setMonitor = 0X82;
     
     public enum LED_MsgType {
+        Broken(0),
         DEL_TEXT_ONE (delTextOne), // delete individual text
         DEL_GROUP (delGroup), // 그룹 메모리 삭제
         DEL_TEXT_ALL (delTextAll),  // delete whole text

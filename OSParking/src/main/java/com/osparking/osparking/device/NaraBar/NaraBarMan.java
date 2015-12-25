@@ -6,7 +6,10 @@
 package com.osparking.osparking.device.NaraBar;
 
 import com.osparking.global.Globals;
+import static com.osparking.global.Globals.DEBUG;
 import static com.osparking.global.Globals.addMessageLine;
+import static com.osparking.global.Globals.closeSocket;
+import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
@@ -136,12 +139,12 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                                 {
                                     switch (currItem.getType()) {
                                         case GateDown:
-                                            if (barState == BarStatus.CLOSED || barState == BarStatus.CLOSING) {
-                                                currItem = getNaraBarMessages().remove();
-                                            } else {
+                                            if (barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
                                                 oStream.write(getBarCommand(currItem.getType()));
                                                 getNaraBarMessages().peek().incSendCount();
                                                 System.out.println(currItem.getType().toString() + "~>");
+                                            } else {
+                                                currItem = getNaraBarMessages().remove();
                                             }
                                             break;
 
@@ -277,15 +280,39 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
     
     @Override
     public void finishConnection(Exception e, String description, byte deviceNo) {
-        try {
-            if (serialPort != null) {
-                serialPort.close();
-                serialPort = null;
+        
+        synchronized(mainGUI.getSocketMutex()[GateBar.ordinal()][deviceNo]) {
+        
+            if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
+                try {
+                    if (serialPort != null) {
+                        serialPort.close();
+                        serialPort = null;
+                    }
+                    oStrm.close();
+                } catch (IOException ex) {
+                    logParkingException(Level.SEVERE, ex, "closing serial port", deviceNo);
+                }
+            } else {
+                if (isConnected(getSocket())) 
+                {
+                    String msg =  "Gate bar #" + deviceNo;
+
+                    addMessageLine(mainGUI.getMessageTextArea(), "  ------" + msg + " disconnected");
+                    logParkingException(Level.INFO, e, description + " " + msg);
+
+                    long closeTm = System.currentTimeMillis();
+
+                    mainGUI.getSockConnStat()[GateBar.ordinal()][deviceNo].recordSocketDisconnection(closeTm);
+
+                    if (DEBUG) {
+                        System.out.println("M9. Gate bar #" + deviceNo + " disconnected at: " + closeTm);                        
+                    }
+                    closeSocket(getSocket(), "while gate bar socket closing");
+                    setSocket(null);
+                }             
             }
-            oStrm.close();
-        } catch (IOException ex) {
-            logParkingException(Level.SEVERE, ex, "closing serial port", deviceNo);
-        }   
+        }
         
         if (mainGUI.getConnectDeviceTimer()[GateBar.ordinal()][deviceNo] != null) {
             if (!mainGUI.isSHUT_DOWN()) {
@@ -553,37 +580,7 @@ class RS_232_Manager implements SerialPortEventListener {
             }
         }
         return messageType;
-    }    
-//    public static Nara_MsgType readDeliveredMessage() {
-//        Nara_MsgType messageType = Broken;
-//        byte[] barMessage = new byte[100];
-//        int byteIndex = 0;
-//        byte posiETX;
-//        
-//        while ( true )
-//        {
-//            try {
-//                posiETX = (byte)(inStream.read());
-//                if (posiETX == -1) {
-//                    break;
-//                } 
-//                
-//                barMessage[byteIndex++] = posiETX;
-//                
-//                if (posiETX == 3) {
-//                    // 도착한 메시지 유형을 식별한다
-//                    messageType = getMessageType(barMessage, byteIndex - 1);
-//                    break;
-//                }
-//            }
-//            catch (IOException ex) {
-//                logParkingException(Level.SEVERE, ex, "reading serial port", manager.deviceNo);
-//                break;
-//            }
-//        }
-//        return messageType;
-//    }
-    
+    }       
 
     /**
      * Identify message type out of byte array and its length.
@@ -645,68 +642,4 @@ class RS_232_Manager implements SerialPortEventListener {
         }
         return type;
     }
-    
-//    private Nara_MsgType getMessageType(byte[] barMessage, int length) {
-//        Nara_MsgType type = Broken;
-//        
-//        if (barMessage[0] == 2) {
-//            byte[] byteCore = Arrays.copyOfRange(barMessage, 1, length);
-//            
-//            String msgCore = new String(byteCore);
-//            if (msgCore.substring(0, 5).equals("GATE=")) {
-//                //<editor-fold desc="-- 상태 반환 값 식별">
-//                String statusCore = null;
-//                int commaLoc = msgCore.indexOf((int)',');
-//                
-//                if (commaLoc > -1) {
-//                    statusCore = msgCore.substring(5, commaLoc);
-//                    switch(statusCore) {
-//                        case up_ok:
-//                            type = GateState_UP_OK;
-//                            manager.setBarState(BarStatus.OPENED);
-//                            break;
-//                        case up_action:
-//                            type = GateState_UP_ACTION;
-//                            manager.setBarState(BarStatus.OPENING);
-//                            break;
-//                        case down_ok:
-//                            type = GateState_DOWN_OK;
-//                            manager.setBarState(BarStatus.CLOSED);
-//                            break;
-//                        case down_action:
-//                            type = GateState_DOWN_ACTION;
-//                            manager.setBarState(BarStatus.CLOSING);
-//                            break;
-//                        case up_lock:
-//                            type = GateState_UpLOCK;
-//                            break;
-//                        default:
-//                            break;
-//                    }
-//                }
-//                //</editor-fold>
-//            } else {
-//                //<editor-fold desc="-- 명령 혹은 전원 반환 값 식별">                
-//                switch(new String(byteCore)) {
-//                    case gate_up_action:
-//                        type = GateUpAction;
-//                        break;
-//                    case gate_up_ok:
-//                        type = GateUpOK;
-//                        break;
-//                    case gate_down_action:
-//                        type = GateDownAction;
-//                        break;
-//                    case gate_down_ok:
-//                        type = GateDownOK;
-//                        break;
-//                    default:
-//                        break;
-//                }
-//                //</editor-fold>
-//            }
-//        }
-////        System.out.println("Response: " + type);
-//        return type;
-//    }
 }

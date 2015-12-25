@@ -85,9 +85,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
 import java.util.TooManyListenersException;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  * Manages an E-board via a socket communication while current socket connection is valid.
@@ -158,12 +158,20 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         
         ledNoticeMessages = new LEDnoticeMessageQueue(msgQdoor, 
                     mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]);
-        
+        String portNumStr = "COM6";
         try {
-            portIdentifier = CommPortIdentifier.getPortIdentifier("COM6");
-//            = CommPortIdentifier.getPortIdentifier(devicePort[E_Board.ordinal()][deviceID]);
+            portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
         } catch (NoSuchPortException ex) {
             logParkingException(Level.SEVERE, ex, "getting port identifier", deviceNo);
+            String errorMsg = "'" + portNumStr + "'" + " : no such port error!";
+            String questMsg = "오즈파킹 실행을 중지하겠습니까?";
+            int response = JOptionPane.showConfirmDialog(mainForm, 
+                    errorMsg + System.lineSeparator() + questMsg + System.lineSeparator(),
+                    "Error: " + portNumStr, JOptionPane.YES_NO_OPTION);
+            
+            if (response == JOptionPane.YES_OPTION) {
+                mainForm.stopRunningTheProgram();
+            }
         }
         
         msgSender = new Thread("osp_LEDnoticeWriterThread")
@@ -295,6 +303,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         }        
     }
 
+    @Override
     public void run()
     {
         byte[] preMsg = new byte[3];
@@ -312,19 +321,18 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             // read device message as long as connection is good
             //<editor-fold desc="-- Repeat processing one message from LEDnotice">
             try {
-                synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo])  
+                synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][getDeviceNo()])  
                 {
                     //<editor-fold desc="-- Wait connection, send default settings, read message code">
-//                    if (!isConnected(socket, serialPort, E_Board, deviceNo, mainForm.tolerance))
                     if (!IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][deviceNo], 
                             E_Board, deviceNo))                    
                     {
-                        mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
+                        mainForm.getSocketMutex()[E_Board.ordinal()][getDeviceNo()].wait();
                         neverConnected = false;
                     }
                     //</editor-fold>
                 } 
-
+                
                 inStream = socket.getInputStream();
             
                 //<editor-fold desc="-- Read arriving message from LEDnotice">
@@ -340,7 +348,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 {
                     posiETX = (byte)(inStream.read());
                     if (posiETX == -1) {
-                        finishConnection(null, "LEDnotice closed socket", deviceNo);
+                        finishConnection(null, "LEDnotice closed socket", getDeviceNo());
                         break;
                     } else 
                     if (posiETX == 3) {
@@ -357,9 +365,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 
                 if (msgLength == -1) {
                     // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    finishConnection(null,  "End of stream reached, gate #" + deviceNo, deviceNo);
+                    finishConnection(null,  "End of stream reached, gate #" + getDeviceNo(), getDeviceNo());
                 } else {
-                    if (validMessage(preMsg, MsgPost[byteIndex - 1])) 
+                    if (byteIndex > 0 && validMessage(preMsg, MsgPost[byteIndex - 1])) 
                     {
                         processValidMessage(preMsg, byteIndex, MsgPost, typeUint);
                     }
@@ -369,25 +377,25 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 // exit this try statement and go to the following statement
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
-                    logParkingException(Level.INFO, ex, "E-Board manager #" + deviceNo + " waits socket conn'");
-                    finishConnection(ex,  "E-Board manager #" + deviceNo + " waits socket conn'", deviceNo);
+                    logParkingException(Level.INFO, ex, "E-Board manager #" + getDeviceNo() + " waits socket conn'");
+                    finishConnection(ex,  "E-Board manager #" + getDeviceNo() + " waits socket conn'", getDeviceNo());
                 }
             } catch (IOException e) {
                 if (!mainForm.isSHUT_DOWN()) {
-                    logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, E-board #" + deviceNo,
-                            mainForm.getStatusTextField(), deviceNo);
-                    finishConnection(e, "server closed socket for ", deviceNo);
+                    logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, E-board #" + getDeviceNo(),
+                            mainForm.getStatusTextField(), getDeviceNo());
+                    finishConnection(e, "server closed socket for ", getDeviceNo());
                 }
             } catch (Exception e2) {
                 logParkingExceptionStatus(Level.SEVERE, e2, 
-                        e2.getMessage() + "server- closed socket forE-Board #" + deviceNo,
-                        mainForm.getStatusTextField(), deviceNo);
-                finishConnection(e2, "E-Board manager Excp", deviceNo);
+                        e2.getMessage() + "server- closed socket forE-Board #" + getDeviceNo(),
+                        mainForm.getStatusTextField(), getDeviceNo());
+                finishConnection(e2, "E-Board manager Excp", getDeviceNo());
             }
             //</editor-fold>
             
-            if (mainForm.tolerance[E_Board.ordinal()][deviceNo].getLevel() <= 0) {
-                finishConnection(null, "LED: tolerance depleted for", deviceNo);
+            if (mainForm.tolerance[E_Board.ordinal()][getDeviceNo()].getLevel() <= 0) {
+                finishConnection(null, "LED: tolerance depleted for", getDeviceNo());
             }
         }
     }
@@ -399,7 +407,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     public void stopOperation(String reason) {
         if (msgSender != null)
             msgSender.interrupt();
-        finishConnection(null, reason, deviceNo);
+        finishConnection(null, reason, getDeviceNo());
         interrupt();
     }
 
@@ -425,6 +433,16 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         {
             if (0 < gateNo && gateNo <= gateCount) 
             {
+                if (connectionType[E_Board.ordinal()][gateNo] == RS_232.ordinal()) {
+                    if (getSerialPort() != null) {
+                        getSerialPort().close();
+                        setSerialPort(null);
+                    }
+                } else {
+                    closeSocket(getSocket(), "while gate bar socket closing");
+                    socket = null;
+                }
+                
 //                if (isConnected(socket, serialPort, E_Board, gateNo, mainForm.tolerance))
                 if (!IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo], 
                         E_Board, gateNo))                    
@@ -436,15 +454,6 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
 
                     mainForm.getSockConnStat()[E_Board.ordinal()][gateNo].
                             recordSocketDisconnection(System.currentTimeMillis());
-                    if (connectionType[E_Board.ordinal()][gateNo] == RS_232.ordinal()) {
-                        if (getSerialPort() != null) {
-                            getSerialPort().close();
-                            setSerialPort(null);
-                        }
-                    } else {
-                        closeSocket(getSocket(), "while gate bar socket closing");
-                        socket = null;
-                    }
                 }
             } else {
                 System.out.println("this never ever gateNo");
@@ -842,7 +851,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         String result;
         switch (LEDnoticeDefaultContentType.values()[index]) {
             case GateName:
-                result = gateNames[deviceNo];
+                result = gateNames[getDeviceNo()];
                 break;
             
             case ParkingLotName:
@@ -850,7 +859,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 break;
                 
             case ParkingLot_GateName:
-                result = DB_Access.parkingLotName + "-" + gateNames[deviceNo];
+                result = DB_Access.parkingLotName + "-" + gateNames[getDeviceNo()];
                 break;
 
             default:
@@ -868,7 +877,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 serialPort.addEventListener(new RS_232_Manager(this, serialPort));
             }
         } catch (TooManyListenersException ex) {
-            logParkingException(Level.SEVERE, ex, "serial port setting", deviceNo);
+            logParkingException(Level.SEVERE, ex, "serial port setting", getDeviceNo());
         }
         this.serialPort = serialPort;
     }
@@ -915,7 +924,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         for ( ; i < preMsg.length; i++) { msgCame += String.format("%02X", preMsg[i]); }
         for (i = 0; i < byteIndex; i++) { msgCame += String.format("%02X", MsgPost[i]); }
 
-        mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
+        mainForm.tolerance[E_Board.ordinal()][getDeviceNo()].assignMAX();
         
         if (typeUint == getID) {
             // process LEDnotice device heartbeat
@@ -1024,4 +1033,11 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     Object msgQdoor = new Object();
     Object ackArrived = new Object();
     private LEDnoticeMessageQueue ledNoticeMessages;
+
+    /**
+     * @return the deviceNo
+     */
+    public byte getDeviceNo() {
+        return deviceNo;
+    }
 }
