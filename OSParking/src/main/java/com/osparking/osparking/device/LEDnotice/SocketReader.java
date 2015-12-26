@@ -19,6 +19,8 @@ package com.osparking.osparking.device.LEDnotice;
 import static com.osparking.global.Globals.isConnected;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import com.osparking.osparking.ControlGUI;
+import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.Broken;
 import static com.osparking.osparking.device.LEDnotice.RS_232_Manager.readDeliveredMessage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -50,19 +52,31 @@ public class SocketReader  extends Thread {
             {
                 if (!isConnected(ledNoticeManager.getSocket())) {
                     try {
-                        mainGUI.getSocketMutex()[DeviceType.GateBar.ordinal()][gateID].wait();
+                        mainGUI.getSocketMutex()[DeviceType.E_Board.ordinal()][gateID].wait();
                     } catch (InterruptedException ex) {
                         System.out.println("intred excp");
                     }
                 }
-            }            
+            }   
+            
+            LED_MsgType messageArrived = null;
             try {
-                readDeliveredMessage(ledNoticeManager.getSocket().getInputStream());
+                messageArrived= readDeliveredMessage(ledNoticeManager.getSocket().getInputStream());
+                System.out.println("LED message type: " + messageArrived);
+                
+                if (messageArrived != Broken) {
+                    synchronized(ledNoticeManager.getMsgArrived()) {
+                        ledNoticeManager.setMsg(messageArrived);
+                        ledNoticeManager.getMsgArrived().notify();
+                    }
+                }              
             } catch (SocketTimeoutException ex) {
                 System.out.println("time out");
             } catch (IOException ex) {
                 System.out.println("IO excep");
+                ledNoticeManager.finishConnection(null, "IO excep", gateID);
             }
+            
         }
     }
 }

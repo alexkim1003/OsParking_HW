@@ -80,6 +80,7 @@ public class SocketReader extends Thread {
 //                System.out.println("IO excep");
                 barManager.finishConnection(null, "IO excep", gateID);
             }
+            
             if (barManager.getMsg() != Broken) {
                 System.out.println("message type: " + barManager.getMsg());
                 synchronized(barManager.getMsgArrived()) {

@@ -81,7 +81,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
             }
         } else {
             // 차단기 연결 소켓을 통하여 들어오는 메시지를 읽은 쓰레드 생성 및 가동
-            SocketReader reader = new SocketReader(mainGUI, this, (byte)1);
+            SocketReader reader = new SocketReader(mainGUI, this, deviceNo);
             reader.start();
         }
         

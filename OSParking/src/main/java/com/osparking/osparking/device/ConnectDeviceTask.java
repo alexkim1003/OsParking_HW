@@ -121,7 +121,7 @@ public class ConnectDeviceTask implements Runnable {
 
                     managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();  
                     managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
-                    System.out.println("after notify all");
+//                    System.out.println("after notify all");
                 }
                 //</editor-fold>
                 return;
