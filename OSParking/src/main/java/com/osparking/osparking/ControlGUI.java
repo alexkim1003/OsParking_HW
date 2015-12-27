@@ -336,7 +336,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         sockConnStat = new SocketConnStat[DeviceType.values().length][gateCount + 1];
         connectDeviceTimer = new ParkingTimer[DeviceType.values().length][gateCount + 1];
         deviceManagers = new IDevice.IManager[DeviceType.values().length][gateCount + 1]; 
-        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][3]; // 2: for two rows of each elec' board.
+        sendEBDmsgTimer = new ParkingTimer[gateCount + 1][4]; // 2: for two rows of each elec' board.
         
         errorCheckBox.setEnabled(DEBUG);
         errIncButton.setEnabled(DEBUG);
@@ -1832,7 +1832,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                         Globals.gateDeviceTypes[gateNo].eBoardType == E_BoardType.LEDnotice) 
                 {
                     getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
-                        new FinishLEDnoticeIntrTask(this, gateNo, EBD_Row.BOTTOM), 0);                        
+                        new FinishLEDnoticeIntrTask(this, gateNo, EBD_Row.TOP), 0);                        
                 }
                 if (deviceManagers[type.ordinal()][gateNo] != null) {
                     deviceManagers[type.ordinal()][gateNo].stopOperation("System shutdown");

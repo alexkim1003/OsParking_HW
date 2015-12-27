@@ -70,20 +70,37 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         this.deviceNo = deviceNo;
         naraBarMessages = new NaraMessageQueue(getMsgQdoor(),
                                 mainGUI.getPerfomStatistics()[GateBar.ordinal()][deviceNo]);
+
+        naraBarMessages.add(new NaraMsgItem(Nara_MsgType.Status));
+        naraBarMessages.add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            String port = "COM6";
+            String portNumStr = "COM6";
             try {
-                portIdentifier = CommPortIdentifier.getPortIdentifier(port);
+                portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {
-                JOptionPane.showMessageDialog(null, "No such port: " + port);
                 logParkingException(Level.SEVERE, ex, "prepare logging file", deviceNo);
+                String errorMsg = "'" + portNumStr + "'" + " : no such port error!";
+                String questMsg = "오즈파킹 실행을 중지하겠습니까?";
+                int response = JOptionPane.showConfirmDialog(mainGUI, 
+                        errorMsg + System.lineSeparator() + questMsg + System.lineSeparator(),
+                        "Error: " + portNumStr, JOptionPane.YES_NO_OPTION);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    mainGUI.stopRunningTheProgram();
+                }                
             }
         } else {
             // 차단기 연결 소켓을 통하여 들어오는 메시지를 읽은 쓰레드 생성 및 가동
             SocketReader reader = new SocketReader(mainGUI, this, deviceNo);
             reader.start();
         }
+        
+
+//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
+//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         msgSender = new Thread("osp_NaraBarWriterThread")
         {
@@ -97,20 +114,20 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                             {
                                 try {
                                     mainGUI.getSocketMutex()[GateBar.ordinal()][deviceNo].wait();
-                                    
-                                    if (neverConnected) {
-                                        neverConnected = false;
-                                        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-                                                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
-                                        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-                                                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));
-                                    }
-                                    
                                     System.out.println("after woke up");
                                 } catch (InterruptedException ex) {
                                     logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket", deviceNo);
                                 }
                             }
+                        }
+                        if (neverConnected) {
+                            neverConnected = false;
+//                            ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                                    .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
+//                            ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                                    .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));
+                        } else {
+                            System.out.println("yes connected yes connected yes connected yes connected yes connected ");
                         }
                         //</editor-fold>
                         synchronized (getMsgQdoor()) {
@@ -121,6 +138,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                         while (!naraBarMessages.isEmpty()) {
                             //<editor-fold desc="-- Write message to LEDnotice if connected">
                             NaraMsgItem currItem = getNaraBarMessages().peek();
+                            System.out.println("curr Item : " + currItem.getType());
                             
                             try {
                                 OutputStream oStream = null;
@@ -139,7 +157,8 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                                 {
                                     switch (currItem.getType()) {
                                         case GateDown:
-                                            if (barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
+                                            if (barState == UNKNOWN || 
+                                                    barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
                                                 oStream.write(getBarCommand(currItem.getType()));
                                                 getNaraBarMessages().peek().incSendCount();
                                                 System.out.println(currItem.getType().toString() + "~>");

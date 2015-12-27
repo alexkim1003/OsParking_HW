@@ -75,7 +75,6 @@ import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -157,7 +156,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         ledNoticeMessages = new LEDnoticeMessageQueue(msgQdoor, 
                     mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]);
         
-        if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
+        if (connectionType[E_Board.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
             String portNumStr = "COM6";
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
@@ -214,13 +213,16 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                             MsgItem currItem = getLedNoticeMessages().peek();
 
                             try {
-                                System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
                                 if (connectionType[E_Board.ordinal()][deviceNo] == RS_232.ordinal()) {
-                                    if (serialPort != null)
+                                    if (serialPort != null) {
                                         serialPort.getOutputStream().write(currItem.getMessage());
+                                        System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
+                                    }
                                 } else {
-                                    if (socket != null) 
+                                    if (socket != null) {
                                         socket.getOutputStream().write(currItem.getMessage());
+                                        System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
+                                    }
                                 }
                                 getLedNoticeMessages().peek().incSendCount();
 
@@ -272,7 +274,16 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             // 전광판 모니터 크기 설정을 지시한다.
             getLedNoticeMessages().add(new MsgItem(SET_MONITOR, 
                     ledNoticeProtocol.getScreenSetString(1, LED_COLUMN_CNT, 2)));
-
+            
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    // If interrupt texts were being displayed now, clear them.
+                    mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()].reRunOnce(
+                            new FinishLEDnoticeIntrTask(mainForm, deviceNo, EBD_Row.TOP), 0);                
+                }
+            });
+            
             showLEDnoticeDefaultMessage(EBD_Row.TOP);
             showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
 
@@ -575,7 +586,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         
         mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, interruptRoom, 1)));
         mainForm.getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
-                new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.BOTTOM), delay);    
+                new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.TOP), delay);    
         System.out.println("scheduled after ms: " + delay);
     }
 
@@ -891,13 +902,6 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     }
 
     /**
-     * @param portIdentifier the portIdentifier to set
-     */
-    public void setPortIdentifier(CommPortIdentifier portIdentifier) {
-        this.portIdentifier = portIdentifier;
-    }
-
-    /**
      * @return the commPort
      */
     public CommPort getCommPort() {
@@ -1020,7 +1024,6 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     }    
 
     public void processValidMessage(LED_MsgType ledMessage) {
-        String msgCame = "";
 //        int i = 0;
 //
 //        for ( ; i < preMsg.length; i++) { msgCame += String.format("%02X", preMsg[i]); }
@@ -1036,7 +1039,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
 //        } else {
 //            System.out.println("<~~: " + msgCame);
 //        }
-        System.out.println("<~~: " + ledMessage.name());
+        
+        if (ledMessage == null )
+            return;
         
         switch (ledMessage) {
             case SAVE_INTR: //  saveIntr:
