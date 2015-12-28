@@ -90,7 +90,8 @@ import javax.swing.JOptionPane;
  * 
  * @author Open Source Parking Inc.
  */
-public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevice.ISerial, IDevice.ISocket {
+public class LEDnoticeManager extends Thread implements 
+        IDevice.IManager, IDevice.ISerial, IDevice.ISocket, IDevice.IE_Board {
 
    //<editor-fold desc="--class variables">
     private byte deviceNo = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
@@ -284,9 +285,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                 }
             });
             
-            showLEDnoticeDefaultMessage(EBD_Row.TOP);
-            showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
-
+            showDefaultMessage();
             //</editor-fold>
         }         
     }
@@ -1172,5 +1171,11 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
      */
     public void setMsgArrived(Object msgArrived) {
         this.msgArrived = msgArrived;
+    }
+
+    @Override
+    public void showDefaultMessage() {
+        showLEDnoticeDefaultMessage(EBD_Row.TOP);
+        showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);        
     }
 }

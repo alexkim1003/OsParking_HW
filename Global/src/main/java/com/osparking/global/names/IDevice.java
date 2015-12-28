@@ -40,6 +40,10 @@ public class IDevice {
         boolean isNeverConnected();
     }
     
+    public static interface IE_Board {
+        public void showDefaultMessage();
+    }
+    
     public static interface ISocket {
         public void setSocket(Socket eBoardSocket);
         Socket getSocket();

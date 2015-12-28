@@ -66,6 +66,7 @@ import com.osparking.osparking.device.ConnectDeviceTask;
 import com.osparking.osparking.device.EBoardManager;
 import com.osparking.osparking.device.GateBarManager;
 import com.osparking.global.names.IDevice;
+import com.osparking.global.names.IDevice.IE_Board;
 import static com.osparking.global.names.OSP_enums.GateBarType.NaraBar;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
@@ -1809,6 +1810,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     }
 
     public void stopRunningTheProgram() {
+
+        // 전광판 기본문구 표시
+        for (int gateNo = 1; gateNo <= gateCount; gateNo++) { 
+            IE_Board ebdMan = (IE_Board) deviceManagers[E_Board.ordinal()][gateNo];
+            ebdMan.showDefaultMessage();
+        }
+        
 
         setSHUT_DOWN(true);
 
