@@ -81,8 +81,8 @@ public class DeviceCommand {
         /**
          * save large disconnection period and occurrence time for debugging.
          */
-        if (delayMs > DECENT_LIMIT)
-            logParkingOperation(OpLogLevel.LogAlways, "Large ACK delay: " + delayMs, GENERAL_DEVICE);
+//        if (delayMs > DECENT_LIMIT)
+//            logParkingOperation(OpLogLevel.LogAlways, "Large ACK delay: " + delayMs, GENERAL_DEVICE);
     }
     
     /**

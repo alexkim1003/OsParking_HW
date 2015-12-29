@@ -114,7 +114,6 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                             {
                                 try {
                                     mainGUI.getSocketMutex()[GateBar.ordinal()][deviceNo].wait();
-                                    System.out.println("after woke up");
                                 } catch (InterruptedException ex) {
                                     logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket", deviceNo);
                                 }
@@ -122,12 +121,6 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                         }
                         if (neverConnected) {
                             neverConnected = false;
-//                            ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-//                                    .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
-//                            ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-//                                    .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));
-                        } else {
-                            System.out.println("yes connected yes connected yes connected yes connected yes connected ");
                         }
                         //</editor-fold>
                         synchronized (getMsgQdoor()) {
@@ -138,7 +131,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                         while (!naraBarMessages.isEmpty()) {
                             //<editor-fold desc="-- Write message to LEDnotice if connected">
                             NaraMsgItem currItem = getNaraBarMessages().peek();
-                            System.out.println("curr Item : " + currItem.getType());
+//                            System.out.println("curr Item : " + currItem.getType());
                             
                             try {
                                 OutputStream oStream = null;
@@ -155,7 +148,9 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                                 //<editor-fold desc="-- Handle Serial connection">
                                 if (oStream != null) 
                                 {
+                                    System.out.print("\t\t[Bar] ");
                                     switch (currItem.getType()) {
+                                        
                                         case GateDown:
                                             if (barState == UNKNOWN || 
                                                     barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
@@ -555,7 +550,7 @@ class RS_232_Manager implements SerialPortEventListener {
                 // 자료를 포트에서 읽어서 바른 차단기 메시지이면 차단기 명령 수신 대기자를 깨움
                 manager.setMsg(readDeliveredMessage(inStream));
                 if (manager.getMsg() != Broken) {
-                    System.out.println("      <~ " + manager.getMsg());
+                    System.out.println("\t\t  <~ " + manager.getMsg() + " [Bar]");
                     synchronized(manager.getMsgArrived()) {
                         manager.getMsgArrived().notify();
                     }

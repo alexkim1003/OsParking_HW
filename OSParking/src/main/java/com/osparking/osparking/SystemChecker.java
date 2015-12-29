@@ -185,7 +185,6 @@ class SystemChecker extends TimerTask {
                 LEDnoticeManager manager = 
                     (LEDnoticeManager)mainGUI.getDeviceManagers()[OSP_enums.DeviceType.E_Board.ordinal()][gateNo];
                 manager.setDeviceClock();
-                System.out.println("called ...................................................................................................................................................");
             }
         }
         //</editor-fold>

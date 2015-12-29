@@ -10,7 +10,7 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:1.2.1:exec</goal>
             </goals>
             <properties>
-                <exec.args>-Xmx260m -Xms120m -Xmn180m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=2 -classpath %classpath ${packageClassName} -debug -version:develop -random_attendant</exec.args>
+                <exec.args>-Xmx260m -Xms120m -Xmn180m -XX:+UseConcMarkSweepGC -XX:ParallelCMSThreads=2 -classpath %classpath com.osparking.osparking.ControlGUI -debug -version:develop -random_attendant</exec.args>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

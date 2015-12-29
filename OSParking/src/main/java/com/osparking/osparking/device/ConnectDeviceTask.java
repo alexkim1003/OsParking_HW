@@ -90,11 +90,9 @@ public class ConnectDeviceTask implements Runnable {
                         IDevice.ISerial serialMan = (IDevice.ISerial)manager;
                         
                         if (serialMan.getPortIdentifier().isCurrentlyOwned()) {
-                            System.out.println("owned...................................................");
                             JOptionPane.showMessageDialog(managerGUI, "Gate #" + deviceID +" " 
                                     + deviceType + " serial port is currently OWNed");
                         } else {
-                            System.out.println("not owned+++++++++++++++++++");
                             serialMan.setCommPort(serialMan.getPortIdentifier().open(this.getClass().getName(), 1000));
                             if (serialMan.getCommPort() instanceof SerialPort) {
                                 SerialPort serialPort = (SerialPort) serialMan.getCommPort();

@@ -191,10 +191,7 @@ public class LEDnoticeManager extends Thread implements
                                     E_Board, deviceNo))
                             {
                                 try {
-                                    System.out.println("before wait");
                                     mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
-                                    System.out.println("after woke up");
-                                    
                                 } catch (InterruptedException ex) {
                                     logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket", deviceNo);
                                 }
@@ -218,12 +215,12 @@ public class LEDnoticeManager extends Thread implements
                                 if (connectionType[E_Board.ordinal()][deviceNo] == RS_232.ordinal()) {
                                     if (serialPort != null) {
                                         serialPort.getOutputStream().write(currItem.getMessage());
-                                        System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
+                                        System.out.println(currItem.getType().toString() + "~> "); // + currItem.getHexStr());
                                     }
                                 } else {
                                     if (socket != null) {
                                         socket.getOutputStream().write(currItem.getMessage());
-                                        System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
+                                        System.out.println(currItem.getType().toString() + "~> "); // + currItem.getHexStr());
                                     }
                                 }
                                 getLedNoticeMessages().peek().incSendCount();
@@ -552,7 +549,7 @@ public class LEDnoticeManager extends Thread implements
         mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, interruptRoom, 1)));
         mainForm.getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
                 new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.TOP), delay);    
-        System.out.println("scheduled after ms: " + delay);
+//        System.out.println("scheduled after ms: " + delay);
     }
 
     Thread demoThread = null;
@@ -898,16 +895,8 @@ public class LEDnoticeManager extends Thread implements
 
         mainForm.tolerance[E_Board.ordinal()][getDeviceNo()].assignMAX();
         
-        if (typeUint == getID) {
-            // process LEDnotice device heartbeat
-            if (byteIndex == 1)
-                System.out.println("      <~GET_ID");
-            return;
-        } else {
-            System.out.println("<~~: " + msgCame);
-        }
-        
         switch (typeUint) {
+            //<editor-fold desc="-- 상응하는 메시지 항목을 보낼 메시지 큐에서 삭제">
             case saveIntr:
                 // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
                 if (getLedNoticeMessages().peek() != null && 
@@ -916,7 +905,7 @@ public class LEDnoticeManager extends Thread implements
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveIntr ignored!!!");
+//                    System.out.println("duplicate saveIntr ignored!!!");
                 }
                 break;
 
@@ -928,7 +917,7 @@ public class LEDnoticeManager extends Thread implements
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt ON after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOn ignored!!!");
+//                    System.out.println("duplicate intrTxtOn ignored!!!");
                 }
                 break;
 
@@ -938,9 +927,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == INTR_TXT_OFF) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOff ignored!!!");
+//                    System.out.println("duplicate intrTxtOff ignored!!!");
                 }
                 break;
 
@@ -950,9 +939,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == DEL_GROUP) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
+//                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate delGroup ignored!!!");
+//                    System.out.println("duplicate delGroup ignored!!!");
                 }
                 break;
 
@@ -962,9 +951,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SET_MONITOR) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
+//                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate setMonitor ignored!!!");
+//                    System.out.println("duplicate setMonitor ignored!!!");
                 }
                 break;
 
@@ -974,9 +963,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == DEL_TEXT_ONE) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate del text one ignored!!!");
+//                    System.out.println("duplicate del text one ignored!!!");
                 }
                 break;
 
@@ -986,9 +975,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SAVE_TEXT) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveText ignored!!!");
+//                    System.out.println("duplicate saveText ignored!!!");
                 }
                 break;
 
@@ -998,17 +987,27 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SET_CLOCK) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate clock set ignored!!!");
+//                    System.out.println("duplicate clock set ignored!!!");
                 }
                 break;
                 
             default:
                 break;
+                //</editor-fold>
         }
+        
+        if (typeUint == getID) {
+            // process LEDnotice device heartbeat
+            if (byteIndex == 1)
+                System.out.println("  <~GET_ID");
+            return;
+        } else {
+            System.out.println("  <~" + getMessageType(typeUint));
+        }        
     }    
-
+    
     public void processValidMessage(LED_MsgType ledMessage) {
         if (ledMessage == null )
             return;
@@ -1022,7 +1021,7 @@ public class LEDnoticeManager extends Thread implements
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveIntr ignored!!!");
+//                    System.out.println("duplicate saveIntr ignored!!!");
                 }
                 break;
 
@@ -1034,7 +1033,7 @@ public class LEDnoticeManager extends Thread implements
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt ON after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOn ignored!!!");
+//                    System.out.println("duplicate intrTxtOn ignored!!!");
                 }
                 break;
 
@@ -1044,9 +1043,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == INTR_TXT_OFF) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOff ignored!!!");
+//                    System.out.println("duplicate intrTxtOff ignored!!!");
                 }
                 break;
 
@@ -1056,9 +1055,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == DEL_GROUP) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
+//                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate delGroup ignored!!!");
+//                    System.out.println("duplicate delGroup ignored!!!");
                 }
                 break;
 
@@ -1068,9 +1067,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SET_MONITOR) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
+//                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate setMonitor ignored!!!");
+//                    System.out.println("duplicate setMonitor ignored!!!");
                 }
                 break;
 
@@ -1080,9 +1079,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == DEL_TEXT_ONE) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate del text one ignored!!!");
+//                    System.out.println("duplicate del text one ignored!!!");
                 }
                 break;
 
@@ -1092,9 +1091,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SAVE_TEXT) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveText ignored!!!");
+//                    System.out.println("duplicate saveText ignored!!!");
                 }
                 break;
 
@@ -1104,9 +1103,9 @@ public class LEDnoticeManager extends Thread implements
                         getLedNoticeMessages().peek().getType() == SET_CLOCK) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate clock set ignored!!!");
+//                    System.out.println("duplicate clock set ignored!!!");
                 }
                 break;
                 
@@ -1160,5 +1159,14 @@ public class LEDnoticeManager extends Thread implements
     public void showDefaultMessage() {
         showLEDnoticeDefaultMessage(EBD_Row.TOP);
         showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);        
+    }
+
+    private LED_MsgType getMessageType(int typeUint) {
+        for (LED_MsgType type : LED_MsgType.values()) {
+            if (type.getValue() == typeUint) {
+                return type;
+            }
+        }
+        return Broken;
     }
 }
