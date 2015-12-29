@@ -119,6 +119,4 @@ public class LEDnoticeMessageQueue extends LinkedList<MsgItem> implements Messag
         }
     }
 }
-
-
     

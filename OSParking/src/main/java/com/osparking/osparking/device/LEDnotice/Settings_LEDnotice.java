@@ -2973,7 +2973,6 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
         } else {
             cancelDemoIfRunning();
             if (parent == null) {
-//                connectDeviceTimer.cancel();
                 if (connectionType[E_Board.ordinal()][gateNo] == TCP_IP.ordinal()) {
                     ((ISocket) mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo]).setSocket(null);
                 } else {
@@ -3210,13 +3209,7 @@ public class Settings_LEDnotice extends javax.swing.JFrame {
                 for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
                     //if (isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo].getSocket())) {
                     if (IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][gateNo], E_Board, gateNo)) {
-                        OSP_enums.EBD_Row row = OSP_enums.EBD_Row.BOTTOM;
-                        
-                        if (usage == DEFAULT_TOP_ROW.ordinal()) {
-                            row = OSP_enums.EBD_Row.TOP;
-                        }
-                        manager.showLEDnoticeDefaultMessage(OSP_enums.EBD_Row.TOP);
-                        manager.showLEDnoticeDefaultMessage(OSP_enums.EBD_Row.BOTTOM);                        
+                        manager.showDefaultMessage();
                     }
                 }
             }

@@ -131,6 +131,8 @@ public class Globals {
     public static SimpleDateFormat timeFormatMMSS = new SimpleDateFormat("mm_ss"); 
     public static SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");    
 
+    public static int SIX_HOURS = 3600 * 1000 * 6;
+    
     public static void augmentComponentMap(Object component, HashMap<String, Component> componentMap) {
         if (component instanceof JTextField) {
             String name = ((JTextField)component).getName();

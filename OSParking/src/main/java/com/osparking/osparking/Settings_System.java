@@ -2706,7 +2706,8 @@ public class Settings_System extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Settings_System(null).setVisible(true);
+                ControlGUI mainForm = new ControlGUI();
+                new Settings_System(mainForm).setVisible(true);
             }
         });
     }

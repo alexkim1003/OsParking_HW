@@ -228,7 +228,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
      */
     public DeviceType deviceToContinue = null;
     public Object[] BarConnection = null;
-    Timer maxRecordCheckerTimer = new Timer("ospMaxRecordChecker");
+    Timer periodicallyCheckSystemTimer = new Timer("ospMaxRecordChecker");
     
     private ParkingTimer[][] connectDeviceTimer = null;
     public long[][] eBoardMsgSentMs = null;
@@ -437,7 +437,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
          * Delete car arrival records older than some designated number of days.
          * Old car arrival records are checked once every 6 hours after the initial check when system boots.
          */
-        maxRecordCheckerTimer.schedule(new ArrivalRecordLimitEnforcer(MessageTextArea), 1000, 3600 * 1000 * 6);        
+        periodicallyCheckSystemTimer.schedule(new SystemChecker(this), 1000, SIX_HOURS);        
         
         prevImgSN = new int[gateCount + 1];
         
@@ -1848,8 +1848,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             }
         }
         
-        maxRecordCheckerTimer.cancel();
-        maxRecordCheckerTimer.purge();
+        periodicallyCheckSystemTimer.cancel();
+        periodicallyCheckSystemTimer.purge();
 
         if (formClockTimer != null) {
             formClockTimer.cancel(); 

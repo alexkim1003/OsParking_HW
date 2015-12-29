@@ -24,8 +24,6 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgTy
 import static com.osparking.osparking.device.LEDnotice.RS_232_Manager.readDeliveredMessage;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -62,7 +60,7 @@ public class SocketReader  extends Thread {
             LED_MsgType messageArrived = null;
             try {
                 messageArrived= readDeliveredMessage(ledNoticeManager.getSocket().getInputStream());
-                System.out.println("LED message type: " + messageArrived);
+                System.out.println("LED message type came: " + messageArrived);
                 
                 if (messageArrived != Broken) {
                     synchronized(ledNoticeManager.getMsgArrived()) {
