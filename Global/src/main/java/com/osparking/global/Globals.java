@@ -681,7 +681,6 @@ public class Globals {
 
                 } else if (oneArg.indexOf(RANDOM_ATT) >= 0) {
                     RANDOM_ATTENDANT = true;
-                    
                 }
             }
         }   

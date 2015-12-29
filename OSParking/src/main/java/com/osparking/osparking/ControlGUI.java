@@ -2148,7 +2148,10 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         interruptEBoardDisplay(cameraID, tagRecognized, permission, remark.toString(), tagEnteredAs.toString(),
                 imageSN, carPassingDelayMs);
         System.out.println("delay: " + carPassingDelayMs);
-        if (permission == ALLOWED || autoGateOpenCheckBox.isSelected()) {
+        if (permission == ALLOWED 
+                || autoGateOpenCheckBox.isSelected()
+                || Globals.RANDOM_ATTENDANT) 
+        {
             getPassingDelayStat()[cameraID].setAccumulatable(true);
         } else {
             getPassingDelayStat()[cameraID].setAccumulatable(false);
