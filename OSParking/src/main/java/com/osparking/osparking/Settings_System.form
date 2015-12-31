@@ -1110,45 +1110,56 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="E_Board1_connTypeCBoxActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="E_Board1_IP_TextField">
+                        <Container class="javax.swing.JPanel" name="E_Board1_conn_detail_Pan">
                           <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
-                            </Property>
-                            <Property name="horizontalAlignment" type="int" value="4"/>
-                            <Property name="text" type="java.lang.String" value="127.0.0.1"/>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[125, 25]"/>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="E_Board1_IP_TextField" noResource="true"/>
+                            <Property name="name" type="java.lang.String" value="E_Board1_conn_detail_Pan" noResource="true"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[125, 27]"/>
+                              <Dimension value="[175, 29]"/>
                             </Property>
                           </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="E_Board1_IP_TextFieldActionPerformed"/>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_IP_TextFieldKeyReleased"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JTextField" name="E_Board1_Port_TextField">
-                          <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
-                            </Property>
-                            <Property name="horizontalAlignment" type="int" value="4"/>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[40, 25]"/>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="E_Board1_Port_TextField" noResource="true"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[45, 27]"/>
-                            </Property>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_Port_TextFieldKeyReleased"/>
-                            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_Port_TextFieldKeyTyped"/>
-                          </Events>
-                        </Component>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTextField" name="E_Board1_IP_TextField">
+                              <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
+                                </Property>
+                                <Property name="horizontalAlignment" type="int" value="4"/>
+                                <Property name="text" type="java.lang.String" value="127.0.0.1"/>
+                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[125, 25]"/>
+                                </Property>
+                                <Property name="name" type="java.lang.String" value="E_Board1_IP_TextField" noResource="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[125, 27]"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_IP_TextFieldKeyReleased"/>
+                              </Events>
+                            </Component>
+                            <Component class="javax.swing.JTextField" name="E_Board1_Port_TextField">
+                              <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
+                                </Property>
+                                <Property name="horizontalAlignment" type="int" value="4"/>
+                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[40, 25]"/>
+                                </Property>
+                                <Property name="name" type="java.lang.String" value="E_Board1_Port_TextField" noResource="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[40, 27]"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_Port_TextFieldKeyReleased"/>
+                                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="E_Board1_Port_TextFieldKeyTyped"/>
+                              </Events>
+                            </Component>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="gateBarPan">
@@ -1242,44 +1253,66 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GateBar1_connTypeCBoxActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="GateBar1_IP_TextField">
+                        <Container class="javax.swing.JPanel" name="GateBar1_conn_detail_Pan">
                           <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
-                            </Property>
-                            <Property name="horizontalAlignment" type="int" value="4"/>
-                            <Property name="text" type="java.lang.String" value="127.0.0.1"/>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[125, 25]"/>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="GateBar1_IP_TextField" noResource="true"/>
+                            <Property name="name" type="java.lang.String" value="GateBar1_conn_detail_Pan" noResource="true"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[125, 27]"/>
+                              <Dimension value="[175, 29]"/>
                             </Property>
                           </Properties>
-                          <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_IP_TextFieldKeyReleased"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JTextField" name="GateBar1_Port_TextField">
-                          <Properties>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
-                            </Property>
-                            <Property name="horizontalAlignment" type="int" value="4"/>
-                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[40, 25]"/>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="GateBar1_Port_TextField" noResource="true"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[45, 27]"/>
-                            </Property>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_Port_TextFieldKeyReleased"/>
-                            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_Port_TextFieldKeyTyped"/>
-                          </Events>
-                        </Component>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTextField" name="GateBar1_IP_TextField">
+                              <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
+                                </Property>
+                                <Property name="horizontalAlignment" type="int" value="4"/>
+                                <Property name="text" type="java.lang.String" value="127.0.0.1"/>
+                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[125, 25]"/>
+                                </Property>
+                                <Property name="name" type="java.lang.String" value="GateBar1_IP_TextField" noResource="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[125, 27]"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_IP_TextFieldKeyReleased"/>
+                              </Events>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="West"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                            <Component class="javax.swing.JTextField" name="GateBar1_Port_TextField">
+                              <Properties>
+                                <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
+                                </Property>
+                                <Property name="horizontalAlignment" type="int" value="4"/>
+                                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[40, 25]"/>
+                                </Property>
+                                <Property name="name" type="java.lang.String" value="GateBar1_Port_TextField" noResource="true"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[45, 27]"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_Port_TextFieldKeyReleased"/>
+                                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="GateBar1_Port_TextFieldKeyTyped"/>
+                              </Events>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="East"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>

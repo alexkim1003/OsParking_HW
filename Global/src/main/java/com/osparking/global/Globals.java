@@ -101,6 +101,7 @@ import gnu.io.SerialPort;
 import java.awt.Container;
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
+import javax.swing.JPanel;
 
 /**
  * Defines names and methods used globally in the Parking Lot manager application developed by 
@@ -159,6 +160,15 @@ public class Globals {
                 componentMap.put(name, (JButton)component);
             }
         } else if (component instanceof Container) {
+            
+            if (component instanceof JPanel) {
+                String name = ((JPanel)component).getName();
+
+                if (name != null && name.length() > 0) {
+                    componentMap.put(name, (JPanel)component);
+                }
+            }
+            
             for (Component innerComponent : ((Container)component).getComponents()) {
                 augmentComponentMap(innerComponent, componentMap);
             }

@@ -75,7 +75,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         naraBarMessages.add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            String portNumStr = "COM6";
+            String portNumStr = "COM5";
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {
