@@ -121,6 +121,8 @@ public class DB_Access {
     public static String[][] devicePort = null;
     public static byte [][] connectionType = null;  
     
+    public static byte[][] deviceComID = null;
+    
     public static boolean passwordMatched(String userID, String passwd) 
     {
         boolean result = false;
@@ -541,6 +543,7 @@ public class DB_Access {
             deviceIP = new String[DeviceType.values().length][gateCount + 1];
             devicePort = new String[DeviceType.values().length][gateCount + 1];
             deviceType = new byte[DeviceType.values().length][gateCount + 1];
+            deviceComID = new byte[DeviceType.values().length][gateCount + 1];
             connectionType = new byte[DeviceType.values().length][gateCount + 1];
             passingCountCurrent = new int[gateCount + 1];
             passingDelayCurrentTotalMs = new int[gateCount + 1];
