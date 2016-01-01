@@ -13,6 +13,7 @@ import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceComID;
 import com.osparking.global.names.IDevice;
 import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
@@ -75,7 +76,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         naraBarMessages.add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            String portNumStr = "COM5";
+            String portNumStr = "COM" + deviceComID[GateBar.ordinal()][deviceNo];
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {

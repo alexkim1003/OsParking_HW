@@ -121,7 +121,7 @@ public class DB_Access {
     public static String[][] devicePort = null;
     public static byte [][] connectionType = null;  
     
-    public static byte[][] deviceComID = null;
+    public static String[][] deviceComID = null;
     
     public static boolean passwordMatched(String userID, String passwd) 
     {
@@ -543,7 +543,7 @@ public class DB_Access {
             deviceIP = new String[DeviceType.values().length][gateCount + 1];
             devicePort = new String[DeviceType.values().length][gateCount + 1];
             deviceType = new byte[DeviceType.values().length][gateCount + 1];
-            deviceComID = new byte[DeviceType.values().length][gateCount + 1];
+            deviceComID = new String[DeviceType.values().length][gateCount + 1];
             connectionType = new byte[DeviceType.values().length][gateCount + 1];
             passingCountCurrent = new int[gateCount + 1];
             passingDelayCurrentTotalMs = new int[gateCount + 1];
@@ -568,6 +568,7 @@ public class DB_Access {
                 devicePort[E_Board.ordinal()][gateID] = getPortNumber(strField);
                 deviceType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardType");
                 connectionType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardConnType");
+                deviceComID[E_Board.ordinal()][gateID] = rs.getString("e_boardCOM_ID");
                 
                 strField = rs.getString("gatebarIP");
                 deviceIP[GateBar.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
@@ -575,6 +576,7 @@ public class DB_Access {
                 devicePort[GateBar.ordinal()][gateID] = getPortNumber(strField);
                 deviceType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarType");
                 connectionType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarConnType");
+                deviceComID[GateBar.ordinal()][gateID] =  rs.getString("gatebarCOM_ID");
                 
                 passingCountCurrent[gateID] = rs.getInt("passingCountCurrent");
                 

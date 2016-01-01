@@ -3169,13 +3169,15 @@ public class Settings_System extends javax.swing.JFrame {
         
         sb.append("  , e_boardType = ? ");
         sb.append("  , e_boardConnType = ? ");
-        //
+        sb.append("  , e_boardCOM_ID = ? ");
+        
         sb.append("  , e_boardIP = ? ");
         sb.append("  , e_boardPort = ? ");
         
         sb.append("  , gatebarType = ? ");
         sb.append("  , gatebarConnType = ? ");
-        //
+        sb.append("  , gatebarCOM_ID = ? ");
+        
         sb.append("  , gatebarIP = ? ");
         sb.append("  , gatebarPort = ? ");
         
@@ -3203,9 +3205,7 @@ public class Settings_System extends javax.swing.JFrame {
                         updateSettings.setInt(pIndex++, cBox == null ? 0 : cBox.getSelectedIndex());
                         
                         cBox = (JComboBox)componentMap.get(type.toString() + gateID + "_comID_CBox");
-                        int index = cBox.getSelectedIndex();
-                        Object object = cBox.getSelectedItem();
-                        System.out.println("");
+                        updateSettings.setString(pIndex++, cBox == null ? "" : (String)cBox.getSelectedItem());
                     }
                     updateSettings.setString(pIndex++, 
                             ((JTextField) componentMap.get(type.toString() + gateID + "_IP_TextField")).getText().trim());
@@ -3423,26 +3423,26 @@ public class Settings_System extends javax.swing.JFrame {
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
                 ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                        changedControls, ((JComboBox) evt.getSource()).getName(), comPortID_CBox.getSelectedIndex(), 
+                        changedControls, ((JComboBox) evt.getSource()).getName(), 
+                        (String) comPortID_CBox.getSelectedItem(), 
                         deviceComID[deviceType.ordinal()][gateNo]);                
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
             }
         });
-        comPortID_CBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                E_Board1_comID_CBoxActionPerformed(evt);
-            }
-
-            private void E_Board1_comID_CBoxActionPerformed(ActionEvent evt) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+        comPortID_CBox.setSelectedItem(deviceComID[deviceType.ordinal()][gateNo]);
         //</editor-fold>
 
         detailPan.setLayout (new java.awt.FlowLayout(FlowLayout.CENTER, 5, 0));
         detailPan.add(comLabel);
         detailPan.add(comPortID_CBox);
+        
+        String name = ((JComboBox)comPortID_CBox).getName();
+
+        if (name != null && name.length() > 0) {
+            componentMap.put(name, comPortID_CBox);
+        }
+            
         detailPan.invalidate();
     }
 

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceComID;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -159,7 +160,7 @@ public class LEDnoticeManager extends Thread implements
                     mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]);
         
         if (connectionType[E_Board.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            String portNumStr = "COM6";
+            String portNumStr = "COM" + deviceComID[E_Board.ordinal()][deviceNo];
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {
