@@ -3753,18 +3753,22 @@ public class Settings_System extends javax.swing.JFrame {
      * @param deviceType
      * @param gateNo 
      */
-    private void enforceSimulatorTCP_IP(DeviceType deviceType, int gateNo) {
-        String prefix = deviceType.name() + gateNo;
-        
-        JComboBox typeCBox = (JComboBox)componentMap.get(prefix + "_TypeCBox");
-        JComboBox connTypeCBox = (JComboBox)componentMap.get(prefix + "_connTypeCBox");
-        
-        if (typeCBox.getSelectedIndex() == GateBarType.Simulator.ordinal() 
-                && connTypeCBox.getSelectedIndex() != ConnectionType.TCP_IP.ordinal()) 
-        {
-            JOptionPane.showMessageDialog(this, "모의 장치는 연결이 TCP-IP 라야 됨!");
-            connTypeCBox.setSelectedIndex(ConnectionType.TCP_IP.ordinal());
-        }    
+    private void enforceSimulatorTCP_IP(final DeviceType deviceType, final int gateNo) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                String prefix = deviceType.name() + gateNo;
+
+                JComboBox typeCBox = (JComboBox)componentMap.get(prefix + "_TypeCBox");
+                JComboBox connTypeCBox = (JComboBox)componentMap.get(prefix + "_connTypeCBox");
+
+                if (typeCBox.getSelectedIndex() == GateBarType.Simulator.ordinal() 
+                        && connTypeCBox.getSelectedIndex() != ConnectionType.TCP_IP.ordinal()) 
+                {
+                    JOptionPane.showMessageDialog(null, "모의 장치는 연결이 TCP-IP 라야 됨!");
+                    connTypeCBox.setSelectedIndex(ConnectionType.TCP_IP.ordinal());
+                }    
+            }
+        });        
     }
 
     private static class COM_ID_Usage {

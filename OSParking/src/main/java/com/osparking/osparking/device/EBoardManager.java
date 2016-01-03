@@ -42,9 +42,8 @@ import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+
 import java.nio.ByteBuffer;
 
 /**

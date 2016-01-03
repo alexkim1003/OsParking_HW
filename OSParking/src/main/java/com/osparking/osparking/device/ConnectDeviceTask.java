@@ -24,7 +24,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.DEBUG;
-import static com.osparking.global.Globals.LED_PERIOD;
 import static com.osparking.global.Globals.PULSE_PERIOD;
 import static com.osparking.global.Globals.getGateDevicePortNo;
 import static com.osparking.global.Globals.logParkingException;

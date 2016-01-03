@@ -36,9 +36,6 @@ import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.CarImage;
 import static com.osparking.global.names.OSP_enums.MsgCode.IAmHere;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.SerialPort;
 
 /**
  * Maintains communication with a camera  thru a socket as long as the socket is connected,
