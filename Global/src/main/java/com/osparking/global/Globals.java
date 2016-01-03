@@ -135,26 +135,27 @@ public class Globals {
     public static int SIX_HOURS = 3600 * 1000 * 6;
     
     public static void augmentComponentMap(Object component, HashMap<String, Component> componentMap) {
+        String name = null;
         if (component instanceof JTextField) {
-            String name = ((JTextField)component).getName();
+            name = ((JTextField)component).getName();
 
             if (name != null && name.length() > 0) {
                 componentMap.put(name, (JTextField)component);
             }
         } else if (component instanceof JComboBox) {
-            String name = ((JComboBox)component).getName();
+            name = ((JComboBox)component).getName();
 
             if (name != null && name.length() > 0) {
                 componentMap.put(name, (JComboBox)component);
             }
         } else if (component instanceof JCheckBox) {
-            String name = ((JCheckBox)component).getName();
+            name = ((JCheckBox)component).getName();
 
             if (name != null && name.length() > 0) {
                 componentMap.put(name, (JCheckBox)component);
             }
         } else if (component instanceof JButton) {
-            String name = ((JButton)component).getName();
+            name = ((JButton)component).getName();
 
             if (name != null && name.length() > 0) {
                 componentMap.put(name, (JButton)component);
@@ -162,7 +163,7 @@ public class Globals {
         } else if (component instanceof Container) {
             
             if (component instanceof JPanel) {
-                String name = ((JPanel)component).getName();
+                name = ((JPanel)component).getName();
 
                 if (name != null && name.length() > 0) {
                     componentMap.put(name, (JPanel)component);
@@ -173,6 +174,8 @@ public class Globals {
                 augmentComponentMap(innerComponent, componentMap);
             }
         }
+//        if (name != null)
+//            System.out.println("name: " + name);
     }    
     
     public static class GateDeviceType {

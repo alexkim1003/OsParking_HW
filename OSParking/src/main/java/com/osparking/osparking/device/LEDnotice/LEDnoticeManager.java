@@ -161,6 +161,7 @@ public class LEDnoticeManager extends Thread implements
         
         if (connectionType[E_Board.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
             String portNumStr = "COM" + deviceComID[E_Board.ordinal()][deviceNo];
+            
             try {
                 portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {
