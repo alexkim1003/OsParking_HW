@@ -16,6 +16,8 @@
  */
 package com.osparking.global;
 
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -80,28 +82,24 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import static com.osparking.global.names.DB_Access.deviceIP;
 import static com.osparking.global.names.DB_Access.devicePort;
-import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import static com.osparking.global.names.DB_Access.maxMessageLines;
 import static com.osparking.global.names.DB_Access.opLoggingIndex;
 import com.osparking.global.names.OSP_enums;
-import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
-import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
-import com.osparking.global.names.OSP_enums.DeviceType;
-import static com.osparking.global.names.OSP_enums.DeviceType.*;
-import com.osparking.global.names.OSP_enums.EBD_ContentType;
 import com.osparking.global.names.OSP_enums.E_BoardType;
 import com.osparking.global.names.OSP_enums.GateBarType;
+import javax.swing.JPanel;
+import com.osparking.global.names.OSP_enums.DeviceType;
+import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
+import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
+import com.osparking.global.names.OSP_enums.EBD_ContentType;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.VersionType;
-import com.osparking.global.names.ToleranceLevel;
-import gnu.io.SerialPort;
 import java.awt.Container;
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
 
 /**
  * Defines names and methods used globally in the Parking Lot manager application developed by 
@@ -174,9 +172,19 @@ public class Globals {
                 augmentComponentMap(innerComponent, componentMap);
             }
         }
-//        if (name != null)
-//            System.out.println("name: " + name);
     }    
+    
+    
+    public static Component getComponentByName(
+            HashMap<String, Component> componentMap, String name) 
+    {
+        
+        if (componentMap.containsKey(name)) {
+            return (Component) componentMap.get(name);
+        }
+        else 
+            return null;
+    }         
     
     public static class GateDeviceType {
         public OSP_enums.CameraType cameraType = OSP_enums.CameraType.Simulator;
@@ -194,6 +202,7 @@ public class Globals {
             gateDeviceTypes[gateID].eBoardType = E_BoardType.values()[deviceType[E_Board.ordinal()][gateID]];
             gateDeviceTypes[gateID].gateBarType = GateBarType.values()[deviceType[GateBar.ordinal()][gateID]];
         }
+        
     }  
     
     public static int getGateDevicePortNo(DeviceType deviceType, byte deviceID) {
@@ -249,8 +258,8 @@ public class Globals {
             URL iconURL = new Globals().getClass().getResource(iconPath);
             if (iconURL == null) {
                 JOptionPane.showMessageDialog(null,
-                    "Can't find icon file below." + System.lineSeparator() + "File: " + iconPath, "File Not Found",
-                    JOptionPane.ERROR_MESSAGE);                
+                    "Can't find icon file below." + System.lineSeparator() + "File: " + iconPath, 
+                    "File Not Found", JOptionPane.ERROR_MESSAGE);                
             } else {
                 OSPiconList.add(new ImageIcon(iconURL).getImage());
             }
@@ -382,17 +391,35 @@ public class Globals {
         String tagNumber = null;
         
         if (picNo == 1)
-            tagNumber = "52가8648"; 
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "52가8648"; 
+            else
+                tagNumber = "52GA8648"; 
         else if (picNo == 2)
-            tagNumber = "47누8868";
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "47누8868";
+            else
+                tagNumber = "47NU8868";
         else if (picNo == 3)
-            tagNumber = "서울31나3416"; 
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "서울31나3416"; 
+            else
+                tagNumber = "SEOUL31NA3416"; 
         else if (picNo == 4)
-            tagNumber = "경기42고6003"; 
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "경기42GO6003"; 
+            else
+                tagNumber = "GYEONG42GO6003"; 
         else if (picNo == 5)
-            tagNumber = "30모8186"; 
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "30모8186"; 
+            else
+                tagNumber = "30MO8186"; 
         else if (picNo ==  6)
-            tagNumber = "서울32가1234"; 
+            if(ourLang == KOREAN.ordinal())
+                tagNumber = "서울32가1234"; 
+            else
+                tagNumber = "SEOUL32GA1234"; 
         
         return tagNumber;
     }      
@@ -505,6 +532,12 @@ public class Globals {
     public static String exceptionLogName = "exception";    
     public static String exceptionPerDevice = "exceptionPerDev";    
      
+    /**
+     * Various constants used in the E-Board display control messages.
+     */
+    // public final static byte TOP_ROW = 0;
+    // public final static byte BOTTOM_ROW = 1;    
+
     public static int getFirstPart(String tagRecognized, StringBuilder firstPart) {
         //        String firstPart = tagRecognized.substring(
         //                tagRecognized.length() - 7, tagRecognized.length() - 5);
@@ -1437,7 +1470,6 @@ public class Globals {
     }
 
     public static final Object MUTEX_DEBUG_SEQ_VALUE = new Object();
-       
     public static boolean isConnected(Socket socket) {
         if (socket == null || socket.isClosed() || !socket.isConnected()) {
             return false;
@@ -1445,25 +1477,6 @@ public class Globals {
             return true;
         }
     }
-        
-//    public static boolean isConnected
-//        (Socket socket, SerialPort serialPort, DeviceType devType, byte deviceNo, ToleranceLevel[][] tolerance) 
-//    {
-//        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
-//        {
-//            if (serialPort == null || tolerance[devType.ordinal()][deviceNo].getLevel() < 0) 
-//                return false;
-//            else 
-//                return true;
-//        } else if (connectionType[devType.ordinal()][deviceNo] == TCP_IP.ordinal()) {
-//            if (Globals.isConnected(socket))
-//                return true;
-//            else
-//                return false;
-//        } else {
-//            return false;
-//        }
-//    }
     
     /**
      * Check if some camera needs to be connected for the manager to be fully functional.
@@ -1535,23 +1548,6 @@ public class Globals {
             return true;
         else
             return false;
-//        switch (devType) {
-//            case Camera:
-//                if (cameraIP[devID].equals(devIP))
-//                    result = true;
-//                break;
-//            case GateBar:
-//                if (gateBarIP[devID].equals(devIP))
-//                    result = true;
-//                break;
-//            case E_Board:
-//                if (e_BoardIP[devID].equals(devIP))
-//                    result = true;
-//                break;
-//            default:
-//                break;
-//        }
-//        return result;
     }
     
 
@@ -1703,27 +1699,37 @@ public class Globals {
         }       
     }
     
-    public static HashMap<String, Component> makeComponentMap(Component[] components) {
-        HashMap<String, Component> componentMap;
-        componentMap = new HashMap<String,Component>();
-        
-        for (Component aComponent : components) {
-            if (aComponent.getName().length() > 0) {
-                componentMap.put(aComponent.getName(), aComponent);
-            }
-        }
-        
-        return componentMap;
-    }
     
-    public static Component getComponentByName(
-            HashMap<String, Component> componentMap, String name) 
-    {
+    public static ArrayList TitleList = new ArrayList();
+    public static ArrayList ButtonLabels = new ArrayList();
+    public static ArrayList LabelsText = new ArrayList();
+    public static ArrayList ToolTipLabels = new ArrayList();
+    public static ArrayList TableHeaderList = new ArrayList();
+    public static ArrayList TextFieldList = new ArrayList();
+    public static ArrayList ComboBoxItemList = new ArrayList();
+    public static ArrayList DialogMSGList = new ArrayList();
+    public static ArrayList DialogTitleList = new ArrayList();
+    public static ArrayList MenuItemList = new ArrayList();
+    
+    public static int ourLang;
+    
+    
+    private static String getTextFor(ControlEnums.DialogMSGTypes dialogMSGTypes, String str){
+        String dialogMSG = null;
         
-        if (componentMap.containsKey(name)) {
-            return (Component) componentMap.get(name);
+        switch(dialogMSGTypes){
+            case SAME_DATA_INPUT_DIALOG : 
+                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
+                    dialogMSG = "'" + str + "'에 같은 값이 존재합니다. ";
+                }
+                else{
+                    dialogMSG = "Same data exists in '" + str + "'";
+                }
+                break;
+            default :
+                break;
         }
-        else 
-            return null;
-    }         
+        
+        return dialogMSG;
+    }
 }

@@ -20,6 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import com.osparking.global.names.OSP_enums.DeviceType;
+import com.osparking.global.names.SocketConnStat;
+import com.osparking.global.names.DeviceManager;
+import com.osparking.global.names.OSP_enums.DeviceType;
+import com.osparking.global.names.ParkingTimer;
+import com.osparking.global.names.ToleranceLevel;
 
 /**
  *

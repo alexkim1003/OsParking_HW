@@ -38,6 +38,10 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.ourLang;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
+import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.ImageDisplay;
 import com.osparking.global.names.OSP_enums.ODS_TYPE;
 
@@ -66,7 +70,7 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         this.odsType = odsType;
         initComponents();
         setIconImages(OSPiconList);
-        setTitle("Help on '" + (odsType == ODS_TYPE.AFFILIATION ? "Affliation" : "Building") + "' ods File");
+        setTitle(getTextFor(ControlEnums.TitleTypes.ODS_HELP_DIALOG_FRAME_TITLE));
         setHelpContents(helpTitle, odsType);
 
         // Close the dialog when Esc is pressed
@@ -114,7 +118,6 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         odsHelpLabel = new javax.swing.JLabel();
 
-        setTitle("Help on ods File");
         setMinimumSize(new java.awt.Dimension(560, 550));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -144,7 +147,7 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         jPanel3.add(filler4);
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        closeButton.setText("Close");
+        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
         closeButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -216,11 +219,28 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
             String title = null;
 
             if (odsType == ODS_TYPE.AFFILIATION) {
-                imgFilename = "/affiliation_wrong_Eng.png";
-                title = "Wrong Affiliation Example in ods file";
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        imgFilename = "/affiliation_wrong_Kor.png";
+                        title = "잘못된 소속 ods 사례";
+                        break;
+                    default:
+                        imgFilename = "/affiliation_wrong_Eng.png";
+                        title = "Wrong Affiliation Example in ods file";
+                        break;
+                }
             }  else {
-                imgFilename = "/building_wrong_Eng.png";
-                title = "Wrong Building Example in ods file";
+                switch(parkingLotLocale.getLanguage()){
+                    case "en" :
+                    case "ko" :
+                        imgFilename = "/building_wrong_Kor.png";
+                        title =  "잘못된 건물 ods 사례";
+                        break;
+                    default:
+                        imgFilename = "/building_wrong_Eng.png";
+                        title = "Wrong Building Example in ods file";
+                        break;
+                }
             }
             ImageDisplay bigImage = new ImageDisplay(imgFilename, title);
             bigImage.setVisible(true);               
@@ -275,24 +295,30 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         DefaultCaret caret = (DefaultCaret)topTextArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);   
         
-        StringBuffer sb = new StringBuffer();
-        sb.append("\u278A Default file type of a office SW 'OpenOffice Calc'");
-        sb.append(System.getProperty("line.separator"));
-        sb.append("\u278B Creatable using MS Excel, OpenOffice Calc, etc.");
-        sb.append(System.getProperty("line.separator"));
-        sb.append("\u278C In MS Excel, 'ods' can be created by --");
-        sb.append(System.getProperty("line.separator"));
-        sb.append("     [File] > [Save As...] > [File Type: (choose) 'OpenDocu...'");
-        topTextArea.setText(sb.toString());
+        topTextArea.setText(getTextFor(ControlEnums.TextType.HELP_TA));
         
         ImageIcon odsHelp_icon = null;
         String filename = null;
         
         if (odsType == ODS_TYPE.AFFILIATION) {
-            filename = "/affiliation_good_Eng.png";
+            switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        filename = "/affiliation_good_Kor.png";
+                        break;
+                     default:
+                        filename = "/affiliation_good_Eng.png";
+                        break;
+                }
         }
         else {
-            filename = "/building_good_Eng.png";
+            switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        filename = "/building_good_Kor.png";
+                        break;
+                    default:
+                        filename = "/building_good_Eng.png";
+                        break;
+                }
         }
         
         try {
@@ -327,5 +353,60 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
                 return false;
             }
         }
+    }
+    
+    private String getTextFor(ControlEnums.TitleTypes titleType){
+        String title = null;
+        
+        switch(titleType){
+            case ODS_HELP_DIALOG_FRAME_TITLE :
+                switch (parkingLotLocale.getLanguage()) {
+                    case "ko":
+                        title = (odsType == ODS_TYPE.AFFILIATION ? "소속" : "건물") + " ods 파일 도움말";
+                        break;
+                    default:
+                        title = "Help on '" + (odsType == ODS_TYPE.AFFILIATION ? "Affliation" : "Building") + "' ods File";
+                        break;
+                }
+                break;
+            default :
+                break;
+        }
+        
+        return title;
+    }
+    
+    private String getTextFor(ControlEnums.TextType TextType){
+        String text = null;
+        
+        switch(TextType){
+            case HELP_TA :
+                StringBuffer sb = new StringBuffer();
+                switch (parkingLotLocale.getLanguage()) {
+                    case "ko":
+                        sb.append("\u278A 오픈오피스 스프레드시트(OpenOffice Calc) 를 사용하여 만들 수 있습니다");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append("\u278B MS엑셀에서 엑셀파일을 다음 절차로 'ods' 파일로 저장할 수 있습니다");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append("     [파일] > [다른 이름으로 저장] > 파일 형식: 'OpenDocu...' 선택");
+                        text = sb.toString();
+                        break;
+                    default:
+                        sb.append("\u278A Default file type of a office SW 'OpenOffice Calc'");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append("\u278B Creatable using MS Excel, OpenOffice Calc, etc.");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append("\u278C In MS Excel, 'ods' can be created by --");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append("     [File] > [Save As...] > [File Type: (choose) 'OpenDocu...'");
+                        text = sb.toString();
+                        break;
+                }
+                break;
+            default :
+                break;
+        }
+        
+        return text;
     }
 }

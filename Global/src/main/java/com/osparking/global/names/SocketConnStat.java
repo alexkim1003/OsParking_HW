@@ -16,11 +16,21 @@
  */
 package com.osparking.global.names;
 
+import com.osparking.global.Globals;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.addMessageLine;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.logParkingOperation;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.LabelTypes.CAMERA_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelTypes.EBOARD_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelTypes.GATE_BAR_LABEL;
+import static com.osparking.global.names.ControlEnums.TextType.CONN_MSG;
+import static com.osparking.global.names.ControlEnums.TextType.DISCONN_MSG;
+import static com.osparking.global.names.ControlEnums.TextType.DIS_CONN_MSG;
+import static com.osparking.global.names.ControlEnums.TextType.ERROR_RATE_MSG;
+import static com.osparking.global.names.ControlEnums.TextType.NO_SOCKET_DISCON_MSG;
 import com.osparking.global.names.OSP_enums.DeviceType;
 
 /**
@@ -61,15 +71,9 @@ public class SocketConnStat {
         StringBuilder sb = new StringBuilder();
         
         if (disconnectionCount == 0) {
-            sb.append(": no socket disconn'");
+            sb.append(((String[])Globals.TextFieldList.get(NO_SOCKET_DISCON_MSG.ordinal()))[ourLang]);
         } else {
-            sb.append(": connection count: ");
-            sb.append(disconnectionCount);
-            sb.append(System.lineSeparator());            
-            sb.append("      disconnection(ms)--avg: ");
-            sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
-            sb.append(", max: ");
-            sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+            getTextFor(DIS_CONN_MSG, sb, disconnectionCount, disconnectionTotalMs, disconnPeriodMax);
         }
         sb.append(System.lineSeparator());
         return sb.toString();
@@ -97,7 +101,21 @@ public class SocketConnStat {
                         logParkingException(Level.INFO, null, "Large disconn period: " + latest_D_P_Ms, deviceID);
                     latest_D_P_Ms = connectionTm - statChangeTm;
                 }
-                String msg =  "  ------" + deviceType +" #" + deviceID + " connected";
+                String device = null;
+                    switch(deviceType){
+                        case Camera: 
+                            device = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang];
+                            break;
+                        case GateBar :
+                            device = ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang];
+                            break;
+                        case E_Board :
+                            device = ((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang];
+                            break;
+                        default :
+                            break;
+                    }
+                String msg =  "  ------" + device +" #" + deviceID + " " + ((String[])Globals.TextFieldList.get(CONN_MSG.ordinal()))[ourLang];
                 addMessageLine(mainForm.getMessageTextArea(), msg);
                 logParkingException(Level.INFO, null, msg);                 
                 connected = true;
@@ -128,5 +146,34 @@ public class SocketConnStat {
      */
     public boolean isConnected() {
         return connected;
+    }
+    
+
+    private static void getTextFor(ControlEnums.TextType textType, StringBuilder sb, 
+            int disconnectionCount, long disconnectionTotalMs, long disconnPeriodMax) {
+        switch(textType){
+            case DIS_CONN_MSG :
+                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
+                    sb.append(": 재연결 횟수: ");
+                    sb.append(disconnectionCount);
+                    sb.append(System.lineSeparator());            
+                    sb.append("      단절 시간(ms)--평균: ");
+                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+                    sb.append(", 최대: ");
+                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+                }
+                else {
+                    sb.append(": connection count: ");
+                    sb.append(disconnectionCount);
+                    sb.append(System.lineSeparator());            
+                    sb.append("      disconnection(ms)--avg: ");
+                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+                    sb.append(", max: ");
+                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+                }
+                break;
+            default :
+                break;
+        }
     }
 }

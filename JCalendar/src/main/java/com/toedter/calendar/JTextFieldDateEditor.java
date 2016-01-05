@@ -166,7 +166,8 @@ public class JTextFieldDateEditor extends JFormattedTextField implements IDateEd
 	protected void setDate(Date date, boolean firePropertyChange) {
 		Date oldDate = this.date;
 		this.date = date;
-
+                
+                setEditable(false);     //added by OsParking
 		if (date == null) {
 			setText("");
 		} else {

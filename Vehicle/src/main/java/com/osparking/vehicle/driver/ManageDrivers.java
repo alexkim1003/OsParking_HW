@@ -17,6 +17,7 @@
 package com.osparking.vehicle.driver;
 
 import static com.mysql.jdbc.MysqlErrorNumbers.ER_DUP_ENTRY;
+import com.osparking.global.Globals;
 import static com.osparking.vehicle.driver.DriverTable.modifyingRowM;
 import static com.osparking.vehicle.driver.ODSReader.getWrongCellPointString;
 import java.awt.Dimension;
@@ -75,8 +76,20 @@ import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.logParkingOperation;
+import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.rejectUserInput;
 import static com.osparking.global.Globals.removeEmptyRow;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
+import static com.osparking.global.names.ControlEnums.TitleTypes.DRIVER_LIST_FRAME_TITLE;
+import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.TableTypes.*;
+import static com.osparking.global.names.ControlEnums.TextType.*;
+import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
+import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.InnoComboBoxItem;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 import com.osparking.global.names.OSP_enums;
@@ -151,7 +164,7 @@ public class ManageDrivers extends javax.swing.JFrame {
         setupComboBoxColumn(DriverCol.AffiliationL2);
         setupComboBoxColumn(DriverCol.UnitNo);
         
-        loadDriverData(-1, "", "");
+        loadDriverData(UNKNOWN, "", "");
         searchName.requestFocus();
     }
     
@@ -181,17 +194,17 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(false);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText("Cancel");
+                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
                 deleteDriver_Button.setMnemonic('c');
                 deleteDriver_Button.setEnabled(true);
                 modifyDriver_Button.setEnabled(false);
                 
-                createDriver_Button.setText("Save");
+                createDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
                 createDriver_Button.setMnemonic('s');
                 requiredLabel.setVisible(true);
                 
                 searchKeyGroupEnabled(false);
-                formModeLabel.setText("Creation");
+                formModeLabel.setText(((String[])Globals.LabelsText.get(CREATE_MODE_LABEL.ordinal()))[ourLang]);
                 break;
                 
             case MODIFICATION:
@@ -202,17 +215,17 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(false);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText("Cancel");
+                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
                 deleteDriver_Button.setMnemonic('c');
                 deleteDriver_Button.setEnabled(true);
                 createDriver_Button.setEnabled(false);
                 
-                modifyDriver_Button.setText("Save");
+                modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
                 modifyDriver_Button.setMnemonic('s');
                 requiredLabel.setVisible(true);
                 
                 searchKeyGroupEnabled(false);                
-                formModeLabel.setText("Modification");
+                formModeLabel.setText(((String[])Globals.LabelsText.get(MODIFY_MODE_LABEL.ordinal()))[ourLang]);
                 break;
                 
             case SEARCHING:
@@ -223,20 +236,20 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(true);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText("Delete");
+                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
                 deleteDriver_Button.setMnemonic('d');
                 deleteDriver_Button.setEnabled(false);
                 
-                modifyDriver_Button.setText("Modify");
+                modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
                 modifyDriver_Button.setMnemonic('m');
                 modifyDriver_Button.setEnabled(false);
                 
-                createDriver_Button.setText("Create");
+                createDriver_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
                 createDriver_Button.setMnemonic('r');
                 requiredLabel.setVisible(true);
                 
                 searchKeyGroupEnabled(true);
-                formModeLabel.setText("Searching");
+                formModeLabel.setText(((String[])Globals.LabelsText.get(SEARCH_MODE_LABEL.ordinal()))[ourLang]);
                 break;
             default:
                 break;
@@ -382,13 +395,16 @@ public class ManageDrivers extends javax.swing.JFrame {
                     driverSelectionForm.loadSkinnyDriverTable(0); // 0: highlight first row
                 }      
                 
-                JOptionPane.showConfirmDialog(this, "Driver Creation Succeeded" + System.getProperty("line.separator") 
-                        + "Driver Name: " + driverName, "Creation Result",
+                JOptionPane.showConfirmDialog(this, 
+                        getTextFor(CREATION_SUCCESS_DIALOG, driverName), 
+                        ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);   
                 //</editor-fold>
-            } else {
-                JOptionPane.showConfirmDialog(null, "Failed to create a owner/driver record.",
-                    "Driver Creation Failure", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+            }else {
+                JOptionPane.showConfirmDialog(null, 
+                        ((String[])Globals.DialogMSGList.get(DRIVER_CREATRION_FAIL_DIALOG.ordinal()))[ourLang], 
+                        ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
             }            
         }
         return result;        
@@ -472,7 +488,7 @@ public class ManageDrivers extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Driver List");
+        setTitle(((String[])Globals.TitleList.get(DRIVER_LIST_FRAME_TITLE.ordinal()))[ourLang]);
         setMinimumSize(new java.awt.Dimension(991, 566));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -743,9 +759,6 @@ public class ManageDrivers extends javax.swing.JFrame {
             }
         });
         driversTable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                driversTableKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 driversTableKeyReleased(evt);
             }
@@ -896,9 +909,9 @@ public class ManageDrivers extends javax.swing.JFrame {
         int driverCount = getRecordCount("cardriver", -1);
         int vehiclecount = getRecordCount("vehicles", -1);
         int result = JOptionPane.showConfirmDialog(this, 
-                "Do you want to delete " + driverCount + " drivers all?" + System.lineSeparator() 
-                        + "Total " + vehiclecount + " owned vehicles will also be destroyed!",
-            "All Record Deletion Confirmation", JOptionPane.YES_NO_OPTION);
+                getTextFor(DELETE_ALL_DAILOG, driverCount, vehiclecount),
+                ((String[])Globals.DialogTitleList.get(DELETE_ALL_DAILOGTITLE.ordinal()))[ourLang],
+                JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
             Connection conn = null;
@@ -919,9 +932,11 @@ public class ManageDrivers extends javax.swing.JFrame {
             }
 
             if (result >= 1) {
-                loadDriverData(-1, "", "");
-                JOptionPane.showConfirmDialog(this, "All drivers were deleted",
-                    "Deletion Result", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                loadDriverData(UNKNOWN, "", "");
+                JOptionPane.showConfirmDialog(this, 
+                        ((String[])Globals.DialogMSGList.get(DRIVER_DELETE_ALL_RESULT_DAILOG.ordinal()))[ourLang], 
+                        ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                        JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_deleteAllDriversActionPerformed
@@ -932,8 +947,10 @@ public class ManageDrivers extends javax.swing.JFrame {
         int colV = driverTable.getSelectedColumn();
         
         if (driverTable.getSelectedRows().length > 1) {
-            JOptionPane.showConfirmDialog(this, "Please narrow down to a single driver to update!",
-                "Driver Modification Failure", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);            
+            JOptionPane.showConfirmDialog(this, 
+                    ((String[])Globals.DialogMSGList.get(DRIVER_MODIFY_FAIL_DAILOG.ordinal()))[ourLang],
+                    ((String[])Globals.DialogTitleList.get(MODIFY_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);            
             return;
         }
 
@@ -977,11 +994,13 @@ public class ManageDrivers extends javax.swing.JFrame {
 
         if (getFormMode() == FormMode.CREATION) {
             //<editor-fold desc="-- Handle driver creation cancellation request">
-            Object[] options = {"Yes(quit)", "No(create)"};
+            Object[] options = new Object[2];
+            getTextFor(DELETE_DIALOG, options);
             
             int response = JOptionPane.showOptionDialog(this, 
-                    "Do you want to quit creating a new driver?", 
-                    "Cancel Confirmation", JOptionPane.YES_NO_OPTION,
+                                ((String[])Globals.DialogMSGList.get(DRIVER_CREATE_CANCEL_DIALOG.ordinal()))[ourLang], 
+                                ((String[])Globals.DialogTitleList.get(CANCEL_DIALOGTITLE.ordinal()))[ourLang], 
+                                JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, 
                     null, 
                     options, options[0]);
@@ -1008,8 +1027,9 @@ public class ManageDrivers extends javax.swing.JFrame {
             //<editor-fold desc="-- Process modification cancel request">
             
             int response = JOptionPane.showOptionDialog(this, 
-                    "Do you want to cancel modifying driver information?", 
-                    "Cancel Confirmation", JOptionPane.YES_NO_OPTION,
+                                ((String[])Globals.DialogMSGList.get(DRIVER_MODIFY_CANCEL_DAILOG.ordinal()))[ourLang], 
+                                ((String[])Globals.DialogTitleList.get(CANCEL_DIALOGTITLE.ordinal()))[ourLang], 
+                                JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, null, null, null); 
             
             if (response == JOptionPane.NO_OPTION) {
@@ -1038,15 +1058,14 @@ public class ManageDrivers extends javax.swing.JFrame {
 
             if (deleteIndice.length == 1) {
                 result = JOptionPane.showConfirmDialog(this,
-                    "Want to delete a driver and every owned cars?" + System.getProperty("line.separator")
-                    + "Driver Name: '" + driverName + "' (" + count + " owned cars)",
-                    "Record(s) Delete Confirmation", JOptionPane.YES_NO_OPTION);
+                            getTextFor(DELETE_ONE_DIALOG, driverName, count), 
+                            ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                            JOptionPane.YES_NO_OPTION);
             } else {
                 result = JOptionPane.showConfirmDialog(this,
-                    "Want to delete records of " + deleteIndice.length + " drivers and their car records?"
-                            + System.getProperty("line.separator")
-                    + "First Driver Name: '" + driverName + "' (" + count + " owned cars)",
-                    "Records Delete Confirmation", JOptionPane.YES_NO_OPTION);
+                            getTextFor(DELETE_MORE_DIALOG, driverName, deleteIndice.length, count), 
+                            ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                            JOptionPane.YES_NO_OPTION);
             }
 
             if (result == JOptionPane.YES_OPTION) {
@@ -1077,9 +1096,8 @@ public class ManageDrivers extends javax.swing.JFrame {
                     if (result == 1) {
                         loadDriverData(deleteIndice[0], "", ""); // passes index of the deleted row
                         JOptionPane.showConfirmDialog(this, 
-                                "Total " + totalDeletion + " driver(s)" + System.lineSeparator() +
-                                        "(including '" + driverName + "') " + System.lineSeparator() +
-                                        "deleted successfully.", "Driver Deletion Result",
+                                getTextFor(DELETE_SUCCESS_DIALOG, driverName, totalDeletion),
+                                ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                                 JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                     }
                 }
@@ -1176,12 +1194,14 @@ public class ManageDrivers extends javax.swing.JFrame {
                     if (objODSReader.checkDriverODS(sheet, wrongCells, driverTotal))
                     {
                         StringBuilder sb = new StringBuilder();
-                        sb.append("Following data has been recognized. Want to load these data?");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append(" -Data content: driver records " + driverTotal.getValue() + " rows");
+//                        sb.append("Following data has been recognized. Want to load these data?");
+//                        sb.append(System.getProperty("line.separator"));
+//                        sb.append(" -Data content: driver records " + driverTotal.getValue() + " rows");
 
-                        int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                "Sheet Inspection Result", JOptionPane.YES_NO_OPTION);            
+                        int result = JOptionPane.showConfirmDialog(null, 
+                                getTextFor(READ_ODS_DIALOG, sb, driverTotal.getValue()).toString(),
+                                ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readDriverODS(sheet, this);
                         }
@@ -1189,11 +1209,9 @@ public class ManageDrivers extends javax.swing.JFrame {
                         // display wrong cell points if existed
                         if (wrongCells.size() > 0) {
                             JOptionPane.showConfirmDialog(null, 
-                                    "Cells that include wrong formatted data" + 
-                                    System.getProperty("line.separator") + 
-                                            getWrongCellPointString(wrongCells),
-                                    "Sheed Cell Data Error", JOptionPane.PLAIN_MESSAGE, 
-                                    WARNING_MESSAGE);                      
+                                   getTextFor(READ_ODS_FAIL_DIALOG, getWrongCellPointString(wrongCells)),
+                                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                      
                         }                        
                     }
                 }
@@ -1269,15 +1287,11 @@ public class ManageDrivers extends javax.swing.JFrame {
         loadUnitComboBox(searchL1ComboBox, searchBuildingComboBox, searchUnitComboBox);            
     }//GEN-LAST:event_searchUnitComboBoxPopupMenuWillBecomeVisible
 
-    private void driversTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_driversTableKeyPressed
-        System.out.println("ab");
-    }//GEN-LAST:event_driversTableKeyPressed
-
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
         // TODO add your handling code here:
-        searchName.setText("(Name)");
-        searchCell.setText("(Cell Phone)");
-        searchPhone.setText("(LandLine)");
+        searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+        searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_TF.ordinal()))[ourLang]);
+        searchPhone.setText(((String[])Globals.TextFieldList.get(LANDLINE_TF.ordinal()))[ourLang]);
         searchL1ComboBox.setSelectedIndex(0);
         searchL2ComboBox.setSelectedIndex(0);
         searchBuildingComboBox.setSelectedIndex(0);
@@ -1288,7 +1302,7 @@ public class ManageDrivers extends javax.swing.JFrame {
     private void searchNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchNameFocusLost
         // TODO add your handling code here:
         if(searchName.getText().trim().equals(""))
-            searchName.setText("(Name)");
+            searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
     }//GEN-LAST:event_searchNameFocusLost
 
     private void searchNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchNameMousePressed
@@ -1299,7 +1313,7 @@ public class ManageDrivers extends javax.swing.JFrame {
     private void searchCellFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchCellFocusLost
         // TODO add your handling code here:
         if(searchCell.getText().trim().equals(""))
-            searchCell.setText("(Cell Phone)");
+            searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_TF.ordinal()))[ourLang]);
     }//GEN-LAST:event_searchCellFocusLost
 
     private void searchCellMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchCellMousePressed
@@ -1310,7 +1324,7 @@ public class ManageDrivers extends javax.swing.JFrame {
     private void searchPhoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchPhoneFocusLost
         // TODO add your handling code here:
         if(searchPhone.getText().trim().equals(""))
-           searchPhone.setText("(LandLine)");
+           searchPhone.setText(((String[])Globals.TextFieldList.get(LANDLINE_TF.ordinal()))[ourLang]);
     }//GEN-LAST:event_searchPhoneFocusLost
 
     private void searchPhoneMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchPhoneMousePressed
@@ -1404,11 +1418,11 @@ public class ManageDrivers extends javax.swing.JFrame {
             // <editor-fold defaultstate="collapsed" desc="-- load car driver list">     
             // <editor-fold defaultstate="collapsed" desc="-- construct SQL statement">  
             StringBuffer cond = new StringBuffer();
-            if(!searchName.getText().trim().equals("(Name)"))
+            if(!searchName.getText().trim().equals(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]))
                 attachCondition(cond, "name", searchName.getText().trim());
-            if(!searchCell.getText().trim().equals("(Cell Phone)"))
+            if(!searchCell.getText().trim().equals(((String[])Globals.TextFieldList.get(CELL_PHONE_TF.ordinal()))[ourLang]))
                 attachCondition(cond, "cellphone", searchCell.getText().trim());
-            if(!searchPhone.getText().trim().equals("(LandLine)"))
+            if(!searchPhone.getText().trim().equals(((String[])Globals.TextFieldList.get(LANDLINE_TF.ordinal()))[ourLang]))
                 attachCondition(cond, "phone", searchPhone.getText().trim());
 
             InnoComboBoxItem lower_Item = (InnoComboBoxItem)searchL2ComboBox.getSelectedItem();
@@ -1611,13 +1625,13 @@ public class ManageDrivers extends javax.swing.JFrame {
     void setUpdateMode (boolean toModify) {
         setFormMode(toModify ? FormMode.MODIFICATION : FormMode.SEARCHING);
         if (toModify) {
-            modifyDriver_Button.setText("Save");
-            deleteDriver_Button.setText("Cancel");
+            modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+            deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
             deleteDriver_Button.setEnabled(true);
             createDriver_Button.setEnabled(false);        }
         else {
-            modifyDriver_Button.setText("Modify");
-            deleteDriver_Button.setText("Delete");
+            modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+            deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
             deleteDriver_Button.setEnabled(false);            
         }
         requiredLabel.setVisible(toModify);
@@ -1653,14 +1667,16 @@ public class ManageDrivers extends javax.swing.JFrame {
             modifyDriver.setString(LandLine.getNumVal(), (String)drvModel.getValueAt(index, LandLine.getNumVal()));
 
             // prepare affiliation level 2 key(L2_NO) value to store
+            String item1 = drvModel.getValueAt(index, AffiliationL1.getNumVal()).toString();
             InnoComboBoxItem item = (InnoComboBoxItem)drvModel.getValueAt(index, AffiliationL2.getNumVal());
 
-            if (item.toString() == null) {
+            if (item.toString().equals(((String[])Globals.ComboBoxItemList.get(LOWER_CB_ITEM.ordinal()))[ourLang])
+                    || item.toString().equals(((String[])Globals.ComboBoxItemList.get(LOWER_HIGHER_CB_ITEM.ordinal()))[ourLang])) {
                 modifyDriver.setString(AffiliationL1.getNumVal(), null); // level 1 not selected
             } else {
                 int L2_NO = (Integer)item.getKeys()[0];
                 if (L2_NO == -1) {
-                    modifyDriver.setString(AffiliationL1.getNumVal(), null); // level 2 not selected
+                    modifyDriver.setString(AffiliationL2.getNumVal(), null); // level 2 not selected
                 } else {
                     modifyDriver.setInt(AffiliationL1.getNumVal(), L2_NO); // both level 1 and 2 selected
                 }
@@ -1668,14 +1684,31 @@ public class ManageDrivers extends javax.swing.JFrame {
                 
             // prepare building unit key(SEQ_NO) value to store
             item = (InnoComboBoxItem)drvModel.getValueAt(index, UnitNo.getNumVal());
-            if (item.toString() == null) {
-                modifyDriver.setString(BuildingNo.getNumVal(), null); // building not selected
+            if (item.toString().equals(((String[])Globals.ComboBoxItemList.get(ROOM_CB_ITEM.ordinal()))[ourLang])
+                    || item.toString().equals(((String[])Globals.ComboBoxItemList.get(ROOM_BUILDING_CB_ITEM.ordinal()))[ourLang])) {
+                modifyDriver.setString(5, null); // building not selected
+//            } 
+//            else {
+//                int SEQ_NO = (Integer)item.getKeys()[0];
+//                if ( !item1.equals(((String[])Globals.ComboBoxItemList.get(BUILDING_CB_ITEM.ordinal()))[ourLang]) 
+//                        && SEQ_NO == -1) {
+//                    int respone = JOptionPane.showConfirmDialog(null, 
+//                                        ((String[])Globals.DialogMSGList.get(UNIT_INPUTDIALOG.ordinal()))[ourLang],
+//                                        ((String[])Globals.DialogTitleList.get(ERROR_DIALOGTITLE.ordinal()))[ourLang],
+//                                        JOptionPane.YES_NO_OPTION, WARNING_MESSAGE); 
+//                    if(respone == JOptionPane.YES_OPTION){
+//                        // modify
+//                        return -2;
+//                    }else{
+//                        // cancel
+//                        modifyDriver.setString(5, null); // building not selected
+//                    }
             } else {
                 int SEQ_NO = (Integer)item.getKeys()[0];
                 if (SEQ_NO == -1) {
-                    modifyDriver.setString(5, null); // building unit not selected
+                    modifyDriver.setString(BuildingNo.getNumVal(), null); // building unit not selected
                 } else {
-                    modifyDriver.setInt(5, SEQ_NO); // both building and its unit selected                        
+                    modifyDriver.setInt(BuildingNo.getNumVal(), SEQ_NO); // both building and its unit selected                        
                 }
             }                
             modifyDriver.setInt(6, (Integer)drvModel.getValueAt(index, DriverCol.SEQ_NO.getNumVal()));
@@ -1705,8 +1738,16 @@ public class ManageDrivers extends javax.swing.JFrame {
         Object[][] data = { /*{1, "Henry Ford", "452-1234-5678", "567-1111-2222", {"Engineering", 2},
             {"Mechanical Engr.", 4}, {"1", 162}, {"101", 5024}, 3} */            
         };
-        String[] columnNames = {"Order", "Name(*)", "Cell Phone(*)", "Land Line", "Higher Group", 
-            "Lower Group", "Buliding No.", "Room No.", "CD_SEQ_NO"};
+        String[] columnNames = {
+            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(NAME_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(CELL_PHONE_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(PHONE_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(HIGHER_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(LOWER_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(BUILDING_HEADER.ordinal()))[ourLang], 
+            ((String[])Globals.TableHeaderList.get(ROOM_HEADER.ordinal()))[ourLang], 
+            "CD_SEQ_NO"};
         driverTable = new DriverTable(data, columnNames, this);
         driverTable.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         driverTable.getTableHeader().setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1767,20 +1808,24 @@ public class ManageDrivers extends javax.swing.JFrame {
         String name = ((String)driverTable.getModel().getValueAt(row, col1)).trim(); 
         int col2 = driverTable.convertColumnIndexToModel(DriverCol.CellPhone.getNumVal());        
         String cell = ((String)driverTable.getModel().getValueAt(row, col2)).trim();    
+        String L1_item = driverTable.getValueAt(row, AffiliationL1.getNumVal()).toString();
+        InnoComboBoxItem L2_item = (InnoComboBoxItem)driverTable.getValueAt(row, AffiliationL2.getNumVal());
+        int L2_NO = (Integer) L2_item.getKeys()[0];
+        String building_item = driverTable.getValueAt(row, BuildingNo.getNumVal()).toString();
+        InnoComboBoxItem unit_item = (InnoComboBoxItem)driverTable.getValueAt(row, UnitNo.getNumVal());
+        int SEQ_NO = (Integer)unit_item.getKeys()[0];
 
+        Object[] options = new Object[2];
+        getTextFor(MODIFY_DAILOG, options);
+        
         // 1. driver name isn't provided
         if (name == null || name.trim().length() == 0)
         {
-            Object[] options = {"Yes(input)", "No(discard)"};
-            
             // <editor-fold defaultstate="collapsed" desc="-- handle missing driver name">   
             int response = JOptionPane.showOptionDialog(this, 
-                    "Want to input a \"required\" driver name?" 
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes] name field will have focus." 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, modification will be discarded.)", 
-                    "Name missing", JOptionPane.YES_NO_OPTION,
+                    ((String[])Globals.DialogMSGList.get(DRIVER_NAME_CHECK_DIALOG.ordinal()))[ourLang], 
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, 
                     null, 
                     options, options[0]);                    
@@ -1794,7 +1839,6 @@ public class ManageDrivers extends javax.swing.JFrame {
                     startEditingCell(row, col1);
                     selectionListenerDisabled = false;
                 }                  
-
             } else {
                 setUpdateMode(false);
                 loadDriverData(nextRowV, "", "");
@@ -1803,16 +1847,11 @@ public class ManageDrivers extends javax.swing.JFrame {
         }   
         else if (cell == null || cell.trim().length() == 0) 
         {
-            Object[] options = {"Yes(input)", "No(discard)"};
-            
             // <editor-fold defaultstate="collapsed" desc="-- handle missing cell phone">   
             int response = JOptionPane.showOptionDialog(this, 
-                    "Want to input a \"required\" cell phone number?" 
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes], cell phone will have focus," 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, modification will be discarded.)", 
-                    "Cell phone missing", JOptionPane.YES_NO_OPTION,
+                    ((String[])Globals.DialogMSGList.get(DRIVER_CELL_CHECK_DIALOG.ordinal()))[ourLang], 
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, 
                     null, 
                     options, options[0]);
@@ -1833,16 +1872,91 @@ public class ManageDrivers extends javax.swing.JFrame {
             }            
             //</editor-fold>            
         } 
+        else if(!L1_item.equals(((String[])Globals.ComboBoxItemList.get(HIGHER_CB_ITEM.ordinal()))[ourLang]) 
+                        && L2_NO == -1)
+        {
+            // <editor-fold defaultstate="collapsed" desc="-- handle missing L2 item"> 
+            int respone = JOptionPane.showConfirmDialog(null, 
+                                    ((String[])Globals.DialogMSGList.get(L2_INPUT_DIALOG.ordinal()))[ourLang],
+                                    ((String[])Globals.DialogTitleList.get(ERROR_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.YES_NO_OPTION, WARNING_MESSAGE);
+            if(respone == JOptionPane.YES_OPTION){
+                //수정
+                col2 = driverTable.convertColumnIndexToModel(
+                            DriverCol.AffiliationL2.getNumVal());  
+                if (driverTable.editCellAt(row, col2))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, col2);
+                    selectionListenerDisabled = false;
+                }
+            }else{
+                //L1을 초기값으로 바꾸고 저장
+                col2 = driverTable.convertColumnIndexToModel(
+                        DriverCol.AffiliationL1.getNumVal());  
+                driverTable.setValueAt(ManageDrivers.getPrompter(AffiliationL1, null), row, col2);
+                if (driverTable.editCellAt(row, col2))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, col2);
+                    selectionListenerDisabled = false;
+                }
+            }
+            
+            //</editor-fold>   
+        }
+        else if(!building_item.equals(((String[])Globals.ComboBoxItemList.get(BUILDING_CB_ITEM.ordinal()))[ourLang]) 
+                        && SEQ_NO == -1)
+        {
+            // <editor-fold defaultstate="collapsed" desc="-- handle missing Unit item"> 
+            int respone = JOptionPane.showConfirmDialog(null, 
+                                    ((String[])Globals.DialogMSGList.get(UNIT_INPUTDIALOG.ordinal()))[ourLang],
+                                    ((String[])Globals.DialogTitleList.get(ERROR_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.YES_NO_OPTION, WARNING_MESSAGE);
+            if(respone == JOptionPane.YES_OPTION){
+                //수정
+                col2 = driverTable.convertColumnIndexToModel(
+                            DriverCol.UnitNo.getNumVal());  
+                if (driverTable.editCellAt(row, col2))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, col2);
+                    selectionListenerDisabled = false;
+                }
+            }else{
+                //Building을 초기값으로 바꾸고 저장
+                col2 = driverTable.convertColumnIndexToModel(
+                        DriverCol.BuildingNo.getNumVal());    
+                driverTable.setValueAt(ManageDrivers.getPrompter(BuildingNo, null), row, col2);
+                if (driverTable.editCellAt(row, col2))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, col2);
+                    selectionListenerDisabled = false;
+                }
+            }
+            
+            //</editor-fold>   
+        }
         else // both driver name and his/her cell phone number exists
         {
             // <editor-fold defaultstate="collapsed" desc="-- save modified driver info">  
             int response = JOptionPane.showOptionDialog(this, 
-                    "Do you want to save driver information?" +  System.getProperty("line.separator") 
-                            + " - Driver Name: " + name, 
-                    "Save Confirmation", JOptionPane.YES_NO_OPTION,
+                    getTextFor(USER_UPDATE_SUCCESS_DIALOG, name), 
+                    ((String[])Globals.DialogTitleList.get(SAVE_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE, 
                     null, null, null);
             
+            TableModel drvModel = driverTable.getModel();
+            InnoComboBoxItem L2_Item = (InnoComboBoxItem)drvModel.getValueAt(
+                    modifyingRowM, AffiliationL2.getNumVal());
+            InnoComboBoxItem unit_Item = (InnoComboBoxItem)drvModel.getValueAt(
+                    modifyingRowM, UnitNo.getNumVal());
             if (response == 0) {
                 StringBuffer driverProperties = new StringBuffer();
                 if (saveModifiedDriverInfo(driverProperties) == 1) {
@@ -1878,14 +1992,16 @@ public class ManageDrivers extends javax.swing.JFrame {
     }    
 
     private void removeRealEmptyRow() {
-        JOptionPane.showConfirmDialog(this, "As the driver's name is missing," 
-                + System.getProperty("line.separator") + "driver creation is automatically cancelled.",
-            "Driver Creation Failure", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+        JOptionPane.showConfirmDialog(this, 
+                ((String[])Globals.DialogMSGList.get(DRIVER_CREATE_FAIL_DIALOG.ordinal()))[ourLang], 
+                ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
         
         // remove last row which lacks driver name
         ((DefaultTableModel)driverTable.getModel())
                 .setRowCount(driverTable.getRowCount() - 1); 
     }       
+    
     /**
      * Handles new driver information insertion trial in one of the following three ways
      * 1. removes new driver information row from the table when name is not provided
@@ -1900,7 +2016,12 @@ public class ManageDrivers extends javax.swing.JFrame {
         String name = ((String)driverTable.getModel().getValueAt(row, colM)).trim(); 
         colM = driverTable.convertColumnIndexToModel(DriverCol.CellPhone.getNumVal());
         String cell = String.valueOf(driverTable.getValueAt(row, colM)).toLowerCase();
-        
+        String L1_item = driverTable.getValueAt(row, AffiliationL1.getNumVal()).toString();
+        InnoComboBoxItem L2_item = (InnoComboBoxItem)driverTable.getValueAt(row, AffiliationL2.getNumVal());
+        int L2_NO = (Integer) L2_item.getKeys()[0];
+        String building_item = driverTable.getValueAt(row, BuildingNo.getNumVal()).toString();
+        InnoComboBoxItem unit_item = (InnoComboBoxItem)driverTable.getValueAt(row, UnitNo.getNumVal());
+        int SEQ_NO = (Integer)unit_item.getKeys()[0];
         // 1. driver name isn't provided
         if (name == null || name.trim().length() == 0)
         {
@@ -1914,12 +2035,9 @@ public class ManageDrivers extends javax.swing.JFrame {
             // <editor-fold defaultstate="collapsed" desc="-- handle missing cell phone">   
             // it has driver's name, but not his/her cell phone number  
             int response = JOptionPane.showConfirmDialog(null, 
-                    "Want to input a \"required\" cell phone number?" 
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes], cell phone will have focus," 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, creation will be discarded.)", 
-                    "WARNING", JOptionPane.YES_NO_OPTION);                    
+                    ((String[])Globals.DialogMSGList.get(DRIVER_CREATE_CHECK_CELL_DIALOG.ordinal()))[ourLang], 
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.YES_NO_OPTION);                    
         
             if (response == JOptionPane.YES_OPTION) 
             {
@@ -1938,19 +2056,87 @@ public class ManageDrivers extends javax.swing.JFrame {
             }            
             //</editor-fold>          
         } 
+        else if(!L1_item.equals(((String[])Globals.ComboBoxItemList.get(HIGHER_CB_ITEM.ordinal()))[ourLang]) 
+                        && L2_NO == -1)
+        {
+            // <editor-fold defaultstate="collapsed" desc="-- handle missing L2 item"> 
+            int respone = JOptionPane.showConfirmDialog(null, 
+                                    ((String[])Globals.DialogMSGList.get(L2_INPUT_DIALOG.ordinal()))[ourLang],
+                                    ((String[])Globals.DialogTitleList.get(ERROR_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.YES_NO_OPTION, WARNING_MESSAGE);
+            if(respone == JOptionPane.YES_OPTION){
+                //수정
+                colM = driverTable.convertColumnIndexToModel(
+                            DriverCol.AffiliationL2.getNumVal());  
+                if (driverTable.editCellAt(row, colM))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, colM);
+                    selectionListenerDisabled = false;
+                }
+            }else{
+                //L1을 초기값으로 생성
+                colM = driverTable.convertColumnIndexToModel(
+                        DriverCol.AffiliationL1.getNumVal());  
+                driverTable.setValueAt(ManageDrivers.getPrompter(AffiliationL1, null), row, colM);
+                if (driverTable.editCellAt(row, colM))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, colM);
+                    selectionListenerDisabled = false;
+                }
+            }
+            
+            //</editor-fold>   
+        }
+        else if(!building_item.equals(((String[])Globals.ComboBoxItemList.get(BUILDING_CB_ITEM.ordinal()))[ourLang]) 
+                        && SEQ_NO == -1)
+        {
+            // <editor-fold defaultstate="collapsed" desc="-- handle missing Unit item"> 
+            int respone = JOptionPane.showConfirmDialog(null, 
+                                    ((String[])Globals.DialogMSGList.get(UNIT_INPUTDIALOG.ordinal()))[ourLang],
+                                    ((String[])Globals.DialogTitleList.get(ERROR_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.YES_NO_OPTION, WARNING_MESSAGE);
+            if(respone == JOptionPane.YES_OPTION){
+                //수정
+                colM = driverTable.convertColumnIndexToModel(
+                            DriverCol.UnitNo.getNumVal());  
+                if (driverTable.editCellAt(row, colM))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, colM);
+                    selectionListenerDisabled = false;
+                }
+            }else{
+                //Building을 초기값으로 바꾸고 저장
+                colM = driverTable.convertColumnIndexToModel(
+                        DriverCol.BuildingNo.getNumVal());    
+                driverTable.setValueAt(ManageDrivers.getPrompter(BuildingNo, null), row, colM);
+                if (driverTable.editCellAt(row, colM))
+                {
+                    selectionListenerDisabled = true;
+                    highlightTableRow(driverTable, row);
+                    startEditingCell(row, colM);
+                    selectionListenerDisabled = false;
+                }
+            }
+            
+            //</editor-fold>   
+        }
         else // both driver name and his/her cell phone number are supplied
         {
-            Object[] options = {"Save", "Cancel"};
-
-            int response = JOptionPane.showOptionDialog(this, 
-                    "Do you want to save driver information?" +  System.getProperty("line.separator")
-                            + " - Driver Name: " + name, 
-                    "Save Confirmation", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, 
-                    null, 
-                    options, options[0]);
-            if (response == JOptionPane.YES_OPTION)
+            int response = JOptionPane.showConfirmDialog(this, 
+                    getTextFor(USER_UPDATE_SUCCESS_DIALOG, name),
+                    ((String[])Globals.DialogTitleList.get(SAVE_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            int createDriver;
+            if (response == JOptionPane.YES_OPTION){
                 createNewDriver(name, row);
+        }
         }
         driverTable.requestFocusInWindow();
     }
@@ -2241,8 +2427,9 @@ public class ManageDrivers extends javax.swing.JFrame {
             dispose();
         } else {
             int response = JOptionPane.showConfirmDialog(null, 
-                    "Want to desert car information being created/modified?", 
-                    "WARNING", JOptionPane.YES_NO_OPTION);
+                    ((String[])Globals.DialogMSGList.get(DRIVER_CLOSE_FORM_DIALOG.ordinal()))[ourLang], 
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.YES_NO_OPTION);
         
             if (response == JOptionPane.YES_OPTION) 
             {
@@ -2283,16 +2470,18 @@ public class ManageDrivers extends javax.swing.JFrame {
         String label = null;
         switch (column) {
             case AffiliationL1: 
-                label  = "(Higher Group)";
+                label = ((String[])Globals.ComboBoxItemList.get(HIGHER_CB_ITEM.ordinal()))[ourLang];
                 break;
             case BuildingNo: 
-                label  = "(Building No.)";
+                label  = ((String[])Globals.ComboBoxItemList.get(BUILDING_CB_ITEM.ordinal()))[ourLang];
                 break;
             case AffiliationL2:  
-                label = complexItem ? "(Lower-Higher)" : "(Lower Group)";
+                label = complexItem ? ((String[])Globals.ComboBoxItemList.get(LOWER_HIGHER_CB_ITEM.ordinal()))[ourLang] 
+                        : ((String[])Globals.ComboBoxItemList.get(LOWER_CB_ITEM.ordinal()))[ourLang];
                 break;
             case UnitNo: 
-                label = complexItem ? "(Room-Building)" : "(Room No.)";
+                label = complexItem ? ((String[])Globals.ComboBoxItemList.get(ROOM_BUILDING_CB_ITEM.ordinal()))[ourLang] 
+                        : ((String[])Globals.ComboBoxItemList.get(ROOM_CB_ITEM.ordinal()))[ourLang];
                 break;
             default:
                 break;
@@ -2416,5 +2605,186 @@ public class ManageDrivers extends javax.swing.JFrame {
                 driverProperties.append("  Room#: " + item.getLabels()[0] + System.lineSeparator());
             }
         }            
+    }
+    
+    private StringBuilder getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, StringBuilder sb, int integer){
+        switch(dialogMSGType){
+            case READ_ODS_DIALOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        sb.append("자료를 불러오시겟습니까?");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append(" -자료 갯수: 운전자 정보 " + integer + " 개");
+                        break;
+                    default:
+                        sb.append("Following data has been recognized. Want to load these data?");
+                        sb.append(System.getProperty("line.separator"));
+                        sb.append(" -Data content: driver records " + integer + " rows");
+                        break;
+}
+            break;
+        }
+        return sb;
+    }
+    
+    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, String str){
+        String dialog = null;
+        
+        switch(dialogMSGType){
+            case CREATION_SUCCESS_DIALOG :
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = "운전자 생성 성공" + System.getProperty("line.separator") 
+                        + "운전자 이름: " + str;
+                        break;
+                    default:
+                        dialog = "Driver Creation Succeeded" + System.getProperty("line.separator") 
+                        + "Driver Name: " + str;
+                        break;
+                }
+            break;
+            case USER_UPDATE_SUCCESS_DIALOG :
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = "수정하신 운전자 정보를 저장하시겠습니까?" + System.getProperty("line.separator") 
+                            + "운전자 이름: " + str;
+                        break;
+                    default:
+                        dialog = "Do you want to save driver information?" +  System.getProperty("line.separator") 
+                            + " - Driver Name: " + str;
+                        break;
+                }
+            break;
+        }
+        
+        return dialog;
+    }
+    
+    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, int integer){
+        String dialog = null;
+        
+        switch(dialogMSGType){
+            case READ_ODS_FAIL_DIALOG :
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = "잘못된 형식의 데이터를 포함하고 있습니다." + 
+                                    System.getProperty("line.separator") + 
+                                            integer;
+                        break;
+                    default:
+                        dialog = "Cells that include wrong formatted data" + 
+                                    System.getProperty("line.separator") + 
+                                            integer;
+                        break;
+                }
+            break;
+        }
+        
+        return dialog;
+    }
+
+    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, String str, int integer){
+        String dialog = null;
+        
+        switch(dialogMSGType){
+        case DELETE_ONE_DIALOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = "운전자 정보와 운전자 차량에 대한 정보를 삭제하시겠습니까?" + System.getProperty("line.separator") +
+                                "운전자 이름 : '" + str + "' (소유차량 " + integer + "대)";
+                        break;
+                    default:
+                        dialog = "Want to delete a driver and every owned cars?" + System.getProperty("line.separator")
+                            + "Driver Name: '" + str + "' (" + integer + " owned cars)";
+                        break;
+                }
+            break;
+        case DELETE_SUCCESS_DIALOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = str +"을 포함한 총 " + integer + "명의 운전자정보가 삭제되었습니다.";  
+                        break;
+                    default:
+                        dialog = "Total " + integer + " driver(s)" + System.lineSeparator() +
+                                        "(including '" + str + "') " + System.lineSeparator() +
+                                        "deleted successfully.";
+                        break;
+                }
+            break;
+        }
+        return dialog;
+    }
+    
+    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, String str, int integer1, int integer2){
+        String dialog = null;
+        
+        switch(dialogMSGType){
+        case DELETE_MORE_DIALOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = "선택 된 " + integer1 + "명의 운전자정보와 차량 정보를 삭제하시겠습니까?"
+                                    + System.getProperty("line.separator")
+                                    + "첫번째 운전자 : '" + str + "' (소유차량" + integer2 + "대)";
+                        break;
+                    default:
+                        dialog = "Want to delete records of " + integer1 + " drivers and their car records?"
+                                    + System.getProperty("line.separator")
+                                    + "First Driver Name: '" + str + "' (" + integer2 + " owned cars)";
+                        break;
+                }
+            break;
+        }
+        return dialog;
+    }
+    
+    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, int integer1, int integer2){
+        String dialog = null;
+        
+        switch(dialogMSGType){
+            case DELETE_ALL_DAILOG :
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        dialog = integer1 + "명의 정보를 삭제 하시겟습니까?" + System.lineSeparator() 
+                                + "총 " + integer2 +"대의 소유 차량정보가 함께 삭제됩니다!";
+                        break;
+                    default:
+                        dialog = "Do you want to delete " + integer1 + " drivers all?" + System.lineSeparator() 
+                                + "Total " + integer2 + " owned vehicles will also be destroyed!";
+                        break;
+                }
+            break;
+        }
+        
+        return dialog;
+    }
+    
+    private Object[] getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, Object[] ob){
+        switch(dialogMSGType){
+            case DELETE_DIALOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        ob[0] = "예(종료)";
+                        ob[1] = "아니요(생성)";
+                        break;
+                    default:
+                        ob[0] = "Yes(quit)";
+                        ob[1] = "No(create)";
+                        break;
+                }
+            break;
+            case MODIFY_DAILOG : 
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" :
+                        ob[0] = "예(입력)";
+                        ob[1] = "아니요(종료)";
+                        break;
+                    default:
+                        ob[0] = "Yes(input)";
+                        ob[1] = "No(discard)";
+                        break;
+                }
+            break;
+        }
+        return ob;
     }
 }

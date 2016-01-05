@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2015 Open Source Parking Inc.
+=======
+ * Copyright (C) 2015 YongSeok
+>>>>>>> osparking/master
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +21,8 @@
 package com.osparking.global.names;
 
 import java.util.Set;
+import java.awt.Component;
+import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
@@ -38,7 +44,7 @@ public class ChangeSettings {
     } 
     
     public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final boolean current, final boolean original){
+            final HashSet<Component> changedControls, final Component name, final boolean current, final boolean original){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current == original) {
@@ -54,7 +60,7 @@ public class ChangeSettings {
     }
     
     public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final int current, final int original){
+            final HashSet<Component> changedControls, final Component name, final int current, final int original){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current == original) {
@@ -70,7 +76,7 @@ public class ChangeSettings {
     }
     
     public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final String current, final String original){
+            final HashSet<Component> changedControls, final Component name, final String current, final String original){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current.equals(original)) {
@@ -84,5 +90,4 @@ public class ChangeSettings {
             }
         });
     }
-    
 }
