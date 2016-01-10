@@ -55,7 +55,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+<<<<<<< HEAD
  * Camera Simulator GUI -- Part of OsParking simulator package which is developed by Open Source 
+=======
+ * Camera Simulator GUI -- Part of OSParking simulator package which is developed by Open Source 
+>>>>>>> osparking/master
  * Parking Inc.
  * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a><p>
  * <p>(Company logo: <img src ="doc-files/64px.png"/>)</p>
@@ -684,8 +688,13 @@ public class CameraGUI extends javax.swing.JFrame implements DeviceGUI {
         }
         //</editor-fold>
  
+<<<<<<< HEAD
         readSettings();
         initializeLoggers();
+=======
+        initializeLoggers();
+        readSettings();
+>>>>>>> osparking/master
         checkOptions(args);  
 
         /* Create and display the form */
@@ -765,7 +774,11 @@ public class CameraGUI extends javax.swing.JFrame implements DeviceGUI {
     private javax.swing.JPanel settingPanel;
     private javax.swing.JButton showAckTm_Button;
     private javax.swing.JPanel two_ID_Panel;
+<<<<<<< HEAD
     private javax.swing.JPanel wholePanel;
+=======
+    public javax.swing.JPanel wholePanel;
+>>>>>>> osparking/master
     // End of variables declaration//GEN-END:variables
 
     /**
@@ -994,7 +1007,12 @@ class CameraTraversalPolicy extends FocusTraversalPolicy {
             
             Component[] components = { cameraGUI.managerIPaddr, cameraGUI.cameraID_TextField,
                 cameraGUI.errorCheckBox};
+<<<<<<< HEAD
             componentMap = makeComponentMap(components);
+=======
+//            componentMap = makeComponentMap(components);
+             augmentComponentMap(cameraGUI, componentMap);
+>>>>>>> osparking/master
         }        
     }
     

@@ -33,9 +33,17 @@ import static com.osparking.global.names.DB_Access.EBD_flowCycle;
 import static com.osparking.global.names.DB_Access.readEBoardUsageSettings;
 import com.osparking.global.names.DeviceReader;
 import com.osparking.global.Globals;
+<<<<<<< HEAD
 import static com.osparking.global.Globals.DEBUG;
 import static com.osparking.global.Globals.GENERAL_DEVICE;
 import com.osparking.global.names.OSP_enums.*;
+=======
+import static com.osparking.global.Globals.BOTTOM_ROW;
+import static com.osparking.global.Globals.DEBUG;
+import static com.osparking.global.Globals.GENERAL_DEVICE;
+import com.osparking.global.names.OSP_enums.*;
+import static com.osparking.global.Globals.TOP_ROW;
+>>>>>>> osparking/master
 import static com.osparking.global.Globals.closeSocket;
 import static com.osparking.global.Globals.getPathAndDay;
 import static com.osparking.global.Globals.isConnected;
@@ -45,8 +53,11 @@ import static com.osparking.global.Globals.noArtificialErrorInserted;
 import static com.osparking.global.Globals.stringLengthInPixels;
 import static com.osparking.global.Globals.timeFormat;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
+<<<<<<< HEAD
 import static com.osparking.global.names.OSP_enums.DisplayArea.BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
+=======
+>>>>>>> osparking/master
 import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
@@ -200,6 +211,7 @@ public class EBoardReader extends Thread implements DeviceReader {
                                     // and call _Display method
                                     // in case of real hardware, code snippet below should really decode coreBytes
                                     // refer interruptCurrentDisplay method which perform a similar task.
+<<<<<<< HEAD
                                     if (coreBytes[0] == TOP_ROW.ordinal()) {
                                         eBoardGUI.defaultDisplaySettings[TOP_ROW.ordinal()] =
                                                 readEBoardUsageSettings(DEFAULT_TOP_ROW);
@@ -210,6 +222,18 @@ public class EBoardReader extends Thread implements DeviceReader {
                                                 readEBoardUsageSettings(DEFAULT_BOTTOM_ROW);        
                                         eBoardGUI.changeE_BoardDisplay(BOTTOM_ROW, 
                                                 eBoardGUI.defaultDisplaySettings[BOTTOM_ROW.ordinal()]);
+=======
+                                    if (coreBytes[0] == TOP_ROW) {
+                                        eBoardGUI.defaultDisplaySettings[TOP_ROW] =
+                                                readEBoardUsageSettings(DEFAULT_TOP_ROW);
+                                        eBoardGUI.changeE_BoardDisplay(
+                                                TOP_ROW, eBoardGUI.defaultDisplaySettings[TOP_ROW]); 
+                                    } else {
+                                        eBoardGUI.defaultDisplaySettings[BOTTOM_ROW] = 
+                                                readEBoardUsageSettings(DEFAULT_BOTTOM_ROW);        
+                                        eBoardGUI.changeE_BoardDisplay(
+                                                BOTTOM_ROW, eBoardGUI.defaultDisplaySettings[BOTTOM_ROW]);
+>>>>>>> osparking/master
                                     }
                                     //</editor-fold>
 //                                    if (DEBUG) 
@@ -372,8 +396,12 @@ public class EBoardReader extends Thread implements DeviceReader {
 
     private void interruptCurrentDisplay(byte[] coreInfoBytes) {
         // Message protocol: <row:1><text:varies><type:1><color:1><font:1><pattern:1><cycle:4><delay:4>
+<<<<<<< HEAD
         final byte rowNo = coreInfoBytes[0];
         final DisplayArea row = (rowNo == 0 ? TOP_ROW : BOTTOM_ROW);
+=======
+        final byte row = coreInfoBytes[0];
+>>>>>>> osparking/master
         int index = 12; // 12 == total length of 6 fields (<type> ~ <delay>)
         
         String displayText = ":UnsupportedEncodingException: ";
@@ -411,7 +439,11 @@ public class EBoardReader extends Thread implements DeviceReader {
         
         //<editor-fold desc="-- print debug message">
         if (DEBUG) {
+<<<<<<< HEAD
             System.out.println("row: " + rowNo);
+=======
+            System.out.println("row: " + row);
+>>>>>>> osparking/master
             System.out.println("msg : " + displayText);
             if (displayText.length() == 0)
                 System.out.println("msg length is zero : ");
@@ -427,6 +459,7 @@ public class EBoardReader extends Thread implements DeviceReader {
         
         //<editor-fold desc="-- reserve default message display event">
         if (delay == -1) {
+<<<<<<< HEAD
             eBoardGUI.prevMsgSN[rowNo] = 0;
         } else {
             try {
@@ -435,6 +468,16 @@ public class EBoardReader extends Thread implements DeviceReader {
                             @Override
                             public void run() {
                                 eBoardGUI.changeE_BoardDisplay(row, eBoardGUI.getDefaultDisplaySettings()[rowNo]);
+=======
+            eBoardGUI.prevMsgSN[row] = 0;
+        } else {
+            try {
+                eBoardGUI.getDisplayRestoreTimer()[row].reRunOnce(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                eBoardGUI.changeE_BoardDisplay(row, eBoardGUI.getDefaultDisplaySettings()[row]);
+>>>>>>> osparking/master
                                 eBoardGUI.getCriticalInfoTextField().setText(
                                         timeFormat.format(new Date()) + "-- Vehicle left gate");
                             }
@@ -442,7 +485,11 @@ public class EBoardReader extends Thread implements DeviceReader {
                         delay
                 );
             } catch (Exception e) {
+<<<<<<< HEAD
                 logParkingException(Level.SEVERE, e, "Return to default display for row #" + rowNo, eBoardGUI.getID());  
+=======
+                logParkingException(Level.SEVERE, e, "Return to default display for row #" + row, eBoardGUI.getID());  
+>>>>>>> osparking/master
             }  
         }
         //</editor-fold>

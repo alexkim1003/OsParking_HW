@@ -23,8 +23,11 @@ import static com.osparking.global.names.EBD_DisplaySetting.EBD_PERIOD;
 import static com.osparking.global.names.EBD_DisplaySetting.MAX_PERIOD;
 import javax.swing.JTextField;
 import static com.osparking.global.Globals.*;
+<<<<<<< HEAD
 import com.osparking.global.names.OSP_enums.DisplayArea;
 import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
+=======
+>>>>>>> osparking/master
 import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
 import static com.osparking.global.names.OSP_enums.EBD_Effects.*;
 
@@ -34,7 +37,11 @@ import static com.osparking.global.names.OSP_enums.EBD_Effects.*;
  */
 public class OuterCycleTask implements Runnable{
     A_EBD_GUI mainform;
+<<<<<<< HEAD
     private DisplayArea row;
+=======
+    private byte row;
+>>>>>>> osparking/master
     EBD_DisplaySetting rowSetting;
     
     JTextField eBoardTextField;
@@ -51,7 +58,11 @@ public class OuterCycleTask implements Runnable{
      * @param row
      * @param rowSetting 
      */
+<<<<<<< HEAD
     public OuterCycleTask(A_EBD_GUI mainform, DisplayArea row, EBD_DisplaySetting rowSetting)
+=======
+    public OuterCycleTask(A_EBD_GUI mainform, byte row, EBD_DisplaySetting rowSetting)
+>>>>>>> osparking/master
     {
         this.mainform = mainform;
         this.row = row;
@@ -115,7 +126,11 @@ public class OuterCycleTask implements Runnable{
             
             InnerCycleTask innerCycleTask = new InnerCycleTask(mainform, row, rowSetting, textWidth, flowDelta, 
                     row == TOP_ROW ? mainform.topTextField : mainform.botTextField);
+<<<<<<< HEAD
             mainform.parking_Display_InnerTimer[row.ordinal()].reschedule(innerCycleTask, 0, EBD_PERIOD);
+=======
+            mainform.parking_Display_InnerTimer[row].reschedule(innerCycleTask, 0, EBD_PERIOD);
+>>>>>>> osparking/master
         }
     }
 }

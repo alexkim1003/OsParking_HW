@@ -174,7 +174,11 @@ public class CameraReader extends Thread implements DeviceReader{
                 disconnectSocket(null, "Manager isn't reaching at " + Camera + " #" + cameraGUI.getID());
             }
         }
+<<<<<<< HEAD
     }
+=======
+    }        
+>>>>>>> osparking/master
 
     /**
      * @return the managerSocket
