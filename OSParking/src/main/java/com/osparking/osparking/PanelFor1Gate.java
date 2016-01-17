@@ -16,6 +16,10 @@
  */
 package com.osparking.osparking;
 
+<<<<<<< HEAD
+=======
+import com.osparking.global.Globals;
+>>>>>>> osparking/master
 import static com.osparking.osparking.ControlGUI.show100percentSizeImageOfGate;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -33,6 +37,10 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import com.osparking.global.names.GatePanel;
 import static com.osparking.global.Globals.*;
+<<<<<<< HEAD
+=======
+import static com.osparking.global.names.ControlEnums.TitleTypes.GATE_PANEL_TITLE;
+>>>>>>> osparking/master
 
 /**
  *
@@ -81,13 +89,21 @@ public class PanelFor1Gate extends GatePanel {
         setLayout(new java.awt.BorderLayout());
 
         Panel_Gate1.setBackground(MainBackground);
+<<<<<<< HEAD
         Panel_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 1 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dotum", 1, 14))); // NOI18N
+=======
+        Panel_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 1 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+>>>>>>> osparking/master
         Panel_Gate1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
         Panel_Gate1.setName("Panel_Gate1"); // NOI18N
         Panel_Gate1.setPreferredSize(new java.awt.Dimension(343, 450));
         Panel_Gate1.setLayout(new javax.swing.BoxLayout(Panel_Gate1, javax.swing.BoxLayout.Y_AXIS));
 
         CarPicLabel1.setBackground(MainBackground);
+<<<<<<< HEAD
+=======
+        CarPicLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+>>>>>>> osparking/master
         CarPicLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CarPicLabel1.setAlignmentX(0.5F);
         CarPicLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -109,11 +125,19 @@ public class PanelFor1Gate extends GatePanel {
         Panel_Gate1.add(CarPicLabel1);
         Panel_Gate1.add(filler1);
 
+<<<<<<< HEAD
         ScrollPane_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Recent Car Arrivals", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Dotum", 1, 13))); // NOI18N
         ScrollPane_Gate1.setPreferredSize(new java.awt.Dimension(302, 155));
 
         List_Gate1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         List_Gate1.setFont(new java.awt.Font("Dotum", 1, 12)); // NOI18N
+=======
+        ScrollPane_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(GATE_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font(font_Type, font_Style, font_Size)));
+        ScrollPane_Gate1.setPreferredSize(new java.awt.Dimension(302, 155));
+
+        List_Gate1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        List_Gate1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+>>>>>>> osparking/master
         List_Gate1.setModel((DefaultListModel<CarAdmission>)admissionListModel[1]);
         List_Gate1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
         List_Gate1.setMinimumSize(new java.awt.Dimension(45, 240));
@@ -156,7 +180,11 @@ public class PanelFor1Gate extends GatePanel {
         {
             getEntryList(gateNo).setSelectedIndex(0);
             ControlGUI.showImage(gateNo);
+<<<<<<< HEAD
         }           
+=======
+        }
+>>>>>>> osparking/master
     }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

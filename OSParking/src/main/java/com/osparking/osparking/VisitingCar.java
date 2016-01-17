@@ -16,6 +16,10 @@
  */
 package com.osparking.osparking;
 
+<<<<<<< HEAD
+=======
+import com.osparking.global.Globals;
+>>>>>>> osparking/master
 import com.osparking.vehicle.driver.ManageDrivers;
 import static com.osparking.vehicle.driver.ManageDrivers.initAffiliationComboBoxes;
 import static com.osparking.vehicle.driver.ManageDrivers.loadComboBoxItems;
@@ -35,7 +39,18 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
+<<<<<<< HEAD
 import static com.osparking.global.names.DB_Access.gateNames;
+=======
+import static com.osparking.global.Globals.ourLang;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.TitleTypes.VISITING_CAR_FRAME_TITLE;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import com.osparking.global.names.DB_Access;
+import static com.osparking.global.names.DB_Access.gateNames;
+import static com.osparking.global.names.DB_Access.parkingLotLocale;
+>>>>>>> osparking/master
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.OSP_enums.DriverCol;
 import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
@@ -169,7 +184,11 @@ public class VisitingCar extends javax.swing.JFrame {
         filler25 = new javax.swing.Box.Filler(new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 0), new java.awt.Dimension(30, 32767));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+<<<<<<< HEAD
         setTitle("Visitor Information Entry");
+=======
+        setTitle(((String[])Globals.TitleList.get(VISITING_CAR_FRAME_TITLE.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -187,8 +206,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+<<<<<<< HEAD
         jLabel6.setText("Gate");
         jLabel6.setMaximumSize(null);
+=======
+        jLabel6.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel6.setMinimumSize(new java.awt.Dimension(160, 50));
         jLabel6.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel5.add(jLabel6);
@@ -211,8 +234,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+<<<<<<< HEAD
         jLabel1.setText("Recognized");
         jLabel1.setMaximumSize(null);
+=======
+        jLabel1.setText(((String[])Globals.LabelsText.get(RECOGNIZED_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel1.setMinimumSize(new java.awt.Dimension(160, 50));
         jLabel1.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel6.add(jLabel1);
@@ -229,8 +256,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+<<<<<<< HEAD
         jLabel8.setText("Visit Time");
         jLabel8.setMaximumSize(null);
+=======
+        jLabel8.setText(((String[])Globals.LabelsText.get(ARRIVAL_TIME_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel8.setMinimumSize(new java.awt.Dimension(130, 50));
         jLabel8.setPreferredSize(new java.awt.Dimension(120, 50));
         jPanel6.add(jLabel8);
@@ -253,8 +284,12 @@ public class VisitingCar extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel2.setForeground(new java.awt.Color(18, 22, 113));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+<<<<<<< HEAD
         jLabel2.setText("Visit Purpose");
         jLabel2.setMaximumSize(null);
+=======
+        jLabel2.setText(((String[])Globals.LabelsText.get(VISIT_WHERE_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel2.setMinimumSize(new java.awt.Dimension(130, 50));
         jLabel2.setPreferredSize(new java.awt.Dimension(130, 50));
         jPanel10.add(jLabel2);
@@ -274,8 +309,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+<<<<<<< HEAD
         jLabel3.setText("Higher Affiliation");
         jLabel3.setMaximumSize(null);
+=======
+        jLabel3.setText(((String[])Globals.LabelsText.get(AFFILIATION_LIST_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel3.setMinimumSize(new java.awt.Dimension(160, 50));
         jLabel3.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel11.add(jLabel3);
@@ -309,8 +348,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+<<<<<<< HEAD
         jLabel5.setText("Lower Affiliation");
         jLabel5.setMaximumSize(null);
+=======
+        jLabel5.setText(((String[])Globals.LabelsText.get(LOWER_LIST_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel5.setMinimumSize(new java.awt.Dimension(160, 50));
         jLabel5.setPreferredSize(new java.awt.Dimension(160, 50));
         jPanel12.add(jLabel5);
@@ -343,8 +386,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+<<<<<<< HEAD
         jLabel9.setText("Building");
         jLabel9.setMaximumSize(null);
+=======
+        jLabel9.setText(((String[])Globals.LabelsText.get(BUILDING_LIST_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel9.setMinimumSize(new java.awt.Dimension(130, 50));
         jLabel9.setPreferredSize(new java.awt.Dimension(130, 50));
         jPanel13.add(jLabel9);
@@ -378,8 +425,12 @@ public class VisitingCar extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+<<<<<<< HEAD
         jLabel10.setText("Room/Unit");
         jLabel10.setMaximumSize(null);
+=======
+        jLabel10.setText(((String[])Globals.LabelsText.get(ROOM_LIST_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel10.setMinimumSize(new java.awt.Dimension(130, 50));
         jLabel10.setPreferredSize(new java.awt.Dimension(130, 50));
         jPanel14.add(jLabel10);
@@ -413,8 +464,12 @@ public class VisitingCar extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel4.setForeground(new java.awt.Color(18, 22, 113));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+<<<<<<< HEAD
         jLabel4.setText("Detailed Reason");
         jLabel4.setMaximumSize(null);
+=======
+        jLabel4.setText(((String[])Globals.LabelsText.get(VISIT_PURPOSE_LABEL.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel4.setMinimumSize(new java.awt.Dimension(130, 50));
         jLabel4.setPreferredSize(new java.awt.Dimension(180, 50));
         jPanel9.add(jLabel4);
@@ -442,10 +497,17 @@ public class VisitingCar extends javax.swing.JFrame {
 
         openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         openBarButton.setMnemonic('o');
+<<<<<<< HEAD
         openBarButton.setText("Open Bar");
         openBarButton.setMaximumSize(new java.awt.Dimension(140, 60));
         openBarButton.setMinimumSize(new java.awt.Dimension(140, 60));
         openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
+=======
+        openBarButton.setText(((String[])Globals.ButtonLabels.get(GATE_BAR_OPEN_BTN.ordinal()))[ourLang]);
+        openBarButton.setMaximumSize(new java.awt.Dimension(140, 60));
+        openBarButton.setMinimumSize(new java.awt.Dimension(140, 60));
+        openBarButton.setPreferredSize(new java.awt.Dimension(170, 60));
+>>>>>>> osparking/master
         openBarButton.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 openBarButtonFocusGained(evt);
@@ -468,10 +530,17 @@ public class VisitingCar extends javax.swing.JFrame {
 
         notAllowButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         notAllowButton.setMnemonic('c');
+<<<<<<< HEAD
         notAllowButton.setText("Close Bar");
         notAllowButton.setMaximumSize(new java.awt.Dimension(140, 60));
         notAllowButton.setMinimumSize(new java.awt.Dimension(140, 60));
         notAllowButton.setPreferredSize(new java.awt.Dimension(140, 60));
+=======
+        notAllowButton.setText(((String[])Globals.ButtonLabels.get(GATE_BAR_CLOSE_BTN.ordinal()))[ourLang]);
+        notAllowButton.setMaximumSize(new java.awt.Dimension(140, 60));
+        notAllowButton.setMinimumSize(new java.awt.Dimension(140, 60));
+        notAllowButton.setPreferredSize(new java.awt.Dimension(170, 60));
+>>>>>>> osparking/master
         notAllowButton.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 notAllowButtonFocusGained(evt);
@@ -733,8 +802,13 @@ public class VisitingCar extends javax.swing.JFrame {
             if (openGate) {
                 parent.raiseGateBar(gateNo, imageSN, delay);
             }
+<<<<<<< HEAD
 //            parent.interruptEBoardDisplay(gateNo, tagRecognized, PermissionType.UNREGISTERED, 
 //                    tagRecognized, -imageSN, delay);                
+=======
+            parent.interruptEBoardDisplay(gateNo, tagRecognized, PermissionType.UNREGISTERED, 
+                    tagRecognized, -imageSN, delay);                
+>>>>>>> osparking/master
 
             if (lowLevelComboBox.getSelectedIndex() == -1) {
                 l2No = -1;
@@ -760,4 +834,9 @@ public class VisitingCar extends javax.swing.JFrame {
         }
         dispose();
     }
+<<<<<<< HEAD
+=======
+    
+    
+>>>>>>> osparking/master
 }

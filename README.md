@@ -1,17 +1,16 @@
-#OsParking_HW(Eng)
-OsParking- English GUI, 3 device simulators, real hardware for E-board and gate bar, needs OsParking-DB(another OsParking repo')
+#OsParking_HW(Eng)- support both Korean and English GUI
+
+OsParking- English & Korean GUI, 3 device simulators, real hardware for E-board and gate bar, needs OsParking-DB(another OsParking repo')
 
 OsParking (pronounced 'Oz' Parking, as in The Wizard of Oz) is an Open Source Parking Lot Management Software. In an extended sense, it is a term which describes a simulation package which includes OsParking(manager) and three device simulators(Camera, E-Board, GateBar).
 
 OsParking software assumes the use of LPR (License Plate Recognition) function a external module to identify car tag numbers.
 
-As of Dec. 23rd, OsParking_HW supports LEDnotice E-board(both Socket and Serial connection) and Nara gate bar(both Serial and Socket connection) real hardware devices.
+As of Jan. 15th, 2016, OsParking_HW supports LEDnotice E-board(both Socket and Serial connection) and Nara gate bar(both Serial and Socket connection) real hardware devices.
 
 Open source Parking, Inc.
 
-Dec. 23, 2015
-
-Company homepage(www.osparking.com) will open early November.
+Jan. 15, 2016
 
 -
 
@@ -35,6 +34,6 @@ Additionally Needed Softwares for the Developers
 
 After the Maven is installed, the rs2xml.jar need to be registered manually as follows(this jar file is in 'lib' folder of this repository):
 
-C:\DOS> // first move to the directory where this jar file exists
+>C:\DOS> // first move to the directory where this jar file exists
 
-C:\DOS> mvn install:install-file -Dfile=rs2xml.jar -DgroupId=net.proteanit.sql -DartifactId=rs2xml -Dversion=1.0 -Dpackaging=jar
+>C:\DOS> mvn install:install-file -Dfile=rs2xml.jar -DgroupId=net.proteanit.sql -DartifactId=rs2xml -Dversion=1.0 -Dpackaging=jar

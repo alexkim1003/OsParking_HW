@@ -16,6 +16,10 @@
  */
 package com.osparking.osparking;
 
+<<<<<<< HEAD
+=======
+import com.osparking.global.Globals;
+>>>>>>> osparking/master
 import com.osparking.global.names.JDBCMySQL;
 import java.awt.Dimension;
 import java.sql.Connection;
@@ -36,6 +40,18 @@ import javax.swing.table.TableRowSorter;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.DB_Access.readSettings;
 import static com.osparking.global.Globals.*;
+<<<<<<< HEAD
+=======
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.TitleTypes.*;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.USER_CB_ITEM;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_CHECK_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_ERROR_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.TableTypes.*;
+>>>>>>> osparking/master
 
 /**
  *
@@ -53,8 +69,11 @@ public class LoginRecordList extends javax.swing.JFrame {
         
         setIconImages(OSPiconList);
         
+<<<<<<< HEAD
 //        getContentPane().setBackground(PopUpBackground);
 //        LoginRecordListTopPanel.setBackground(PopUpBackground);
+=======
+>>>>>>> osparking/master
         initUserIDComboBox();
         
         BeginDateChooser.setLocale(parkingLotLocale);
@@ -104,7 +123,11 @@ public class LoginRecordList extends javax.swing.JFrame {
         LoginRecordTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+<<<<<<< HEAD
         setTitle("User Login Record");
+=======
+        setTitle(((String[])Globals.TitleList.get(LOGIN_RECORD_FRAME_TITLE.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         setPreferredSize(new java.awt.Dimension(850, 527));
         getContentPane().add(filler10, java.awt.BorderLayout.LINE_END);
         getContentPane().add(filler8, java.awt.BorderLayout.PAGE_START);
@@ -118,7 +141,11 @@ public class LoginRecordList extends javax.swing.JFrame {
 
         CloseFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         CloseFormButton.setMnemonic('c');
+<<<<<<< HEAD
         CloseFormButton.setText("Close");
+=======
+        CloseFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         CloseFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         CloseFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         CloseFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -137,7 +164,11 @@ public class LoginRecordList extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+<<<<<<< HEAD
         jLabel3.setText("User Login Record");
+=======
+        jLabel3.setText(((String[])Globals.TitleList.get(LOGIN_RECORD_FRAME_TITLE.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         jLabel3.setFocusable(false);
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setMaximumSize(new java.awt.Dimension(32767, 28));
@@ -176,7 +207,11 @@ public class LoginRecordList extends javax.swing.JFrame {
 
         SearchLoginRecordButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SearchLoginRecordButton.setMnemonic('s');
+<<<<<<< HEAD
         SearchLoginRecordButton.setText("Search");
+=======
+        SearchLoginRecordButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         SearchLoginRecordButton.setMaximumSize(new java.awt.Dimension(90, 40));
         SearchLoginRecordButton.setMinimumSize(new java.awt.Dimension(90, 40));
         SearchLoginRecordButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -222,7 +257,11 @@ public class LoginRecordList extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchLoginRecordButtonActionPerformed
 
     private void CloseFormButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseFormButtonActionPerformed
+<<<<<<< HEAD
         setVisible(false);
+=======
+        this.dispose();
+>>>>>>> osparking/master
     }//GEN-LAST:event_CloseFormButtonActionPerformed
 
     /**
@@ -303,7 +342,11 @@ public class LoginRecordList extends javax.swing.JFrame {
         searchCondition = " where '" + startDate + "' <= date(loginTS) and date(loginTS) <= '" + stopDate + "'";
         
         String user = (String)UserIDComboBox.getSelectedItem();
+<<<<<<< HEAD
         if (!user.equals("(everybody)")) {
+=======
+        if (!user.equals(((String[])Globals.ComboBoxItemList.get(USER_CB_ITEM.ordinal()))[ourLang])) {
+>>>>>>> osparking/master
             searchCondition += " and userID = '" + user + "'";
         }
         
@@ -313,6 +356,7 @@ public class LoginRecordList extends javax.swing.JFrame {
         StringBuffer sb = new StringBuffer();
         
         //<editor-fold desc="--create select statement">
+<<<<<<< HEAD
         sb.append("select recNo as 'Order', userID as 'User ID', ");
         
         sb.append(" concat(date_format(loginTS, '%Y-%m-%d '), ");
@@ -322,6 +366,21 @@ public class LoginRecordList extends javax.swing.JFrame {
         sb.append(" concat(date_format(logoutTS, '%Y-%m-%d '), ");
         sb.append(" if(date_format(logoutTS, '%p') ='AM', 'AM', 'PM'),");
         sb.append(" date_format(logoutTS, ' %h:%i:%s')) as 'Logout Time', ");
+=======
+//        sb.append("select recNo as 'Order', userID as 'User ID', ");
+        sb.append("select recNo as '"+ ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang] +"', ");
+        sb.append(" userID as '"+ ((String[])Globals.TableHeaderList.get(USER_ID_HEADER.ordinal()))[ourLang] +"',");
+        
+        sb.append(" concat(date_format(loginTS, '%Y-%m-%d '), ");
+        sb.append(" if(date_format(loginTS, '%p') ='AM', 'AM', 'PM'),");
+//        sb.append(" date_format(loginTS, ' %h:%i:%s')) as 'Login Time', ");
+        sb.append(" date_format(loginTS, ' %h:%i:%s')) as '"+ ((String[])Globals.TableHeaderList.get(LOGIN_TIME_HEADER.ordinal()))[ourLang] +"', ");
+        
+        sb.append(" concat(date_format(logoutTS, '%Y-%m-%d '), ");
+        sb.append(" if(date_format(logoutTS, '%p') ='AM', 'AM', 'PM'),");
+//        sb.append(" date_format(logoutTS, ' %h:%i:%s')) as 'Logout Time', ");
+        sb.append(" date_format(logoutTS, ' %h:%i:%s')) as '"+ ((String[])Globals.TableHeaderList.get(LOGOUT_TIME_HEADER.ordinal()))[ourLang] +"', ");
+>>>>>>> osparking/master
 
         sb.append(" concat( ");
         sb.append(  " lpad(timestampdiff(HOUR, loginTS, logoutTS),");
@@ -329,7 +388,12 @@ public class LoginRecordList extends javax.swing.JFrame {
         sb.append(    " if (timestampdiff(HOUR, loginTS, logoutTS) > 999, 4,");
         sb.append(    " if (timestampdiff(HOUR, loginTS, logoutTS) > 99, 3, 2))), '0'), ':',");
         sb.append(  " lpad(mod(timestampdiff(MINUTE, loginTS, logoutTS), 60), 2, '0'), ':',");
+<<<<<<< HEAD
         sb.append(  " lpad(mod(timestampdiff(SECOND, loginTS, logoutTS), 60), 2, '0')) as 'Duration(hh:mm:ss)' ");
+=======
+//        sb.append(  " lpad(mod(timestampdiff(SECOND, loginTS, logoutTS), 60), 2, '0')) as 'Duration(hh:mm:ss)' ");
+        sb.append(  " lpad(mod(timestampdiff(SECOND, loginTS, logoutTS), 60), 2, '0')) as '"+ ((String[])Globals.TableHeaderList.get(DURATION_HEADER.ordinal()))[ourLang] +"' ");
+>>>>>>> osparking/master
         
         sb.append(" from loginrecord" + searchCondition);
         sb.append(" order by recNo desc");
@@ -356,17 +420,29 @@ public class LoginRecordList extends javax.swing.JFrame {
          * Without it, the <code>recNo</code>(an integral type primary key) field of the base table
          * (<code>LoginRecordTable</code>) is sorted as strings where a row with '2' 
          * being greater (appears later in the ascending order sorting) than a row with '10'.
+<<<<<<< HEAD
          */        
         TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(LoginRecordTable.getModel());       
         sorter.setComparator(0, com.osparking.global.Globals.comparator);
         LoginRecordTable.setRowSorter(sorter);        
         
+=======
+         */   
+        
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(LoginRecordTable.getModel());       
+        sorter.setComparator(0, com.osparking.global.Globals.comparator);
+        LoginRecordTable.setRowSorter(sorter);        
+>>>>>>> osparking/master
     }       
 
     @SuppressWarnings("unchecked") 
     private void initUserIDComboBox() {
         UserIDComboBox.removeAllItems();
+<<<<<<< HEAD
         UserIDComboBox.addItem("(everybody)");
+=======
+        UserIDComboBox.addItem(((String[])Globals.ComboBoxItemList.get(USER_CB_ITEM.ordinal()))[ourLang]);
+>>>>>>> osparking/master
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
@@ -413,6 +489,7 @@ public class LoginRecordList extends javax.swing.JFrame {
         
         // Check if both starting and ending dates are entered
         if (beginDate == null || endDate == null) {
+<<<<<<< HEAD
             JOptionPane.showConfirmDialog(this, "Please, enter both starting and ending dates!",
                     "Search Range Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
         } else {
@@ -421,6 +498,18 @@ public class LoginRecordList extends javax.swing.JFrame {
                 JOptionPane.showConfirmDialog(this, "Ending date can't precede starting date!" +
                         System.lineSeparator() +
                         "Please, change search range(dates).", "Wrong Search Range", 
+=======
+            JOptionPane.showConfirmDialog(this, 
+                    ((String[])Globals.DialogMSGList.get(DATE_INPUT_CHECK_DIALOG.ordinal()))[ourLang],
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
+        } else {
+            // Check if dates are chronologically wrong.
+            if (beginDate.after(endDate)) {
+                JOptionPane.showConfirmDialog(this, 
+                        ((String[])Globals.DialogMSGList.get(DATE_INPUT_ERROR_DIALOG.ordinal()))[ourLang],
+                        ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+>>>>>>> osparking/master
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
             } else {
                 RefreshTableContents(beginDate, endDate);

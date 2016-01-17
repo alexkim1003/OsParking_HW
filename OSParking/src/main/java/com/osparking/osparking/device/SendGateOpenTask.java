@@ -19,8 +19,13 @@ package com.osparking.osparking.device;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
+<<<<<<< HEAD
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.IDevice;
+=======
+import static com.osparking.global.Globals.isConnected;
+import static com.osparking.global.Globals.logParkingException;
+>>>>>>> osparking/master
 import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
 import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.Open;
@@ -53,7 +58,12 @@ public class SendGateOpenTask implements Runnable {
      * @param openCmd_ID ID of the open command to send*
      * @param passingDelay car passing delay in milliseconds
      */
+<<<<<<< HEAD
     public SendGateOpenTask(ControlGUI managerForm, byte gateID, int openCmd_ID, int passingDelay) {
+=======
+    public SendGateOpenTask(ControlGUI managerForm, byte gateID, int openCmd_ID,
+            int passingDelay) {
+>>>>>>> osparking/master
         
         this.mainForm = managerForm;
         this.gateID = gateID;
@@ -73,13 +83,20 @@ public class SendGateOpenTask implements Runnable {
      */
     @Override
     public synchronized void run() {
+<<<<<<< HEAD
         
+=======
+>>>>>>> osparking/master
         try 
         {
             synchronized(mainForm.getSocketMutex()[GateBar.ordinal()][gateID]) 
             {
+<<<<<<< HEAD
 //                if (! isConnected(gateMan.getSocket())) 
                 if (! IDevice.isConnected(mainForm.getDeviceManagers()[GateBar.ordinal()][gateID], GateBar, gateID))
+=======
+                if (! isConnected(mainForm.getDeviceManagers()[GateBar.ordinal()][gateID].getSocket())) 
+>>>>>>> osparking/master
                 {
                     System.out.println("before opentask");
                     mainForm.getSocketMutex()[GateBar.ordinal()][gateID].wait();
@@ -87,6 +104,7 @@ public class SendGateOpenTask implements Runnable {
                 }
             }
             ++resendCount;
+<<<<<<< HEAD
 //            if (connectionType[GateBar.ordinal()][gateID] == OSP_enums.ConnectionType.RS_232.ordinal()) {
 ////                IDevice.ISerial gateMan = (IDevice.ISerial) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];
 //                if (deviceType[GateBar.ordinal()][gateID] == NaraBar.ordinal()) {
@@ -102,6 +120,14 @@ public class SendGateOpenTask implements Runnable {
         } catch (IOException e) {
             mainForm.getDeviceManagers()[GateBar.ordinal()][gateID].finishConnection(null, 
                     "writing open cmd #" + openCmd_ID + " to bar#" + gateID, gateID);
+=======
+            mainForm.getDeviceManagers()[GateBar.ordinal()][gateID].getSocket().getOutputStream()
+                    .write(messageArr);
+            
+        } catch (IOException e) {
+            mainForm.getDeviceManagers()[GateBar.ordinal()][gateID]
+                    .finishConnection(null, "writing open cmd #" + openCmd_ID + " to bar#" + gateID, gateID);
+>>>>>>> osparking/master
         } catch (InterruptedException ex) {
             logParkingException(Level.SEVERE, ex, "gate #" + gateID + " open sender wait socket conn'");
         }    

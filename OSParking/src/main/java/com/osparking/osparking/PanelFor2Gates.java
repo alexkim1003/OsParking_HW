@@ -16,6 +16,10 @@
  */
 package com.osparking.osparking;
 
+<<<<<<< HEAD
+=======
+import com.osparking.global.Globals;
+>>>>>>> osparking/master
 import static com.osparking.osparking.ControlGUI.show100percentSizeImageOfGate;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -32,7 +36,11 @@ import static com.osparking.global.names.DB_Access.PIC_HEIGHT;
 import static com.osparking.global.names.DB_Access.PIC_WIDTH;
 import com.osparking.global.names.GatePanel;
 import static com.osparking.global.Globals.*;
+<<<<<<< HEAD
 import static com.osparking.osparking.ControlGUI.getGatePanel;
+=======
+import static com.osparking.global.names.ControlEnums.TitleTypes.GATE_PANEL_TITLE;
+>>>>>>> osparking/master
 
 /**
  *
@@ -61,9 +69,13 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gates[2] = Panel_Gate2;
     }
     
+<<<<<<< HEAD
     int prevWidth = 0;
 
     @Override
+=======
+    @Override   
+>>>>>>> osparking/master
     public void resizeComponents(Dimension gatesPanelSize) 
     {
         setComponentSize(this, gatesPanelSize);
@@ -89,6 +101,7 @@ public class PanelFor2Gates extends GatePanel {
         setComponentSize(Panel_Gate1, 
                 new Dimension(picWidthNew + 23, gatesPanelSize.height));
         setComponentSize(Panel_Gate2, 
+<<<<<<< HEAD
                 new Dimension(picWidthNew + 23, gatesPanelSize.height));           
 
         if ((int)gatesPanelSize.getWidth() != prevWidth) {
@@ -100,6 +113,16 @@ public class PanelFor2Gates extends GatePanel {
             }
         }
         revalidate();
+=======
+                new Dimension(picWidthNew + 23, gatesPanelSize.height));
+
+        for (int gateNo = 1; gateNo <= 2; gateNo++)
+        {
+            setComponentSize(CarPicLabels[gateNo], new Dimension(picWidthNew, picHeightNew));
+        }
+        revalidate();
+
+>>>>>>> osparking/master
         int width = gatesPanelSize.width - picWidthNew * 2;
 
         if (width > 60)
@@ -125,7 +148,11 @@ public class PanelFor2Gates extends GatePanel {
         }
     }
     
+<<<<<<< HEAD
     private BufferedImage gateImages[] = new BufferedImage[3];
+=======
+    private BufferedImage gateImages[] = new BufferedImage[3];    
+>>>>>>> osparking/master
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,24 +184,41 @@ public class PanelFor2Gates extends GatePanel {
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         Panel_Gate1.setBackground(MainBackground);
+<<<<<<< HEAD
         Panel_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 1 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dotum", 1, 14))); // NOI18N
+=======
+        Panel_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 1 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+>>>>>>> osparking/master
         Panel_Gate1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
         Panel_Gate1.setName("Panel_Gate1"); // NOI18N
         Panel_Gate1.setPreferredSize(new java.awt.Dimension(343, 450));
         Panel_Gate1.setLayout(new javax.swing.BoxLayout(Panel_Gate1, javax.swing.BoxLayout.Y_AXIS));
 
         CarPicLabel1.setBackground(MainBackground);
+<<<<<<< HEAD
         CarPicLabel1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         CarPicLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+=======
+        CarPicLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CarPicLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+>>>>>>> osparking/master
         CarPicLabel1.setAlignmentX(0.5F);
         CarPicLabel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CarPicLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         CarPicLabel1.setIconTextGap(0);
         CarPicLabel1.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+<<<<<<< HEAD
         CarPicLabel1.setMinimumSize(new java.awt.Dimension(200, 200));
         CarPicLabel1.setName(""); // NOI18N
         CarPicLabel1.setOpaque(true);
         CarPicLabel1.setPreferredSize(new java.awt.Dimension(200, 200));
+=======
+        CarPicLabel1.setMinimumSize(new java.awt.Dimension(100, 100));
+        CarPicLabel1.setName(""); // NOI18N
+        CarPicLabel1.setOpaque(true);
+        CarPicLabel1.setPreferredSize(new java.awt.Dimension(303, 200));
+        CarPicLabel1.setVerifyInputWhenFocusTarget(false);
+>>>>>>> osparking/master
         CarPicLabel1.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         CarPicLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -184,7 +228,11 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gate1.add(CarPicLabel1);
         Panel_Gate1.add(filler2);
 
+<<<<<<< HEAD
         ScrollPane_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Recent Car Arrivals", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Dotum", 1, 13))); // NOI18N
+=======
+        ScrollPane_Gate1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(GATE_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font(font_Type, font_Style, font_Size)));
+>>>>>>> osparking/master
         ScrollPane_Gate1.setPreferredSize(new java.awt.Dimension(302, 155));
 
         List_Gate1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -200,25 +248,41 @@ public class PanelFor2Gates extends GatePanel {
         add(Panel_Gate1);
 
         Panel_Gate2.setBackground(MainBackground);
+<<<<<<< HEAD
         Panel_Gate2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 2 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dotum", 1, 14))); // NOI18N
+=======
+        Panel_Gate2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Gate 2 Title", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+>>>>>>> osparking/master
         Panel_Gate2.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
         Panel_Gate2.setName("Panel_Gate1"); // NOI18N
         Panel_Gate2.setPreferredSize(new java.awt.Dimension(343, 450));
         Panel_Gate2.setLayout(new javax.swing.BoxLayout(Panel_Gate2, javax.swing.BoxLayout.Y_AXIS));
 
         CarPicLabel2.setBackground(MainBackground);
+<<<<<<< HEAD
         CarPicLabel2.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         CarPicLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+=======
+        CarPicLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CarPicLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+>>>>>>> osparking/master
         CarPicLabel2.setAlignmentX(0.5F);
         CarPicLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         CarPicLabel2.setDoubleBuffered(true);
         CarPicLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         CarPicLabel2.setIconTextGap(0);
         CarPicLabel2.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+<<<<<<< HEAD
         CarPicLabel2.setMinimumSize(new java.awt.Dimension(200, 100));
         CarPicLabel2.setName(""); // NOI18N
         CarPicLabel2.setOpaque(true);
         CarPicLabel2.setPreferredSize(new java.awt.Dimension(200, 200));
+=======
+        CarPicLabel2.setMinimumSize(new java.awt.Dimension(100, 100));
+        CarPicLabel2.setName(""); // NOI18N
+        CarPicLabel2.setOpaque(true);
+        CarPicLabel2.setPreferredSize(new java.awt.Dimension(303, 200));
+>>>>>>> osparking/master
         CarPicLabel2.setVerifyInputWhenFocusTarget(false);
         CarPicLabel2.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         CarPicLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -229,7 +293,11 @@ public class PanelFor2Gates extends GatePanel {
         Panel_Gate2.add(CarPicLabel2);
         Panel_Gate2.add(filler4);
 
+<<<<<<< HEAD
         ScrollPane_Gate2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Recent Car Arrivals", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Dotum", 1, 13))); // NOI18N
+=======
+        ScrollPane_Gate2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(GATE_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font(font_Type, font_Style, font_Size)));
+>>>>>>> osparking/master
         ScrollPane_Gate2.setPreferredSize(new java.awt.Dimension(302, 155));
 
         List_Gate2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -280,7 +348,11 @@ public class PanelFor2Gates extends GatePanel {
             {
                 getEntryList(gateNo).setSelectedIndex(0);
                 ControlGUI.showImage(gateNo);
+<<<<<<< HEAD
             }        
+=======
+            }
+>>>>>>> osparking/master
     }//GEN-LAST:event_formComponentResized
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -371,9 +443,18 @@ public class PanelFor2Gates extends GatePanel {
         return Panel_Gates[gateNo];
     }
 
+<<<<<<< HEAD
     /**
      * @return the gateImages
      */
+=======
+    @Override
+    public JLabel[] getCarPicLabels() {
+        return CarPicLabels;
+}
+
+    @Override
+>>>>>>> osparking/master
     public BufferedImage[] getGateImages() {
         return gateImages;
     }
@@ -382,9 +463,12 @@ public class PanelFor2Gates extends GatePanel {
     public void setGateImage(byte gateNo, BufferedImage gateImage) {
         this.gateImages[gateNo] = gateImage;
     }
+<<<<<<< HEAD
 
     @Override
     public JLabel[] getCarPicLabels() {
         return CarPicLabels;
     }
+=======
+>>>>>>> osparking/master
 }

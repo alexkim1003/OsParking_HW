@@ -24,6 +24,10 @@ import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.LabelTypes.GATE_BAR_LABEL;
+import static com.osparking.global.names.ControlEnums.TextType.DISCONN_MSG;
+import static com.osparking.global.names.ControlEnums.TextType.TRY_CONN_MSG;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
 import com.osparking.global.names.OSP_enums.MsgCode;
@@ -32,6 +36,8 @@ import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.global.names.OSP_enums.MsgCode.Open_ACK;
 import com.osparking.global.names.ParkingTimer;
 import com.osparking.osparking.ControlGUI;
+import static javax.swing.text.html.HTML.Tag.HEAD;
+import static ognl.DynamicSubscript.all;
 
 /**
  * Manages a gate bar via a socket communication while current socket connection is valid.
@@ -54,6 +60,11 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      * a timer employed to send Open commands to the designated gate bar for sure.
      */
     ParkingTimer openGateTimer = null;
+        
+    /**
+     * a timer used to send a heartbeat to the gate bar regularily.
+     */
+    public ParkingTimer timerAreYouThere = null;
 
     byte [] cmdIDarr = new byte[4]; // open command ID
     byte [] fiveByteArr =new byte[5]; // storage for (code + ID)
@@ -224,6 +235,12 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      */
     @Override
     public void stopOperation(String reason) {
+//<<<<<<< HEAD
+//=======
+//        if (timerAreYouThere != null)
+//            timerAreYouThere.cancelTask();
+//        
+//>>>>>>> osparking/master
         finishConnection(null, reason, gateID);
         interrupt();
     }
@@ -246,13 +263,21 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
     @Override
     public void finishConnection(Exception e, String description, byte gateNo) {
 
+//<<<<<<< HEAD
+//=======
+        String msg =  ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang] + " #" + gateNo;
+//>>>>>>> osparking/master
         synchronized(mainForm.getSocketMutex()[GateBar.ordinal()][gateNo]) 
         {
             if (isConnected(socket)) 
             {
-                String msg =  "Gate bar #" + gateNo;
-
-                addMessageLine(mainForm.getMessageTextArea(), "  ------" + msg + " disconnected");
+//<<<<<<< HEAD
+//                String msg =  "Gate bar #" + gateNo;
+//                addMessageLine(mainForm.getMessageTextArea(), "  ------" + msg + " disconnected");
+//=======
+                addMessageLine(mainForm.getMessageTextArea(), "  ------" + msg + " "
+                        + ((String[])Globals.TextFieldList.get(DISCONN_MSG.ordinal()))[ourLang]);
+//>>>>>>> osparking/master
                 logParkingException(Level.INFO, e, description + " " + msg);
 
                 long closeTm = System.currentTimeMillis();
@@ -267,6 +292,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             }                
         } 
         
+//<<<<<<< HEAD
 //        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
 //            if (!mainForm.isSHUT_DOWN()) {
 //                getCommPort().close();
@@ -274,6 +300,15 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
 //                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
 //            }
 //        }        
+//=======
+//        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] == null) {
+//            System.out.println("this never ever happens");
+//        }
+//        else {
+//            mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
+//            addMessageLine(mainForm.getMessageTextArea(), getTextFor(TRY_CONN_MSG, msg, gateNo));
+//        }        
+//>>>>>>> osparking/master
     }
 
     /**
@@ -281,5 +316,24 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      */
     public boolean isNeverConnected() {
         return neverConnected;
+    }
+
+    private String getTextFor(ControlEnums.TextType textType, String msg, byte gateNo) {
+        String text = null;
+        
+        switch(textType){
+            case TRY_CONN_MSG :
+                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
+                    text = msg +" #" + gateNo + " 연결 시도";
+                }
+                else{
+                    text = "Trying to connect to" + " " + msg +" #" + gateNo;
+                }
+                break;
+            default :
+                break;
+        }
+        
+        return text;
     }
 }
