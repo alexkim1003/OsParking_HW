@@ -68,7 +68,6 @@ import static com.osparking.global.names.DB_Access.deviceComID;
 import static com.osparking.global.names.DB_Access.devicePort;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.parkingLotName;
-import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.CameraType;
 import com.osparking.global.names.OSP_enums.ConnectionType;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
@@ -79,23 +78,22 @@ import com.osparking.global.names.OSP_enums.PWStrengthLevel;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import com.osparking.osparking.device.LEDnotice.Settings_LEDnotice;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import static com.sun.javafx.tk.Toolkit.getToolkit;
 import java.awt.FlowLayout;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
-import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.WindowConstants;
-import javax.swing.event.PopupMenuEvent;
 
 /**
  * Provides GUI to set system parameters like image size(pixels), gate count, device IP address, etc.
@@ -109,7 +107,7 @@ public class Settings_System extends javax.swing.JFrame {
     public static ControlGUI mainForm = null;
     private HashMap<String, Component> componentMap = new HashMap<String,Component>();
     public short maxArrivalCBoxIndex = 0;
-    private Set<String> changedControls = new HashSet<String>();    
+    private HashSet<Component> changedControls = new HashSet<Component>();    
     
     /**
      * Initialize some controls on the system settings change GUI. 
@@ -174,7 +172,7 @@ public class Settings_System extends javax.swing.JFrame {
         gate1Panel = new javax.swing.JPanel();
         gate_name_p = new javax.swing.JPanel();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(50, 32767));
-        gateName = new javax.swing.JLabel();
+        gateNameLabel1 = new javax.swing.JLabel();
         TextFieldGateName1 = new javax.swing.JTextField();
         topLabelsPanel = new javax.swing.JPanel();
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
@@ -209,7 +207,7 @@ public class Settings_System extends javax.swing.JFrame {
         gate2Panel = new javax.swing.JPanel();
         gate_name_p1 = new javax.swing.JPanel();
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(50, 32767));
-        gateName1 = new javax.swing.JLabel();
+        gateNameLabel2 = new javax.swing.JLabel();
         TextFieldGateName2 = new javax.swing.JTextField();
         topLabelsPanel1 = new javax.swing.JPanel();
         filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
@@ -352,7 +350,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Password Complexity Level");
+        jLabel1.setText(((String[])Globals.LabelsText.get(PASSWORD_LEVEL_LABEL.ordinal()))[ourLang]);
         jLabel1.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -363,7 +361,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("General Operation Logging Level");
+        jLabel2.setText(((String[])Globals.LabelsText.get(LOGGING_LEVEL_LABEL.ordinal()))[ourLang]);
         jLabel2.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -397,7 +395,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Date Chooser Language");
+        jLabel3.setText(((String[])Globals.LabelsText.get(LANGUAGE_LABEL.ordinal()))[ourLang]);
         jLabel3.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -408,7 +406,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Recent Event Line Max");
+        jLabel5.setText(((String[])Globals.LabelsText.get(MAX_LINE_LABEL.ordinal()))[ourLang]);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -503,7 +501,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         ImageDurationLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ImageDurationLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        ImageDurationLabel.setText("Image Keeping Duration");
+        ImageDurationLabel.setText(((String[])Globals.LabelsText.get(IMG_KEEP_LABEL.ordinal()))[ourLang]);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -536,7 +534,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Number of Gates");
+        jLabel6.setText(((String[])Globals.LabelsText.get(GATE_NUM_LABEL.ordinal()))[ourLang]);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -546,7 +544,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel19.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel19.setText("Vehicle Image Size");
+        jLabel19.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_SIZE_LABEL.ordinal()))[ourLang]);
         jLabel19.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -557,7 +555,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel11.setText("Width");
+        jLabel11.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_WIDTH_LABEL.ordinal()))[ourLang]);
         jLabel11.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -578,7 +576,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel12.setText("Height");
+        jLabel12.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_HEIGHT_LABEL.ordinal()))[ourLang]);
         jLabel12.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -672,6 +670,7 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         parkinglotOptionPanel.add(LanguageSelectionlHelpButton, gridBagConstraints);
 
         jLabel42.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -735,7 +734,7 @@ public class Settings_System extends javax.swing.JFrame {
         parkinglotOptionPanel.add(jLabel4, gridBagConstraints);
 
         RecordPassingDelayCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        RecordPassingDelayCBox.setText("Record Passing Delay");
+        RecordPassingDelayCBox.setText(((String[])Globals.LabelsText.get(RECORD_PASSING_LABEL.ordinal()))[ourLang]);
         RecordPassingDelayCBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         RecordPassingDelayCBox.setName("RecordPassingDelayCBox"); // NOI18N
         RecordPassingDelayCBox.addActionListener(new java.awt.event.ActionListener() {
@@ -771,11 +770,11 @@ public class Settings_System extends javax.swing.JFrame {
         gate_name_p.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
         gate_name_p.add(filler7);
 
-        gateName.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        gateName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        gateName.setText("Gate Name");
-        gateName.setToolTipText("");
-        gate_name_p.add(gateName);
+        gateNameLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        gateNameLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        gateNameLabel1.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+        gateNameLabel1.setToolTipText("");
+        gate_name_p.add(gateNameLabel1);
 
         TextFieldGateName1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldGateName1.setText("Front Gate");
@@ -1098,7 +1097,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gate1Panel.add(gateBarPan);
 
-        GatesTabbedPane.addTab("Gate1", gate1Panel);
+        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "1", gate1Panel);
 
         gate2Panel.setEnabled(false);
         gate2Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1111,11 +1110,11 @@ public class Settings_System extends javax.swing.JFrame {
         gate_name_p1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 10));
         gate_name_p1.add(filler16);
 
-        gateName1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        gateName1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        gateName1.setText("Gate Name");
-        gateName1.setToolTipText("");
-        gate_name_p1.add(gateName1);
+        gateNameLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        gateNameLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        gateNameLabel2.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+        gateNameLabel2.setToolTipText("");
+        gate_name_p1.add(gateNameLabel2);
 
         TextFieldGateName2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         TextFieldGateName2.setText("Front Gate");
@@ -1437,7 +1436,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gate2Panel.add(gateBarPan1);
 
-        GatesTabbedPane.addTab("Gate2", gate2Panel);
+        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "2", gate2Panel);
 
         gate3Panel.setEnabled(false);
         gate3Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1625,7 +1624,7 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 10);
         gate3Panel.add(E_Board3_Port_TextField, gridBagConstraints);
 
-        GatesTabbedPane.addTab("Gate3", gate3Panel);
+        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "3", gate3Panel);
 
         gate4Panel.setEnabled(false);
         gate4Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1842,7 +1841,7 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 10);
         gate4Panel.add(jLabel39, gridBagConstraints);
 
-        GatesTabbedPane.addTab("Gate4", gate4Panel);
+        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "4", gate4Panel);
 
         eBoardSettingPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         eBoardSettingPanel.setMinimumSize(new java.awt.Dimension(180, 215));
@@ -2067,6 +2066,8 @@ public class Settings_System extends javax.swing.JFrame {
                     .addComponent(eBoardSettingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        GatesTabbedPane.getAccessibleContext().setAccessibleName(null);
 
         wholePanel.add(gateSettingPanel);
 
@@ -2455,22 +2456,19 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_finishSettingsForm
 
     private void RecordPassingDelayCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecordPassingDelayCBoxActionPerformed
-        final String controlName = evt.getActionCommand();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, RecordPassingDelayCBox.isSelected(), storePassingDelay);
+                changedControls, (Component) evt.getSource(), RecordPassingDelayCBox.isSelected(), storePassingDelay);
     }//GEN-LAST:event_RecordPassingDelayCBoxActionPerformed
 
     private void ImageDurationCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_ImageDurationCBoxPopupMenuWillBecomeInvisible
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, ImageDurationCBox.getSelectedIndex(), maxArrivalCBoxIndex);
+                changedControls, (Component) evt.getSource(), ImageDurationCBox.getSelectedIndex(), maxArrivalCBoxIndex);
         
     }//GEN-LAST:event_ImageDurationCBoxPopupMenuWillBecomeInvisible
 
     private void PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, PWStrengthChoiceComboBox.getSelectedIndex(), pwStrengthLevel);
+                changedControls, (Component) evt.getSource(), PWStrengthChoiceComboBox.getSelectedIndex(), pwStrengthLevel);
     }//GEN-LAST:event_PWStrengthChoiceComboBoxPopupMenuWillBecomeInvisible
 
     private void MessageMaxLineComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_MessageMaxLineComboBoxPopupMenuWillBecomeInvisible
@@ -2481,9 +2479,8 @@ public class Settings_System extends javax.swing.JFrame {
 //            changeEnabled_of_SaveCancelButtons(true);
 //        }            
         short lines = (short) Integer.parseInt((String)MessageMaxLineComboBox.getSelectedItem());
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, lines, maxMessageLines);        
+                changedControls, (Component) evt.getSource(), lines, maxMessageLines);        
     }//GEN-LAST:event_MessageMaxLineComboBoxPopupMenuWillBecomeInvisible
 
     private void OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible
@@ -2492,9 +2489,9 @@ public class Settings_System extends javax.swing.JFrame {
 //        } else {
 //            changeEnabled_of_SaveCancelButtons(true);
 //        }    
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, OptnLoggingLevelComboBox.getSelectedIndex(), opLoggingIndex);        
+                changedControls, (Component)evt.getSource(),
+                OptnLoggingLevelComboBox.getSelectedIndex(), opLoggingIndex);        
     }//GEN-LAST:event_OptnLoggingLevelComboBoxPopupMenuWillBecomeInvisible
 
     private void DateChooserLangCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_DateChooserLangCBoxPopupMenuWillBecomeInvisible
@@ -2503,9 +2500,8 @@ public class Settings_System extends javax.swing.JFrame {
 //        } else {
 //            changeEnabled_of_SaveCancelButtons(true);
 //        }   
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, DateChooserLangCBox.getSelectedIndex(), localeIndex);        
+                changedControls, (Component) evt.getSource(), DateChooserLangCBox.getSelectedIndex(), localeIndex);        
     }//GEN-LAST:event_DateChooserLangCBoxPopupMenuWillBecomeInvisible
 
     private void GateCountComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateCountComboBoxPopupMenuWillBecomeInvisible
@@ -2515,9 +2511,8 @@ public class Settings_System extends javax.swing.JFrame {
 //            changeEnabled_of_SaveCancelButtons(true);
 //        }  
         String gateCountStr = (String)GateCountComboBox.getSelectedItem();
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(gateCountStr), gateCount);        
+                changedControls, (Component) evt.getSource(), Integer.parseInt(gateCountStr), gateCount);        
     }//GEN-LAST:event_GateCountComboBoxPopupMenuWillBecomeInvisible
 
     private void StatPopSizeTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldKeyReleased
@@ -2525,9 +2520,8 @@ public class Settings_System extends javax.swing.JFrame {
         if(newStatPopStr.length() == 0){
             newStatPopStr = "0";
          }
-        final String controlName = evt.getComponent().getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(newStatPopStr), statCount);
+                changedControls, (Component) evt.getSource(), Integer.parseInt(newStatPopStr), statCount);
     }//GEN-LAST:event_StatPopSizeTextFieldKeyReleased
 
     private void TextFieldPicWidthKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicWidthKeyReleased
@@ -2535,9 +2529,8 @@ public class Settings_System extends javax.swing.JFrame {
         if(newPicWidthStr.length() == 0){
             newPicWidthStr = "0";
          }
-        final String controlName = evt.getComponent().getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(newPicWidthStr), PIC_WIDTH);
+                changedControls, (Component) evt.getSource(), Integer.parseInt(newPicWidthStr), PIC_WIDTH);
     }//GEN-LAST:event_TextFieldPicWidthKeyReleased
 
     private void TextFieldPicHeightKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldPicHeightKeyReleased
@@ -2545,16 +2538,15 @@ public class Settings_System extends javax.swing.JFrame {
         if(newPicHeightStr.length() == 0){
             newPicHeightStr = "0";
          }
-        final String controlName = evt.getComponent().getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(newPicHeightStr), PIC_HEIGHT);
+                changedControls, (Component) evt.getSource(), Integer.parseInt(newPicHeightStr), PIC_HEIGHT);
     }//GEN-LAST:event_TextFieldPicHeightKeyReleased
 
     LEDnoticeManager managerLEDnotice = null;    
     
     private void lotNameTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lotNameTextFieldKeyReleased
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, "lotNameTextField", lotNameTextField.getText().trim(), parkingLotName);
+                changedControls, (Component) evt.getSource(), lotNameTextField.getText().trim(), parkingLotName);
     }//GEN-LAST:event_lotNameTextFieldKeyReleased
 
     private void BlinkingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
@@ -2566,16 +2558,14 @@ public class Settings_System extends javax.swing.JFrame {
 //            changeEnabled_of_SaveCancelButtons(true);
 //        }
         String newBlinkCycleStr = ((String)BlinkingComboBox.getSelectedItem()).replace(",", "");
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(newBlinkCycleStr), EBD_blinkCycle);        
+                changedControls, (Component) evt.getSource(), Integer.parseInt(newBlinkCycleStr), EBD_blinkCycle);        
     }//GEN-LAST:event_BlinkingComboBoxPopupMenuWillBecomeInvisible
 
     private void FlowingComboBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
         String newFlowCycleStr =((String) FlowingComboBox.getSelectedItem()).replace(",", "");
-        final String controlName = ((JComboBox) evt.getSource()).getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, Integer.parseInt(newFlowCycleStr), EBD_flowCycle);
+                changedControls, (Component) evt.getSource(), Integer.parseInt(newFlowCycleStr), EBD_flowCycle);
     }//GEN-LAST:event_FlowingComboBoxPopupMenuWillBecomeInvisible
 
     private void EBoardSettingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EBoardSettingsButtonActionPerformed
@@ -2614,7 +2604,7 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_GateBar4_Port_TextFieldKeyTyped
 
     private void GateBar4_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 4);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 4, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar4_Port_TextFieldKeyReleased
 
     private void Camera4_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyTyped
@@ -2622,23 +2612,23 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_Camera4_Port_TextFieldKeyTyped
 
     private void Camera4_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 4);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 4, (Component) evt.getSource());
     }//GEN-LAST:event_Camera4_Port_TextFieldKeyReleased
 
     private void E_Board4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board4_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(E_Board, 4);
+        changeSaveEnabledForDeviceIpChange(E_Board, 4, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board4_IP_TextFieldKeyReleased
 
     private void GateBar4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar4_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(GateBar, 4);
+        changeSaveEnabledForDeviceIpChange(GateBar, 4, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar4_IP_TextFieldKeyReleased
 
     private void Camera4_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera4_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(Camera, 4);
+        changeSaveEnabledForDeviceIpChange(Camera, 4, (Component) evt.getSource());
     }//GEN-LAST:event_Camera4_IP_TextFieldKeyReleased
 
     private void TextFieldGateName4KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName4KeyReleased
-        checkGateNameChangeAndChangeEnabled(4);
+        checkGateNameChangeAndChangeEnabled(4, (Component)evt.getSource());
     }//GEN-LAST:event_TextFieldGateName4KeyReleased
 
     private void E_Board3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_Port_TextFieldKeyTyped
@@ -2646,7 +2636,7 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_E_Board3_Port_TextFieldKeyTyped
 
     private void E_Board3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 3);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 3, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board3_Port_TextFieldKeyReleased
 
     private void GateBar3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyTyped
@@ -2654,7 +2644,7 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_GateBar3_Port_TextFieldKeyTyped
 
     private void GateBar3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 3);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 3, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar3_Port_TextFieldKeyReleased
 
     private void Camera3_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyTyped
@@ -2662,23 +2652,23 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_Camera3_Port_TextFieldKeyTyped
 
     private void Camera3_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 3);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 3, (Component) evt.getSource());
     }//GEN-LAST:event_Camera3_Port_TextFieldKeyReleased
 
     private void E_Board3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board3_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(E_Board, 3);
+        changeSaveEnabledForDeviceIpChange(E_Board, 3, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board3_IP_TextFieldKeyReleased
 
     private void GateBar3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar3_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(GateBar, 3);
+        changeSaveEnabledForDeviceIpChange(GateBar, 3, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar3_IP_TextFieldKeyReleased
 
     private void Camera3_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera3_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(Camera, 3);
+        changeSaveEnabledForDeviceIpChange(Camera, 3, (Component) evt.getSource());
     }//GEN-LAST:event_Camera3_IP_TextFieldKeyReleased
 
     private void TextFieldGateName3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName3KeyReleased
-        checkGateNameChangeAndChangeEnabled(3);
+        checkGateNameChangeAndChangeEnabled(3, (Component)evt.getSource());
     }//GEN-LAST:event_TextFieldGateName3KeyReleased
 
     private void GateBar1_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyTyped
@@ -2686,11 +2676,11 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_GateBar1_Port_TextFieldKeyTyped
 
     private void GateBar1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 1);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 1, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar1_Port_TextFieldKeyReleased
 
     private void GateBar1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar1_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(GateBar, 1);
+        changeSaveEnabledForDeviceIpChange(GateBar, 1, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar1_IP_TextFieldKeyReleased
 
     private void GateBar1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GateBar1_TypeCBoxActionPerformed
@@ -2702,11 +2692,11 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_E_Board1_Port_TextFieldKeyTyped
 
     private void E_Board1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 1);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 1, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board1_Port_TextFieldKeyReleased
 
     private void E_Board1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board1_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(E_Board, 1);
+        changeSaveEnabledForDeviceIpChange(E_Board, 1, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board1_IP_TextFieldKeyReleased
 
     private void E_Board1_TypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_E_Board1_TypeCBoxActionPerformed
@@ -2718,15 +2708,15 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_Camera1_Port_TextFieldKeyTyped
 
     private void Camera1_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 1);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 1, (Component) evt.getSource());
     }//GEN-LAST:event_Camera1_Port_TextFieldKeyReleased
 
     private void Camera1_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera1_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(Camera, 1);
+        changeSaveEnabledForDeviceIpChange(Camera, 1, (Component) evt.getSource());
     }//GEN-LAST:event_Camera1_IP_TextFieldKeyReleased
 
     private void TextFieldGateName1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName1KeyReleased
-        checkGateNameChangeAndChangeEnabled(1);
+        checkGateNameChangeAndChangeEnabled(1, (Component) evt.getSource());
     }//GEN-LAST:event_TextFieldGateName1KeyReleased
 
     private void E_Board1_connTypeCBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_E_Board1_connTypeCBoxActionPerformed
@@ -2744,58 +2734,59 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_GateBar1_connTypeCBoxActionPerformed
 
     private void Camera1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera1_TypeCBoxPopupMenuWillBecomeInvisible
-        ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), Camera1_TypeCBox.getSelectedIndex(), 
-                deviceType[Camera.ordinal()][1]);
+        ChangeSettings.changeStatus_Manager(
+                SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
+                changedControls, ((Component) evt.getSource()), Camera1_TypeCBox.getSelectedIndex(), 
+                deviceType[Camera.ordinal()][1]  );
     }//GEN-LAST:event_Camera1_TypeCBoxPopupMenuWillBecomeInvisible
 
     private void E_Board1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board1_TypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(E_Board, 1);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board1_TypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), E_Board1_TypeCBox.getSelectedIndex(), 
                 deviceType[E_Board.ordinal()][1]);
     }//GEN-LAST:event_E_Board1_TypeCBoxPopupMenuWillBecomeInvisible
 
     private void GateBar1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar1_TypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(GateBar, 1);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar1_TypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), GateBar1_TypeCBox.getSelectedIndex(), 
                 deviceType[GateBar.ordinal()][1]);
     }//GEN-LAST:event_GateBar1_TypeCBoxPopupMenuWillBecomeInvisible
 
     private void Camera1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera1_connTypeCBoxPopupMenuWillBecomeInvisible
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), Camera1_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), Camera1_connTypeCBox.getSelectedIndex(), 
                 connectionType[Camera.ordinal()][1]);
     }//GEN-LAST:event_Camera1_connTypeCBoxPopupMenuWillBecomeInvisible
 
     private void E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(E_Board, 1);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board1_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), E_Board1_connTypeCBox.getSelectedIndex(), 
                 connectionType[E_Board.ordinal()][1]);
     }//GEN-LAST:event_E_Board1_connTypeCBoxPopupMenuWillBecomeInvisible
 
     private void GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(GateBar, 1);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar1_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), GateBar1_connTypeCBox.getSelectedIndex(), 
                 connectionType[GateBar.ordinal()][1]);
     }//GEN-LAST:event_GateBar1_connTypeCBoxPopupMenuWillBecomeInvisible
 
     private void TextFieldGateName2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextFieldGateName2KeyReleased
-        checkGateNameChangeAndChangeEnabled(2);
+        checkGateNameChangeAndChangeEnabled(2, (Component)evt.getSource());
     }//GEN-LAST:event_TextFieldGateName2KeyReleased
 
     private void Camera2_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera2_TypeCBoxPopupMenuWillBecomeInvisible
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), Camera2_TypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), Camera2_TypeCBox.getSelectedIndex(), 
                 deviceType[Camera.ordinal()][2]);
     }//GEN-LAST:event_Camera2_TypeCBoxPopupMenuWillBecomeInvisible
 
     private void Camera2_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_Camera2_connTypeCBoxPopupMenuWillBecomeInvisible
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), Camera2_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), Camera2_connTypeCBox.getSelectedIndex(), 
                 connectionType[Camera.ordinal()][2]);
     }//GEN-LAST:event_Camera2_connTypeCBoxPopupMenuWillBecomeInvisible
 
@@ -2804,11 +2795,11 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_Camera2_connTypeCBoxActionPerformed
 
     private void Camera2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(Camera, 2);        
+        changeSaveEnabledForDeviceIpChange(Camera, 2, (Component) evt.getSource());
     }//GEN-LAST:event_Camera2_IP_TextFieldKeyReleased
 
     private void Camera2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 2);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(Camera, 2, (Component) evt.getSource());
     }//GEN-LAST:event_Camera2_Port_TextFieldKeyReleased
 
     private void Camera2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Camera2_Port_TextFieldKeyTyped
@@ -2818,7 +2809,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void E_Board2_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board2_TypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(E_Board, 2);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board2_TypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), E_Board2_TypeCBox.getSelectedIndex(), 
                 deviceType[E_Board.ordinal()][2]);
     }//GEN-LAST:event_E_Board2_TypeCBoxPopupMenuWillBecomeInvisible
 
@@ -2829,7 +2820,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void E_Board2_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board2_connTypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(E_Board, 2);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), E_Board2_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), E_Board2_connTypeCBox.getSelectedIndex(), 
                 connectionType[E_Board.ordinal()][2]);
     }//GEN-LAST:event_E_Board2_connTypeCBoxPopupMenuWillBecomeInvisible
 
@@ -2839,11 +2830,11 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_E_Board2_connTypeCBoxActionPerformed
 
     private void E_Board2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(E_Board, 2);
+        changeSaveEnabledForDeviceIpChange(E_Board, 2, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board2_IP_TextFieldKeyReleased
 
     private void E_Board2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 2);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(E_Board, 2, (Component) evt.getSource());
     }//GEN-LAST:event_E_Board2_Port_TextFieldKeyReleased
 
     private void E_Board2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_E_Board2_Port_TextFieldKeyTyped
@@ -2853,7 +2844,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void GateBar2_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar2_TypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(GateBar, 2);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar2_TypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), GateBar2_TypeCBox.getSelectedIndex(), 
                 deviceType[GateBar.ordinal()][2]);
     }//GEN-LAST:event_GateBar2_TypeCBoxPopupMenuWillBecomeInvisible
 
@@ -2864,7 +2855,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void GateBar2_connTypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_GateBar2_connTypeCBoxPopupMenuWillBecomeInvisible
         enforceSimulatorTCP_IP(GateBar, 2);
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, ((JComboBox) evt.getSource()).getName(), GateBar2_connTypeCBox.getSelectedIndex(), 
+                changedControls, ((Component) evt.getSource()), GateBar2_connTypeCBox.getSelectedIndex(), 
                 connectionType[GateBar.ordinal()][2]);
     }//GEN-LAST:event_GateBar2_connTypeCBoxPopupMenuWillBecomeInvisible
 
@@ -2874,11 +2865,11 @@ public class Settings_System extends javax.swing.JFrame {
     }//GEN-LAST:event_GateBar2_connTypeCBoxActionPerformed
 
     private void GateBar2_IP_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_IP_TextFieldKeyReleased
-        changeSaveEnabledForDeviceIpChange(GateBar, 2);
+        changeSaveEnabledForDeviceIpChange(GateBar, 2, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar2_IP_TextFieldKeyReleased
 
     private void GateBar2_Port_TextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyReleased
-        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 2);
+        checkDevicePortChangeAndChangeButtonEnabledProperty(GateBar, 2, (Component) evt.getSource());
     }//GEN-LAST:event_GateBar2_Port_TextFieldKeyReleased
 
     private void GateBar2_Port_TextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_GateBar2_Port_TextFieldKeyTyped
@@ -3065,8 +3056,8 @@ public class Settings_System extends javax.swing.JFrame {
     private javax.swing.JPanel gate4Panel;
     private javax.swing.JPanel gateBarPan;
     private javax.swing.JPanel gateBarPan1;
-    private javax.swing.JLabel gateName;
-    private javax.swing.JLabel gateName1;
+    private javax.swing.JLabel gateNameLabel1;
+    private javax.swing.JLabel gateNameLabel2;
     private javax.swing.JPanel gateSettingPanel;
     private javax.swing.JPanel gate_name_p;
     private javax.swing.JPanel gate_name_p1;
@@ -3521,28 +3512,25 @@ public class Settings_System extends javax.swing.JFrame {
         }     
     }
 
-    private void checkGateNameChangeAndChangeEnabled(int gateNo) {
+    private void checkGateNameChangeAndChangeEnabled(int gateNo, Component comp) {
         JTextField gateNameField = (JTextField)componentMap.get("TextFieldGateName" + gateNo);
         
-        final String controlName = gateNameField.getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, gateNameField.getText().trim(), gateNames[gateNo]);
+                changedControls, comp, gateNameField.getText().trim(), gateNames[gateNo]);
     }
 
-    private void changeSaveEnabledForDeviceIpChange(DeviceType device, int gateNo) {
+    private void changeSaveEnabledForDeviceIpChange(DeviceType device, int gateNo, Component comp) {
         JTextField deviceIpField = (JTextField)componentMap.get(device.toString() + gateNo + "_IP_TextField");
         
-        final String controlName = deviceIpField.getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, deviceIpField.getText().trim(), deviceIP[device.ordinal()][gateNo]);
+                changedControls, comp, deviceIpField.getText().trim(), deviceIP[device.ordinal()][gateNo]);
     }
 
-    private void checkDevicePortChangeAndChangeButtonEnabledProperty(DeviceType device, int gateNo) {
+    private void checkDevicePortChangeAndChangeButtonEnabledProperty(DeviceType device, int gateNo, Component comp) {
         JTextField devicePortField = (JTextField)componentMap.get(device.toString() + gateNo + "_Port_TextField");
         
-        final String controlName = devicePortField.getName();
         ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                changedControls, controlName, devicePortField.getText().trim(), devicePort[device.ordinal()][gateNo]);
+                changedControls, comp, devicePortField.getText().trim(), devicePort[device.ordinal()][gateNo]);
     }
 
     private void makeEnterActAsTab() {
@@ -3667,7 +3655,7 @@ public class Settings_System extends javax.swing.JFrame {
             }
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
                 ChangeSettings.changeStatus_Manager(SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
-                        changedControls, ((JComboBox) evt.getSource()).getName(), 
+                        changedControls, ((Component) evt.getSource()), 
                         (String) comPortID_CBox.getSelectedItem(), 
                         deviceComID[deviceType.ordinal()][gateNo]);                
             }

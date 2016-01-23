@@ -31,7 +31,9 @@ import javax.swing.SwingUtilities;
  * @author Open Source Parking Inc.
  */
 public class ChangeSettings {
-    public static void changeEnabled_of_SaveCancelButtons(JButton saveBtn, JButton cancelBtn, JButton closeBtn, int size) {
+    public static void changeEnabled_of_SaveCancelButtons
+        (JButton saveBtn, JButton cancelBtn, JButton closeBtn, int size) 
+    {
         if (size > 0){
             saveBtn.setEnabled(true);
             cancelBtn.setEnabled(true);        
@@ -43,32 +45,38 @@ public class ChangeSettings {
         }  
     } 
     
-    public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final HashSet<Component> changedControls, final Component name, final boolean current, final boolean original){
+    public static void changeStatus_Manager
+        (final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
+            final HashSet<Component> changedControls, final Component compo, 
+            final boolean current, final boolean original)
+    {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current == original) {
                     // remove from changedControls set
-                    changedControls.remove(name);
+                    changedControls.remove(compo);
                 } else {
                     // add to the changedControls set
-                    changedControls.add(name);
+                    changedControls.add(compo);
                 }
                 changeEnabled_of_SaveCancelButtons(saveBtn, cancelBtn, closeBtn, changedControls.size());
             }
         });
     }
     
-    public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final HashSet<Component> changedControls, final Component name, final int current, final int original){
+    public static void changeStatus_Manager
+        (final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
+            final HashSet<Component> changedControls, final Component compo, 
+            final int current, final int original)
+    {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current == original) {
                     // remove from changedControls set
-                    changedControls.remove(name);
+                    changedControls.remove(compo);
                 } else {
                     // add to the changedControls set
-                    changedControls.add(name);
+                    changedControls.add(compo);
                 }
                 changeEnabled_of_SaveCancelButtons(saveBtn, cancelBtn, closeBtn, changedControls.size());
             }
