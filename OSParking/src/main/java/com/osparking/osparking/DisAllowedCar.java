@@ -16,7 +16,6 @@
  */
 package com.osparking.osparking;
 
-import com.osparking.global.Globals;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -34,11 +33,8 @@ import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.TitleTypes.DISALLOWED_CAR_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
 import static com.osparking.global.names.DB_Access.gateNames;
+import com.osparking.global.names.OSP_enums;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -176,7 +172,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         closeGateButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(DISALLOWED_CAR_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle("DisAllowed Car");
         setMinimumSize(new java.awt.Dimension(573, 530));
         setPreferredSize(new java.awt.Dimension(573, 530));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -199,7 +195,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+        jLabel3.setText("Gate Name");
         jLabel3.setMaximumSize(new java.awt.Dimension(150, 50));
         jLabel3.setMinimumSize(new java.awt.Dimension(150, 50));
         jLabel3.setPreferredSize(new java.awt.Dimension(180, 50));
@@ -224,7 +220,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel1.setText(((String[])Globals.LabelsText.get(RECOGNIZED_LABEL.ordinal()))[ourLang]);
+        jLabel1.setText("Tag Recognized");
         jLabel1.setMaximumSize(new java.awt.Dimension(150, 50));
         jLabel1.setMinimumSize(new java.awt.Dimension(150, 50));
         jLabel1.setPreferredSize(new java.awt.Dimension(180, 50));
@@ -234,8 +230,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         recogTextField.setEditable(false);
         recogTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
         recogTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        //recogTextField.setText("30모8186");
-        recogTextField.setText("30MO8186");
+        recogTextField.setText("30모8186");
         recogTextField.setMaximumSize(new java.awt.Dimension(200, 50));
         recogTextField.setMinimumSize(new java.awt.Dimension(200, 50));
         recogTextField.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -251,7 +246,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel2.setForeground(java.awt.Color.gray);
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText(((String[])Globals.LabelsText.get(REGISTERED_LABEL.ordinal()))[ourLang]);
+        jLabel2.setText("Tag Registered");
         jLabel2.setMaximumSize(new java.awt.Dimension(150, 50));
         jLabel2.setMinimumSize(new java.awt.Dimension(150, 50));
         jLabel2.setPreferredSize(new java.awt.Dimension(180, 50));
@@ -262,8 +257,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         regisTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size+12));
         regisTextField.setForeground(java.awt.Color.gray);
         regisTextField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        //regisTextField.setText("30모8186");
-        regisTextField.setText("30MO8186");
+        regisTextField.setText("30모8186");
         regisTextField.setMaximumSize(new java.awt.Dimension(200, 50));
         regisTextField.setMinimumSize(new java.awt.Dimension(200, 50));
         regisTextField.setPreferredSize(new java.awt.Dimension(200, 50));
@@ -279,7 +273,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         WarningSignTBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         WarningSignTBox.setForeground(new java.awt.Color(255, 0, 0));
         WarningSignTBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        WarningSignTBox.setText(((String[])Globals.LabelsText.get(DISALLOWED_LABEL.ordinal()))[ourLang]);
+        WarningSignTBox.setText("Car Temporarily Not Permitted");
         WarningSignTBox.setMaximumSize(new java.awt.Dimension(2147483647, 50));
         WarningSignTBox.setPreferredSize(new java.awt.Dimension(133, 50));
         warnningPanel.add(WarningSignTBox);
@@ -292,7 +286,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size+6));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setText(((String[])Globals.LabelsText.get(REASON_LABEL.ordinal()))[ourLang]);
+        jLabel4.setText("Disallowance Reason");
         jLabel4.setMaximumSize(new java.awt.Dimension(133, 50));
         jLabel4.setMinimumSize(new java.awt.Dimension(133, 50));
         jLabel4.setPreferredSize(new java.awt.Dimension(230, 50));
@@ -321,7 +315,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         openBarButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
         openBarButton.setMnemonic('o');
-        openBarButton.setText(((String[])Globals.ButtonLabels.get(GATE_BAR_OPEN_BTN.ordinal()))[ourLang]);
+        openBarButton.setText("Open Bar");
         openBarButton.setMaximumSize(new java.awt.Dimension(140, 40));
         openBarButton.setMinimumSize(new java.awt.Dimension(140, 40));
         openBarButton.setPreferredSize(new java.awt.Dimension(140, 60));
@@ -347,7 +341,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         closeGateButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size+2));
         closeGateButton.setMnemonic('c');
-        closeGateButton.setText(((String[])Globals.ButtonLabels.get(GATE_BAR_CLOSE_BTN.ordinal()))[ourLang]);
+        closeGateButton.setText("Close Bar");
         closeGateButton.setMaximumSize(new java.awt.Dimension(140, 40));
         closeGateButton.setMinimumSize(new java.awt.Dimension(140, 40));
         closeGateButton.setPreferredSize(new java.awt.Dimension(140, 60));
@@ -377,7 +371,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
 
         getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
-        setSize(new java.awt.Dimension(516, 525));
+        setSize(new java.awt.Dimension(516, 446));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -401,8 +395,6 @@ public class DisAllowedCar extends javax.swing.JFrame {
         if(parent != null){  
 //            parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
 //                    tagEnteredAs, -imageSN, delay);  
-           // parent.interruptEBoardDisplay(gateNo, tagRecognized, OSP_enums.PermissionType.DISALLOWED, 
-           //         tagEnteredAs, -imageSN, delay);  
             
             long arrSeqNo = parent.insertDBrecord(gateNo, arrivalTm, tagRecognized, tagEnteredAs,
                     filenameModified, bImg,  -1, -1, null, BarOperation.REMAIN_CLOSED);        
@@ -496,8 +488,7 @@ public class DisAllowedCar extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-//                new DisAllowedCar(null, "30모8186", new Date(), "30모8186", "testing",
-                new DisAllowedCar(null, "30MO8186", new Date(), "30MO8186", "testing",
+                new DisAllowedCar(null, "30모8186", new Date(), "30모8186", "testing",
                     (byte)1, 1000000, "abc.jpg", null, null, 8000).setVisible(true);
                 
             }

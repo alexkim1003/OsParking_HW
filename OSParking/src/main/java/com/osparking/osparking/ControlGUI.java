@@ -21,122 +21,53 @@ import com.osparking.attendant.LoginEventListener;
 import com.osparking.attendant.LoginForm;
 import com.osparking.attendant.LoginWindowEvent;
 import com.osparking.global.Globals;
-import static com.osparking.global.Globals.CAMERA_GUI_WIDTH;
-import static com.osparking.global.Globals.CAR_PERIOD;
-import static com.osparking.global.Globals.DEBUG;
-import static com.osparking.global.Globals.ERROR_RATE;
-import static com.osparking.global.Globals.GATE_BAR_HEIGHT;
-import static com.osparking.global.Globals.GENERAL_DEVICE;
-import static com.osparking.global.Globals.IDBeforeLogin;
-import static com.osparking.global.Globals.LED_PERIOD;
-import static com.osparking.global.Globals.MAX_GATES;
-import static com.osparking.global.Globals.MAX_PASSING_DELAY;
-import static com.osparking.global.Globals.MainBackground;
-import static com.osparking.global.Globals.RESEND_PERIOD;
-import static com.osparking.global.Globals.TASK_BAR_HEIGHT;
-import static com.osparking.global.Globals.addMessageLine;
-import static com.osparking.global.Globals.admissionListModel;
-import static com.osparking.global.Globals.OSPiconList;
-import static com.osparking.global.Globals.RECENT_COUNT;
-import static com.osparking.global.Globals.SIX_HOURS;
-import static com.osparking.global.Globals.addUpBytes;
-import static com.osparking.global.Globals.checkOptions;
-import static com.osparking.global.Globals.closeDBstuff;
-import static com.osparking.global.Globals.closeInputStream;
-import static com.osparking.global.Globals.createStretchedIcon;
-import static com.osparking.global.Globals.font_Size;
-import static com.osparking.global.Globals.font_Style;
-import static com.osparking.global.Globals.font_Type;
-import static com.osparking.global.Globals.getBufferedImage;
-import static com.osparking.global.Globals.getFormattedRealNumber;
-import static com.osparking.global.Globals.getMinusIcon;
-import static com.osparking.global.Globals.getPathAndDay;
-import static com.osparking.global.Globals.getPlusIcon;
-import static com.osparking.global.Globals.getTagNumber;
-import static com.osparking.global.Globals.initializeLoggers;
-import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.isManager;
-import static com.osparking.global.Globals.logParkingExceptionStatus;
-import static com.osparking.global.Globals.logParkingOperation;
-import static com.osparking.global.Globals.loginID;
-import static com.osparking.global.Globals.loginPW;
-import static com.osparking.global.Globals.originalImgWidth;
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.Globals.sdf;
-import static com.osparking.global.Globals.showLicensePanel;
-import static com.osparking.global.Globals.testUniqueness;
+import static com.osparking.global.Globals.*;
 import com.osparking.global.names.CarAdmission;
-import com.osparking.global.names.ControlEnums;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.ARRIVALS_BTN;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.CAR_ARRIVAL_BTN;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.STATISTICS_BTN;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.USERS_BTN;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.VEHICLES_BTN;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGOUT_CONFIRM_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGOUT_DIAILG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SHUT_DOWN_CONFIRM_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.STOP_RUNNING_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogTitleTypes.CONFIRM_DIALOGTITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypes.CAMERA_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypes.EBOARD_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypes.GATE_BAR_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypes.GATE_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypes.OPEN_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypes.STATUS_LABEL;
-import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
-import static com.osparking.global.names.ControlEnums.MenuITemTypes.*;
-import static com.osparking.global.names.ControlEnums.TextType.*;
-import static com.osparking.global.names.ControlEnums.TitleTypes.FULL_SIZE_IMAGE_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.DEC_BTN_TOOLTIP;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.INC_BTN_TOOLTIP;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
-import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.DB_Access.readEBoardSettings;
 import static com.osparking.global.names.DB_Access.readSettings;
 import com.osparking.global.names.EBD_DisplaySetting;
 import com.osparking.global.names.GatePanel;
+import com.osparking.global.names.ImageDisplay;
+import com.osparking.global.names.JDBCMySQL;
 import com.osparking.global.names.ManagerGUI;
 import com.osparking.global.names.OSP_enums;
+import com.osparking.global.names.OSP_enums.BarOperation;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
-import com.osparking.global.names.OSP_enums.EBD_Row;
-import com.osparking.global.names.OSP_enums.OpLogLevel;
-import com.osparking.global.names.ParentGUI;
-import com.osparking.global.names.ParkingTimer;
-import com.osparking.global.names.SocketConnStat;
-import com.osparking.global.names.ToleranceLevel;
-import com.osparking.osparking.device.CameraManager;
-import com.osparking.osparking.device.ConnectDeviceTask;
-import com.osparking.osparking.device.EBoardManager;
-import com.osparking.osparking.device.GateBarManager;
-import com.osparking.global.names.IDevice;
-import com.osparking.global.names.IDevice.IE_Board;
-import com.osparking.global.names.ImageDisplay;
-import com.osparking.global.names.JDBCMySQL;
-import com.osparking.global.names.OSP_enums.BarOperation;
-import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.GATE_NAME;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.REGISTRATION_STAT;
 import static com.osparking.global.names.OSP_enums.EBD_ContentType.VEHICLE_TAG;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_BOTTOM_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.CAR_ENTRY_TOP_ROW;
-import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_BOTTOM_ROW;
-import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_ROW;
+import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.E_BoardType;
-import static com.osparking.global.names.OSP_enums.GateBarType.NaraBar;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT1;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_DEFAULT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
+import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.PermissionType;
 import static com.osparking.global.names.OSP_enums.PermissionType.ALLOWED;
 import static com.osparking.global.names.OSP_enums.PermissionType.BADTAGFORMAT;
 import static com.osparking.global.names.OSP_enums.PermissionType.DISALLOWED;
 import static com.osparking.global.names.OSP_enums.PermissionType.UNREGISTERED;
+import com.osparking.global.names.ParentGUI;
+import com.osparking.global.names.ParkingTimer;
+import com.osparking.global.names.SocketConnStat;
+import com.osparking.global.names.ToleranceLevel;
+import com.osparking.osparking.device.CameraManager;
 import com.osparking.osparking.device.CameraMessage;
+import com.osparking.osparking.device.ConnectDeviceTask;
+import com.osparking.osparking.device.EBoardManager;
+import com.osparking.osparking.device.GateBarManager;
+import com.osparking.global.names.IDevice;
+import com.osparking.global.names.IDevice.IE_Board;
+import static com.osparking.global.names.OSP_enums.GateBarType.NaraBar;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
@@ -173,7 +104,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.nio.ByteBuffer;
@@ -199,8 +129,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
@@ -216,6 +144,7 @@ import javax.swing.event.ListSelectionListener;
  * @author Open Source Parking Inc.
  */
 public final class ControlGUI extends javax.swing.JFrame implements ActionListener, ManagerGUI, ParentGUI {
+    
     private LoginForm loginForm = null;
     AttListForm attendantsListForm = null;
     AffiliationBuildingForm affiliationBuildingForm = null;
@@ -271,6 +200,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
      * Storage for vehicle processing performance by this system(Parking Manager).
      */
     private PassingDelayStat[] passingDelayStat = null;
+        
     /**
      * @return the shownImageRow
      */
@@ -299,7 +229,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     public DeviceType deviceToContinue = null;
     public Object[] BarConnection = null;
     Timer periodicallyCheckSystemTimer = new Timer("ospMaxRecordChecker");
-//    Timer maxRecordCheckerTimer = new Timer("ospMaxRecordChecker");
     
     private ParkingTimer[][] connectDeviceTimer = null;
     public long[][] eBoardMsgSentMs = null;
@@ -386,7 +315,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         // Info' make below lines comments after ths camera-less simulation phase completes
         formCameraMessageArray();
         addMessageLine(MessageTextArea, "" );
-        String message = ((String[])Globals.TextFieldList.get(START_MSG.ordinal()))[ourLang];
+        String message = "System started";
         addMessageLine(MessageTextArea, message);
         logParkingOperation(OpLogLevel.LogAlways, message);
         
@@ -451,9 +380,9 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 }
                 String command = null;
                 if (type == GateBar)
-                    command = ((String[])Globals.TextFieldList.get(STATUS_TF.ordinal()))[ourLang];
+                    command = "Open";
                 else 
-                    command = ((String[])Globals.TextFieldList.get(INTERRUPT_MSG.ordinal()))[ourLang];
+                    command = "Interrupt";
                 perfomStatistics[type.ordinal()][gNo] = new DeviceCommand(command);
             }  
             
@@ -500,8 +429,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                     deviceManagers[type.ordinal()][gateNo].start();
                 }
             }
-        }
-        
+        }             
+
         openCommandIssuedMs = new long[gateCount + 1];
         
         /**
@@ -509,6 +438,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
          * Old car arrival records are checked once every 6 hours after the initial check when system boots.
          */
         periodicallyCheckSystemTimer.schedule(new SystemChecker(this), 1000, SIX_HOURS);        
+        
         prevImgSN = new int[gateCount + 1];
         
         msgSNs = new int[gateCount + 1];        
@@ -520,66 +450,15 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             interruptsAcked[gateNo] = true;
         }             
         
-        /** 
+        /**
          * Start socket connection status display timer and schedule it.
          */
         LED_Timer = new Timer("ospLEDtimer", true);
         LED_Timer.schedule(new LED_Task(this, getDeviceManagers()), 0, LED_PERIOD);
         
         processLogIn(null); // shortcut
-        
     }
-
-    @Override
-    public IDevice.IManager[][] getDeviceManagers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public JLabel[][] getDeviceConnectionLabels() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ParkingTimer[][] getConnectDeviceTimer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public SocketConnStat[][] getSockConnStat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object[][] getSocketMutex() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ToleranceLevel getTolerance(DeviceType type, byte deviceID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void setTolerance(DeviceType type, byte deviceID, ToleranceLevel tolerance) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public JTextArea getMessageTextArea() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public JTextField getStatusTextField() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void clearAttendantManageForm() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-        
+    
     private void prepareIDLogFile(DeviceType devType, int gateNo) {
         StringBuilder pathname = new StringBuilder();
         StringBuilder daySB = new StringBuilder();
@@ -630,7 +509,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             if (originalImgWidth[gateNo] * 0.95 > picIconWidth)
             {
                 ImageDisplay bigImage = new ImageDisplay(originalImage,
-                    gateNames[gateNo] +" -- 100% " + ((String[])Globals.TitleList.get(FULL_SIZE_IMAGE_FRAME_TITLE.ordinal()))[ourLang]);
+                    gateNames[gateNo] + "--100% car arrival image");
                 bigImage.setVisible(true);               
             }        
         }
@@ -639,23 +518,21 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private void changeLogIOitemVisibility() {
         if (Globals.loginID == null) {
             MenuItems_setEnabled(false);
-            LogInOutMenu.setText(((String[])Globals.MenuItemList.get(LOGIN_MENU.ordinal()))[ourLang]);
+            LogInOutMenu.setText("<HTML>Log <U>I</U>n</HTML>");
             UserIDLabelMenu.setText(IDBeforeLogin);
-            IsManagerLabelMenu.setText(((String[])Globals.MenuItemList.get(MANAGER_MANU.ordinal()))[ourLang]+ " -  ");
+            IsManagerLabelMenu.setText("Manager : -  ");
         } else {
             MenuItems_setEnabled(true);
             
-            LogInOutMenu.setText(((String[])Globals.MenuItemList.get(LOGOUT_MENU.ordinal()))[ourLang]);
+            LogInOutMenu.setText("<HTML>Log <U>O</U>ut</HTML>");
             UserIDLabelMenu.setText("ID: " + Globals.loginID);
             if(isManager)
-                IsManagerLabelMenu.setText(
-                        ((String[])Globals.MenuItemList.get(MANAGER_MANU.ordinal()))[ourLang] + " O  ");
+                IsManagerLabelMenu.setText("Manager : O  ");
             else
-                IsManagerLabelMenu.setText(
-                        ((String[])Globals.MenuItemList.get(MANAGER_MANU.ordinal()))[ourLang] + " X  ");
+                IsManagerLabelMenu.setText("Manager : X  ");
             AttendantTask_setEnabled(true);
         }
-    }
+    }    
     
     public void actionPerformed(ActionEvent e) {
     }
@@ -795,7 +672,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         CarIOListButton.setBackground(MainBackground);
         CarIOListButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         CarIOListButton.setText("<HTML><U>A</U>rrivals</HTML>");
-        CarIOListButton.setText(((String[])Globals.ButtonLabels.get(ARRIVALS_BTN.ordinal()))[ourLang]);
         CarIOListButton.setAlignmentY(0.0F);
         CarIOListButton.setFocusable(false);
         CarIOListButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -812,7 +688,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         VehiclesButton.setBackground(MainBackground);
         VehiclesButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        VehiclesButton.setText(((String[])Globals.ButtonLabels.get(VEHICLES_BTN.ordinal()))[ourLang]);
+        VehiclesButton.setText("<HTML><U>V</U>ehicles</HTML>");
         VehiclesButton.setAlignmentY(0.0F);
         VehiclesButton.setEnabled(false);
         VehiclesButton.setFocusable(false);
@@ -830,7 +706,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         UsersButton.setBackground(MainBackground);
         UsersButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        UsersButton.setText(((String[])Globals.ButtonLabels.get(USERS_BTN.ordinal()))[ourLang]);
+        UsersButton.setText("<HTML><U>U</U>sers</HTML>");
         UsersButton.setAlignmentY(0.0F);
         UsersButton.setEnabled(false);
         UsersButton.setFocusable(false);
@@ -849,7 +725,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         MainToolBar.add(filler3);
 
         autoGateOpenCheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        autoGateOpenCheckBox.setText(((String[])Globals.LabelsText.get(OPEN_LABEL.ordinal()))[ourLang]);
+        autoGateOpenCheckBox.setText("open gate");
         autoGateOpenCheckBox.setAlignmentY(0.0F);
         autoGateOpenCheckBox.setFocusable(false);
         autoGateOpenCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -891,7 +767,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         LeftSide_Label.setBackground(MainBackground);
         LeftSide_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LeftSide_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LeftSide_Label.setText(((String[])Globals.LabelsText.get(STATUS_LABEL.ordinal()))[ourLang]);
+        LeftSide_Label.setText("Recent Events");
+        LeftSide_Label.setToolTipText("");
         LeftSide_Label.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         LeftSide_Label.setMaximumSize(new java.awt.Dimension(280, 17));
         LeftSide_Label.setMinimumSize(new java.awt.Dimension(80, 17));
@@ -909,6 +786,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         MessageTextArea.setColumns(35);
         MessageTextArea.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         MessageTextArea.setLineWrap(true);
+        MessageTextArea.setToolTipText("");
         MessageTextArea.setWrapStyleWord(true);
         MessageTextArea.setAlignmentX(0.0F);
         MessageTextArea.setAlignmentY(0.0F);
@@ -956,7 +834,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel1.add(filler15);
 
         errorCheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        errorCheckBox.setText(((String[])Globals.TextFieldList.get(ERROR_MSG.ordinal()))[ourLang]);
+        errorCheckBox.setText("error");
         errorCheckBox.setEnabled(false);
         errorCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         errorCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
@@ -970,7 +848,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         errIncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errIncButton.setIcon(getPlusIcon());
-        errIncButton.setToolTipText(((String[])Globals.ToolTipLabels.get(INC_BTN_TOOLTIP.ordinal()))[ourLang]);
+        errIncButton.setToolTipText("Inc by 0.1");
         errIncButton.setAlignmentX(0.5F);
         errIncButton.setBorder(null);
         errIncButton.setBorderPainted(false);
@@ -990,7 +868,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         errDecButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         errDecButton.setIcon(getMinusIcon());
-        errDecButton.setToolTipText(((String[])Globals.ToolTipLabels.get(DEC_BTN_TOOLTIP.ordinal()))[ourLang]);
+        errDecButton.setToolTipText("Dec by 0.1");
         errDecButton.setAlignmentX(0.5F);
         errDecButton.setBorder(null);
         errDecButton.setBorderPainted(false);
@@ -1011,11 +889,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel3.add(jPanel1);
 
         jPanel4.setBackground(MainBackground);
+        jPanel4.setToolTipText("");
         jPanel4.setMaximumSize(new java.awt.Dimension(32882, 200));
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
         jPanel4.add(filler11);
 
         errorLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        errorLabel.setToolTipText("");
         errorLabel.setMaximumSize(new java.awt.Dimension(100, 23));
         errorLabel.setMinimumSize(new java.awt.Dimension(100, 23));
         errorLabel.setPreferredSize(new java.awt.Dimension(100, 23));
@@ -1032,7 +912,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
         CarEnteredButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CarEnteredButton.setText(((String[])Globals.ButtonLabels.get(CAR_ARRIVAL_BTN.ordinal()))[ourLang]);
+        CarEnteredButton.setText("Car Arrival");
         CarEnteredButton.setMaximumSize(new java.awt.Dimension(120, 40));
         CarEnteredButton.setMinimumSize(new java.awt.Dimension(120, 40));
         CarEnteredButton.setPreferredSize(new java.awt.Dimension(120, 40));
@@ -1045,7 +925,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel2.add(filler7);
 
         showStatisticsBtn.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        showStatisticsBtn.setText(((String[])Globals.ButtonLabels.get(STATISTICS_BTN.ordinal()))[ourLang]);
+        showStatisticsBtn.setText("statistics");
         showStatisticsBtn.setMaximumSize(new java.awt.Dimension(120, 40));
         showStatisticsBtn.setMinimumSize(new java.awt.Dimension(120, 40));
         showStatisticsBtn.setPreferredSize(new java.awt.Dimension(120, 40));
@@ -1068,18 +948,18 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         labelCamera1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelCamera1.setForeground(new java.awt.Color(255, 0, 0));
-        labelCamera1.setText(((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang]);
+        labelCamera1.setText("Camera");
 
         labelE_Board1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelE_Board1.setForeground(new java.awt.Color(255, 0, 0));
-        labelE_Board1.setText(((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang]);
+        labelE_Board1.setText("E-Board");
 
         labelBar1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelBar1.setForeground(new java.awt.Color(255, 0, 0));
-        labelBar1.setText(((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang]);
+        labelBar1.setText("G-Bar");
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel2.setText(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "1");
+        jLabel2.setText("Gate1");
 
         javax.swing.GroupLayout statusPanelGate1Layout = new javax.swing.GroupLayout(statusPanelGate1);
         statusPanelGate1.setLayout(statusPanelGate1Layout);
@@ -1113,18 +993,18 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         labelCamera2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelCamera2.setForeground(new java.awt.Color(255, 0, 0));
-        labelCamera2.setText(((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang]);
+        labelCamera2.setText("Camera");
 
         labelE_Board2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelE_Board2.setForeground(new java.awt.Color(255, 0, 0));
-        labelE_Board2.setText(((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang]);
+        labelE_Board2.setText("E-Board");
 
         labelBar2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelBar2.setForeground(new java.awt.Color(255, 0, 0));
-        labelBar2.setText(((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang]);
+        labelBar2.setText("G-Bar");
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel3.setText(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "2");
+        jLabel3.setText("Gate2");
 
         javax.swing.GroupLayout statusPanelGate2Layout = new javax.swing.GroupLayout(statusPanelGate2);
         statusPanelGate2.setLayout(statusPanelGate2Layout);
@@ -1158,18 +1038,18 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         labelCamera3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelCamera3.setForeground(new java.awt.Color(255, 0, 0));
-        labelCamera3.setText(((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang]);
+        labelCamera3.setText("Camera");
 
         labelE_Board3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelE_Board3.setForeground(new java.awt.Color(255, 0, 0));
-        labelE_Board3.setText(((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang]);
+        labelE_Board3.setText("E-Board");
 
         labelBar3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         labelBar3.setForeground(new java.awt.Color(255, 0, 0));
-        labelBar3.setText(((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang]);
+        labelBar3.setText("G-Bar");
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel4.setText(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "3");
+        jLabel4.setText("Gate3");
 
         javax.swing.GroupLayout statusPanelGate3Layout = new javax.swing.GroupLayout(statusPanelGate3);
         statusPanelGate3.setLayout(statusPanelGate3Layout);
@@ -1212,9 +1092,10 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         statusTextPanel.setLayout(new java.awt.BorderLayout());
 
         statusTextField.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        statusTextField.setText(((String[])Globals.TextFieldList.get(STATUS_TF.ordinal()))[ourLang]);
+        statusTextField.setText("<Critical Status Information>");
+        statusTextField.setToolTipText("");
         statusTextField.setMargin(new java.awt.Insets(0, 5, 0, 5));
-        statusTextField.setPreferredSize(new java.awt.Dimension(166, 30));
+        statusTextField.setPreferredSize(new java.awt.Dimension(166, 25));
         statusTextPanel.add(statusTextField, java.awt.BorderLayout.PAGE_END);
 
         fullPanel.add(statusTextPanel, java.awt.BorderLayout.PAGE_END);
@@ -1229,7 +1110,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.setPreferredSize(new java.awt.Dimension(660, 32));
 
         RecordsMenu.setBackground(MainBackground);
-        RecordsMenu.setText(((String[])Globals.MenuItemList.get(RECORD_MENU.ordinal()))[ourLang]);
+        RecordsMenu.setText("<HTML><U>A</U> Records</HTML>");
         RecordsMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         RecordsMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         RecordsMenu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -1238,7 +1119,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         EntryRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
         EntryRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        EntryRecordItem.setText(((String[])Globals.MenuItemList.get(ARRIVAL_MENU_ITEM.ordinal()))[ourLang]);
+        EntryRecordItem.setText("Arrival");
         EntryRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EntryRecordItemActionPerformed(evt);
@@ -1248,7 +1129,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         RunRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
         RunRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        RunRecordItem.setText(((String[])Globals.MenuItemList.get(BOOTING_MENU_ITEM.ordinal()))[ourLang]);
+        RunRecordItem.setText("Booting");
         RunRecordItem.setEnabled(false);
         RunRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1259,7 +1140,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LoginRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
         LoginRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LoginRecordItem.setText(((String[])Globals.MenuItemList.get(LOGIN_RECORD_MENU_ITEM.ordinal()))[ourLang]);
+        LoginRecordItem.setText("Login");
         LoginRecordItem.setEnabled(false);
         LoginRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1273,7 +1154,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(RecordsMenu);
 
         jMenu6.setBackground(MainBackground);
-        jMenu6.setText(((String[])Globals.MenuItemList.get(VEHICLE_MENU.ordinal()))[ourLang]);
+        jMenu6.setText("<HTML><U>V</U>ehicles</HTML>");
         jMenu6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jMenu6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu6.setMaximumSize(new java.awt.Dimension(120, 32767));
@@ -1281,7 +1162,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         VehicleListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
         VehicleListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        VehicleListItem.setText(((String[])Globals.MenuItemList.get(VEHICLE_MANAGE_MENU_ITEM.ordinal()))[ourLang]);
+        VehicleListItem.setText("Manage");
         VehicleListItem.setEnabled(false);
         VehicleListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1292,7 +1173,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         DriverListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
         DriverListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        DriverListItem.setText(((String[])Globals.MenuItemList.get(DRIVERS_MENU_ITEM.ordinal()))[ourLang]);
+        DriverListItem.setText("Drivers");
         DriverListItem.setEnabled(false);
         DriverListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1304,7 +1185,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(jMenu6);
 
         BuildingMenu.setBackground(MainBackground);
-        BuildingMenu.setText(((String[])Globals.MenuItemList.get(AFFILIATION_MENU.ordinal()))[ourLang]);
+        BuildingMenu.setText("<HTML>A<U>f</U>filiation</HTML>");
         BuildingMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         BuildingMenu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BuildingMenu.setMaximumSize(new java.awt.Dimension(120, 32767));
@@ -1317,7 +1198,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         BuildingListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK));
         BuildingListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        BuildingListItem.setText(((String[])Globals.MenuItemList.get(MANAGE_MENU_ITEM.ordinal()))[ourLang]);
+        BuildingListItem.setText("Manage");
         BuildingListItem.setEnabled(false);
         BuildingListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1329,7 +1210,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(BuildingMenu);
 
         AttendantMenu.setBackground(MainBackground);
-        AttendantMenu.setText(((String[])Globals.MenuItemList.get(USERS_MENU.ordinal()))[ourLang]);
+        AttendantMenu.setText("<HTML><U>U</U>sers</HTML>");
         AttendantMenu.setDoubleBuffered(true);
         AttendantMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         AttendantMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -1339,7 +1220,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         AttendantListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         AttendantListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        AttendantListItem.setText(((String[])Globals.MenuItemList.get(MANAGE_MENU_ITEM.ordinal()))[ourLang]);
+        AttendantListItem.setText("Manage");
         AttendantListItem.setEnabled(false);
         AttendantListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1351,7 +1232,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(AttendantMenu);
 
         CommandMenu.setBackground(MainBackground);
-        CommandMenu.setText(((String[])Globals.MenuItemList.get(SYSTEM_MENU.ordinal()))[ourLang]);
+        CommandMenu.setText("<HTML><U>S</U>ystem</HTML>");
         CommandMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         CommandMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         CommandMenu.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -1360,7 +1241,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         SettingsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         SettingsItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        SettingsItem.setText(((String[])Globals.MenuItemList.get(SETTING_MENU_ITEM.ordinal()))[ourLang]);
+        SettingsItem.setText("Settings");
         SettingsItem.setEnabled(false);
         SettingsItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1371,7 +1252,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         CloseProgramItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK));
         CloseProgramItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CloseProgramItem.setText(((String[])Globals.MenuItemList.get(QUIT_MENU_ITEM.ordinal()))[ourLang]);
+        CloseProgramItem.setText("Quit");
         CloseProgramItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 processCloseProgram(evt);
@@ -1399,7 +1280,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(Box.createHorizontalGlue());
 
         LogInOutMenu.setBackground(MainBackground);
-        LogInOutMenu.setText(((String[])Globals.MenuItemList.get(LOGIN_MENU.ordinal()))[ourLang]);
+        LogInOutMenu.setText("<HTML>Log <U>I</U>n</HTML>");
         LogInOutMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LogInOutMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LogInOutMenu.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -1410,7 +1291,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LoginUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK));
         LoginUser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LoginUser.setText(((String[])Globals.MenuItemList.get(LOGIN_MENU_ITEM.ordinal()))[ourLang]);
+        LoginUser.setText("<HTML>Log <U>I</U>n</HTML>");
         LoginUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 processLogIn(evt);
@@ -1420,7 +1301,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LogoutUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK));
         LogoutUser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LogoutUser.setText(((String[])Globals.MenuItemList.get(LOGOUT_MENU_ITEM.ordinal()))[ourLang]);
+        LogoutUser.setText("<HTML>Log <U>O</U>ut</HTML>");
         LogoutUser.setEnabled(false);
         LogoutUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1431,13 +1312,14 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         visibleMenuBar.add(LogInOutMenu);
 
-        IsManagerLabelMenu.setText(((String[])Globals.MenuItemList.get(MANAGER_MANU.ordinal()))[ourLang] + " - ");
+        IsManagerLabelMenu.setText("Manager : -  ");
         IsManagerLabelMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         IsManagerLabelMenu.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         visibleMenuBar.add(IsManagerLabelMenu);
 
         UserIDLabelMenu.setBackground(MainBackground);
         UserIDLabelMenu.setText(IDBeforeLogin);
+        UserIDLabelMenu.setToolTipText("");
         UserIDLabelMenu.setAlignmentX(0.0F);
         UserIDLabelMenu.setFocusPainted(true);
         UserIDLabelMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1485,11 +1367,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                         }
                         changeLogIOitemVisibility();
                         recordLogin();
-                        addMessageLine(MessageTextArea, getTextFor(LOGIN_MSG, Globals.loginID));
+                        addMessageLine(MessageTextArea, "User '" + Globals.loginID + "' logged in" );
                     }
                 });
             } catch (Exception ex) {
-                Globals.logParkingException(Level.SEVERE, ex, "(user login processing)");
+                logParkingException(Level.SEVERE, ex, "(user login processing)");
             }
         }  
          
@@ -1518,13 +1400,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         int result = 0;
         if (forced) {
             JOptionPane.showMessageDialog(this, 
-                ((String[])Globals.DialogMSGList.get(STOP_RUNNING_DIALOG.ordinal()))[ourLang]);
+                "Program stops running.");
             result = JOptionPane.YES_OPTION;
         } else {
             result = JOptionPane.showConfirmDialog(this, 
-                    ((String[])Globals.DialogMSGList.get(SHUT_DOWN_CONFIRM_DIALOG.ordinal()))[ourLang],
-                    ((String[])Globals.DialogTitleList.get(CONFIRM_DIALOGTITLE.ordinal()))[ourLang], 
-                    JOptionPane.YES_NO_OPTION);
+                    "Do you want to stop the system?", "Shutdown Confirmation", JOptionPane.YES_NO_OPTION);
         }
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1570,7 +1450,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         showLoginRecordForm.getDatesRefreshTable();
         showLoginRecordForm.setVisible(true);        
     }//GEN-LAST:event_LoginRecordItemActionPerformed
-
+        
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
 
         // get the size of this frame
@@ -1641,11 +1521,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
     private void errorCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorCheckBoxActionPerformed
         if (getErrorCheckBox().isSelected()) {
-            addMessageLine(MessageTextArea, ((String[])Globals.TextFieldList.get(ON_ARTIFI_ERROR_MSG.ordinal()))[ourLang]);          //인공 에러 삽입
-            addMessageLine(MessageTextArea, "\t" + ((String[])Globals.TextFieldList.get(ERROR_RATE_MSG2.ordinal()))[ourLang] + getFormattedRealNumber(ERROR_RATE, 2));   // 에러율 :
-            errorLabel.setText(((String[])Globals.TextFieldList.get(ERROR_MSG.ordinal()))[ourLang] + " : " + getFormattedRealNumber(ERROR_RATE, 2));
+            addMessageLine(MessageTextArea, "Artificial error is on");
+            addMessageLine(MessageTextArea, "\tprob of error: " + getFormattedRealNumber(ERROR_RATE, 2));
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
-            addMessageLine(MessageTextArea, ((String[])Globals.TextFieldList.get(NO_APP_MSG.ordinal()))[ourLang]);             // 인공 에러 없음
+            addMessageLine(MessageTextArea, "No artificial error");
             errorLabel.setText("");
         }
     }//GEN-LAST:event_errorCheckBoxActionPerformed
@@ -1671,11 +1551,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
            if (ERROR_RATE < 0.9) {
                 ERROR_RATE += 0.1f;
             } else {
-               addMessageLine(MessageTextArea, getTextFor(ERR_INC_MSG, getFormattedRealNumber(ERROR_RATE, 2)));
+                
+               addMessageLine(MessageTextArea,"current error rate(=" 
+                        + getFormattedRealNumber(ERROR_RATE, 2) + ") is max!");
             }
-            errorLabel.setText(((String[])Globals.TextFieldList.get(ERROR_MSG.ordinal()))[ourLang] +" : " + getFormattedRealNumber(ERROR_RATE, 2));
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
-            addMessageLine(MessageTextArea, ((String[])Globals.TextFieldList.get(ERROR_CHECK_BOX_MSG.ordinal()))[ourLang]);
+            addMessageLine(MessageTextArea, "First, select error check box, OK?");
         }
     }//GEN-LAST:event_errIncButtonActionPerformed
 
@@ -1684,11 +1566,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             if (ERROR_RATE > 0.10) {
                 ERROR_RATE -= 0.1f;
             } else {
-               addMessageLine(MessageTextArea, getTextFor(ERR_DEC_MSG, getFormattedRealNumber(ERROR_RATE, 2)));
+                
+               addMessageLine(MessageTextArea,"current error rate(=" 
+                        + getFormattedRealNumber(ERROR_RATE, 2) + ") is max!");
             }
-            errorLabel.setText(((String[])Globals.TextFieldList.get(ERROR_MSG.ordinal()))[ourLang] + " : " + getFormattedRealNumber(ERROR_RATE, 2));
+            errorLabel.setText("error : " + getFormattedRealNumber(ERROR_RATE, 2));
         } else {
-            addMessageLine(MessageTextArea, ((String[])Globals.TextFieldList.get(ERROR_CHECK_BOX_MSG.ordinal()))[ourLang]);
+            addMessageLine(MessageTextArea, "First, select error check box, OK?");
         }
     }//GEN-LAST:event_errDecButtonActionPerformed
 
@@ -1698,44 +1582,18 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         if (DEBUG) {
             //<editor-fold desc="-- Show detailed performance statistics">
-//<<<<<<< HEAD
-//            perfDesc.append("Artificial error rate: ");
-//            if (errorCheckBox.isSelected()) {
-//                perfDesc.append(getFormattedRealNumber(ERROR_RATE, 2));
-//            } else {
-//                perfDesc.append("N/A");
-            perfDesc.append(((String[])Globals.TextFieldList.get(ERROR_RATE_MSG.ordinal()))[ourLang]);
+            perfDesc.append("Artificial error rate: ");
             if (errorCheckBox.isSelected()) {
                 perfDesc.append(getFormattedRealNumber(ERROR_RATE, 2));
             } else {
-                perfDesc.append(((String[])Globals.TextFieldList.get(NO_MSG.ordinal()))[ourLang]);
+                perfDesc.append("N/A");
             }
             perfDesc.append(System.lineSeparator());
 
             for (DeviceType type : DeviceType.values()) {
-//<<<<<<< HEAD
-//                for (int gateNo = 1; gateNo <= gateCount; gateNo++ ) {
-//                    perfDesc.append("            ");
-//                    perfDesc.append(type + " #" + gateNo 
-//=======
-                String device = null;
-                    switch(type){
-                        case Camera: 
-                            device = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang];
-                            break;
-                        case GateBar :
-                            device = ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang];
-                            break;
-                        case E_Board :
-                            device = ((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang];
-                            break;
-                        default :
-                            break;
-                    }
                 for (int gateNo = 1; gateNo <= gateCount; gateNo++ ) {
                     perfDesc.append("            ");
-                    perfDesc.append(device + " #" + gateNo 
-//>>>>>>> osparking/master
+                    perfDesc.append(type + " #" + gateNo 
                             + getSockConnStat()[type.ordinal()][gateNo].getPerformanceDescription());
                 }
                 perfDesc.append(System.lineSeparator());
@@ -1743,35 +1601,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
             StringBuffer gateBar = new StringBuffer();
             for (DeviceType type : DeviceType.values()) {
-//<<<<<<< HEAD
-//                for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-//                    DeviceCommand deviceCommand = getPerfomStatistics()[type.ordinal()][gateNo];
-//                    
-//                    if (deviceCommand != null && deviceCommand.hasData()) 
-//                    {
-//                        gateBar.append("            ");
-//                        gateBar.append(getDevType(type, (byte)gateNo) + "#" + gateNo + "- "
-//=======
-                String device = null;
-                    switch(type){
-                        case Camera: 
-                            device = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang];
-                            break;
-                        case GateBar :
-                            device = ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang];
-                            break;
-                        case E_Board :
-                            device = ((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang];
-                            break;
-                        default :
-                            break;
-                    }
                 for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
                     DeviceCommand deviceCommand = getPerfomStatistics()[type.ordinal()][gateNo];
-                    if (deviceCommand != null && deviceCommand.hasData()) {
+                    
+                    if (deviceCommand != null && deviceCommand.hasData()) 
+                    {
                         gateBar.append("            ");
-                        gateBar.append(device + " #" + gateNo + "- "
-//>>>>>>> osparking/master
+                        gateBar.append(getDevType(type, (byte)gateNo) + "#" + gateNo + "- "
                                 + getPerfomStatistics()[type.ordinal()][gateNo].getPerformanceDescription());
                     }
                 }   
@@ -1786,39 +1622,21 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
          * Display major performance statistics.
          */
         
-//<<<<<<< HEAD
-//        perfDesc.append("[Passing Delay Average(ms)]" + System.lineSeparator());
-//        
-//        fetchPassingDelay();
-//        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-//            perfDesc.append("            Gate #" + gateNo + " :");
-//            perfDesc.append(getPassingDelayStat()[gateNo].getPassingDelayAvg());
-//            perfDesc.append(System.lineSeparator());        
-//        }  
-//        perfDesc.append("            ");
-//        perfDesc.append("* Passing delay is from " + System.lineSeparator() 
-//                + "    <first byte arrival of car image> to" + System.lineSeparator());
-//        perfDesc.append("    ");
-//        perfDesc.append("<gate bar open ACK arrival>." + System.lineSeparator());
-//        
-//        addMessageLine(MessageTextArea, perfDesc.toString());        
-//=======
-//        perfDesc.append("[Passing Delay Average(ms)]" + System.lineSeparator());
-//        
-//        fetchPassingDelay();
-//        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-//            perfDesc.append("            Gate #" + gateNo + " :");
-//            perfDesc.append(getPassingDelayStat()[gateNo].getPassingDelayAvg());
-//            perfDesc.append(System.lineSeparator());        
-//        }  
-//        perfDesc.append("            ");
-//        perfDesc.append("* Passing delay is from " + System.lineSeparator() 
-//                + "    <first byte arrival of car image> to" + System.lineSeparator());
-//        perfDesc.append("    ");
-//        perfDesc.append("<gate bar open ACK arrival>." + System.lineSeparator());
+        perfDesc.append("[Passing Delay Average(ms)]" + System.lineSeparator());
         
-        addMessageLine(MessageTextArea, getTextFor(PASSING_DELAY_MSG, perfDesc).toString());        
-//>>>>>>> osparking/master
+        fetchPassingDelay();
+        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
+            perfDesc.append("            Gate #" + gateNo + " :");
+            perfDesc.append(getPassingDelayStat()[gateNo].getPassingDelayAvg());
+            perfDesc.append(System.lineSeparator());        
+        }  
+        perfDesc.append("            ");
+        perfDesc.append("* Passing delay is from " + System.lineSeparator() 
+                + "    <first byte arrival of car image> to" + System.lineSeparator());
+        perfDesc.append("    ");
+        perfDesc.append("<gate bar open ACK arrival>." + System.lineSeparator());
+        
+        addMessageLine(MessageTextArea, perfDesc.toString());        
         MessageTextArea.setCaretPosition(MessageTextArea.getDocument().getLength() 
                 - perfDesc.length() - 2); // places the caret at the bottom of the display area        
     }//GEN-LAST:event_showStatisticsBtnActionPerformed
@@ -1834,7 +1652,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private void CarIOListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarIOListButtonActionPerformed
         new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
-//<<<<<<< HEAD
 
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
@@ -1877,9 +1694,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         return typeName;
     }
 
-//=======
-    
-//>>>>>>> osparking/master
     class ManageArrivalList extends Thread {
         public void run() {
             Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
@@ -1997,31 +1811,25 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
     public void stopRunningTheProgram() {
 
-//<<<<<<< HEAD
         // 전광판 기본문구 표시
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) { 
             IE_Board ebdMan = (IE_Board) deviceManagers[E_Board.ordinal()][gateNo];
             ebdMan.showDefaultMessage();
         }
-//=======
-//>>>>>>> osparking/master
+        
+
         setSHUT_DOWN(true);
 
         // Cancel timer here
         for (int gateNo = 1; gateNo <= gateCount; gateNo++) { 
-//<<<<<<< HEAD
             openGateCmdTimer[gateNo].cancelTask();
             openGateCmdTimer[gateNo].cancel();
             openGateCmdTimer[gateNo].purge();
             openGateCmdTimer[gateNo] = null;
-//=======
-//            openGateCmdTimer[gateNo].purge();
-//>>>>>>> osparking/master
         }
 
         for (DeviceType type: DeviceType.values()) {
             for (byte gateNo = 1; gateNo <= gateCount; gateNo++) {
-//<<<<<<< HEAD
                 connectDeviceTimer[type.ordinal()][gateNo].cancelTask();
                 connectDeviceTimer[type.ordinal()][gateNo].cancel();
                 connectDeviceTimer[type.ordinal()][gateNo].purge();
@@ -2042,16 +1850,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         
         periodicallyCheckSystemTimer.cancel();
         periodicallyCheckSystemTimer.purge();
-//=======
-//                connectDeviceTimer[type.ordinal()][gateNo].cancel();
-//                connectDeviceTimer[type.ordinal()][gateNo].cancelTask();
-//                connectDeviceTimer[type.ordinal()][gateNo].purge();
-//            }
-//        }
-//        
-//        maxRecordCheckerTimer.cancel();
-//        maxRecordCheckerTimer.purge();
-//>>>>>>> osparking/master
 
         if (formClockTimer != null) {
             formClockTimer.cancel(); 
@@ -2147,11 +1945,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             logParkingException(Level.SEVERE, ex, logMsg);
         } finally {
             closeDBstuff(conn, stmt, null, logMsg);
-//<<<<<<< HEAD
-//            String message = "System stopped";
-//=======
-            String message = ((String[])Globals.TextFieldList.get(STOP_MSG.ordinal()))[ourLang];
-//>>>>>>> osparking/master
+            String message = "System stopped";
             addMessageLine(MessageTextArea, message);
             logParkingOperation(OpLogLevel.LogAlways, message);
 
@@ -2232,11 +2026,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
     private void processLogoutReally() {
         recordLogout();
-//<<<<<<< HEAD
-//        addMessageLine(MessageTextArea, "User '" + Globals.loginID + "' logged out" );
-//=======
-        addMessageLine(MessageTextArea, getTextFor(LOGOUT_MSG, Globals.loginID));
-//>>>>>>> osparking/master
+        addMessageLine(MessageTextArea, "User '" + Globals.loginID + "' logged out" );
         Globals.loginID = null;
         Globals.loginPW = null;
         Globals.isManager = false;
@@ -2250,21 +2040,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             // 1. make sure 'log' directory exists
             File fPath = new File("log");
             fPath.mkdirs();
-//<<<<<<< HEAD
-//            FileWriter writer = null;
-//            try {
-//                // 2. create text file("MessageList.txt") to store list
-//                writer = new FileWriter("log" + File.separator + "MessageList.txt");
-//
-//=======
-//            FileWriter writer = null;
-            OutputStreamWriter writer = null;
+            FileWriter writer = null;
             try {
                 // 2. create text file("MessageList.txt") to store list
-//                writer = new FileWriter("log" + File.separator + "MessageList.txt");
-                writer = new OutputStreamWriter(new FileOutputStream("log" + File.separator + "MessageList.txt"), "UTF-8");
-//                String encode = writer.getEncoding();
-//>>>>>>> osparking/master
+                writer = new FileWriter("log" + File.separator + "MessageList.txt");
+
                 // 3. write list contents into the file
                 writer.write(getMessageTextArea().getText());
             } catch (IOException ioe) {
@@ -2294,18 +2074,13 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             getMessageTextArea().setCaretPosition(len); // places the caret at the bottom of the display area
             
         }  catch (FileNotFoundException fe) {
-//<<<<<<< HEAD
-//            addMessageLine(MessageTextArea, "Very First Run of OsParking!");
-//=======
-            addMessageLine(MessageTextArea, ((String[])Globals.TextFieldList.get(FIRST_RUN_MSG.ordinal()))[ourLang]);
-//>>>>>>> osparking/master
+            addMessageLine(MessageTextArea, "Very First Run of OsParking!");
             logParkingException(Level.SEVERE, fe, "First Run of Parking Lot Manager");
         }  catch (IOException ie) {
             logParkingException(Level.SEVERE, ie, "(message list file IO exception)");
         }
     }
 
-//<<<<<<< HEAD
     static int changeCount = 0;
     
     public Component getComponentByName(HashMap compMap, String name) {
@@ -2317,8 +2092,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         }
     }
 
-//=======
-//>>>>>>> osparking/master
     private void setGatesAndRestPanel() {
         if (gateCount == 1) {
             gatePanel = new PanelFor1Gate();
@@ -2372,7 +2145,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         PermissionType permission = enteranceAllowed(tagRecognized, tagEnteredAs, remark);
         int carPassingDelayMs = rand.nextInt(MAX_PASSING_DELAY)  + CAR_PERIOD;
 
-//<<<<<<< HEAD
         interruptEBoardDisplay(cameraID, tagRecognized, permission, remark.toString(), tagEnteredAs.toString(),
                 imageSN, carPassingDelayMs);
         System.out.println("**Car stayed for: " + carPassingDelayMs + "(ms)**");
@@ -2380,11 +2152,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 || autoGateOpenCheckBox.isSelected()
                 || Globals.RANDOM_ATTENDANT) 
         {
-//=======
-//        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-//                carPassingDelayMs);
-//        if (permission == ALLOWED || autoGateOpenCheckBox.isSelected()) {
-//>>>>>>> osparking/master
             getPassingDelayStat()[cameraID].setAccumulatable(true);
         } else {
             getPassingDelayStat()[cameraID].setAccumulatable(false);
@@ -2440,15 +2207,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                                     BarOperation.REMAIN_CLOSED);        
                             updateMainForm(cameraID, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);                            
                         }
-//<<<<<<< HEAD
 //                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), 
 //                                imageSN, carPassingDelayMs);                            
-/*
-=======
-                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), 
-                                imageSN, carPassingDelayMs);                            
->>>>>>> osparking/master
-                        */
                         
                     } else {
                         isGateBusy[cameraID] = true;
@@ -2465,15 +2225,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                                 image, 
                                 carPassingDelayMs
                         ).setVisible(true);
-//<<<<<<< HEAD
 //                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
 //                                -1);
-                        /*
-=======
-                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-                                -1);
->>>>>>> osparking/master
-        */
                     }
                     break;   
                     //</editor-fold>
@@ -2497,15 +2250,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                                     BarOperation.REMAIN_CLOSED);        
                             updateMainForm(cameraID, tagRecognized, arrSeqNo, BarOperation.REMAIN_CLOSED);                            
                         }                        
-//<<<<<<< HEAD
 //                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
 //                                carPassingDelayMs);
-                        /*
-=======
-                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-                                carPassingDelayMs);
->>>>>>> osparking/master
-                        */
 
                     } else {
                         isGateBusy[cameraID] = true;
@@ -2520,15 +2266,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                                 image, 
                                 carPassingDelayMs
                         ).setVisible(true);
-//<<<<<<< HEAD
 //                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
 //                                -1);  // -1 : don't return to default message display
-                        /*
-=======
-                        interruptEBoardDisplay(cameraID, tagRecognized, permission, tagEnteredAs.toString(), imageSN,
-                                -1);  // -1 : don't return to default message display
->>>>>>> osparking/master
-                        */
                     }
                     break;
                     //</editor-fold>
@@ -2577,16 +2316,12 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         {
             listSelectionModel[gateNo] = getGatePanel().getEntryList(gateNo).getSelectionModel();
             listSelectionModel[gateNo].addListSelectionListener(new ListSelectionChangeHandler(gateNo));
-//<<<<<<< HEAD
-//            try {
-//                KeyPressedEventHandler handler = new KeyPressedEventHandler (gateNo);
-//                getGatePanel().getEntryList(gateNo).addKeyListener(handler);
-//            } catch (Exception ex) {
-//                System.out.println("");
-//            }
-//=======
-            getGatePanel().getEntryList(gateNo).addKeyListener(new KeyPressedEventHandler (gateNo));       
-//>>>>>>> osparking/master
+            try {
+                KeyPressedEventHandler handler = new KeyPressedEventHandler (gateNo);
+                getGatePanel().getEntryList(gateNo).addKeyListener(handler);
+            } catch (Exception ex) {
+                System.out.println("");
+            }
             loadPreviousEntries(gateNo);
         }
     }
@@ -2739,7 +2474,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     public void openGate(int gateNo, int openCmdID, int carPassingDelayMs) {
         
         openCommandIssuedMs[gateNo] = System.currentTimeMillis();
-//<<<<<<< HEAD
         if (deviceType[GateBar.ordinal()][gateNo] == NaraBar.ordinal()) {
             NaraBarMan gateMan = (NaraBarMan) getDeviceManagers()[GateBar.ordinal()][gateNo];
             gateMan.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateUp));
@@ -2750,11 +2484,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                     new SendGateOpenTask(this, (byte) gateNo, openCmdID, carPassingDelayMs);
             getOpenGateCmdTimer()[gateNo].reschedule(sendOpenTask);
         }
-//=======
-//        SendGateOpenTask sendOpenTask = 
-//                new SendGateOpenTask(this, (byte) gateNo, openCmdID, carPassingDelayMs);
-//        getOpenGateCmdTimer()[gateNo].reschedule(sendOpenTask);
-//>>>>>>> osparking/master
     }    
     
     Object AckFileMutex = new Object();
@@ -2908,11 +2637,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     }
 
     @Override
-//<<<<<<< HEAD
     public IDevice.IManager[][] getDeviceManagers() {
-//=======
-//    public DeviceManager[][] getDeviceManagers() {
-//>>>>>>> osparking/master
         return deviceManagers;
     }
 
@@ -2934,11 +2659,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     Random rand = new Random();
     
     public synchronized void interruptEBoardDisplay(byte gateNo, String tagRecognized, 
-//<<<<<<< HEAD
             PermissionType permission, String remark, String tagEnteredAs, int imageSN, int carPassingDelayMs)
-//=======
-//            PermissionType permission, String tagEnteredAs, int imageSN, int carPassingDelayMs)
-//>>>>>>> osparking/master
     {
         String tagNumber = tagRecognized;
         
@@ -2946,7 +2667,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             tagNumber = tagEnteredAs;
         
         interruptsAcked[gateNo] = false;
-//<<<<<<< HEAD
         IDevice.IManager eManager = deviceManagers[E_Board.ordinal()][gateNo];
         if (eManager == null) {
             statusTextField.setText("E-Board #" + gateNo + " manager isn't alive");
@@ -3026,62 +2746,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         
         setting = EBD_DisplaySettings[row == EBD_Row.TOP ? 
                 CAR_ENTRY_TOP_ROW.ordinal() : CAR_ENTRY_BOTTOM_ROW.ordinal()];
-//<editor-fold>       
-//=======
-//        
-//        if (deviceManagers[E_Board.ordinal()][gateNo] != null 
-//                && isConnected(deviceManagers[E_Board.ordinal()][gateNo].getSocket() ))
-//        {  
-//            long currTimeMs = System.currentTimeMillis();
-//
-//            //<editor-fold desc="-- Init debug information">
-//            if (DEBUG) {
-//            eBoardMsgSentMs[gateNo][TOP_ROW.ordinal()] = currTimeMs;
-//            eBoardMsgSentMs[gateNo][BOTTOM_ROW.ordinal()] = currTimeMs;
-//            }
-//            //</editor-fold>
-//            
-//            getSendEBDmsgTimer()[gateNo][TOP_ROW.ordinal()].reschedule(new SendEBDMessageTask(
-//                            this, gateNo, (byte)TOP_ROW.ordinal(), 
-//                            getIntMessage(tagNumber, gateNo, (byte)TOP_ROW.ordinal(), 
-//                                    imageSN * 2 + TOP_ROW.ordinal(), 
-//                                    carPassingDelayMs), 
-//                            imageSN * 2 + TOP_ROW.ordinal()));
-//
-//            getSendEBDmsgTimer()[gateNo][BOTTOM_ROW.ordinal()].reschedule(new SendEBDMessageTask(
-//                            this, gateNo, (byte)BOTTOM_ROW.ordinal(), 
-//                            getIntMessage(tagNumber, gateNo, (byte)BOTTOM_ROW.ordinal(), 
-//                                    imageSN * 2 + BOTTOM_ROW.ordinal(), 
-//                                    carPassingDelayMs), 
-//                            imageSN * 2 + BOTTOM_ROW.ordinal()));
-//            
-//            if (DEBUG) {
-//                /**
-//                 * Save gate open command ID for a book keeping
-//                 */
-//                try {
-//                    getIDLogFile()[E_Board.ordinal()][gateNo]
-//                            .write(imageSN * 2 + TOP_ROW.ordinal() + System.lineSeparator());
-//                    getIDLogFile()[E_Board.ordinal()][gateNo]
-//                            .write(imageSN * 2 + BOTTOM_ROW.ordinal() + System.lineSeparator());
-//                    getIDLogFile()[E_Board.ordinal()][gateNo].flush();
-//                } catch (IOException ex) {
-//                    logParkingExceptionStatus(Level.SEVERE, ex, "saving open ID", getStatusTextField(), 
-//                            GENERAL_DEVICE);
-//                }    
-//            }
-//        } else {
-//            statusTextField.setText("E-Board #" + gateNo + " manager isn't alive");
-//        }        
-//    }
-//    
-//    byte[] getIntMessage(String  tagRecogedAs, byte deviceNo, byte rowNum, int msgSN, int delay) {
-//        EBD_DisplaySetting setting = null;
-//        
-//        setting = EBD_DisplaySettings
-//                [rowNum == TOP_ROW.ordinal() ? CAR_ENTRY_TOP_ROW.ordinal() : CAR_ENTRY_BOTTOM_ROW.ordinal()];
-//>>>>>>> osparking/master
-        //</editor-fold>
             
         String displayText = null;
         //<editor-fold desc="-- determind display text using e-board settings value like contentType">
@@ -3132,22 +2796,14 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         
         // <code:1><length:2><row:1><msgSN:4><text:?><type:1><color:1><font:1><pattern:1><cycle:4>
         // <delay:4><check:2>
-//<<<<<<< HEAD
         byte code = (byte) (row == EBD_Row.TOP ? EBD_INTERRUPT1.ordinal() : EBD_INTERRUPT2.ordinal());
-//=======
-//        byte code = (byte) (rowNum == TOP_ROW.ordinal() ? EBD_INTERRUPT1.ordinal() : EBD_INTERRUPT2.ordinal());
-//>>>>>>> osparking/master
         short wholeMessageLen // length of 10 fields from <length> to <check>
                 = (short)(displayTextLength + 21); // 21 == sum of 10 fields == 11 fields except <text>
         byte[] lenBytes //  {--Len[1], --Len[0]}
                 = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
         byte[] wholeMessageBytes = new byte[wholeMessageLen + 1];
         
-//<<<<<<< HEAD
         formMessageExceptCheckShort(code, lenBytes, row, msgSN, displayTextBytes, setting, delay, 
-//=======
-//        formMessageExceptCheckShort(code, lenBytes, rowNum, msgSN, displayTextBytes, setting, delay, 
-//>>>>>>> osparking/master
                 wholeMessageBytes);
         
         //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
@@ -3176,22 +2832,12 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             int result = 0;
             if (forced) {
                 JOptionPane.showMessageDialog(this, 
-//<<<<<<< HEAD
-//                    "'" + Globals.loginID + "' will be logged out.");
-//                result = JOptionPane.YES_OPTION;
-//            } else {
-//                result = JOptionPane.showConfirmDialog(this, 
-//                    "Does '" + Globals.loginID + "' want to logout?",
-//                    "Logout Confirmation", JOptionPane.YES_NO_OPTION);
-//=======
-                    getTextFor(LOGOUT_DIAILG, Globals.loginID));
+                    "'" + Globals.loginID + "' will be logged out.");
                 result = JOptionPane.YES_OPTION;
             } else {
                 result = JOptionPane.showConfirmDialog(this, 
-                    getTextFor(LOGOUT_CONFIRM_DIALOG, Globals.loginID),
-                    ((String[])Globals.DialogTitleList.get(CONFIRM_DIALOGTITLE.ordinal()))[ourLang], 
-                    JOptionPane.YES_NO_OPTION);
-//>>>>>>> osparking/master
+                    "Does '" + Globals.loginID + "' want to logout?",
+                    "Logout Confirmation", JOptionPane.YES_NO_OPTION);
             }
             if (result == JOptionPane.YES_OPTION) {
                 processLogoutReally();
@@ -3264,11 +2910,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         }
     }
 
-//<<<<<<< HEAD
     public static void showImage(final int gateNo) {
-//=======
-//    public synchronized static void showImage(final int gateNo) {
-//>>>>>>> osparking/master
         SwingUtilities.invokeLater(new Runnable(){
             public void run() 
             {
@@ -3295,26 +2937,16 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                                 InputStream imageInStream = rs.getBinaryStream("ImageBlob");
                                 
                                 if (imageInStream == null) {
-//<<<<<<< HEAD
 //                                    picLabel.setIcon(createStretchedIcon(picLabel.getSize(), noPictureImg, false));
 //                                    originalImgWidth[gateNo] = noPictureImg.getWidth(); 
-//=======
-//>>>>>>> osparking/master
                                     picLabel.setIcon(null);
                                     picLabel.setText("No Image Exists");
                                 } else {
                                     picLabel.setText(null);
-//<<<<<<< HEAD
                                     BufferedImage imageRead = ImageIO.read(imageInStream);
                                     picLabel.setIcon(createStretchedIcon(picLabel.getSize(), imageRead, false));
                                     closeInputStream(imageInStream, "(image loading from DB)");
                                     originalImgWidth[gateNo] = imageRead.getWidth(); 
-//=======
-//                                BufferedImage imageRead = ImageIO.read(imageInStream);
-//                                    picLabel.setIcon(createStretchedIcon(picLabel.getSize(), imageRead, false));
-//                                closeInputStream(imageInStream, "(image loading from DB)");
-//                                originalImgWidth[gateNo] = imageRead.getWidth();             
-//>>>>>>> osparking/master
                                     gatePanel.setGateImage((byte)gateNo, imageRead);
                                 }
                             } catch (IOException ex) {
@@ -3334,58 +2966,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         });
     }
     
-    public byte[] getDefaultMessage(byte deviceNo, byte rowNum, int msgSN) {
-        EBD_DisplaySetting setting = null;
-        
-        setting = EBD_DisplaySettings
-                [rowNum == TOP_ROW.ordinal() ? DEFAULT_TOP_ROW.ordinal() : DEFAULT_BOTTOM_ROW.ordinal()];
-            
-        String displayText = null;
-        //<editor-fold desc="-- determind display text using e-board settings(contentType, type, etc.)">
-        switch (setting.contentType) {
-            case VERBATIM:
-                displayText = setting.verbatimContent;
-                break;
-                
-            case GATE_NAME:
-                displayText = gateNames[deviceNo];
-                break;
-                
-            default:
-                displayText = "";
-                break;
-        }
-        //</editor-fold>       
-        
-        byte[] displayTextBytes = displayText.getBytes();
-        int displayTextLength = displayTextBytes .length;
-        
-        // <code:1><length:2><row:1><text:?><type:1><color:1><font:1><pattern:1><cycle:4><check:2>
-        byte code = (byte)(rowNum == TOP_ROW.ordinal() ? EBD_DEFAULT1.ordinal() : EBD_DEFAULT2.ordinal());
-        short wholeMessageLen // length of 9 fields from <length> to <check>
-                = (short)(displayTextLength + 17); // 13 == sum of 8 fields == 9 fields except <text>
-        byte[] lenBytes //  {--Len[1], --Len[0]}
-                = {(byte)((wholeMessageLen >> 8) & 0xff), (byte)(wholeMessageLen & 0xff)}; 
-        byte[] wholeMessageBytes = new byte[wholeMessageLen + 1]; // 1 is for the very first <code>
-        
-        formMessageExceptCheckShort(code, lenBytes, rowNum, msgSN, displayTextBytes, setting, 0,
-                wholeMessageBytes);        
-        
-        //<editor-fold desc="complete making message byte array by assigning 2 check bytes">
-        // calculate 2 check bytes by adding all bytes in the of 9 fields: from <code:1> to <delay:4>
-        byte[] check = new byte[2];
-        addUpBytes(wholeMessageBytes, check);
-        
-        int idx = wholeMessageBytes.length - 2;
-        wholeMessageBytes[idx++] = check[0];
-        wholeMessageBytes[idx++] = check[1];
-        //</editor-fold>
-        
-        return wholeMessageBytes;        
-        
-    }
-    
-//    private void formMessageExceptCheckShort(byte code, byte[] lenBytes, byte rowNum, int msgSN, 
     private void formMessageExceptCheckShort(byte code, byte[] lenBytes, EBD_Row row, int msgSN, 
             byte[] coreMsg, EBD_DisplaySetting setting, int delay, byte[] wholeMessageBytes) 
     {
@@ -3394,11 +2974,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         wholeMessageBytes[idx++] = code;
         wholeMessageBytes[idx++] = lenBytes[0];
         wholeMessageBytes[idx++] = lenBytes[1];
-//<<<<<<< HEAD
         wholeMessageBytes[idx++] = (byte)row.ordinal();
-//=======
-//        wholeMessageBytes[idx++] = rowNum;
-//>>>>>>> osparking/master
 
         for (byte dByte : ByteBuffer.allocate(4).putInt(msgSN).array()) {
             wholeMessageBytes[idx++] = dByte;
@@ -3466,128 +3042,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 parentGUI = mainForm;
                 mainForm.recordSystemStart();
                 mainForm.setVisible(true);
-//                if (!DEBUG)
-                    Globals.shortLicenseDialog(mainForm);
+                Globals.shortLicenseDialog(mainForm);
             }
         });
-    }
-    
-    private static String getTextFor(ControlEnums.TextType textType, String str){
-        String text = null;
-        
-        switch(textType){
-            case LOGIN_MSG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        text = "관리원 '" + str + "' 로그인." ;
-                        break;     
-                    default :
-                        text = "User '" + str + "' logged in" ;
-                        break;
-                }
-                break;
-            case LOGOUT_MSG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        text = "관리원 '" + str + "' 로그아웃." ;
-                        break; 
-                    default :
-                        text = "User '" + str + "' logged out" ;
-                        break;
-
-                }
-                break;
-            case ERR_INC_MSG :
-                if(ourLang == KOREAN.ordinal()){
-                    text = "현제 에러율(=" + str + ")은 최대치 입니다." ; 
-                }
-                else{
-                    text = "current error rate(=" + str + ") is max!" ; 
-                }
-                break;
-            case ERR_DEC_MSG :
-                if(ourLang == KOREAN.ordinal()){
-                    text = "현제 에러율(=" + str + ")은 최소치 입니다." ; 
-                }
-                else{
-                    text = "current error rate(=" + str + ") is min!" ; 
-                }
-                break;
-            default :
-                break;
-        }
-        return text;
-    }
-    
-    private StringBuffer getTextFor(ControlEnums.TextType textType, StringBuffer sb){
-        
-        switch(textType){
-            case PASSING_DELAY_MSG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        sb.append("[Osp 차량처리시간 평균(ms)]" + System.lineSeparator());
-
-                        fetchPassingDelay();
-                        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-                            sb.append("            입구 #" + gateNo + " :");
-                            sb.append(getPassingDelayStat()[gateNo].getPassingDelayAvg());
-                            sb.append(System.lineSeparator());        
-                        }  
-                        sb.append("            * Osp 차량처리시간은 " + System.lineSeparator() 
-                                + "    <차량 영상 첫 바이트 도착>부터" + System.lineSeparator());
-                        sb.append("    <차단기 개방명령 전달 확인>까지임." + System.lineSeparator());
-                        break;
-                    default :
-                        sb.append("[Osp Passing Delay Average(ms)]" + System.lineSeparator());
-
-                        fetchPassingDelay();
-                        for (int gateNo = 1; gateNo <= gateCount; gateNo++) {
-                            sb.append("            Gate #" + gateNo + " :");
-                            sb.append(getPassingDelayStat()[gateNo].getPassingDelayAvg());
-                            sb.append(System.lineSeparator());        
-                        }  
-                        sb.append("            * Osp Passing delay is from " + System.lineSeparator() 
-                                + "    <first byte arrival of car image> to" + System.lineSeparator());
-                        sb.append("    <gate bar open ACK arrival>." + System.lineSeparator());
-                        break;
-
-                }
-            break;
-        default :
-            break;
-        }
-        return sb;
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, String str){
-        String dialog = null;
-        
-        switch(dialogMSGType){
-            case LOGOUT_DIAILG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        dialog = "'" + str + "' 로그아웃 됩니다..";
-                        break;
-                     default :
-
-                        dialog = "'" + str + "' will be logged out.";
-                        break;
-                }
-            break;
-            case LOGOUT_CONFIRM_DIALOG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        dialog = "'" + str + "' 로그아웃 하시겟습니까?";
-                        break;
-                    default :
-                        dialog = "Does '" + str + "' want to logout?";
-                        break;
-                }
-            break;
-        default :
-            break;
-        }
-        
-        return dialog;
     }
 }

@@ -21,14 +21,15 @@ import static com.osparking.global.Globals.gateDeviceTypes;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.TimerTask;
-import static com.osparking.global.Globals.isConnected;
+import java.util.logging.Level;
 import static com.osparking.global.Globals.logParkingExceptionStatus;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
-import com.osparking.global.names.IDevice.IManager;
 import com.osparking.global.names.OSP_enums;
+import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
+import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
 import com.osparking.global.names.IDevice.ISocket;
 import static com.osparking.global.names.OSP_enums.E_BoardType.LEDnotice;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
@@ -37,14 +38,11 @@ import com.osparking.osparking.device.LEDnotice.LedProtocol;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeMessageQueue.MsgItem;
 import com.osparking.osparking.device.NaraBar.NaraMessageQueue.NaraMsgItem;
 import com.osparking.osparking.device.NaraBar.NaraBarMan;
+import com.osparking.osparking.device.NaraBar.NaraEnums;
 import com.osparking.osparking.device.NaraBar.NaraEnums.Nara_MsgType;
+import com.osparking.osparking.device.NaraBar.NaraMessageQueue;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
-import static com.osparking.global.names.OSP_enums.MsgCode.EBD_GetID;
-import static com.osparking.osparking.device.LEDnotice.LEDnoticeManager.ledNoticeProtocol;
-import java.util.logging.Level;
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 //<editor-fold desc="-- Class LED_Task">
 /**
@@ -79,17 +77,6 @@ public class LED_Task extends TimerTask {
         // Initialize some repeatedly used messages.
         getID_HexString = ledNoticeProtocol.getId();
         ledNoticeGetIDmsg = ledNoticeProtocol.hexToByteArray(getID_HexString);
-//=======
-//    /**
-//     * Initializes this task with the main GUI and a manager array.
-//     * 
-//     * @param guiMain GUI form frame on which it's device connection status is to be displayed
-//     * @param gateManagerArr manager array through which their sockets are accessed 
-//     */
-//    public LED_Task(ControlGUI guiMain, DeviceManager[][] deviceManagers) {
-//        this.controlGUI = guiMain;
-//        this.deviceManagers = deviceManagers;
-//>>>>>>> osparking/master
     }
     
     /**
@@ -100,13 +87,8 @@ public class LED_Task extends TimerTask {
      */
     public void run() {
 
-//<<<<<<< HEAD
         for (DeviceType devType : DeviceType.values()) {
             byte typeNo= (byte)devType.ordinal();
-//=======
-//        for (DeviceType type : DeviceType.values()) {
-//            byte typeNo= (byte)type.ordinal(); // tn: type number
-//>>>>>>> osparking/master
             
             for (byte gateNo = 1; gateNo <= gateCount; gateNo++) // gn : gate number
             {
@@ -114,7 +96,6 @@ public class LED_Task extends TimerTask {
                     if (setHalfTransparent) 
                     {
                         //<editor-fold desc="--decrease alpha value of odd row LED label">
-//<<<<<<< HEAD
                         if (deviceManagers[typeNo][gateNo] != null && 
                                 IDevice.isConnected(deviceManagers[typeNo][gateNo], devType, gateNo))
                         {
@@ -123,13 +104,6 @@ public class LED_Task extends TimerTask {
 //                            System.out.println("type: " + devType + ", no: " + gateNo);
 //                            System.out.println("level: " + controlGUI.tolerance[devType.ordinal()][gateNo].getLevel());
                             controlGUI.tolerance[devType.ordinal()][gateNo].decrease();
-//=======
-//                        if (deviceManagers[typeNo][gateNo] != null 
-//                                && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
-//
-//                            sendHeartBeat(typeNo, gateNo);                        
-//                            controlGUI.tolerance[type.ordinal()][gateNo].decrease();
-//>>>>>>> osparking/master
 
                             if (gateNo % 2 == 0 )
                                 controlGUI.getDeviceConnectionLEDs()[typeNo][gateNo]
@@ -148,7 +122,6 @@ public class LED_Task extends TimerTask {
                         //</editor-fold>
                     } else {
                         //<editor-fold desc="--decrease alpha value of even row LED label">
-//<<<<<<< HEAD
                         if (deviceManagers[typeNo][gateNo] != null && 
                                 IDevice.isConnected(deviceManagers[typeNo][gateNo], devType, gateNo))
                         {
@@ -156,13 +129,6 @@ public class LED_Task extends TimerTask {
 //                            System.out.println("type: " + devType + ", no: " + gateNo);
 //                            System.out.println("level: " + controlGUI.tolerance[devType.ordinal()][gateNo].getLevel());
                             controlGUI.tolerance[devType.ordinal()][gateNo].decrease();
-//=======
-//                        if (deviceManagers[typeNo][gateNo] != null 
-//                                && isConnected(deviceManagers[typeNo][gateNo].getSocket())) {
-//
-//                            sendHeartBeat(typeNo, gateNo);                        
-//                            controlGUI.tolerance[type.ordinal()][gateNo].decrease();
-//>>>>>>> osparking/master
 
                             if (gateNo % 2 == 0 ) 
                                 controlGUI.getDeviceConnectionLEDs()[typeNo][gateNo]
@@ -188,7 +154,6 @@ public class LED_Task extends TimerTask {
         }
         setHalfTransparent  =  ! setHalfTransparent;
     }
-//<<<<<<< HEAD
     
     private void sendHeartBeat(DeviceType type, byte gateNo) {
         OutputStream outStream;
@@ -237,17 +202,5 @@ public class LED_Task extends TimerTask {
         } catch (IOException e) {
             deviceManagers[type.ordinal()][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
         }
-//=======
-//
-//    private void sendHeartBeat(byte typeNo, byte gateNo) {
-//        try {
-////            System.out.println("3. try sending AreYouThere");
-//            int beat = (typeNo == E_Board.ordinal() ? EBD_GetID.ordinal() : AreYouThere.ordinal());
-//            deviceManagers[typeNo][gateNo].getSocket().getOutputStream().write(beat);
-////            System.out.println("3.1. AreYouThere sent");
-//        } catch (IOException e) {
-//            deviceManagers[typeNo][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
-//        }           
-//>>>>>>> osparking/master
     }
 }

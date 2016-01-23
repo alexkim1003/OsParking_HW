@@ -16,17 +16,12 @@
  */
 package com.osparking.osparking.statistics;
 
-import static com.osparking.global.names.DB_Access.statCount;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.GENERAL_DEVICE;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.logParkingOperation;
-import static com.osparking.global.Globals.ourLang;
-import com.osparking.global.names.ControlEnums;
-import static com.osparking.global.names.ControlEnums.TextType.COMMAND_ACK_MSG;
-import static com.osparking.global.names.ControlEnums.TextType.NO_COMMAND_MSG;
+import static com.osparking.global.names.DB_Access.statCount;
+import com.osparking.global.names.OSP_enums;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  *
@@ -88,19 +83,6 @@ public class DeviceCommand {
          */
 //        if (delayMs > DECENT_LIMIT)
 //            logParkingOperation(OpLogLevel.LogAlways, "Large ACK delay: " + delayMs, GENERAL_DEVICE);
-//=======
-//    public void addAckSpeedStatistics (int delayMs, int resendCnt) {
-//        commandCount++;
-//        commAckDelayTot += delayMs;
-//        commResendCntTot += resendCnt;
-//        if (commAckDelayMax < delayMs)
-//            commAckDelayMax = delayMs;
-//        /**
-//         * save large disconnection period and occurrence time for debugging.
-//         */
-//        if (delayMs > DECENT_LIMIT)
-//            logParkingOperation(OpLogLevel.LogAlways, "Large ACK delay: " + delayMs, GENERAL_DEVICE);
-//>>>>>>> osparking/master
     }
     
     /**
@@ -113,41 +95,21 @@ public class DeviceCommand {
         StringBuilder sb = new StringBuilder();
         
         if (commandCount == 0) {
-//<<<<<<< HEAD
-//            sb.append("\tno Open command statistics");
-//        } else {
-//            sb.append(commandName);
-//            sb.append("s: ");
-//            sb.append(commandCount);
-//            sb.append(System.lineSeparator());
-//
-//            sb.append("      ACK delay--avg(ms): ");
-//            sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", max: ");
-//            sb.append(commAckDelayMax);
-//            sb.append(System.lineSeparator());
-//
-//            sb.append("      resend/open: ");
-//            sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
-//            sb.append(System.lineSeparator());
-//=======
-            sb.append("\t" + ((String[])Globals.TextFieldList.get(NO_COMMAND_MSG.ordinal()))[ourLang]);
+            sb.append("\tno Open command statistics");
         } else {
-//            sb.append(commandName);
-//            sb.append(" commands: ");
-//            sb.append(commandCount);
-//            sb.append(System.lineSeparator());
-//
-//            sb.append("      ACK delay--avg(ms): ");
-//            sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", max: ");
-//            sb.append(commAckDelayMax);
-//            sb.append(System.lineSeparator());
-//
-//            sb.append("      resend/open: ");
-//            sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
-//            sb.append(System.lineSeparator());
-            getTextFor(COMMAND_ACK_MSG, sb, commandName, commandCount, 
-                    commAckDelayTot, commAckDelayMax, commResendCntTot);           
-//>>>>>>> osparking/master
+            sb.append(commandName);
+            sb.append("s: ");
+            sb.append(commandCount);
+            sb.append(System.lineSeparator());
+
+            sb.append("      ACK delay--avg(ms): ");
+            sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", max: ");
+            sb.append(commAckDelayMax);
+            sb.append(System.lineSeparator());
+
+            sb.append("      resend/open: ");
+            sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
+            sb.append(System.lineSeparator());
         }
         return sb.toString();
     }
@@ -161,44 +123,5 @@ public class DeviceCommand {
             return true;
         else
             return false;
-    }
-
-    private void getTextFor(ControlEnums.TextType textType, StringBuilder sb, String commandName, int commandCount, int commAckDelayTot, int commAckDelayMax, int commResendCntTot) {
-        switch(textType){
-            case COMMAND_ACK_MSG : 
-                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
-                    sb.append(commandName);
-                    sb.append(" 명령: ");
-                    sb.append(commandCount);
-                    sb.append(System.lineSeparator());
-
-                    sb.append("      회신 지연 시간--평균(ms): ");
-                    sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", 최대: ");
-                    sb.append(commAckDelayMax);
-                    sb.append(System.lineSeparator());
-
-                    sb.append("      재전송/개방: ");
-                    sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
-                    sb.append(System.lineSeparator());
-                }
-                else{
-                    sb.append(commandName);
-                    sb.append(" commands: ");
-                    sb.append(commandCount);
-                    sb.append(System.lineSeparator());
-
-                    sb.append("      ACK delay--avg(ms): ");
-                    sb.append(getFormattedRealNumber(commAckDelayTot/(float)commandCount, 1) + ", max: ");
-                    sb.append(commAckDelayMax);
-                    sb.append(System.lineSeparator());
-
-                    sb.append("      resend/open: ");
-                    sb.append(getFormattedRealNumber(commResendCntTot/(float)commandCount, 2));
-                    sb.append(System.lineSeparator());
-                }
-                break;
-            default:
-                break;
-        }
     }
 }

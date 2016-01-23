@@ -18,17 +18,11 @@ package com.osparking.osparking.device;
 
 import java.io.IOException;
 import java.util.logging.Level;
-<<<<<<< HEAD
 import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.IDevice;
 import com.osparking.global.names.IDevice.IManager;
 import com.osparking.global.names.OSP_enums;
-=======
-import com.osparking.global.Globals;
-import static com.osparking.global.Globals.isConnected;
-import static com.osparking.global.Globals.logParkingException;
->>>>>>> osparking/master
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
 import javax.swing.JOptionPane;
@@ -41,7 +35,6 @@ public class SendEBDMessageTask implements Runnable {
     ControlGUI mainGUI;
     byte deviceNo;
     byte[] message;
-<<<<<<< HEAD
     OSP_enums.EBD_Row rowNo;
     private int sendCount = 0;
     int msgSN = 0; // message sequence number
@@ -53,54 +46,27 @@ public class SendEBDMessageTask implements Runnable {
         this.deviceNo = (byte) deviceNo;
         this.message = message;
         this.rowNo = row;
-=======
-    byte rowNo;
-    private int sendCount = 0;
-    int msgSN = 0; // message sequence number
-
-    public SendEBDMessageTask(ControlGUI mainGUI, int deviceNo, byte rowNo, byte[] message, int msgSN) {
-        this.mainGUI = mainGUI;
-        this.deviceNo = (byte) deviceNo;
-        this.message = message;
-        this.rowNo = rowNo;
->>>>>>> osparking/master
         this.msgSN = msgSN;
     }
 
     @Override
     public synchronized void run() {
-<<<<<<< HEAD
         IDevice.ISocket ebdMan = (IDevice.ISocket) mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo];
         
         try {
             synchronized(mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
             {
                 if (! isConnected(ebdMan.getSocket())) 
-=======
-        try {
-            synchronized(mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo]) 
-            {
-                if (! isConnected(mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket())) 
->>>>>>> osparking/master
                 {
                     mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
                 }
             }
             ++sendCount;
-<<<<<<< HEAD
             ebdMan.getSocket().getOutputStream()
                     .write(message);
             
         } catch (IOException e) {
             ((IManager)ebdMan).finishConnection(e, "EBD message sent", deviceNo);
-=======
-            mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].getSocket().getOutputStream()
-                    .write(message);
-            
-        } catch (IOException e) {
-            mainGUI.getDeviceManagers()[E_Board.ordinal()][deviceNo].finishConnection(e, 
-                    "EBD message sent", deviceNo);
->>>>>>> osparking/master
         } catch (InterruptedException ex) {
             logParkingException(Level.SEVERE, ex, "E-Board #" + deviceNo + " message sender wait socket conn'");
         }          

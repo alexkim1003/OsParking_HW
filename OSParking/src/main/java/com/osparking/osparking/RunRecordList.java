@@ -16,10 +16,6 @@
  */
 package com.osparking.osparking;
 
-<<<<<<< HEAD
-=======
-import com.osparking.global.Globals;
->>>>>>> osparking/master
 import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.Globals.SetAColumnWidth;
 import static com.osparking.global.Globals.buildTableModel;
@@ -31,20 +27,6 @@ import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.getDateFromGivenDate;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
-<<<<<<< HEAD
-=======
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_ERROR_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypes.SEARCH_PERIOD_LABEL;
-import static com.osparking.global.names.ControlEnums.TableTypes.DURATION_HEADER;
-import static com.osparking.global.names.ControlEnums.TableTypes.ORDER_HEADER;
-import static com.osparking.global.names.ControlEnums.TableTypes.SHUTDOWN_HEADER;
-import static com.osparking.global.names.ControlEnums.TableTypes.START_HEADER;
-import com.osparking.global.names.ControlEnums.TitleTypes;
->>>>>>> osparking/master
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.DB_Access.readSettings;
 import com.osparking.global.names.JDBCMySQL;
@@ -123,13 +105,7 @@ public class RunRecordList extends javax.swing.JFrame {
         RunRecordTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-<<<<<<< HEAD
         setTitle("OsParking Program Run Record");
-=======
-        setTitle(((String[])Globals.TitleList.get(TitleTypes.RUN_RECORD_FRAME_TITLE.ordinal()))[ourLang]);
-        setMinimumSize(new java.awt.Dimension(472, 517));
-        setPreferredSize(new java.awt.Dimension(850, 527));
->>>>>>> osparking/master
         getContentPane().add(filler9, java.awt.BorderLayout.SOUTH);
         getContentPane().add(filler8, java.awt.BorderLayout.PAGE_START);
         getContentPane().add(filler11, java.awt.BorderLayout.LINE_START);
@@ -142,11 +118,7 @@ public class RunRecordList extends javax.swing.JFrame {
 
         CloseFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         CloseFormButton.setMnemonic('c');
-<<<<<<< HEAD
         CloseFormButton.setText("Close");
-=======
-        CloseFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
->>>>>>> osparking/master
         CloseFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         CloseFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         CloseFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -165,11 +137,7 @@ public class RunRecordList extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-<<<<<<< HEAD
         jLabel3.setText("OsParking Program Run Record");
-=======
-        jLabel3.setText(((String[])Globals.TitleList.get(TitleTypes.RUN_RECORD_FRAME_TITLE.ordinal()))[ourLang]);
->>>>>>> osparking/master
         jLabel3.setFocusable(false);
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabel3.setMaximumSize(new java.awt.Dimension(32767, 28));
@@ -181,11 +149,7 @@ public class RunRecordList extends javax.swing.JFrame {
         datePanel.add(filler3);
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-<<<<<<< HEAD
         jLabel1.setText("Search Period");
-=======
-        jLabel1.setText(((String[])Globals.LabelsText.get(SEARCH_PERIOD_LABEL.ordinal()))[ourLang]);
->>>>>>> osparking/master
         datePanel.add(jLabel1);
         datePanel.add(filler4);
 
@@ -209,11 +173,7 @@ public class RunRecordList extends javax.swing.JFrame {
 
         SearchLoginRecordButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SearchLoginRecordButton.setMnemonic('s');
-<<<<<<< HEAD
         SearchLoginRecordButton.setText("Search");
-=======
-        SearchLoginRecordButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
->>>>>>> osparking/master
         SearchLoginRecordButton.setMaximumSize(new java.awt.Dimension(90, 40));
         SearchLoginRecordButton.setMinimumSize(new java.awt.Dimension(90, 40));
         SearchLoginRecordButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -263,7 +223,6 @@ public class RunRecordList extends javax.swing.JFrame {
         
         // Check if both starting and ending dates are entered
         if (beginDate == null || endDate == null) {
-<<<<<<< HEAD
             JOptionPane.showConfirmDialog(this, "Please, enter both starting and ending dates!",
                     "Search Range Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
         } else {
@@ -272,18 +231,6 @@ public class RunRecordList extends javax.swing.JFrame {
                 JOptionPane.showConfirmDialog(this, "Ending date can't precede starting date!" + 
                         System.lineSeparator() +
                         "Please, change search range(dates).", "Wrong Search Range", 
-=======
-            JOptionPane.showConfirmDialog(this, 
-                    ((String[])Globals.DialogMSGList.get(DATE_INPUT_CHECK_DIALOG.ordinal()))[ourLang],
-                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
-                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
-        } else {
-            // Check if dates are chronologically wrong.
-            if (beginDate.after(endDate)) {
-                JOptionPane.showConfirmDialog(this, 
-                        ((String[])Globals.DialogMSGList.get(DATE_INPUT_ERROR_DIALOG.ordinal()))[ourLang],
-                        ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
->>>>>>> osparking/master
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
             } else {
                 RefreshTableContents(beginDate, endDate);
@@ -317,12 +264,9 @@ public class RunRecordList extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(RunRecordList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-<<<<<<< HEAD
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
-=======
->>>>>>> osparking/master
 
         initializeLoggers();
         checkOptions(args);
@@ -373,7 +317,6 @@ public class RunRecordList extends javax.swing.JFrame {
         Statement stmt = null;
         ResultSet rs = null; 
         StringBuffer sb = new StringBuffer();
-<<<<<<< HEAD
         sb.append("Select recNo as 'Order', ");
         
         sb.append(" concat(date_format(stopTm, '%Y-%m-%d '), ");
@@ -382,16 +325,6 @@ public class RunRecordList extends javax.swing.JFrame {
         sb.append(" concat(date_format(startTm, '%Y-%m-%d '), ");
         sb.append(" if(date_format(startTm, '%p') ='AM', 'AM', 'PM'),");
         sb.append(" date_format(startTm, ' %h:%i:%s')) as 'Start Up', ");
-=======
-        sb.append("Select recNo as '"+ ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang] +"', ");
-        
-        sb.append(" concat(date_format(stopTm, '%Y-%m-%d '), ");
-        sb.append(" if(date_format(stopTm, '%p') ='AM', 'AM', 'PM'),");
-        sb.append(" date_format(stopTm, ' %h:%i:%s')) as '"+ ((String[])Globals.TableHeaderList.get(START_HEADER.ordinal()))[ourLang] +"', ");
-        sb.append(" concat(date_format(startTm, '%Y-%m-%d '), ");
-        sb.append(" if(date_format(startTm, '%p') ='AM', 'AM', 'PM'),");
-        sb.append(" date_format(startTm, ' %h:%i:%s')) as '"+ ((String[])Globals.TableHeaderList.get(SHUTDOWN_HEADER.ordinal()))[ourLang] +"', ");
->>>>>>> osparking/master
         
         sb.append(" concat( ");
         sb.append("   lpad(timestampdiff(HOUR, stopTm, startTm),");
@@ -399,11 +332,7 @@ public class RunRecordList extends javax.swing.JFrame {
         sb.append(    " if (timestampdiff(HOUR, stopTm, startTm) > 999, 4,");
         sb.append(    " if (timestampdiff(HOUR, stopTm, startTm) > 99, 3, 2))), '0'), ':',");        
         sb.append("   lpad(mod(timestampdiff(MINUTE, stopTm, startTm), 60), 2, '0'), '.', ");
-<<<<<<< HEAD
         sb.append("   lpad(mod(timestampdiff(SECOND, stopTm, startTm), 60), 2, '0')) as 'Stopped For(hh:mm:ss)' ");
-=======
-        sb.append("   lpad(mod(timestampdiff(SECOND, stopTm, startTm), 60), 2, '0')) as '"+ ((String[])Globals.TableHeaderList.get(DURATION_HEADER.ordinal()))[ourLang] +"' ");
->>>>>>> osparking/master
         sb.append("FROM SystemRun Where ('");
         sb.append(startDate);
         sb.append("' <= date(stopTm) or date(stopTm) is null) and ('");

@@ -28,12 +28,7 @@ import java.nio.ByteBuffer;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.*;
-import com.osparking.global.names.ControlEnums;
-import static com.osparking.global.names.ControlEnums.LabelTypes.CAMERA_LABEL;
-import static com.osparking.global.names.ControlEnums.TextType.DISCONN_MSG;
-import static com.osparking.global.names.ControlEnums.TextType.TRY_CONN_MSG;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.osparking.ControlGUI;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -41,7 +36,6 @@ import com.osparking.global.names.OSP_enums.MsgCode;
 import static com.osparking.global.names.OSP_enums.MsgCode.CarImage;
 import static com.osparking.global.names.OSP_enums.MsgCode.IAmHere;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
-import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  * Maintains communication with a camera  thru a socket as long as the socket is connected,
@@ -50,11 +44,7 @@ import static javax.swing.text.html.HTML.Tag.HEAD;
  * 
  * @author Open Source Parking Inc.
  */
-//<<<<<<< HEAD
 public class CameraManager extends Thread implements IDevice.IManager, IDevice.ISocket {
-//=======
-//public class CameraManager extends Thread implements DeviceManager {
-//>>>>>>> osparking/master
     //<editor-fold desc="--class variables">
     private byte cameraID = 0;
     private ControlGUI mainForm;
@@ -309,7 +299,6 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
     @Override
     public void finishConnection(Exception e, String description, byte cameraID)
     {
-        String msg = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang] ;
         synchronized (mainForm.getSocketMutex()[Camera.ordinal()][cameraID]) 
         {
             /** 
@@ -317,16 +306,10 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
              */
             if (0 < cameraID && cameraID <= gateCount) {
                 if (isConnected(socket)) {
-//<<<<<<< HEAD
-//                    String msg = "  ------Camera #" + cameraID + " disconnected";
-//
-//                    addMessageLine(mainForm.getMessageTextArea(), msg);
-//                    logParkingException(Level.INFO, e, description + msg);
-//=======
-                    addMessageLine(mainForm.getMessageTextArea(), "  ------" +  msg + " " 
-                            + ((String[])Globals.TextFieldList.get(DISCONN_MSG.ordinal()))[ourLang]);
-                    logParkingException(Level.INFO, e, description + " " +  msg);
-//>>>>>>> osparking/master
+                    String msg = "  ------Camera #" + cameraID + " disconnected";
+
+                    addMessageLine(mainForm.getMessageTextArea(), msg);
+                    logParkingException(Level.INFO, e, description + msg);
 
                     long closeTm = System.currentTimeMillis();
 
@@ -343,20 +326,11 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
             }
         }
             
-//<<<<<<< HEAD
         if (mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID] != null) {
             if (!mainForm.isSHUT_DOWN()) {
                 mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID].reRunOnce();
-//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + cameraID);
-                addMessageLine(mainForm.getMessageTextArea(), getTextFor(TRY_CONN_MSG, msg, cameraID));
+                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + cameraID);
             }
-//=======
-//        if (mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID] == null) {
-//            System.out.println("this never ever happens");
-//        } else {
-//            mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID].reRunOnce();
-//            addMessageLine(mainForm.getMessageTextArea(), getTextFor(TRY_CONN_MSG, msg, cameraID));
-//>>>>>>> osparking/master
         }
     }
 
@@ -382,24 +356,5 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
             picNo = 6;
         
         return picNo;
-    }
-
-    private String getTextFor(ControlEnums.TextType textType, String msg, byte cameraID) {
-        String text = null;
-        
-        switch(textType){
-            case TRY_CONN_MSG :
-                if (ourLang == ControlEnums.Languages.KOREAN.ordinal()) {
-                    text = msg +" #" + cameraID + " 연결 시도";
-                }
-                else{
-                    text = "Trying to connect to" + " " + msg +" #" + cameraID;
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return text;
     }
 }

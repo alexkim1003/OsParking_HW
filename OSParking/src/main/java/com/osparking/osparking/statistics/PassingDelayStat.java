@@ -17,10 +17,6 @@
 package com.osparking.osparking.statistics;
 
 import static com.mysql.jdbc.NonRegisteringDriver.DEBUG;
-<<<<<<< HEAD
-=======
-import com.osparking.global.Globals;
->>>>>>> osparking/master
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import static com.osparking.global.names.DB_Access.recordPerformance;
@@ -28,13 +24,7 @@ import static com.osparking.global.names.DB_Access.statCount;
 import static com.osparking.global.Globals.GENERAL_DEVICE;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.logParkingOperation;
-<<<<<<< HEAD
 import static com.osparking.global.Globals.timeFormat;
-=======
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.Globals.timeFormat;
-import static com.osparking.global.names.ControlEnums.LabelTypes.VEHICLES_LABEL;
->>>>>>> osparking/master
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 
 /**
@@ -134,12 +124,7 @@ public class PassingDelayStat {
             resultString = getFormattedRealNumber(passingDelayPreviousAverageMs, 1) + "ms on " 
                     + new SimpleDateFormat("yyyy-MM-dd ").format(passingDelayCalculationTime) 
                     + timeFormat.format(passingDelayCalculationTime) 
-<<<<<<< HEAD
                     + " (" + passingDelayPreviousPopulation + " vehicles)";
-=======
-                    + " (" + passingDelayPreviousPopulation 
-                    + ((String[])Globals.LabelsText.get(VEHICLES_LABEL.ordinal()))[ourLang] + ")";
->>>>>>> osparking/master
         
         return resultString;
     }

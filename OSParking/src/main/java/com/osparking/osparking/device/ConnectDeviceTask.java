@@ -16,11 +16,7 @@
  */
 package com.osparking.osparking.device;
 
-<<<<<<< HEAD
 import com.osparking.global.names.IDevice;
-=======
-import com.osparking.global.Globals;
->>>>>>> osparking/master
 import java.awt.Font;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,7 +24,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.DEBUG;
-<<<<<<< HEAD
 import static com.osparking.global.Globals.PULSE_PERIOD;
 import static com.osparking.global.Globals.getGateDevicePortNo;
 import static com.osparking.global.Globals.logParkingException;
@@ -42,20 +37,6 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 import javax.swing.JOptionPane;
-=======
-import static com.osparking.global.Globals.LED_PERIOD;
-import static com.osparking.global.Globals.PULSE_PERIOD;
-import static com.osparking.global.Globals.getGateDevicePortNo;
-import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
-import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
-import com.osparking.global.names.ControlEnums.TextType;
-import static com.osparking.global.names.ControlEnums.TextType.REFUSED_CONN_TF;
-import com.osparking.global.names.OSP_enums.DeviceType;
-import com.osparking.osparking.ControlGUI;
-import static com.osparking.global.names.DB_Access.deviceIP;
->>>>>>> osparking/master
 
 /**
  * 
@@ -85,7 +66,6 @@ public class ConnectDeviceTask implements Runnable {
                             "Socket() IP: " + deviceIP[deviceType.ordinal()][deviceID] + ", port: " + 
                                     portNo + " (" + seq + "-th)");      
                 }
-<<<<<<< HEAD
                 if (managerGUI.isSHUT_DOWN()) {
                     break;
                 }
@@ -141,59 +121,13 @@ public class ConnectDeviceTask implements Runnable {
 //                    System.out.println("after notify all");
                 }
                 //</editor-fold>
-=======
-                synchronized (managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID]) 
-                {                
-                    Socket deviceSocket = new Socket();
-                    deviceSocket.connect(new InetSocketAddress(deviceIP[deviceType.ordinal()][deviceID], portNo),
-                            LED_PERIOD);  
-
-                    managerGUI.getSockConnStat()[deviceType.ordinal()][deviceID].recordSocketConnection(
-                            System.currentTimeMillis());               
-
-                    deviceSocket.setTcpNoDelay(true);
-                    deviceSocket.setSoTimeout(PULSE_PERIOD);
-                    managerGUI.getStatusTextField().setFont(new Font(
-                            managerGUI.getStatusTextField().getFont().getFontName(), Font.PLAIN, 
-                            managerGUI.getStatusTextField().getFont().getSize()));  
-                    //</editor-fold>                  
-
-                    managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();
-                    // ...
-                    if (managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID] == null) {
-                        System.out.println("It is null");
-                    }
-                    managerGUI.getDeviceManagers()[deviceType.ordinal()][deviceID].setSocket(deviceSocket);
-                    managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
-                }
->>>>>>> osparking/master
                 return;
             } catch (SocketTimeoutException ex) {
             } catch (IOException e) {
                 //<editor-fold desc="--handle ioexception">
                 if (e.getMessage().indexOf("refused") >= 0) {
-<<<<<<< HEAD
                     String msg = deviceType + " #"  + deviceID + " refused connection: " + (++seq) + " times";
 
-=======
-                    String device = null;
-                    switch(deviceType){
-                        case Camera: 
-                            device = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang];
-                            break;
-                        case GateBar :
-                            device = ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang];
-                            break;
-                        case E_Board :
-                            device = ((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang];
-                            break;
-                        default :
-                            break;
-                    }
-                    String msg = getTextFor(REFUSED_CONN_TF, device, deviceID, ++seq);
-//                    String msg = deviceType + " #"  + deviceID + " refused connection: " + (++seq) + " times";
-                        
->>>>>>> osparking/master
                     managerGUI.getStatusTextField().setText(msg); 
                     if (seq % 20 == 1) {
                         logParkingException(Level.INFO, null, msg + System.lineSeparator(), deviceID);
@@ -208,34 +142,11 @@ public class ConnectDeviceTask implements Runnable {
                     }
                 }
                 //</editor-fold>
-<<<<<<< HEAD
             } catch (PortInUseException ex) {
                 logParkingException(Level.SEVERE, ex, "IOEx getting serial port", deviceID);
             } catch (UnsupportedCommOperationException ex) {
                 logParkingException(Level.SEVERE, ex, "IOEx getting serial port", deviceID);
             }
         }
-=======
-            } 
-        }
-    }
-    private static String getTextFor(TextType textType, String deviceType, byte byt, int integer){
-        String text = null;
-        
-        switch(textType){
-            case REFUSED_CONN_TF:
-                if(ourLang == KOREAN.ordinal()){
-                    text = deviceType + " #"  + byt + " 연결 거부 : " + (integer) + " 회";
-                }
-                else {
-                    text = deviceType + " #"  + byt + " refused connection: " + (integer) + " times";
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return text;
->>>>>>> osparking/master
     }
 }
