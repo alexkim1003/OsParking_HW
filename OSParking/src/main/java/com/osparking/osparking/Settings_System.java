@@ -61,7 +61,11 @@ import com.osparking.global.names.PasswordValidator;
 import org.apache.commons.validator.routines.InetAddressValidator;
 import com.osparking.attendant.PWHelpJDialog;
 import com.osparking.global.names.ChangeSettings;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.CANCEL_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.SAVE_BTN;
+import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.*;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.DB_Access.deviceComID;
@@ -78,14 +82,11 @@ import com.osparking.global.names.OSP_enums.PWStrengthLevel;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import com.osparking.osparking.device.LEDnotice.Settings_LEDnotice;
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
-import static com.sun.javafx.tk.Toolkit.getToolkit;
 import java.awt.FlowLayout;
 import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import static javax.swing.JOptionPane.ERROR_MESSAGE;
@@ -837,7 +838,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel30.setText("Camera");
+        jLabel30.setText(((String[])Globals.LabelsText.get(CAMERA_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
         jLabel30.setPreferredSize(new java.awt.Dimension(60, 15));
         cameraPan.add(jLabel30);
 
@@ -922,7 +923,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel37.setText("E-board");
+        jLabel37.setText(((String[])Globals.LabelsText.get(E_BOARD_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
         jLabel37.setPreferredSize(new java.awt.Dimension(60, 15));
         eBoardPan.add(jLabel37);
 
@@ -1013,7 +1014,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         ebdLbl.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ebdLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        ebdLbl.setText("Gate bar");
+        ebdLbl.setText(((String[])Globals.LabelsText.get(GATE_BAR_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
         ebdLbl.setPreferredSize(new java.awt.Dimension(60, 15));
         gateBarPan.add(ebdLbl);
 
@@ -1851,7 +1852,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel20.setText("Electronic Board");
+        jLabel20.setText(((String[])Globals.LabelsText.get(ELECTRONIC_DISPLAY_LABEL.ordinal()))[ourLang]);
         jLabel20.setToolTipText("");
         jLabel20.setMaximumSize(new java.awt.Dimension(300, 27));
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 27));
@@ -1904,7 +1905,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel8.setText("Cycles");
+        jLabel8.setText(((String[])Globals.LabelsText.get(CYCLE_LABEL.ordinal()))[ourLang]);
         jLabel8.setMaximumSize(new java.awt.Dimension(80, 15));
         jLabel8.setMinimumSize(new java.awt.Dimension(80, 15));
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 15));
@@ -1938,7 +1939,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel31.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel31.setText("Flowing");
+        jLabel31.setText(((String[])Globals.LabelsText.get(FLOWING_LABEL.ordinal()))[ourLang]);
         jLabel31.setToolTipText("");
         jLabel31.setMaximumSize(new java.awt.Dimension(80, 15));
         jLabel31.setPreferredSize(new java.awt.Dimension(50, 15));
@@ -1982,7 +1983,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         blinkingL.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         blinkingL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        blinkingL.setText("Blinking");
+        blinkingL.setText(((String[])Globals.LabelsText.get(BLINGKING_LABEL.ordinal()))[ourLang]);
         blinkingL.setToolTipText("");
         blinkingL.setMaximumSize(new java.awt.Dimension(80, 15));
         blinkingL.setPreferredSize(new java.awt.Dimension(50, 15));
@@ -2067,7 +2068,7 @@ public class Settings_System extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        GatesTabbedPane.getAccessibleContext().setAccessibleName(null);
+        GatesTabbedPane.getAccessibleContext().setAccessibleName("\"((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + \\\"2\\\"\"");
 
         wholePanel.add(gateSettingPanel);
 
@@ -2076,8 +2077,8 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsSaveButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsSaveButton.setMnemonic('s');
-        SettingsSaveButton.setText("Save");
-        SettingsSaveButton.setToolTipText("Save your changes");
+        SettingsSaveButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+        SettingsSaveButton.setToolTipText(SETTINGS_SAVE_TOOLTIP.getContent(language));
         SettingsSaveButton.setEnabled(false);
         SettingsSaveButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsSaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -2090,8 +2091,8 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsCancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCancelButton.setMnemonic('c');
-        SettingsCancelButton.setText("Cancel");
-        SettingsCancelButton.setToolTipText("It rejected the changes made");
+        SettingsCancelButton.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+        SettingsCancelButton.setToolTipText(SETTINGS_CANCEL_TOOLTIP.getContent(language));
         SettingsCancelButton.setEnabled(false);
         SettingsCancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsCancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -2104,8 +2105,8 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsCloseButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCloseButton.setMnemonic('c');
-        SettingsCloseButton.setText("Close");
-        SettingsCloseButton.setToolTipText("Closing the Form");
+        SettingsCloseButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        SettingsCloseButton.setToolTipText(CLOSE_BTN_TOOLTIP.getContent(language));
         SettingsCloseButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsCloseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2128,6 +2129,8 @@ public class Settings_System extends javax.swing.JFrame {
 
     private void StatPopSizeTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldKeyTyped
         rejectNonNumericKeys(evt);
+        
+//                ((String[])Globals.ToolTipLabels.get(SETTINGS_SAVE_TOOLTIP.ordinal()))[ourLang]);
     }//GEN-LAST:event_StatPopSizeTextFieldKeyTyped
 
     private void LanguageSelectionlHelpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LanguageSelectionlHelpButtonActionPerformed

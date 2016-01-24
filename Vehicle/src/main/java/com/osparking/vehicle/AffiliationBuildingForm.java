@@ -34,6 +34,7 @@ import static com.osparking.global.Globals.insertNewBuilding;
 import static com.osparking.global.Globals.insertNewBuildingUnit;
 import static com.osparking.global.Globals.insertNewLevel1Affiliation;
 import static com.osparking.global.Globals.insertNewLevel2Affiliation;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.rejectEmptyInput;
@@ -74,9 +75,16 @@ import static com.osparking.global.names.ControlEnums.DialogTitleTypes.READ_ODS_
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.READ_ODS_FAIL_DIALOGTITLE;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.REJECT_USER_DIALOGTITLE;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.UNIT_MODIFY_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.AFFILIATION_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.BUILDING_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.HELP_AFFIL_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.HELP_BUILDING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LIST_LABEL;
 import static com.osparking.global.names.ControlEnums.TableTypes.*;
 import static com.osparking.global.names.ControlEnums.TitleTypes.AFFILI_BUILD_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.DB_Access.readSettings;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
@@ -1779,7 +1787,20 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             int L1_index = L1_Affiliation.
                     convertRowIndexToModel(L1_Affiliation.getSelectedRow());
             String L1_Affil = L1_Affiliation.getModel().getValueAt(L1_index, 1).toString();
-            L2AffilLabel.setText(getTextFor(LOWER_LABEL, L1_Affil));
+            
+            String label = "";
+            switch (language) {
+                case KOREAN:
+                    label = L1_Affil + LOWER_LABEL.getContent(language);
+                    break;
+                case ENGLISH:
+                    label = LOWER_LABEL.getContent(language) + L1_Affil; 
+                    break;
+                default:
+                    break;
+            }  
+            L2AffilLabel.setText(label);
+            
             insertL2_Button.setEnabled(true);
             
             Connection conn = null;
@@ -2342,7 +2363,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE);     
     }   
     
-    private String getTextFor(ControlEnums.LabelTypes labelType, int integer){
+    private String getTextFor(ControlEnums.LabelTypesOld labelType, int integer){
         String label = null;
         
         switch(labelType){
@@ -2362,7 +2383,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         return label;
     }
     
-    private String getTextFor(ControlEnums.LabelTypes labelType, String L1_Affil){
+    private String getTextFor(ControlEnums.LabelTypesOld labelType, String L1_Affil){
         String label = null;
         
         switch(labelType){

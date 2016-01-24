@@ -17,18 +17,15 @@
 package com.osparking.e_board;
 
 import com.osparking.global.names.EBD_DisplaySetting;
-<<<<<<< HEAD
 import com.osparking.global.names.OSP_enums.DisplayArea;
 import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
 import java.awt.Insets;
 import javax.swing.JTextField;
-=======
-import java.awt.Insets;
-import javax.swing.JTextField;
-import static com.osparking.global.Globals.*;
->>>>>>> osparking/master
 import com.osparking.global.names.OSP_enums.EBD_Effects;
 import static com.osparking.global.names.OSP_enums.EBD_Effects.BLINKING;
+import static com.osparking.global.names.OSP_enums.EBD_Effects.LTOR_FLOW;
+import static com.osparking.global.names.OSP_enums.EBD_Effects.RTOL_FLOW;
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  *
@@ -36,11 +33,11 @@ import static com.osparking.global.names.OSP_enums.EBD_Effects.BLINKING;
  */
 public class InnerCycleTask implements Runnable {
     A_EBD_GUI mainform;
-<<<<<<< HEAD
+//<<<<<<< HEAD
     private DisplayArea row;
-=======
-    private byte row;
->>>>>>> osparking/master
+//=======
+//    private byte row;
+//>>>>>>> osparking/master
     EBD_DisplaySetting rowSetting;
     int textWidth, flowDelta;    
     
@@ -51,11 +48,11 @@ public class InnerCycleTask implements Runnable {
     int bot_count = 1;
     int count = 1;
     
-<<<<<<< HEAD
+//<<<<<<< HEAD
     public InnerCycleTask(A_EBD_GUI mainform, DisplayArea row, EBD_DisplaySetting rowSetting, int textWidth, 
-=======
-    public InnerCycleTask(A_EBD_GUI mainform, byte row, EBD_DisplaySetting rowSetting, int textWidth, 
->>>>>>> osparking/master
+//=======
+//    public InnerCycleTask(A_EBD_GUI mainform, byte row, EBD_DisplaySetting rowSetting, int textWidth, 
+//>>>>>>> osparking/master
             int flowDelta, JTextField eBoardRow){
         this.mainform = mainform;
         this.row = row;
@@ -79,13 +76,13 @@ public class InnerCycleTask implements Runnable {
                         mainform.botTextField.setMargin(new Insets(topMG, leftMG -= flowDelta, botMG, rightMG));
                         
                 }else{
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     mainform.parking_Display_InnerTimer[row.ordinal()].cancelTask();
                     mainform.parking_Display_OuterTimer[row.ordinal()].reRunOnce();
-=======
-                    mainform.parking_Display_InnerTimer[row].cancelTask();
-                    mainform.parking_Display_OuterTimer[row].reRunOnce();
->>>>>>> osparking/master
+//=======
+//                    mainform.parking_Display_InnerTimer[row].cancelTask();
+//                    mainform.parking_Display_OuterTimer[row].reRunOnce();
+//>>>>>>> osparking/master
                 }
                 break;
                 
@@ -97,13 +94,13 @@ public class InnerCycleTask implements Runnable {
                         mainform.botTextField.setMargin(new Insets(topMG, leftMG, botMG, rightMG -= flowDelta));
                     }                    
                 }else{
-<<<<<<< HEAD
+//<<<<<<< HEAD
                     mainform.parking_Display_InnerTimer[row.ordinal()].cancelTask();
                     mainform.parking_Display_OuterTimer[row.ordinal()].reRunOnce();                    
-=======
-                    mainform.parking_Display_InnerTimer[row].cancelTask();
-                    mainform.parking_Display_OuterTimer[row].reRunOnce();                    
->>>>>>> osparking/master
+//=======
+//                    mainform.parking_Display_InnerTimer[row].cancelTask();
+//                    mainform.parking_Display_OuterTimer[row].reRunOnce();                    
+//>>>>>>> osparking/master
                 }
                 break;
                 

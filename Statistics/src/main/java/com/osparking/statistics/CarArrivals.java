@@ -36,7 +36,7 @@ import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_ERROR_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
 import static com.osparking.global.names.ControlEnums.TitleTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import static com.osparking.global.names.ControlEnums.TableTypes.ARRIVAL_TIME_HEADER;
 import static com.osparking.global.names.ControlEnums.TableTypes.CAR_TAG_HEADER;
 import static com.osparking.global.names.ControlEnums.TableTypes.ORDER_HEADER;
@@ -44,7 +44,7 @@ import static com.osparking.global.names.ControlEnums.TextType.LOG_OUT_TF;
 import static com.osparking.global.names.ControlEnums.TextType.NOT_APPLICABLE_TF;
 import static com.osparking.global.names.ControlEnums.TextType.UNKNOWN_TF;
 import static com.osparking.global.names.ControlEnums.TextType.UNREGISTERED_TF;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
+import static com.osparking.global.names.ControlEnums.ToolTipTypesOld.*;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import com.osparking.global.names.ImageDisplay;

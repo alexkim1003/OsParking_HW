@@ -17,17 +17,6 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
-import static com.osparking.global.Globals.ButtonLabels;
-import static com.osparking.global.Globals.ComboBoxItemList;
-import static com.osparking.global.Globals.DialogMSGList;
-import static com.osparking.global.Globals.DialogTitleList;
-import static com.osparking.global.Globals.TitleList;
-import static com.osparking.global.Globals.LabelsText;
-import static com.osparking.global.Globals.MenuItemList;
-import static com.osparking.global.Globals.OSP_FALSE;
-import static com.osparking.global.Globals.TableHeaderList;
-import static com.osparking.global.Globals.TextFieldList;
-import static com.osparking.global.Globals.ToolTipLabels;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,14 +24,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
-import static com.osparking.global.Globals.closeDBstuff;
-import static com.osparking.global.Globals.font_Type;
-import static com.osparking.global.Globals.initDeviceTypes;
-import static com.osparking.global.Globals.isInteger;
-import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.Globals.*;
 import static com.osparking.global.Globals.sdf;
 import com.osparking.global.names.ControlEnums.Languages;
+import static com.osparking.global.names.ControlEnums.Languages.ENGLISH;
+import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 import static com.osparking.global.names.GUI_Language.*;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
@@ -288,10 +274,12 @@ public class DB_Access {
                 switch(parkingLotLocale.getLanguage()){
                     case "ko" : 
                         ourLang = ControlEnums.Languages.KOREAN.ordinal();
+                        language = KOREAN;
                         font_Type = "맑은 고딕";
                         break;
                     default:
                         ourLang = ControlEnums.Languages.ENGLISH.ordinal();
+                        language = ENGLISH;
                         break;
                 }
                 localeIndex = rs.getShort("localeIndex");

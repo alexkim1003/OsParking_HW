@@ -51,21 +51,78 @@ import com.osparking.global.names.PasswordValidator;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static com.osparking.global.names.DB_Access.*;
 import com.osparking.global.Globals;
+import com.osparking.global.names.ATTLIST_ComboBoxTypes;
 import com.osparking.global.names.ControlEnums;
 import com.osparking.global.names.ControlEnums.ATTLIST_ComboBoxTypes;
+import static com.osparking.global.names.ControlEnums.ButtonContent.CHECK_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
-import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelContent.*;
 import static com.osparking.global.names.ControlEnums.TitleTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
-import static com.osparking.global.names.ControlEnums.TableTypes.*;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
 import com.osparking.global.names.DB_Access;
+import static com.osparking.global.names.DialogMSGTypes.ADMIN_PW_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ATT_CELL_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ATT_NAME_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.CELL_PHONE_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.CREATION_FAIL_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.CREATION_SUCCESS_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL1_DAILOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL2_DAILOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL3_DAILOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL_DAILOG;
+import static com.osparking.global.names.DialogMSGTypes.DELETE_SUCCESS_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.EMAIL_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.EMAIL_CHECK_FAIL_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.EMAIL_DUP_FALSE_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.EMAIL_DUP_TURE_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_CHAR_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_CHECK_GOOD_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_DUP_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_END_CHAR_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_FIRST_CHAR_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.ID_LENGTH_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.PASSWORD_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.PHONE_CHECK_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.REPEAT_PW_CHECK_ERROR;
+import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_FAIL1_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_FAIL2_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_SUCCESS_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.USER_UPDATE_FAIL_DIALOG;
+import static com.osparking.global.names.DialogMSGTypes.USER_UPDATE_SUCCESS_DIALOG;
+import static com.osparking.global.names.DialogTitleTypes.ATT_EMAIL_DUP_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.ATT_EMAIL_SYNTAX_CHECK_DIALOG;
+import static com.osparking.global.names.DialogTitleTypes.ATT_HELP_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.ATT_ID_DUP_CHCEK_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.ATT_SAVE_AS_FAIL_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.ATT_SFAVE_AS_SUCCESS_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.ATT_USER_UPDATE_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.CONFIRM_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.CREATION_RESULT_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.CREATTION_FAIL_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.DELETE_DIALOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.DELETE_FAIL_DAILOGTITLE;
+import static com.osparking.global.names.DialogTitleTypes.DELETE_RESULT_DIALOGTITLE;
 import com.osparking.global.names.JDBCMySQL;
 import static com.osparking.global.names.JDBCMySQL.getHashedPW;
 import com.osparking.global.names.JTextFieldLimit;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.ParentGUI;
+import static com.osparking.global.names.TableTypes.CELL_PHONE_HEADER;
+import static com.osparking.global.names.TableTypes.EMAIL_HEADER;
+import static com.osparking.global.names.TableTypes.MANAGER_HEADER;
+import static com.osparking.global.names.TableTypes.MODIFIED_HEADER;
+import static com.osparking.global.names.TableTypes.NAME_HEADER;
+import static com.osparking.global.names.TableTypes.PHONE_HEADER;
+import static com.osparking.global.names.TableTypes.USER_ID_HEADER;
+import static com.osparking.global.names.ToolTipContent.CELL_INPUT_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.ID_INPUT_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.NAME_INPUT_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.PHONE_INPUT_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.PW_INPUT_TOOTLTIP;
+import static com.osparking.global.names.ToolTipContent.REPEAT_PW_INPUT_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.SAVE_AS_TOOLTIP;
+import static com.osparking.global.names.ToolTipContent.SEARCH_INPUT_TOOLTIP;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -354,8 +411,6 @@ public class AttListForm extends javax.swing.JFrame {
 
         saveFileName.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         saveFileName.setApproveButtonText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
-        saveFileName.setApproveButtonToolTipText("Save as file");
-        saveFileName.setDialogTitle("Select the folder and file names");
         saveFileName.setFileFilter(new TextFileOnly());
         saveFileName.setToolTipText("");
         saveFileName.setEnabled(false);
@@ -394,7 +449,7 @@ public class AttListForm extends javax.swing.JFrame {
         topInPanel.add(filler2);
 
         adminAuth2CheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        adminAuth2CheckBox.setText(((String[])Globals.LabelsText.get(ADMIN_LABEL.ordinal()))[ourLang]);
+        adminAuth2CheckBox.setText(ADMIN_LABEL.getContent(language));
         adminAuth2CheckBox.setToolTipText("");
         adminAuth2CheckBox.setEnabled(false);
         adminAuth2CheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -404,7 +459,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userID2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userID2Label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        userID2Label.setText(((String[])Globals.LabelsText.get(LOGIN_ID_LABEL.ordinal()))[ourLang] + ": " +loginID);
+        userID2Label.setText(LOGIN_ID_LABEL.getContent(language) + ": " +loginID);
         topInPanel.add(userID2Label);
         topInPanel.add(filler46);
 
@@ -479,7 +534,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userIDLabel.setText(((String[])Globals.LabelsText.get(LOGIN_ID_LABEL.ordinal()))[ourLang]);
+        userIDLabel.setText(LOGIN_ID_LABEL.getContent(language));
         userIDLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -498,7 +553,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDText.setEditable(false);
         userIDText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userIDText.setToolTipText(((String[])Globals.ToolTipLabels.get(ID_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        userIDText.setToolTipText(ID_INPUT_TOOLTIP.getContent(language));
         userIDText.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         userIDText.setEnabled(false);
         userIDText.setMaximumSize(new java.awt.Dimension(32767, 30));
@@ -522,8 +577,7 @@ public class AttListForm extends javax.swing.JFrame {
         idCheckPanel.add(filler28);
 
         checkIDButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkIDButton.setText(((String[])Globals.ButtonLabels.get(CHECK_BTN.ordinal()))[ourLang]);
-        checkIDButton.setMnemonic('k');
+        checkIDButton.setText(CHECK_BTN.getContent(language));
         checkIDButton.setEnabled(false);
         checkIDButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkIDButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -547,7 +601,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         adminAuthLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         adminAuthLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        adminAuthLabel.setText(((String[])Globals.LabelsText.get(ADMIN_LABEL.ordinal()))[ourLang]);
+        adminAuthLabel.setText(ADMIN_LABEL.getContent(language));
         adminAuthLabel.setToolTipText("");
         adminAuthLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         adminAuthLabel.setMinimumSize(new java.awt.Dimension(130, 21));
@@ -571,7 +625,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        nameLabel.setText(((String[])Globals.LabelsText.get(NAME_LABEL.ordinal()))[ourLang]);
+        nameLabel.setText(NAME_LABEL.getContent(language));
         nameLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         nameLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         nameLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -588,7 +642,7 @@ public class AttListForm extends javax.swing.JFrame {
         namePanel.add(filler45);
 
         userNameText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userNameText.setToolTipText(((String[])Globals.ToolTipLabels.get(NAME_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        userNameText.setToolTipText(NAME_INPUT_TOOLTIP.getContent(language));
         userNameText.setEnabled(false);
         userNameText.setMaximumSize(new java.awt.Dimension(32767, 30));
         userNameText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -608,7 +662,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText(((String[])Globals.LabelsText.get(CELL_PHONE_LABEL.ordinal()))[ourLang]);
+        jLabel5.setText(CELL_PHONE_LABEL.getContent(language)   );
         jLabel5.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel5.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel5.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -625,7 +679,7 @@ public class AttListForm extends javax.swing.JFrame {
         cellPhonePanel.add(filler48);
 
         cellPhoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        cellPhoneText.setToolTipText(((String[])Globals.ToolTipLabels.get(CELL_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        cellPhoneText.setToolTipText(CELL_INPUT_TOOLTIP.getContent(language));
         cellPhoneText.setEnabled(false);
         cellPhoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         cellPhoneText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -644,7 +698,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText(((String[])Globals.LabelsText.get(PHONE_LABEL.ordinal()))[ourLang]);
+        jLabel6.setText(PHONE_LABEL.getContent(language));
         jLabel6.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel6.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel6.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -661,7 +715,7 @@ public class AttListForm extends javax.swing.JFrame {
         phonePanel.add(filler63);
 
         phoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        phoneText.setToolTipText(((String[])Globals.ToolTipLabels.get(PHONE_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        phoneText.setToolTipText(PHONE_INPUT_TOOLTIP.getContent(language));
         phoneText.setEnabled(false);
         phoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         phonePanel.add(phoneText);
@@ -678,7 +732,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(((String[])Globals.LabelsText.get(EMAIL_LABEL.ordinal()))[ourLang]);
+        jLabel4.setText(EMAIL_LABEL.getContent(language));
         jLabel4.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel4.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel4.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -708,7 +762,7 @@ public class AttListForm extends javax.swing.JFrame {
         emailCheckPanel.add(filler29);
 
         checkEmailButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkEmailButton.setText(((String[])Globals.ButtonLabels.get(CHECK_BTN.ordinal()))[ourLang]);
+        checkEmailButton.setText(CHECK_BTN.getContent(language));
         checkEmailButton.setEnabled(false);
         checkEmailButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkEmailButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -732,7 +786,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         changePWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         changePWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        changePWLabel.setText(((String[])Globals.LabelsText.get(CHANGE_PW_LABEL.ordinal()))[ourLang]);
+        changePWLabel.setText(CHANGE_PW_LABEL.getContent(language));
         changePWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -760,7 +814,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW1Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW1Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW1Label.setText(((String[])Globals.LabelsText.get(NEW_PW_LABLE.ordinal()))[ourLang]);
+        newPW1Label.setText(NEW_PW_LABLE.getContent(language));
         newPW1Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -812,7 +866,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW2Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW2Label.setText(((String[])Globals.LabelsText.get(REPEAT_PW_LABEL.ordinal()))[ourLang]);
+        newPW2Label.setText(REPEAT_PW_LABEL.getContent(language));
         newPW2Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -828,7 +882,7 @@ public class AttListForm extends javax.swing.JFrame {
         repeatPWD_Panel.add(filler60);
 
         new2Password.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        new2Password.setToolTipText(((String[])Globals.ToolTipLabels.get(REPEAT_PW_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        new2Password.setToolTipText(REPEAT_PW_INPUT_TOOLTIP.getContent(language));
         new2Password.setEnabled(false);
         new2Password.setMaximumSize(new java.awt.Dimension(32767, 30));
         repeatPWD_Panel.add(new2Password);
@@ -845,7 +899,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel.setText(((String[])Globals.LabelsText.get(MY_PW_LABEL.ordinal()))[ourLang]);
+        userPWLabel.setText(MY_PW_LABEL.getContent(language));
         userPWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -863,6 +917,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPassword.setEditable(false);
         userPassword.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        userPassword.setToolTipText("");
         userPassword.setMaximumSize(new java.awt.Dimension(32767, 30));
         currentPWD_Panel.add(userPassword);
         currentPWD_Panel.add(filler56);
@@ -878,7 +933,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel1.setText(((String[])Globals.LabelsText.get(CREATION_LABEL.ordinal()))[ourLang]);
+        userPWLabel1.setText(CREATION_LABEL.getContent(language));
         userPWLabel1.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -886,7 +941,7 @@ public class AttListForm extends javax.swing.JFrame {
         datePanel.add(filler68);
 
         creationDateText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        creationDateText.setToolTipText("Enter the 11-digit number");
+        creationDateText.setToolTipText("");
         creationDateText.setEnabled(false);
         creationDateText.setMaximumSize(new java.awt.Dimension(32767, 30));
         datePanel.add(creationDateText);
@@ -914,209 +969,6 @@ public class AttListForm extends javax.swing.JFrame {
         usersTable.setFont(new java.awt.Font(font_Type, 0, font_Size));
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-/*
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4",
-                "Title 5", "Title 6", "Title 7", "Title 8"
-            }
-        )
-    );
-    usersTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-    usersTable.setFillsViewportHeight(true);
-    usersTable.setFocusCycleRoot(true);
-    usersTable.setFocusTraversalPolicy(null);
-    usersTable.setMaximumSize(new java.awt.Dimension(32767, 32767));
-    usersTable.setMinimumSize(new java.awt.Dimension(600, 474));
-    usersTable.setName(""); // NOI18N
-    usersTable.setNextFocusableComponent(userNameText);
-    usersTable.setPreferredSize(new java.awt.Dimension(600, 5000));
-    usersTable.setRowHeight(22);
-    usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            usersTableMouseClicked(evt);
-        }
-    });
-    usersTable.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyPressed(java.awt.event.KeyEvent evt) {
-            usersTableKeyPressed(evt);
-        }
-    });
-    jScrollPane1.setViewportView(usersTable);
-
-    centerPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-    wholePanel.add(centerPanel, java.awt.BorderLayout.CENTER);
-    wholePanel.add(filler3, java.awt.BorderLayout.LINE_END);
-
-    southPanel.setMinimumSize(new java.awt.Dimension(920, 40));
-    southPanel.setPreferredSize(new java.awt.Dimension(761, 80));
-    southPanel.setLayout(new javax.swing.BoxLayout(southPanel, javax.swing.BoxLayout.PAGE_AXIS));
-
-    javax.swing.GroupLayout spacePanel1Layout = new javax.swing.GroupLayout(spacePanel1);
-    spacePanel1.setLayout(spacePanel1Layout);
-    spacePanel1Layout.setHorizontalGroup(
-        spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-    spacePanel1Layout.setVerticalGroup(
-        spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-
-    southPanel.add(spacePanel1);
-
-    btnPanel.setMaximumSize(new java.awt.Dimension(33747, 40));
-    btnPanel.setMinimumSize(new java.awt.Dimension(950, 40));
-    btnPanel.setLayout(new javax.swing.BoxLayout(btnPanel, javax.swing.BoxLayout.LINE_AXIS));
-    btnPanel.add(filler70);
-
-    createButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    createButton.setMnemonic('r');
-    createButton.setText("Create");
-    createButton.setEnabled(false);
-    createButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    createButton.setMinimumSize(new java.awt.Dimension(80, 40));
-    createButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    createButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            createButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(createButton);
-    btnPanel.add(filler71);
-
-    deleteButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteButton.setMnemonic('d');
-    deleteButton.setText("Delete");
-    deleteButton.setEnabled(false);
-    deleteButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    deleteButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    deleteButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    deleteButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            deleteButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(deleteButton);
-    btnPanel.add(filler72);
-
-    multiFuncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    multiFuncButton.setMnemonic('m');
-    multiFuncButton.setText("Modify");
-    multiFuncButton.setEnabled(false);
-    multiFuncButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    multiFuncButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    multiFuncButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    multiFuncButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            multiFuncButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(multiFuncButton);
-    btnPanel.add(filler73);
-
-    cancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    cancelButton.setMnemonic('c');
-    cancelButton.setText("Cancel");
-    cancelButton.setEnabled(false);
-    cancelButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    cancelButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    cancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    cancelButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            cancelButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(cancelButton);
-    btnPanel.add(filler22);
-
-    searchCriteriaComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchCriteriaComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Name", "Login ID" }));
-    searchCriteriaComboBox.setMaximumSize(new java.awt.Dimension(100, 30));
-    searchCriteriaComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
-    searchCriteriaComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
-    btnPanel.add(searchCriteriaComboBox);
-    btnPanel.add(filler85);
-
-    searchText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchText.setToolTipText("Enter Search Key");
-    searchText.setMaximumSize(new java.awt.Dimension(200, 30));
-    searchText.setMinimumSize(new java.awt.Dimension(80, 30));
-    searchText.setPreferredSize(new java.awt.Dimension(120, 30));
-    btnPanel.add(searchText);
-    btnPanel.add(filler76);
-
-    searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchButton.setMnemonic('s');
-    searchButton.setText("Search");
-    searchButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    searchButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    searchButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(searchButton);
-    btnPanel.add(filler81);
-
-    saveTextFileButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    saveTextFileButton.setMnemonic('a');
-    saveTextFileButton.setText("<HTML>Save <U>A</U>s</HTML>");
-    saveTextFileButton.setToolTipText("Save as a Text File");
-    saveTextFileButton.setAutoscrolls(true);
-    saveTextFileButton.setDisplayedMnemonicIndex(0);
-    saveTextFileButton.setMargin(new java.awt.Insets(0, 0, 4, 0));
-    saveTextFileButton.setMaximumSize(new java.awt.Dimension(90, 60));
-    saveTextFileButton.setMinimumSize(new java.awt.Dimension(90, 60));
-    saveTextFileButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    saveTextFileButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            saveTextFileButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(saveTextFileButton);
-    btnPanel.add(filler82);
-
-    closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    closeFormButton.setMnemonic('c');
-    closeFormButton.setText("Close");
-    closeFormButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    closeFormButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    closeFormButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            closeFormButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(closeFormButton);
-    btnPanel.add(filler83);
-
-    southPanel.add(btnPanel);
-
-    javax.swing.GroupLayout spacePanel2Layout = new javax.swing.GroupLayout(spacePanel2);
-    spacePanel2.setLayout(spacePanel2Layout);
-    spacePanel2Layout.setHorizontalGroup(
-        spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-    spacePanel2Layout.setVerticalGroup(
-        spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-
-    southPanel.add(spacePanel2);
-
-    wholePanel.add(southPanel, java.awt.BorderLayout.SOUTH);
-
-    getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
-
-    setSize(new java.awt.Dimension(1054, 696));
-    setLocationRelativeTo(null);
-=======
-*/
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -1183,7 +1035,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         createButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         createButton.setMnemonic('r');
-        createButton.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
+        createButton.setText(CREATE_BTN.getContent(language));
         createButton.setEnabled(false);
         createButton.setMaximumSize(new java.awt.Dimension(80, 60));
         createButton.setMinimumSize(new java.awt.Dimension(80, 40));
@@ -1198,7 +1050,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         deleteButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteButton.setMnemonic('d');
-        deleteButton.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+        deleteButton.setText(DELETE_BTN.getContent(language));
         deleteButton.setEnabled(false);
         deleteButton.setMaximumSize(new java.awt.Dimension(80, 60));
         deleteButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1213,7 +1065,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         multiFuncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         multiFuncButton.setMnemonic('m');
-        multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+        multiFuncButton.setText(MODIFY_BTN.getContent(language));
         multiFuncButton.setEnabled(false);
         multiFuncButton.setMaximumSize(new java.awt.Dimension(80, 60));
         multiFuncButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1228,7 +1080,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         cancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         cancelButton.setMnemonic('c');
-        cancelButton.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+        cancelButton.setText(CANCEL_BTN.getContent(language));
         cancelButton.setEnabled(false);
         cancelButton.setMaximumSize(new java.awt.Dimension(80, 60));
         cancelButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1255,7 +1107,7 @@ public class AttListForm extends javax.swing.JFrame {
         btnPanel.add(filler85);
 
         searchText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        searchText.setToolTipText(((String[])Globals.ToolTipLabels.get(SEARCH_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        searchText.setToolTipText(SEARCH_INPUT_TOOLTIP.getContent(language));
         searchText.setMaximumSize(new java.awt.Dimension(200, 30));
         searchText.setMinimumSize(new java.awt.Dimension(80, 30));
         searchText.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -1264,7 +1116,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+        searchButton.setText(SEARCH_BTN.getContent(language));
         searchButton.setMaximumSize(new java.awt.Dimension(80, 60));
         searchButton.setMinimumSize(new java.awt.Dimension(80, 60));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1277,8 +1129,8 @@ public class AttListForm extends javax.swing.JFrame {
         btnPanel.add(filler81);
 
         saveTextFileButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        saveTextFileButton.setText(((String[])Globals.ButtonLabels.get(SAVE_AS_BTN.ordinal()))[ourLang]);
-        saveTextFileButton.setToolTipText(((String[])Globals.ToolTipLabels.get(SAVE_AS_TOOLTIP.ordinal()))[ourLang]);
+        saveTextFileButton.setText(SAVE_AS_BTN.getContent(language));
+        saveTextFileButton.setToolTipText(SAVE_AS_TOOLTIP.getContent(language));
         saveTextFileButton.setAutoscrolls(true);
         saveTextFileButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         saveTextFileButton.setMaximumSize(new java.awt.Dimension(80, 40));
@@ -1294,7 +1146,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeFormButton.setText(CLOSE_BTN.getContent(language));
         closeFormButton.setMaximumSize(new java.awt.Dimension(80, 60));
         closeFormButton.setMinimumSize(new java.awt.Dimension(80, 60));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));

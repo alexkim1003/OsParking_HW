@@ -17,8 +17,9 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.*;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -57,15 +58,15 @@ public class PasswordValidator {
     {
         if (pwStrengthLevel == PWStrengthLevel.FourDigit.ordinal()) 
         {
-            return ((String[])Globals.ToolTipLabels.get(PW_FOURDIGIT_TOOLTIP.ordinal()))[ourLang];
+            return PW_FOURDIGIT_TOOLTIP.getContent(language);
         } 
         else if (pwStrengthLevel == PWStrengthLevel.SixDigit.ordinal()) 
         {
-            return ((String[])Globals.ToolTipLabels.get(PW_SIXDIGIT_TOOLTIP.ordinal()))[ourLang];
+            return PW_SIXDIGIT_TOOLTIP.getContent(language);
         } 
         else 
         {
-            return ((String[])Globals.ToolTipLabels.get(PW_COMPLEX_TOOLTIP.ordinal()))[ourLang];
+            return PW_COMPLEX_TOOLTIP.getContent(language);
         }   
     }
     

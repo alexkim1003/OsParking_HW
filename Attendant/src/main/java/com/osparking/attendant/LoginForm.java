@@ -16,9 +16,8 @@
  */
 package com.osparking.attendant;
 
-import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.sql.Connection;
@@ -46,9 +45,6 @@ import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_PW_DI
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGIN_FAIL_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
 import static com.osparking.global.names.ControlEnums.TitleTypes.LOGIN_FRAME_TITLE;
-import com.osparking.global.names.ControlEnums.LabelTypes;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
-import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.JDBCMySQL;
 
 /**

@@ -17,6 +17,7 @@
 package com.osparking.global;
 
 import com.osparking.global.names.ControlEnums;
+import com.osparking.global.names.ControlEnums.Languages;
 import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 import java.awt.Color;
 import java.awt.Component;
@@ -1712,7 +1713,7 @@ public class Globals {
     public static ArrayList MenuItemList = new ArrayList();
     
     public static int ourLang;
-    
+    public static Languages language;
     
     private static String getTextFor(ControlEnums.DialogMSGTypes dialogMSGTypes, String str){
         String dialogMSG = null;

@@ -101,7 +101,9 @@ public class GUI_Language {
         { ": 필수",  ": Required"},
         { ": 최소 1",  ": Choose 1"},
         { "사용자 ID: ",  "My ID: "},
+        
         { "매니저",  "Manager"},
+        
         { "이름",  "Name"},
         { "휴대전화",  "Cell Phone"},
         { "유선전화",  "Phone"},
@@ -125,6 +127,7 @@ public class GUI_Language {
         { "순번",  "List#"},
         { "차량번호",  "Tag No."},
         { "최근변경",  "Modi' Date"},
+        
         { "세대통보",  "Notification"},
         { "전체비교",  "Exact Comp'"},
         { "주차허용",  "Park Allowed"},
@@ -137,6 +140,7 @@ public class GUI_Language {
         { "관리원",  "Attendant"},
         { "차단기",  "Bar Operation"},
         { "도착시간",  "Arrival Time"},
+        
         { "인식된 차량번호",  "Tag Recognized"},
         { "등록된 차량번호",  "Tag Registered"},
         { "소속부서",  "Affiliations"},
@@ -191,7 +195,7 @@ public class GUI_Language {
     
     public static String[][] toolTip = {
         // <editor-fold defaultstate="collapsed" desc="-- Tooltip"> 
-        {"관리자 로그인", "Click to Login"},
+//        {"관리자 로그인", "Click to Login"},
         {"화면 닫기", "Close Login Window"},
         {"파일로 저장", "Save as file"},
         {"영문숫자 최대 20자!", "Up to 20 alphanumeric characters"},

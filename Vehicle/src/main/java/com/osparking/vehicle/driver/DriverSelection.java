@@ -45,10 +45,10 @@ import static com.osparking.global.Globals.ourLang;
 import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import static com.osparking.global.names.ControlEnums.TitleTypes.DRIVER_SELECTION_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import static com.osparking.global.names.ControlEnums.TableTypes.*;
 import static com.osparking.global.names.ControlEnums.TextType.*;
-import static com.osparking.global.names.ControlEnums.ToolTipTypes.*;
+import static com.osparking.global.names.ControlEnums.ToolTipTypesOld.*;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 

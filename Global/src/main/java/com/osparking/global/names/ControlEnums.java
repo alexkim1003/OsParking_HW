@@ -16,6 +16,9 @@
  */
 package com.osparking.global.names;
 
+import static com.osparking.global.Globals.language;
+import static com.osparking.global.names.ControlEnums.Languages.*;
+
 /**
  *
  * @author Open Source Parking Inc.
@@ -39,55 +42,225 @@ public class ControlEnums {
         ODS_HELP_DIALOG_FRAME_TITLE,
     }
     
-    public enum LabelTypes {
-        LOGIN_ID_LABEL, PW_LABEL, REQUIRED_LABEL, GUIDELINE_LABEL, REQUIRED1_LABEL, REQUIRED2_LABEL,
-        USER_ID_LABEL, ADMIN_LABEL, NAME_LABEL, CELL_PHONE_LABEL, PHONE_LABEL, EMAIL_LABEL, 
-        CHANGE_PW_LABEL, NEW_PW_LABLE, REPEAT_PW_LABEL, MY_PW_LABEL, CREATION_LABEL,
-        AFFILIATION_LIST_LABEL, LOWER_LIST_LABEL, BUILDING_LIST_LABEL, ROOM_LIST_LABEL, 
-        HELP_AFFIL_LABEL, HELP_BUILDING_LABEL, FORM_MODE_LABEL, SEARCH_MODE_LABEL, CREATE_MODE_LABEL, 
-        MODIFY_MODE_LABEL, SEARCH_LABEL, ORDER_LABEL, CAR_TAG_LABEL, MODI_DATE_LABEL, 
-        NOTIFICATION_LABEL, EXACT_COMP_LABEL, PARK_ALLOWED_LABEL, REASON_LABEL, OTHER_INFO_LABEL,  
-        REGI_DATE_LABEL, COUNT_LABEL, REQUIRED3_LABEL, GATE_NAME_LABEL, ATTENDANT_LABEL, BAR_OP_LABEL, 
-        ARRIVAL_TIME_LABEL, RECOGNIZED_LABEL, REGISTERED_LABEL,
-        AFFILIATION_LABEL, BUILDING_LABEL, ROOM_LABEL,
-        VISIT_PURPOSE_LABEL, VISIT_WHERE_LABEL, FILE_SIZE_LABEL, RECORD_COUNT_LABEL,
-        LAST_1HOUR_LABEL, LAST_24HOURS_LABEL, DURATION_SET_LABEL,
-        NON_REGI_TAG1_LABEL, NON_REGI_TAG2_LABEL, OPEN_LABEL,
-        STATUS_LABEL, GATE_LABEL, CAMERA_LABEL, EBOARD_LABEL, GATE_BAR_LABEL, 
-        DISALLOWED_LABEL, STATISTICS_SIZE_LABEL, RECORD_PASSING_LABEL,
-        PASSWORD_LEVEL_LABEL, LOGGING_LEVEL_LABEL, LANGUAGE_LABEL, MAX_LINE_LABEL,
-        GATE_NUM_LABEL, IMG_KEEP_LABEL, VEHICLE_IMG_SIZE_LABEL, VEHICLE_IMG_WIDTH_LABEL,
-        VEHICLE_IMG_HEIGHT_LABEL, CAMERA_IP_ADDRESS_LABEL, GATE_BAR_IP_ADDRESS_LABEL,
-        E_BOARD_IP_ADDRESS_LABEL, PORT_LABEL, ELECTRONIC_DISPLAY_LABEL, CYCLE_LABEL,
-        BLINGKING_LABEL, FLOWING_LABEL, 
-        CONTENT_TYPE_LABEL, MSG_LABEL, COLOR_LABEL, 
-        FONT_LABEL, EFFECT_LABEL, SEARCH_PERIOD_LABEL, 
-        SECONDS_LABEL, VEHICLES_LABEL, LOT_NAME_LABEL,
+//    public enum LabelTypesOld {
+//        LOGIN_ID_LABEL, PW_LABEL, REQUIRED_LABEL, GUIDELINE_LABEL, REQUIRED1_LABEL, REQUIRED2_LABEL,
+//        USER_ID_LABEL, 
+//        
+//        ADMIN_LABEL, 
         
+//        NAME_LABEL, CELL_PHONE_LABEL, PHONE_LABEL, EMAIL_LABEL, 
+//        CHANGE_PW_LABEL, NEW_PW_LABLE, REPEAT_PW_LABEL, MY_PW_LABEL, CREATION_LABEL,
+//        AFFILIATION_LIST_LABEL, LOWER_LIST_LABEL, BUILDING_LIST_LABEL, ROOM_LIST_LABEL, 
+//        HELP_AFFIL_LABEL, HELP_BUILDING_LABEL, FORM_MODE_LABEL, SEARCH_MODE_LABEL, CREATE_MODE_LABEL, 
+//        MODIFY_MODE_LABEL, SEARCH_LABEL, ORDER_LABEL, CAR_TAG_LABEL, MODI_DATE_LABEL, 
+//        NOTIFICATION_LABEL, EXACT_COMP_LABEL, PARK_ALLOWED_LABEL, REASON_LABEL, OTHER_INFO_LABEL,  
+//        REGI_DATE_LABEL, COUNT_LABEL, REQUIRED3_LABEL, GATE_NAME_LABEL, ATTENDANT_LABEL, BAR_OP_LABEL, 
+//        ARRIVAL_TIME_LABEL, RECOGNIZED_LABEL, REGISTERED_LABEL,
+//        AFFILIATION_LABEL, BUILDING_LABEL, ROOM_LABEL,
+//        VISIT_PURPOSE_LABEL, VISIT_WHERE_LABEL, FILE_SIZE_LABEL, RECORD_COUNT_LABEL,
+//        LAST_1HOUR_LABEL, LAST_24HOURS_LABEL, DURATION_SET_LABEL,
+//        NON_REGI_TAG1_LABEL, NON_REGI_TAG2_LABEL, OPEN_LABEL,
+//        STATUS_LABEL, GATE_LABEL, CAMERA_LABEL, EBOARD_LABEL, GATE_BAR_LABEL, 
+//        DISALLOWED_LABEL, STATISTICS_SIZE_LABEL, RECORD_PASSING_LABEL,
+//        PASSWORD_LEVEL_LABEL, LOGGING_LEVEL_LABEL, LANGUAGE_LABEL, MAX_LINE_LABEL,
+//        GATE_NUM_LABEL, IMG_KEEP_LABEL, VEHICLE_IMG_SIZE_LABEL, VEHICLE_IMG_WIDTH_LABEL,
+//        VEHICLE_IMG_HEIGHT_LABEL, CAMERA_IP_ADDRESS_LABEL, GATE_BAR_IP_ADDRESS_LABEL,
+//        E_BOARD_IP_ADDRESS_LABEL, PORT_LABEL, ELECTRONIC_DISPLAY_LABEL, CYCLE_LABEL,
+//        BLINGKING_LABEL, FLOWING_LABEL, 
+//        CONTENT_TYPE_LABEL, MSG_LABEL, COLOR_LABEL, 
+//        FONT_LABEL, EFFECT_LABEL, SEARCH_PERIOD_LABEL, 
+//        SECONDS_LABEL, VEHICLES_LABEL, LOT_NAME_LABEL,
+//        LOWER_LABEL,  
+//    }
+    
+    public enum LabelContent {
+        LOGIN_ID_LABEL("아이디", "Login ID"), 
+        PW_LABEL("비밀번호",  "Password"), 
+        REQUIRED_LABEL("정보수정 조건",  "Data Condition"), 
+        GUIDELINE_LABEL("정보 입력 지침",  "Guideline"), 
+        REQUIRED1_LABEL(": 필수",  ": Required"), 
+        REQUIRED2_LABEL(": 최소 1",  ": Choose 1"),
+        USER_ID_LABEL("사용자 ID: ",  "My ID: "),
+        ADMIN_LABEL("매니저",  "Manager"),
+        NAME_LABEL("이름",  "Name"),
+        CELL_PHONE_LABEL("휴대전화",  "Cell Phone"),
+        PHONE_LABEL("유선전화",  "Phone"),
+        EMAIL_LABEL("이메일",  "E-Mail"),
+        CHANGE_PW_LABEL("비밀번호 변경",  "Change Password"),
+        NEW_PW_LABLE("새 비밀번호",  "New Password"),
+        REPEAT_PW_LABEL("비밀번호 확인",  "Repeat Password"),
+        MY_PW_LABEL("현재 비밀번호",  "My Password"),
+        CREATION_LABEL("자료 생성일",  "Creation Date"),
+        AFFILIATION_LIST_LABEL("상위 소속 목록",  "Higher Affiliations"),
+        LOWER_LIST_LABEL("소속 부서 목록",  "Lower Affiliations"),
+        BUILDING_LIST_LABEL("건물(동) 목록",  "Building Numbers"), 
+        ROOM_LIST_LABEL("호실 목록",  "Rooms of Building"), 
+        HELP_AFFIL_LABEL("소속 명칭 ods 파일 형식",  
+                "Affiliation name list ods file content"), 
+        HELP_BUILDING_LABEL("건물 호실 ods 파일 형식",  
+                "Building room number list ods file content"), 
+        FORM_MODE_LABEL("작업모드 : ",  "Form Mode :"), 
+        SEARCH_MODE_LABEL("차량 검색",  "Searching"), 
+        CREATE_MODE_LABEL("차량 등록",  "Car Creation"), 
+        MODIFY_MODE_LABEL("차량 변경",  "Modification"), 
+        SEARCH_LABEL("검색 값",  "Search Key"), 
+        ORDER_LABEL("순번",  "List#"), 
+        CAR_TAG_LABEL("차량번호",  "Tag No."), 
+        MODI_DATE_LABEL("최근변경",  "Modi' Date"),
+        NOTIFICATION_LABEL("세대통보",  "Notification"),
+        EXACT_COMP_LABEL ("전체비교",  "Exact Comp'"),
+        PARK_ALLOWED_LABEL("주차허용",  "Park Allowed"),
+        REASON_LABEL ("불허사유",  "Reason"),
+        OTHER_INFO_LABEL  ("기타정보",  "Other Info'"),
+        REGI_DATE_LABEL ("최초등록",  "Regi' Date"),
+        COUNT_LABEL ("차량 대수",  "Vehicle Count"),
+        REQUIRED3_LABEL ("*: 필수 항목",  "*: required field"),
+        GATE_NAME_LABEL ("입구 이름",  "Gate Name"),
+        ATTENDANT_LABEL ("관리원",  "Attendant"),
+        BAR_OP_LABEL ("차단기",  "Bar Operation"),
+        ARRIVAL_TIME_LABEL("도착시간",  "Arrival Time"),       
+        RECOGNIZED_LABEL ("인식된 차량번호",  "Tag Recognized"),
+        REGISTERED_LABEL("등록된 차량번호",  "Tag Registered"),
+        AFFILIATION_LABEL ("소속부서",  "Affiliations"),
+        BUILDING_LABEL ("소속건물",  "Building"),
+        ROOM_LABEL("호수",  "Room No."),
+        VISIT_PURPOSE_LABEL("방문목적",  "Purpose of Visit"),
+        VISIT_WHERE_LABEL ("방문 하는 곳",  "Where to go"),
+        FILE_SIZE_LABEL ("파일 크기",  "File Size"),
+        RECORD_COUNT_LABEL("차량 합계",  "Record Count"),
+        LAST_1HOUR_LABEL ("최근 1시간",  "Last 1 hour"),
+        LAST_24HOURS_LABEL ("최근 24시간",  "Last 24 hour"),
+        DURATION_SET_LABEL("기간지정",  "Duration"),
+        NON_REGI_TAG1_LABEL("방문세대",  "Visit Households"),
+        NON_REGI_TAG2_LABEL("방문부서",  "Visit Departments"),
+        OPEN_LABEL("차단기 개방",  "Open Gate"),
+        STATUS_LABEL ("상황 게시",  "Recent Events"),
+        GATE_LABEL ("입구",  "Gate"),
+        CAMERA_LABEL ("카메라",  "Camera"),
+        EBOARD_LABEL ("전광판",  "E-Board"),
+        GATE_BAR_LABEL ("차단기",  "G-Bar"),
+        DISALLOWED_LABEL("일시적으로 허용되지 않은 차량입니다.",  
+                "Car Temporarily Not Permitted"),
+        STATISTICS_SIZE_LABEL("통계 모집단 크기",  "Statistics Population Size"),
+        RECORD_PASSING_LABEL("통과 시간 기록",  "Record Passing Delay"),
+        PASSWORD_LEVEL_LABEL("비밀번호 난이도",  "Password Complexity Level"),
+        LOGGING_LEVEL_LABEL("일반연산 로깅 레벨",  "General Operation Logging Level"),
+        LANGUAGE_LABEL("표시 언어",  "Language Chooser"),
+        MAX_LINE_LABEL("메인 상황게시 최대 행수",  "Recent Event Line Max"),
+        GATE_NUM_LABEL("입구 수",  "Number of Gates"),
+        IMG_KEEP_LABEL("사진 저장 기간",  "Image Keeping Duration"),
+        VEHICLE_IMG_SIZE_LABEL("차량 사진 크기",  "Vehicle Image Size"),
+        VEHICLE_IMG_WIDTH_LABEL("너비",  "Width"),
+        VEHICLE_IMG_HEIGHT_LABEL("높이",  "Height"),
+        CAMERA_IP_ADDRESS_LABEL("카메라 IP 주소",  "Camera IP Address"),
+        GATE_BAR_IP_ADDRESS_LABEL("차단기 IP 주소",  "GateBar IP Address"),
+        E_BOARD_IP_ADDRESS_LABEL("전광판 IP 주소",  "E-Board IP Address"),
+        PORT_LABEL("포트",  "Port No"),
+        ELECTRONIC_DISPLAY_LABEL("전광판 설정",  "Electronic Display Board"),
+        CYCLE_LABEL("주기",  "Cycle"),
+        BLINGKING_LABEL("깜빡임",  "Blinking"),
+        FLOWING_LABEL("흐름",  "Flowing"),
+        CONTENT_TYPE_LABEL ("표시 유형",  "Content Type"),
+        MSG_LABEL ("문자열",  "Message"),
+        COLOR_LABEL ("색상",  "Color"),
+        FONT_LABEL ("폰트",  "Font"),
+        EFFECT_LABEL ("효과",  "Effect"),
+        SEARCH_PERIOD_LABEL("검색 기간",  "Search Period"),
+        SECONDS_LABEL ("초",  "seconds"),
+        VEHICLES_LABEL (" 대",  " vehicles"),
+        LOT_NAME_LABEL("주차장 이름",  "Parking Lot Name"),
+        LOWER_LABEL(" 부서 목록", "Lower affiliations of");
         
+        LabelContent(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
         
+        private String[] contents = new String[Languages.values().length];
         
-        LOWER_LABEL,  
+        public String getContent(Languages langIDX) {
+//                return contents[langIDX.ordinal()];
+                return contents[language.ordinal()];
+        }
+        
     }
     
     public enum ButtonTypes {
-        LOGIN_BTN, CLOSE_BTN, SAVE_BTN, CREATE_BTN, DELETE_BTN, MODIFY_BTN, CANCEL_BTN, SEARCH_BTN, SAVE_AS_BTN, CHECK_BTN,
+        LOGIN_BTN, CLOSE_BTN, SAVE_BTN, CREATE_BTN, 
+        DELETE_BTN, MODIFY_BTN, CANCEL_BTN, SEARCH_BTN, 
+        SAVE_AS_BTN, 
+        
+//        CHECK_BTN,
         CLEAR_BTN, DELETE_ALL_BTN, READ_ODS_BTN, SAVE_ODS_BTN,
-        CREATE_NO_SHORT_BTN, MODIFY_NO_SHORT_BTN, DELETE_NO_SHORT_BTN, DELETE_ALL_NO_SHORT_BTN, READ_ODS_NO_SHORT_BTN, 
-        SAVE_NO_SHORT_BTN, CANCEL_NO_SHORT_BTN, OWNER_BTN, SELECT_BTN, MANAGE_BTN, FIX_IT_BTN, 
-        ARRIVALS_BTN, VEHICLES_BTN, USERS_BTN, CAR_ARRIVAL_BTN, STATISTICS_BTN,
+        CREATE_NO_SHORT_BTN, MODIFY_NO_SHORT_BTN, DELETE_NO_SHORT_BTN, 
+        DELETE_ALL_NO_SHORT_BTN, READ_ODS_NO_SHORT_BTN, 
+        SAVE_NO_SHORT_BTN, CANCEL_NO_SHORT_BTN, OWNER_BTN, SELECT_BTN, 
+        MANAGE_BTN, FIX_IT_BTN, 
+        ARRIVALS_BTN, VEHICLES_BTN, USERS_BTN, CAR_ARRIVAL_BTN, 
+        STATISTICS_BTN,
         GATE_BAR_OPEN_BTN, GATE_BAR_CLOSE_BTN, E_BOARD_SETTINGS_BTN,
     }
     
-    public enum ToolTipTypes {
-        LOGIN_BTN_TOOLTIP, CLOSE_BTN_TOOLTIP, SAVE_AS_TOOLTIP, ID_INPUT_TOOLTIP, NAME_INPUT_TOOLTIP,
-        PW_INPUT_TOOTLTIP, CELL_INPUT_TOOLTIP, PHONE_INPUT_TOOLTIP, REPEAT_PW_INPUT_TOOLTIP,  SEARCH_INPUT_TOOLTIP,
-        PW_FOURDIGIT_TOOLTIP, PW_SIXDIGIT_TOOLTIP, PW_COMPLEX_TOOLTIP, 
-        CAR_TAG_INPUT_TOOLTIP, DRIVER_INPUT_TOOLTIP, AFFILIATION_TOOLTIP, BUILDING_TOOLTIP, OTHER_TOOLTIP,
-        CELL_PHONE_INPUT_TOOLTIP, LANDLINE_INPUT_TOOLTIP, HIGHER_TOOLTIP, LOWER_TOOLTIP, UNIT_TOOLTIP,
-        CLEAR_BTN_TOOLTIP, FIX_IT_BTN_TOOLTIP, CAR_TAG_TF_TOOLTIP,  
-        INC_BTN_TOOLTIP, DEC_BTN_TOOLTIP, SETTINGS_SAVE_TOOLTIP,
-        SETTINGS_CANCEL_TOOLTIP, 
+    public enum ButtonContent {  
+        CHECK_BTN("중복검색", "Check");
+        
+        ButtonContent(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent(Languages langIDX) {
+                return contents[langIDX.ordinal()];
+        }
+    }
+    
+    public enum ToolTipContent {
+        LOGIN_BTN_TOOLTIP("관리자 로그인", "Click to Login"),
+        CLOSE_BTN_TOOLTIP("현재 창을 닫기", "Close Window"),
+        SAVE_AS_TOOLTIP("파일로 저장", "Save as file"),
+        ID_INPUT_TOOLTIP("영문숫자 최대 20자!", "Up to 20 alphanumeric characters"),
+        NAME_INPUT_TOOLTIP("두 자 이상 입력하세요", "Please enter at least two characters"),
+        PW_INPUT_TOOTLTIP("관리자 비밀번호 입력!", "Enter User Password!"),
+        CELL_INPUT_TOOLTIP("숫자 11자리 입력하세요", "Enter the 11-digit number"),
+        PHONE_INPUT_TOOLTIP("숫자 4자리 이상 입력하세요", "Please enter at least a four-digit number"),
+        REPEAT_PW_INPUT_TOOLTIP("한번 더 입력하세요", "Please enter it again."),
+        SEARCH_INPUT_TOOLTIP("속성 값 입력", "Enter Search Key."),
+        PW_FOURDIGIT_TOOLTIP("네 자리 숫자 입력 (자세한 내용: ? 클릭)", 
+                "Enter a 4 digit number(for details click '?')"),
+        PW_SIXDIGIT_TOOLTIP("6 자리 이상 영자 및 숫자 입력 (자세한 내용: ? 클릭)", 
+                "Enter 6 or more digits of alpha-numeric(for details click '?'"),
+        PW_COMPLEX_TOOLTIP("8 자리 이상 영자, 숫자 및 특수문자 입력 (자세한 내용: ? 클릭)", 
+                "Enter 8 or more digits of alphabet, number, and special character(for details click '?')"),
+        CAR_TAG_INPUT_TOOLTIP("챠량번호로 검색", "Search CarTag"),
+        DRIVER_INPUT_TOOLTIP("운전자로 검색", "Search Driver"),
+        AFFILIATION_TOOLTIP("소속으로 검색", "Search Affiliation"),
+        BUILDING_TOOLTIP("건물로 검색", "Search Building"),
+        OTHER_TOOLTIP("기타정보로 검색", "Search Other Info"),
+        CELL_PHONE_INPUT_TOOLTIP("휴대전화로 검색", "Search Cell Phone"),
+        LANDLINE_INPUT_TOOLTIP("유선전화로 검색", "Search LandLine"),
+        HIGHER_TOOLTIP("상위 소속으로 검색", "Search Higher Affiliation"),
+        LOWER_TOOLTIP("하위 소속로 검색", "Search Lower Affiliation"),
+        UNIT_TOOLTIP("호수로 검색", "Search Unit"),
+        CLEAR_BTN_TOOLTIP("영역 초기화", "Clears Criteria"),
+        FIX_IT_BTN_TOOLTIP("선택된 라디오 버튼을 적용", "Remember Radio Button Selection"),
+        CAR_TAG_TF_TOOLTIP("입력 후 [엔터]", "Type and [Enter]"),
+        INC_BTN_TOOLTIP("0,1 씩 증가", "Inc by 0.1"),
+        DEC_BTN_TOOLTIP("0,1 씩 감소", "Dec by 0.1"),
+        SETTINGS_SAVE_TOOLTIP("변경된 내용 저장하기", "Save your changes"),
+        SETTINGS_CANCEL_TOOLTIP("변경된 내용을 취소하기", "Desert changes made");
+        
+        ToolTipContent(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent(Languages langIDX) {
+                return contents[langIDX.ordinal()];
+        }
     }
     
     public enum TableTypes {

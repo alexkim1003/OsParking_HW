@@ -66,15 +66,7 @@ public class AcceptManagerTask implements Runnable {
 
         // create server socket by passing either a development or a test-run version port number
         try {
-<<<<<<< HEAD
             serverSocket = new ServerSocket(getGateDevicePortNo(devType, deviceGUI.getID()));
-=======
-//            serverSocket = new ServerSocket(getPort(devType, deviceGUI.getID(), Globals.versionType));
-            int portNo = getGateDevicePortNo(devType, deviceGUI.getID());
-            serverSocket = new ServerSocket(getGateDevicePortNo(devType, deviceGUI.getID()));
-            
-//            serverSocket = new ServerSocket(Integer.parseInt(devicePort[devType.ordinal()][deviceGUI.getID()]));
->>>>>>> osparking/master
         } catch (IOException e) {
             logParkingExceptionStatus(Level.INFO, null, "serverSocket creation error",
                     deviceGUI.getCriticalInfoTextField(), 0);
