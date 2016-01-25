@@ -20,12 +20,13 @@ import com.osparking.global.Globals;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.addMessageLine;
 import static com.osparking.global.Globals.getFormattedRealNumber;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.logParkingOperation;
 import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.CAMERA_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.EBOARD_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.GATE_BAR_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.EBOARD_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
 import static com.osparking.global.names.ControlEnums.TextType.CONN_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.DISCONN_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.DIS_CONN_MSG;
@@ -104,13 +105,13 @@ public class SocketConnStat {
                 String device = null;
                     switch(deviceType){
                         case Camera: 
-                            device = ((String[])Globals.LabelsText.get(CAMERA_LABEL.ordinal()))[ourLang];
+                            device = CAMERA_LABEL.getContent(language);
                             break;
                         case GateBar :
-                            device = ((String[])Globals.LabelsText.get(GATE_BAR_LABEL.ordinal()))[ourLang];
+                            device = GATE_BAR_LABEL.getContent(language);
                             break;
                         case E_Board :
-                            device = ((String[])Globals.LabelsText.get(EBOARD_LABEL.ordinal()))[ourLang];
+                            device = EBOARD_LABEL.getContent(language);
                             break;
                         default :
                             break;

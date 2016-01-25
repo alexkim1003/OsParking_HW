@@ -17,8 +17,12 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
+import com.osparking.global.names.ControlEnums.Languages;
+import static com.osparking.global.names.ControlEnums.Languages.ENGLISH;
+import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 
 /**
  *
@@ -248,7 +252,22 @@ public class OSP_enums {
     }      
     
     public enum DeviceType {
-        Camera, E_Board, GateBar
+        Camera ("카메라",  "Camera"),
+        E_Board ("전광판",  "E-Board"),
+        GateBar ("차단기",  "Gate Bar");
+//        CAMERA_LABEL ("카메라",  "Camera"),
+//        EBOARD_LABEL ("전광판",  "E-Board"),
+//        GATE_BAR_LABEL ("차단기",  "G-Bar"),     
+        DeviceType(String korean, String english) {
+            label[KOREAN.ordinal()] = korean;
+            label[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] label = new String[Languages.values().length];
+        
+        public String getLabel() {
+            return label[language.ordinal()];
+        }        
     }    
     
     public enum EBD_CycleType {

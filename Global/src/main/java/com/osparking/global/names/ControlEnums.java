@@ -178,11 +178,14 @@ public class ControlEnums {
         
         private String[] contents = new String[Languages.values().length];
         
-        public String getContent(Languages langIDX) {
-//                return contents[langIDX.ordinal()];
-                return contents[language.ordinal()];
+        public String getContent() {
+            return contents[language.ordinal()];
         }
         
+        public String getContent(Languages langIDX) {
+//                return contents[langIDX.ordinal()];
+            return contents[language.ordinal()];
+        }
     }
     
     public enum ButtonTypes {
