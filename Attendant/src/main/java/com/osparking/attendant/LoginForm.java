@@ -17,7 +17,6 @@
 package com.osparking.attendant;
 
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.sql.Connection;
@@ -44,6 +43,8 @@ import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_ID_DI
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_PW_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGIN_FAIL_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOGIN_ID_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.PW_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.LOGIN_FRAME_TITLE;
 import com.osparking.global.names.JDBCMySQL;
 
@@ -132,7 +133,7 @@ public class LoginForm extends JFrame {
 
         ID_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ID_Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        ID_Label.setText(((String[])Globals.LabelsText.get(LabelTypes.LOGIN_ID_LABEL.ordinal()))[ourLang]);
+        ID_Label.setText(LOGIN_ID_LABEL.getContent());
         ID_Label.setMaximumSize(new java.awt.Dimension(70, 16));
         ID_Label.setPreferredSize(new java.awt.Dimension(80, 30));
         ID_Label.setRequestFocusEnabled(false);
@@ -145,7 +146,7 @@ public class LoginForm extends JFrame {
 
         PW_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         PW_Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        PW_Label.setText(((String[])Globals.LabelsText.get(PW_LABEL.ordinal()))[ourLang]);
+        PW_Label.setText(PW_LABEL.getContent());
         PW_Label.setPreferredSize(new java.awt.Dimension(80, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

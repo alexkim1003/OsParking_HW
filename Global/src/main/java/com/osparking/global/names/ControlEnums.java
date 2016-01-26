@@ -283,7 +283,11 @@ public class ControlEnums {
     
     public enum DialogMSGTypes {
         ID_CHECK_DIALOG, EMAIL_CHECK_DIALOG, ATT_NAME_CHECK_DIALOG, ATT_CELL_CHECK_DIALOG, PHONE_CHECK_DIALOG, CELL_PHONE_CHECK_DIALOG, 
-        PASSWORD_CHECK_DIALOG, REPEAT_PW_CHECK_ERROR, ADMIN_PW_CHECK_DIALOG, DELETE_FAIL_DAILOG, ID_LENGTH_CHECK_DIALOG, 
+        PASSWORD_CHECK_DIALOG, REPEAT_PW_CHECK_ERROR, 
+        
+        ADMIN_PW_CHECK_DIALOG, 
+        
+        DELETE_FAIL_DAILOG, ID_LENGTH_CHECK_DIALOG, 
         ID_FIRST_CHAR_CHECK_DIALOG, ID_CHAR_CHECK_DIALOG, ID_END_CHAR_CHECK_DIALOG, 
         AFFILIATION_DELETE_ALL_DAILOG, AFFILIATION_DELETE_ALL_RESULT_DAILOG, 
         BUILDING_DELETE_ALL_DAILOG, BUILDING_DELETE_ALL_RESULT_DAILOG,
@@ -351,7 +355,18 @@ public class ControlEnums {
         PW_FOURDIGIT_DIALOG, PW_SIXDIGIT_DIALOG, PW_COMPLEX_DIALOG,
         
         VEHICLE_CLOSE_FORM_DIALOG, VEHICLE_MODIFY_FAIL_DAILOG, WORK_MODE_DIALOG, 
-        SAME_DATA_INPUT_DIALOG
+        SAME_DATA_INPUT_DIALOG;
+        
+        DialogMSGTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent(Languages langIDX) {
+                return contents[langIDX.ordinal()];
+        }        
     }
     
     public static enum DialogTitleTypes {
