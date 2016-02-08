@@ -16,9 +16,10 @@
  */
 package com.osparking.global.names;
 
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.language;
-import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.PW_COMPLEX_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.PW_FOURDIGIT_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.PW_SIXDIGIT_DIALOG;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.*;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import java.util.regex.Matcher;
@@ -58,15 +59,15 @@ public class PasswordValidator {
     {
         if (pwStrengthLevel == PWStrengthLevel.FourDigit.ordinal()) 
         {
-            return PW_FOURDIGIT_TOOLTIP.getContent(language);
+            return PW_FOURDIGIT_TOOLTIP.getContent();
         } 
         else if (pwStrengthLevel == PWStrengthLevel.SixDigit.ordinal()) 
         {
-            return PW_SIXDIGIT_TOOLTIP.getContent(language);
+            return PW_SIXDIGIT_TOOLTIP.getContent();
         } 
         else 
         {
-            return PW_COMPLEX_TOOLTIP.getContent(language);
+            return PW_COMPLEX_TOOLTIP.getContent();
         }   
     }
     
@@ -103,63 +104,23 @@ public class PasswordValidator {
         }
         switch (msgType) {
             case PW_FOURDIGIT_DIALOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    sBuilder.append("  - 숫자(0~9) 네 자리로 구성\n");
-                    sBuilder.append("\n");
-                    sBuilder.append("(예) 0123");
-                    break;
-                default:
-                    sBuilder.append("  - four digit number (0~9)\n");
-                    sBuilder.append("\n");
-                    sBuilder.append("(e.g., 0123)");
-                    break;
-            }
-            break;
+                sBuilder.append(PW_FOURDIGIT_DIALOG.getContent());
+                sBuilder.append("\n\n");
+                sBuilder.append("(예) 0123");
+                break;
             
             case PW_SIXDIGIT_DIALOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    sBuilder.append("  - 6 ~ 40자로 구성\n");
-                    sBuilder.append("  - 영문 문자(a-z,A~Z)를 한 글자 이상 포함\n");
-                    sBuilder.append("  - 숫자(0-9)를 한 글자 이상 포함\n");
-                    sBuilder.append("\n");
-                    sBuilder.append(" (예) pti34z");
-                    break;
-                default:
-                    sBuilder.append("  - consists of 6 to 40 characters\n");
-                    sBuilder.append("  - contains at least one English alphabet (a-z,A~Z)\n");
-                    sBuilder.append("  - includes more than one number key(0-9)\n");
-                    sBuilder.append("\n");
-                    sBuilder.append("(e.g., pti34z)");
-                    break;
-            }
-            break;
+                sBuilder.append(PW_SIXDIGIT_DIALOG.getContent());
+                sBuilder.append("\n\n");
+                sBuilder.append("(e.g., pti34z)");
+                break;
             
             case PW_COMPLEX_DIALOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    sBuilder.append("  - 8 ~ 40자로 구성\n");
-                    sBuilder.append("  - 영문 소문자(a~z) 한 글자 이상 포함\n");
-                    sBuilder.append("  - 영문 대문자(A~Z) 한 글자 이상 포함\n");
-                    sBuilder.append("  - 숫자(0-9) 한 자 이상 포함\n");
-                    sBuilder.append("  - 다음 특수 문자 중 한 글자 이상 포함\n");
-                    sBuilder.append("     !  @  #  $  %  &  *  (  )\n");
-                    sBuilder.append("\n");
-                    sBuilder.append(" (예) abM56!xy");
-                    break;
-                default:
-                    sBuilder.append("  - consists of 8 to 40 characters\n");
-                    sBuilder.append("  - contains at least one lower case alphabet (a-z)\n");
-                    sBuilder.append("  - contains at least one upper case alphabet (A-Z)\n");
-                    sBuilder.append("  - includes more than one number key(0-9)\n");
-                    sBuilder.append("  - includes at least one special character shown below\n");
-                    sBuilder.append("     !  @  #  $  %  &  *  (  )\n");
-                    sBuilder.append("\n");
-                    sBuilder.append("(e.g., abM56!xy)");
-                    break;
-            }
-            break;
+                sBuilder.append(PW_COMPLEX_DIALOG.getContent());
+                sBuilder.append("\n     !  @  #  $  %  &  *  (  )\n");
+                sBuilder.append("\n");
+                sBuilder.append("(e.g., abM56!xy)");
+                break;
         default:
             break;
         }

@@ -17,6 +17,7 @@
 package com.osparking.global;
 
 import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SAME_DATA_INPUT_DIALOG;
 import com.osparking.global.names.ControlEnums.Languages;
 import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 import java.awt.Color;
@@ -1720,11 +1721,12 @@ public class Globals {
         
         switch(dialogMSGTypes){
             case SAME_DATA_INPUT_DIALOG : 
+                String msg = SAME_DATA_INPUT_DIALOG.getContent();
                 if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
-                    dialogMSG = "'" + str + "'에 같은 값이 존재합니다. ";
+                    dialogMSG = "'" + str + msg;
                 }
                 else{
-                    dialogMSG = "Same data exists in '" + str + "'";
+                    dialogMSG = msg + str + "'";
                 }
                 break;
             default :

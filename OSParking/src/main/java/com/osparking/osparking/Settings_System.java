@@ -64,7 +64,27 @@ import com.osparking.global.names.ChangeSettings;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.CANCEL_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.SAVE_BTN;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
+import static com.osparking.global.names.ControlEnums.LabelContent.BLINGKING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CYCLE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ELECTRONIC_DISPLAY_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.E_BOARD_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.FLOWING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_NAME_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_NUM_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.IMG_KEEP_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LANGUAGE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOGGING_LEVEL_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOT_NAME_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.MAX_LINE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.PASSWORD_LEVEL_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.RECORD_PASSING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.STATISTICS_SIZE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.VEHICLE_IMG_HEIGHT_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.VEHICLE_IMG_SIZE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.VEHICLE_IMG_WIDTH_LABEL;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.*;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
@@ -2078,7 +2098,7 @@ public class Settings_System extends javax.swing.JFrame {
         SettingsSaveButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsSaveButton.setMnemonic('s');
         SettingsSaveButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
-        SettingsSaveButton.setToolTipText(SETTINGS_SAVE_TOOLTIP.getContent(language));
+        SettingsSaveButton.setToolTipText(SETTINGS_SAVE_TOOLTIP.getContent());
         SettingsSaveButton.setEnabled(false);
         SettingsSaveButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsSaveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -2092,7 +2112,7 @@ public class Settings_System extends javax.swing.JFrame {
         SettingsCancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCancelButton.setMnemonic('c');
         SettingsCancelButton.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
-        SettingsCancelButton.setToolTipText(SETTINGS_CANCEL_TOOLTIP.getContent(language));
+        SettingsCancelButton.setToolTipText(SETTINGS_CANCEL_TOOLTIP.getContent());
         SettingsCancelButton.setEnabled(false);
         SettingsCancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsCancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -2106,7 +2126,7 @@ public class Settings_System extends javax.swing.JFrame {
         SettingsCloseButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCloseButton.setMnemonic('c');
         SettingsCloseButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
-        SettingsCloseButton.setToolTipText(CLOSE_BTN_TOOLTIP.getContent(language));
+        SettingsCloseButton.setToolTipText(CLOSE_BTN_TOOLTIP.getContent());
         SettingsCloseButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsCloseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

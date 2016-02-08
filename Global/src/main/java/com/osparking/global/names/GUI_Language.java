@@ -364,7 +364,6 @@ public class GUI_Language {
         {"모든 등록 차량을 삭제합니까?", "Want do delete all vehicle information?"},
         {"모든 차량 정보가 삭제되었습니다.", "All Vehicles are Deleted"},
         {"등록된 차량이없습니다.", "No vehicle to save!"},
-        
         {"운전자 정보 생성 실패.", "Failed to create a owner/driver record."},
         {"모든 운전자가 삭제되었습니다.", "All drivers were deleted"},
         {"하나의 운전자만 선택하여 변경하십시오.", "Please narrow down to a single driver to update!"},
@@ -511,6 +510,7 @@ public class GUI_Language {
         {"아이디 혹은 비밀번호가 일치 하지 않습니다..", "ID or Password is wrong!"},
         {"\"아이디\"를 입력하세요.", "Enter \'Login ID\'!"},
         {"\"비밀번호\"를 입력하세요.", "Enter \'Password\'"},
+        
         {"\"하위소속\"을 선택하지 않으셨습니다.\n"
             + "하위소속을 선택 하시겠습니까 ?\n"
             + "아니요 버튼을 누르게 되면 상위 소속이 초기화됩니다.\n", 

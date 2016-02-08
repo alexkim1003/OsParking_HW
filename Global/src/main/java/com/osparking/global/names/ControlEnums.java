@@ -181,27 +181,53 @@ public class ControlEnums {
         public String getContent() {
             return contents[language.ordinal()];
         }
-        
-        public String getContent(Languages langIDX) {
-//                return contents[langIDX.ordinal()];
-            return contents[language.ordinal()];
-        }
     }
     
     public enum ButtonTypes {
-        LOGIN_BTN, CLOSE_BTN, SAVE_BTN, CREATE_BTN, 
-        DELETE_BTN, MODIFY_BTN, CANCEL_BTN, SEARCH_BTN, 
-        SAVE_AS_BTN, 
+        LOGIN_BTN("로그인(L)", "Login"),
+        CLOSE_BTN("닫기(C)", "Close"),
+        SAVE_BTN("저장(S)", "Save"),
+        CREATE_BTN("생성(R)", "Create"),
+        DELETE_BTN("삭제(D)", "Delete"),
+        MODIFY_BTN("수정(M)", "Modify"),
+        CANCEL_BTN("취소(C)", "Cancel"),
+        SEARCH_BTN("검색(S)", "Search"),
+        SAVE_AS_BTN("저장", "Save As"),
+        CHECK_BTN("중복검색", "Check"),
+        CLEAR_BTN("초기화(L)", "Clear"),
+        DELETE_ALL_BTN("전체삭제(E)", "Delete All"),
+        READ_ODS_BTN("<HTML>ods  읽기(<U>O</U>)</HTML>", "<HTML>Read  <U>O</U>ds</HTML>"),
+        SAVE_ODS_BTN("<HTML>ods  저장(<U>A</U>)</HTML>", "<HTML>S<U>a</U>ve Ods"),
+        CREATE_NO_SHORT_BTN("생성", "Create"),
+        MODIFY_NO_SHORT_BTN("수정", "Modify"),
+        DELETE_NO_SHORT_BTN("삭제", "Delete"),
+        DELETE_ALL_NO_SHORT_BTN("전체삭제", "Delete All"),
+        READ_ODS_NO_SHORT_BTN("시트읽기", "Read ods"),
+        SAVE_NO_SHORT_BTN("저장", "Save"),
+        CANCEL_NO_SHORT_BTN("취소", "Cancel"),
+        OWNER_BTN("운전자", "Owner"),
+        SELECT_BTN("선택(T)", "Select"),
+        MANAGE_BTN("관리(M)", "Manage"),
+        FIX_IT_BTN("설정(F)", "Fix It"),
+        ARRIVALS_BTN("<HTML>입차기록(<U>A</U>)</HTML>", "<HTML><U>A</U>rrivals</HTML>"),
+        VEHICLES_BTN("<HTML>등록차목록(<U>V</U>)</HTML>", "<HTML><U>V</U>ehicles</HTML>"),
+        USERS_BTN("<HTML>사용자목록(<U>U</U>)</HTML>", "<HTML><U>U</U>sers</HTML>"),
+        CAR_ARRIVAL_BTN("모의 입차", "Car Arrival"),
+        STATISTICS_BTN("통계", "statistics"),
+        GATE_BAR_OPEN_BTN("차단기 열림(O)", "Open Bar"),
+        GATE_BAR_CLOSE_BTN("차단기 닫힘(C)", "Close Bar"),
+        E_BOARD_SETTINGS_BTN("세부 설정", "Content Settings");
         
-//        CHECK_BTN,
-        CLEAR_BTN, DELETE_ALL_BTN, READ_ODS_BTN, SAVE_ODS_BTN,
-        CREATE_NO_SHORT_BTN, MODIFY_NO_SHORT_BTN, DELETE_NO_SHORT_BTN, 
-        DELETE_ALL_NO_SHORT_BTN, READ_ODS_NO_SHORT_BTN, 
-        SAVE_NO_SHORT_BTN, CANCEL_NO_SHORT_BTN, OWNER_BTN, SELECT_BTN, 
-        MANAGE_BTN, FIX_IT_BTN, 
-        ARRIVALS_BTN, VEHICLES_BTN, USERS_BTN, CAR_ARRIVAL_BTN, 
-        STATISTICS_BTN,
-        GATE_BAR_OPEN_BTN, GATE_BAR_CLOSE_BTN, E_BOARD_SETTINGS_BTN,
+        ButtonTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+                return contents[language.ordinal()];
+        }        
     }
     
     public enum ButtonContent {  
@@ -214,8 +240,8 @@ public class ControlEnums {
         
         private String[] contents = new String[Languages.values().length];
         
-        public String getContent(Languages langIDX) {
-                return contents[langIDX.ordinal()];
+        public String getContent() {
+                return contents[language.ordinal()];
         }
     }
     
@@ -261,8 +287,8 @@ public class ControlEnums {
         
         private String[] contents = new String[Languages.values().length];
         
-        public String getContent(Languages langIDX) {
-                return contents[langIDX.ordinal()];
+        public String getContent() {
+                return contents[language.ordinal()];
         }
     }
     
@@ -282,80 +308,287 @@ public class ControlEnums {
     }
     
     public enum DialogMSGTypes {
-        ID_CHECK_DIALOG, EMAIL_CHECK_DIALOG, ATT_NAME_CHECK_DIALOG, ATT_CELL_CHECK_DIALOG, PHONE_CHECK_DIALOG, CELL_PHONE_CHECK_DIALOG, 
-        PASSWORD_CHECK_DIALOG, REPEAT_PW_CHECK_ERROR, 
+        ID_CHECK_DIALOG ("아이디 중복검사가 필요합니다.", "Need to check if 'id' is usable(unoccupied)."),
+        EMAIL_CHECK_DIALOG("이메일 중복검사가 필요합니다.", "Need to check if 'E-Mail' is usable(unoccupied)."),
+        ATT_NAME_CHECK_DIALOG("  - 관리원 이름 두 글자 이상", "  - Name should be longer than 1 character"),
+        ATT_CELL_CHECK_DIALOG("  - 휴대폰 번호 입력 오류", "  - Wrong cell phone number"),
+        PHONE_CHECK_DIALOG("  - 전화 번호 입력 오류", "  - Phone number error"),
+        CELL_PHONE_CHECK_DIALOG(
+                "  - 전화번호 나 휴대폰 중 하나 입력", "  - Either phone, cell-phone or both is needed"),
+        PASSWORD_CHECK_DIALOG(
+                "  - 비밀번호 형식이 요구사항과 맞지 않음.", "  - Password doesn't meet syntax requirements"),
+        REPEAT_PW_CHECK_ERROR("  - 새 비밀번호 반복입력 불일치", "  - New passwords don't match"),
+        ADMIN_PW_CHECK_DIALOG("  - 관리원 비밀번호 오류", "  - Your Password is Wrong!"),
+        DELETE_FAIL_DAILOG("비밀번호가 올바르지 않습니다.", "Password is wrong!"),
+        ID_LENGTH_CHECK_DIALOG("아이디는 두 자 이상이어야 합니다.", "ID should consists of at least 2 characters."),
+        ID_FIRST_CHAR_CHECK_DIALOG(
+                "첫 글자가 영문자가 아닙니다", "nested character isn't an alpha-numeric, space, or dot(.)" ), 
+        ID_CHAR_CHECK_DIALOG(
+                "내포된 글자가 영숫자, 공백 혹은 점(.)이 아닙니다", "first character is not an alphabet" ),
+        ID_END_CHAR_CHECK_DIALOG("끝 글자가 영숫자가 아닙니다", "last character isn't an alpha-numeric" ),
+        AFFILIATION_DELETE_ALL_DAILOG(
+                "모든 상위 및 하위 소속들을 삭제합니까?", "Want to delete all of higher and lower affiliations?"),
+        AFFILIATION_DELETE_ALL_RESULT_DAILOG(
+                "모든 소속들이 성공적으로 삭제되었습니다", "Every affiliations are deleted successfully." ),
+        BUILDING_DELETE_ALL_DAILOG(
+                "모든 건물 및 소속 호실들을 삭제합니까?", "Want to delete all buildings and rooms?" ),
+        BUILDING_DELETE_ALL_RESULT_DAILOG(
+                "모든 건물 및 소속 호실들이 성공적으로 삭제되었습니다", "Every Buildings and Rooms are deleted."),
+        CAR_TAG_DIALOG("차량번호가 누락되었습니다.", "Car Tag Number is missing."),
+        DRIVER_DIALOG("운전자 정보가 누락되었습니다.", "Car Owner/Driver is missing."),
+        VEHICLE_CREATION_FAIL_DIALOG("차량 등록을 실패하였습니다.", "failed vehicle creation "),
+        VEHICLE_CREATE_CANCEL_DIALOG(
+                "작성 중인 차량정보를 포기하겠습니까?", "Want to desert car information created so far?"),
+        VEHICLE_MODIFY_CANCEL_DAILOG(
+                "변경 중인 차량정보를 포기하겠습니까?", "Want to desert car information updated so far?"),
+        VEHICLE_DELETE_ALL_DAILOG(
+                "모든 등록 차량을 삭제합니까?", "Want do delete all vehicle information?"),
+        VEHICLE_DELETE_ALL_RESULT_DAILOG(
+                "모든 차량 정보가 삭제되었습니다.", "All Vehicles are Deleted"),
+        VEHICLE_SAVE_ODS_FAIL_DIALOG(
+                "등록된 차량이없습니다.", "No vehicle to save!"),
+        DRIVER_CREATRION_FAIL_DIALOG("운전자 정보 생성 실패.", "Failed to create a owner/driver record."), 
+        DRIVER_DELETE_ALL_RESULT_DAILOG("모든 운전자가 삭제되었습니다.", "All drivers were deleted"),
+        DRIVER_MODIFY_FAIL_DAILOG(
+                "하나의 운전자만 선택하여 변경하십시오.", "Please narrow down to a single driver to update!"),
+        DRIVER_CREATE_CANCEL_DIALOG(
+                "새로 생성중인 운전자 정보를 취소하시겟습니까?", "Do you want to quit creating a new driver?"),
+        DRIVER_MODIFY_CANCEL_DAILOG(
+                "변경 중인 운전자 정보를 취소하시겟습니까?", "Do you want to cancel modifying driver information?"),
         
-        ADMIN_PW_CHECK_DIALOG, 
+        DRIVER_NAME_CHECK_DIALOG("\"필수사항\" 인 이름을 입력하시겟습니까?" 
+                            + System.getProperty("line.separator") 
+                            + "([예] 버튼을 누르면 이름 입력란으로 이동합니다." 
+                            + System.getProperty("line.separator") 
+                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
+                "Want to input a \"required\" driver name?" 
+                            + System.getProperty("line.separator") 
+                            + "(By pressing [Yes] name field will have focus." 
+                            + System.getProperty("line.separator") 
+                            + "Otherwise, modification will be discarded.)"),
         
-        DELETE_FAIL_DAILOG, ID_LENGTH_CHECK_DIALOG, 
-        ID_FIRST_CHAR_CHECK_DIALOG, ID_CHAR_CHECK_DIALOG, ID_END_CHAR_CHECK_DIALOG, 
-        AFFILIATION_DELETE_ALL_DAILOG, AFFILIATION_DELETE_ALL_RESULT_DAILOG, 
-        BUILDING_DELETE_ALL_DAILOG, BUILDING_DELETE_ALL_RESULT_DAILOG,
-        CAR_TAG_DIALOG, DRIVER_DIALOG, VEHICLE_CREATION_FAIL_DIALOG, VEHICLE_CREATE_CANCEL_DIALOG,
-        VEHICLE_MODIFY_CANCEL_DAILOG, VEHICLE_DELETE_ALL_DAILOG, VEHICLE_DELETE_ALL_RESULT_DAILOG,
-        VEHICLE_SAVE_ODS_FAIL_DIALOG,
-        DRIVER_CREATRION_FAIL_DIALOG,  DRIVER_DELETE_ALL_RESULT_DAILOG,
-        DRIVER_MODIFY_FAIL_DAILOG, DRIVER_CREATE_CANCEL_DIALOG, DRIVER_MODIFY_CANCEL_DAILOG,
+        DRIVER_CELL_CHECK_DIALOG("\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
+                            + System.getProperty("line.separator") 
+                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
+                            + System.getProperty("line.separator") 
+                            + "그렇지 않으면, 수정정보가 포기됩니다.)",
+                "Want to input a \"required\" cell phone number?"  
+                            + System.getProperty("line.separator") 
+                            + "(By pressing [Yes], cell phone will have focus," 
+                            + System.getProperty("line.separator") 
+                            + "Otherwise, modification will be discarded.)"),
         
-        DRIVER_NAME_CHECK_DIALOG,
-        DRIVER_CELL_CHECK_DIALOG,
-        DRIVER_CREATE_CHECK_CELL_DIALOG,
-        DRIVER_CREATE_FAIL_DIALOG,  
+        DRIVER_CREATE_CHECK_CELL_DIALOG("\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
+                            + System.getProperty("line.separator") 
+                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
+                            + System.getProperty("line.separator") 
+                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
+              "Want to input a \"required\" cell phone number?" 
+                            + System.getProperty("line.separator") 
+                            + "(By pressing [Yes], cell phone will have focus," 
+                            + System.getProperty("line.separator") 
+                            + "Otherwise, creation will be discarded.)"),
         
-        DRIVER_CLOSE_FORM_DIALOG, DATE_INPUT_CHECK_DIALOG, DATE_INPUT_ERROR_DIALOG,
+        DRIVER_CREATE_FAIL_DIALOG("운전자 이름을입력하지 않으셧습니다." 
+                            + System.getProperty("line.separator")
+                            + "운전자 생성이 자동적으로 종료됩니다." ,
+                "As the driver's name is missing," 
+                            + System.getProperty("line.separator") 
+                            + "driver creation is automatically cancelled."),
+        
+        DRIVER_CLOSE_FORM_DIALOG(
+                "생성/수정 중인정보를 포기하시겟습니까?", "Want to desert car information being created/modified?"),
+        DATE_INPUT_CHECK_DIALOG("시작일과 종료일을 모두 입력하십시오", "Enter starting and ending date both"),
+        
+        DATE_INPUT_ERROR_DIALOG( "종료일이 시작일보다 앞설 수 없습니다\n" 
+                + "날짜를 변경하여 입력하십시오.", 
+                "Ending date can't precede starting date\n" 
+                        + "Please, correct search range."),
          
-        STOP_RUNNING_DIALOG, SHUT_DOWN_CONFIRM_DIALOG,
-        LOGALWAYS_DAILOG, SETTINGSCHANGE_DAILOG, EBDSETTINGSCHANGE_DIALOG,
-        LANGUAGE_USE_DIALOG, PHOTO_SIZE_INPUT_ERROR_DIALOG,
-        CHANGE_GATE_DAILOG, FAIL_SAVE_SETTINGS_DIALOG, SAVE_SETTINGS_DIALOG,
-        INPUT_ERROR_DAILOG, IP_FORMAT_ERROR_DAILOG,
-        SAVE_OR_CANEL_DIALOG,
-        E_BOARD_SAVE_FAIL_DIALOG, 
-        E_BOARD_NO_INPUT_MSG_DIALOG, CHANGE_DIALOG, CURRENT_DIALOG, MODIFY_DIALOG,      
-        SAVE_DIALOG, LOGIN_FAIL_DIALOG, 
-        INPUT_ID_DIALOG, INPUT_PW_DIALOG, L2_INPUT_DIALOG, UNIT_INPUTDIALOG,
+        STOP_RUNNING_DIALOG("실행중인 프로그램을 종료합니다.", "Program stops running."),
+        SHUT_DOWN_CONFIRM_DIALOG("프로그램을 종료하시겠습니까?", "Do you want to stop the system?"),
         
+        LOGALWAYS_DAILOG("현제 단계 (로깅하지 않음.)," + System.lineSeparator() 
+                + " 다음과 같은 '필수적인' 항목들만 로깅 :" + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - 시스템 시작시간과 종료시간" + System.lineSeparator() 
+                + " - 삭제 된 레코드 수"+ System.lineSeparator() 
+                + " - 삭제 된 이미지의 수"+ System.lineSeparator() 
+                + " - 삭제 된 로그 폴더 및 텍스트 파일의 개수"+ System.lineSeparator() 
+                + " - 삭제 된 로그 폴더 및 텍스트 파일의 경로", 
+                "At this level (No Logging)," + System.lineSeparator() 
+                + " Following 'Mandatory' items are logged :" + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - System start and stop time" + System.lineSeparator() 
+                + " - Number of deleted old records"+ System.lineSeparator() 
+                + " - Number of deleted old images"+ System.lineSeparator() 
+                + " - Number of deleted log folders and text files"+ System.lineSeparator() 
+                + " - File path of deleted log folders and text files"),
         
+        SETTINGSCHANGE_DAILOG(" '시스템 설정 변경' 단계 로깅 항목 :" + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - 필수 항목" + System.lineSeparator() 
+                + "   추가" + System.lineSeparator()
+                + " - 시스템 설정 변경"+ System.lineSeparator() 
+                + " - 관리원/사용자 정보 변경"+ System.lineSeparator() 
+                + " - 운전자 정보 변경"+ System.lineSeparator() 
+                + " - 차량정보 변경", 
+                "'System Settings' Level Logged Items:" + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - Mandatory Items" + System.lineSeparator() 
+                + "   plus" + System.lineSeparator()
+                + " - System Settings Change" + System.lineSeparator() 
+                + " - Attendant/User Info Change" + System.lineSeparator() 
+                + " - Drivers Info Change" + System.lineSeparator() 
+                + " - Vehicles Info Change" + System.lineSeparator()),
         
+        EBDSETTINGSCHANGE_DIALOG(" '시스템, 사용자, 차량' 단계 로깅 항목 :" + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - 시스템 설정 변경 항목" + System.lineSeparator() 
+                + "   추가"+ System.lineSeparator() 
+                + " - 전광판 설정 변경"+ System.lineSeparator() ,
+                "'E-Board Settings' Level Logged Items: " + System.lineSeparator() 
+                + System.lineSeparator() 
+                + " - System Settings Logged Items" + System.lineSeparator() 
+                + "   plus" + System.lineSeparator()
+                + " - E-Board Settings Change" + System.lineSeparator()),
+
+        LANGUAGE_USE_DIALOG("GUI 언어 선택", "GUI language selection."),
+        PHOTO_SIZE_INPUT_ERROR_DIALOG(
+                "사진크기를 100이상으로 입력해주시기 바랍니다.", "Please enter a picture size value of 100 or more."),
         
-       
+        CHANGE_GATE_DAILOG("입구 갯수를 변경할 경우," + System.lineSeparator() 
+                    + "'OsParking' 이 자동으로 종료됩니다." + System.lineSeparator() 
+                    + "'OsParking' 을 다시 실행시켜주시기 바랍니다.",
+            "After Gate count change," + System.lineSeparator() 
+                    + "'OSParking' shuts down by itself." + System.lineSeparator() 
+                    + "So, you need to start OSParking again."),
         
+        FAIL_SAVE_SETTINGS_DIALOG("시스템 설정 저장에 실패하였습니다.", "The storage system settings failed."),
+        SAVE_SETTINGS_DIALOG(
+                "시스템 설정 저장에 성공하였습니다.", "The system settings have been saved successfully."),
+        INPUT_ERROR_DAILOG("1 이상의 값을 입력하세요.", "Enter a value of 1 or more .."),
+        IP_FORMAT_ERROR_DAILOG("의 IP 주소 형식이 올바르지 않습니다.", "in IP address format error"),
         
-        AFFILIATION_DELETE_DIALOG, AFFILIATION_DELETE_RESULT_DIALOG, 
-        AFFILIATION_ODS_READ_DIALOG, AFFILIATION_MODIFY_DIALOG,
+        SAVE_OR_CANEL_DIALOG("설정이 변경되었습니다..\n \n"
+                    + "[저장] 또는 [취소]버튼을 선택해 주세요.", 
+            "Settings Changed.\n \n"
+                    + "Either [Save] or [Cancel], please."),
         
-        BUILDING_ODS_READ_DIALOG, BUILDING_ODS_READ_FAIL_DIALOG,
-        BUILDING_DELETE_RESULT_DIALOG, BUILDING_DELETE_DIALOG, BUILDING_MODIFY_DIALOG,
+        E_BOARD_SAVE_FAIL_DIALOG(
+                "전광판 설정을 실패하였습니다.", "This e-board settings update saving DB operation failed."),
+        E_BOARD_NO_INPUT_MSG_DIALOG("  - 문구를 입력해주십시오.", "  - Please enter a message"),
+        CHANGE_DIALOG("변경사항", "Changes"),
+        CURRENT_DIALOG("변경 전", "Current"),
+        MODIFY_DIALOG("변경 후", "Modified"),
+        SAVE_DIALOG("저장되었습니다.", "Saved"),
+        LOGIN_FAIL_DIALOG("아이디 혹은 비밀번호가 일치 하지 않습니다..", "ID or Password is wrong!"),
+        INPUT_ID_DIALOG("\"아이디\"를 입력하세요.", "Enter \'Login ID\'!"),
+        INPUT_PW_DIALOG("\"비밀번호\"를 입력하세요.", "Enter \'Password\'"),
         
-        CREATION_FAIL_DIALOG, CHECK_AFFILIATION_ODS_DIALOG, CHECK_BUILDING_ODS_DIALOG, CREATION_SUCCESS_DIALOG,
+        L2_INPUT_DIALOG("\"하위소속\"을 선택하지 않으셨습니다.\n"
+                + "하위소속을 선택 하시겠습니까 ?\n"
+                + "아니요 버튼을 누르게 되면 상위 소속이 초기화됩니다.\n", 
+                "You did not select \'Lower Affiliation\'\n"
+                + "Do you want to Select Lower Affiliation ?\n"
+                + "If you choose \'no\',  Higher will be reset"),
         
-        DELETE_DIALOG, DELETE_SUCCESS_DIALOG, 
-        DELETE_FAIL1_DAILOG, DELETE_FAIL2_DAILOG, DELETE_FAIL3_DAILOG, DELETE_CARS_DIALOG, DELETE_A_CAR_DIALOG, 
-        DELETE_ALL_DAILOG, DELETE_ONE_DIALOG, DELETE_MORE_DIALOG,
+        UNIT_INPUTDIALOG("\"호실번호\"를 선택하지 않으셨습니다.\n"
+                + "\"호실번호\" 선택 하시겠습니까 ?\n"
+                + "아니요 버튼을 누르게 되면 건물 번호가 초기화됩니다.\n", 
+                "You did not select \'Room\'\n"
+                + "Do you want to Select Room ?\n"
+                + "If you choose \'no\' button will delete the changes"),
         
-        EMAIL_DUP_TURE_DIALOG, EMAIL_DUP_FALSE_DIALOG, EMAIL_CHECK_FAIL_DIALOG, 
+        PW_FOURDIGIT_DIALOG("  - 숫자(0~9) 네 자리로 구성", "  - four digit number (0~9)"),
         
-        ID_DUP_CHECK_DIALOG, ID_CHECK_GOOD_DIALOG, 
+        PW_SIXDIGIT_DIALOG("  - 6 ~ 40자로 구성\n"
+                + "  - 영문 문자(a-z,A~Z)를 한 글자 이상 포함\n"
+                + "  - 숫자(0-9)를 한 글자 이상 포함",
+                "  - consists of 6 to 40 characters\n"
+                + "  - contains at least one English alphabet (a-z,A~Z)\n"
+                + "  - includes more than one number key(0-9)"),
         
-        LOWER_DELETE_DIALOG, LOWER_DELETE_RESULT_DIALOG, LOWER_MODIFY_DIALOG, 
-        LOGOUT_DIAILG, LOGOUT_CONFIRM_DIALOG,
+        PW_COMPLEX_DIALOG(
+                "  - 8 ~ 40자로 구성\n"
+                + "  - 영문 소문자(a~z) 한 글자 이상 포함\n"
+                + "  - 영문 대문자(A~Z) 한 글자 이상 포함\n"
+                + "  - 숫자(0-9) 한 자 이상 포함\n"
+                + "  - 다음 특수 문자 중 한 글자 이상 포함",
+                "  - consists of 8 to 40 characters\n"
+                + "  - contains at least one lower case alphabet (a-z)\n"
+                + "  - contains at least one upper case alphabet (A-Z)\n"
+                + "  - includes more than one number key(0-9)\n"
+                + "  - includes at least one special character shown below"
+                ),
         
-        MODIFY_DAILOG,
+        SAME_DATA_INPUT_DIALOG("'에 같은 값이 존재합니다.", "Same data exists in '");
+
+//        SAVE_AS_FAIL2_DIALOG, 
+//        SAVE_AS_SUCCESS_DIALOG, 
+//        SAVE_ODS_FAIL_DIALOG,        
         
-        SAVE_AS_FAIL1_DIALOG, SAVE_AS_FAIL2_DIALOG, SAVE_AS_SUCCESS_DIALOG, SAVE_ODS_FAIL_DIALOG,
-        
-        READ_VEHICLE_ODS_DIALOG, READ_DRIVER_ODS_DIALOG, READ_ODS_DIALOG, READ_ODS_FAIL_DIALOG,
-        READ_BUILDING_ODS_DIALOG, READ_FAIL_BUILDING_ODS_DIALOG, READ_AFFILIATION_ODS_DIALOG, READ_FAIL_AFFILIATION_ODS_DIALOG,
-        REJECT_USER_DIALOG,
-        
-        UNIT_DELETE_DIALOG, UNIT_DELETE_RESULT_DIALOG, UNIT_DELETE_FAIL_RESULT_DIALOG,
-        UNIT_MODIFY_DIALOG,
-        USER_UPDATE_SUCCESS_DIALOG, USER_UPDATE_FAIL_DIALOG,
-        
-        PW_FOURDIGIT_DIALOG, PW_SIXDIGIT_DIALOG, PW_COMPLEX_DIALOG,
-        
-        VEHICLE_CLOSE_FORM_DIALOG, VEHICLE_MODIFY_FAIL_DAILOG, WORK_MODE_DIALOG, 
-        SAME_DATA_INPUT_DIALOG;
+//        AFFILIATION_DELETE_DIALOG, 
+//        AFFILIATION_DELETE_RESULT_DIALOG, 
+//        AFFILIATION_ODS_READ_DIALOG, 
+//        AFFILIATION_MODIFY_DIALOG,
+//        
+//        BUILDING_ODS_READ_DIALOG, 
+//        BUILDING_ODS_READ_FAIL_DIALOG,
+//        BUILDING_DELETE_RESULT_DIALOG,
+//        BUILDING_DELETE_DIALOG, 
+//        BUILDING_MODIFY_DIALOG,
+//        
+//        CREATION_FAIL_DIALOG, 
+//        CHECK_AFFILIATION_ODS_DIALOG, 
+//        CHECK_BUILDING_ODS_DIALOG, 
+//        CREATION_SUCCESS_DIALOG,
+//        
+//        DELETE_DIALOG,
+//        DELETE_SUCCESS_DIALOG, 
+//        DELETE_FAIL1_DAILOG, 
+//        DELETE_FAIL2_DAILOG, 
+//        DELETE_FAIL3_DAILOG, 
+//        DELETE_CARS_DIALOG, 
+//        DELETE_A_CAR_DIALOG, 
+//        DELETE_ALL_DAILOG, 
+//        DELETE_ONE_DIALOG, 
+//        DELETE_MORE_DIALOG,
+//        
+//        EMAIL_DUP_TURE_DIALOG, 
+//        EMAIL_DUP_FALSE_DIALOG, 
+//        EMAIL_CHECK_FAIL_DIALOG, 
+//        
+//        ID_DUP_CHECK_DIALOG, 
+//        ID_CHECK_GOOD_DIALOG, 
+//        
+//        LOWER_DELETE_DIALOG,
+//        LOWER_DELETE_RESULT_DIALOG, 
+//        LOWER_MODIFY_DIALOG, 
+//        LOGOUT_DIAILG,
+//        LOGOUT_CONFIRM_DIALOG,
+//        
+//        MODIFY_DAILOG,
+//        
+//        READ_VEHICLE_ODS_DIALOG, 
+//        READ_DRIVER_ODS_DIALOG, 
+//        READ_ODS_DIALOG, 
+//        READ_ODS_FAIL_DIALOG,
+//        READ_BUILDING_ODS_DIALOG, 
+//        READ_FAIL_BUILDING_ODS_DIALOG,
+//        READ_AFFILIATION_ODS_DIALOG,
+//        READ_FAIL_AFFILIATION_ODS_DIALOG,
+//        REJECT_USER_DIALOG,
+//        UNIT_DELETE_DIALOG,
+//        UNIT_DELETE_RESULT_DIALOG,
+//        UNIT_DELETE_FAIL_RESULT_DIALOG,
+//        UNIT_MODIFY_DIALOG,
+//        USER_UPDATE_SUCCESS_DIALOG,
+//        USER_UPDATE_FAIL_DIALOG,
+//        
+//        VEHICLE_CLOSE_FORM_DIALOG, 
+//        VEHICLE_MODIFY_FAIL_DAILOG,
+//        WORK_MODE_DIALOG, 
         
         DialogMSGTypes(String korean, String english) {
             contents[KOREAN.ordinal()] = korean;
@@ -364,8 +597,8 @@ public class ControlEnums {
         
         private String[] contents = new String[Languages.values().length];
         
-        public String getContent(Languages langIDX) {
-                return contents[langIDX.ordinal()];
+        public String getContent() {
+                return contents[language.ordinal()];
         }        
     }
     

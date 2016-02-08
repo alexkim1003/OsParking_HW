@@ -16,6 +16,7 @@
  */
 package com.osparking.attendant;
 
+import static com.osparking.attendant.AttListDialogType.SAVE_AS_FILE_FAILURE_DIALOG;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -55,37 +56,7 @@ import com.osparking.global.names.ControlEnums;
 import com.osparking.global.names.ControlEnums.ATTLIST_ComboBoxTypes;
 import static com.osparking.global.names.ControlEnums.ButtonContent.CHECK_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ADMIN_PW_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ATT_CELL_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ATT_NAME_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.CELL_PHONE_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.CREATION_FAIL_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.CREATION_SUCCESS_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_FAIL1_DAILOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_FAIL2_DAILOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_FAIL3_DAILOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_FAIL_DAILOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DELETE_SUCCESS_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.EMAIL_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.EMAIL_CHECK_FAIL_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.EMAIL_DUP_FALSE_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.EMAIL_DUP_TURE_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_CHECK_GOOD_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_DUP_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_END_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_FIRST_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ID_LENGTH_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.PASSWORD_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.PHONE_CHECK_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.REPEAT_PW_CHECK_ERROR;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SAVE_AS_FAIL1_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SAVE_AS_FAIL2_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SAVE_AS_SUCCESS_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.USER_UPDATE_FAIL_DIALOG;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.USER_UPDATE_SUCCESS_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_EMAIL_DUP_DIALOGTITLE;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_EMAIL_SYNTAX_CHECK_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_HELP_DIALOGTITLE;
@@ -117,70 +88,11 @@ import static com.osparking.global.names.ControlEnums.ToolTipContent.REPEAT_PW_I
 import static com.osparking.global.names.ControlEnums.ToolTipContent.SAVE_AS_TOOLTIP;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.SEARCH_INPUT_TOOLTIP;
 import com.osparking.global.names.DB_Access;
-import static com.osparking.global.names.DialogMSGTypes.ADMIN_PW_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ATT_CELL_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ATT_NAME_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.CELL_PHONE_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.CREATION_FAIL_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.CREATION_SUCCESS_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL1_DAILOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL2_DAILOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL3_DAILOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_FAIL_DAILOG;
-import static com.osparking.global.names.DialogMSGTypes.DELETE_SUCCESS_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.EMAIL_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.EMAIL_CHECK_FAIL_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.EMAIL_DUP_FALSE_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.EMAIL_DUP_TURE_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_CHECK_GOOD_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_DUP_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_END_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_FIRST_CHAR_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.ID_LENGTH_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.PASSWORD_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.PHONE_CHECK_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.REPEAT_PW_CHECK_ERROR;
-import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_FAIL1_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_FAIL2_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.SAVE_AS_SUCCESS_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.USER_UPDATE_FAIL_DIALOG;
-import static com.osparking.global.names.DialogMSGTypes.USER_UPDATE_SUCCESS_DIALOG;
-import static com.osparking.global.names.DialogTitleTypes.ATT_EMAIL_DUP_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.ATT_EMAIL_SYNTAX_CHECK_DIALOG;
-import static com.osparking.global.names.DialogTitleTypes.ATT_HELP_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.ATT_ID_DUP_CHCEK_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.ATT_SAVE_AS_FAIL_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.ATT_SFAVE_AS_SUCCESS_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.ATT_USER_UPDATE_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.CONFIRM_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.CREATION_RESULT_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.CREATTION_FAIL_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.DELETE_DIALOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.DELETE_FAIL_DAILOGTITLE;
-import static com.osparking.global.names.DialogTitleTypes.DELETE_RESULT_DIALOGTITLE;
 import com.osparking.global.names.JDBCMySQL;
 import static com.osparking.global.names.JDBCMySQL.getHashedPW;
 import com.osparking.global.names.JTextFieldLimit;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.ParentGUI;
-import static com.osparking.global.names.TableTypes.CELL_PHONE_HEADER;
-import static com.osparking.global.names.TableTypes.EMAIL_HEADER;
-import static com.osparking.global.names.TableTypes.MANAGER_HEADER;
-import static com.osparking.global.names.TableTypes.MODIFIED_HEADER;
-import static com.osparking.global.names.TableTypes.NAME_HEADER;
-import static com.osparking.global.names.TableTypes.PHONE_HEADER;
-import static com.osparking.global.names.TableTypes.USER_ID_HEADER;
-import static com.osparking.global.names.ToolTipContent.CELL_INPUT_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.ID_INPUT_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.NAME_INPUT_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.PHONE_INPUT_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.PW_INPUT_TOOTLTIP;
-import static com.osparking.global.names.ToolTipContent.REPEAT_PW_INPUT_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.SAVE_AS_TOOLTIP;
-import static com.osparking.global.names.ToolTipContent.SEARCH_INPUT_TOOLTIP;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -507,7 +419,7 @@ public class AttListForm extends javax.swing.JFrame {
         topInPanel.add(filler2);
 
         adminAuth2CheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        adminAuth2CheckBox.setText(ADMIN_LABEL.getContent(language));
+        adminAuth2CheckBox.setText(ADMIN_LABEL.getContent());
         adminAuth2CheckBox.setToolTipText("");
         adminAuth2CheckBox.setEnabled(false);
         adminAuth2CheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -517,7 +429,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userID2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userID2Label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        userID2Label.setText(LOGIN_ID_LABEL.getContent(language) + ": " +loginID);
+        userID2Label.setText(LOGIN_ID_LABEL.getContent() + ": " +loginID);
         topInPanel.add(userID2Label);
         topInPanel.add(filler46);
 
@@ -592,7 +504,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userIDLabel.setText(LOGIN_ID_LABEL.getContent(language));
+        userIDLabel.setText(LOGIN_ID_LABEL.getContent());
         userIDLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -611,7 +523,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDText.setEditable(false);
         userIDText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userIDText.setToolTipText(ID_INPUT_TOOLTIP.getContent(language));
+        userIDText.setToolTipText(ID_INPUT_TOOLTIP.getContent());
         userIDText.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         userIDText.setEnabled(false);
         userIDText.setMaximumSize(new java.awt.Dimension(32767, 30));
@@ -635,7 +547,7 @@ public class AttListForm extends javax.swing.JFrame {
         idCheckPanel.add(filler28);
 
         checkIDButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkIDButton.setText(CHECK_BTN.getContent(language));
+        checkIDButton.setText(CHECK_BTN.getContent());
         checkIDButton.setEnabled(false);
         checkIDButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkIDButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -659,7 +571,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         adminAuthLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         adminAuthLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        adminAuthLabel.setText(ADMIN_LABEL.getContent(language));
+        adminAuthLabel.setText(ADMIN_LABEL.getContent());
         adminAuthLabel.setToolTipText("");
         adminAuthLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         adminAuthLabel.setMinimumSize(new java.awt.Dimension(130, 21));
@@ -683,7 +595,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        nameLabel.setText(NAME_LABEL.getContent(language));
+        nameLabel.setText(NAME_LABEL.getContent());
         nameLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         nameLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         nameLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -700,7 +612,7 @@ public class AttListForm extends javax.swing.JFrame {
         namePanel.add(filler45);
 
         userNameText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userNameText.setToolTipText(NAME_INPUT_TOOLTIP.getContent(language));
+        userNameText.setToolTipText(NAME_INPUT_TOOLTIP.getContent());
         userNameText.setEnabled(false);
         userNameText.setMaximumSize(new java.awt.Dimension(32767, 30));
         userNameText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -720,7 +632,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText(CELL_PHONE_LABEL.getContent(language)   );
+        jLabel5.setText(CELL_PHONE_LABEL.getContent()   );
         jLabel5.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel5.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel5.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -737,7 +649,7 @@ public class AttListForm extends javax.swing.JFrame {
         cellPhonePanel.add(filler48);
 
         cellPhoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        cellPhoneText.setToolTipText(CELL_INPUT_TOOLTIP.getContent(language));
+        cellPhoneText.setToolTipText(CELL_INPUT_TOOLTIP.getContent());
         cellPhoneText.setEnabled(false);
         cellPhoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         cellPhoneText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -756,7 +668,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText(PHONE_LABEL.getContent(language));
+        jLabel6.setText(PHONE_LABEL.getContent());
         jLabel6.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel6.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel6.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -773,7 +685,7 @@ public class AttListForm extends javax.swing.JFrame {
         phonePanel.add(filler63);
 
         phoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        phoneText.setToolTipText(PHONE_INPUT_TOOLTIP.getContent(language));
+        phoneText.setToolTipText(PHONE_INPUT_TOOLTIP.getContent());
         phoneText.setEnabled(false);
         phoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         phonePanel.add(phoneText);
@@ -790,7 +702,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(EMAIL_LABEL.getContent(language));
+        jLabel4.setText(EMAIL_LABEL.getContent());
         jLabel4.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel4.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel4.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -820,7 +732,7 @@ public class AttListForm extends javax.swing.JFrame {
         emailCheckPanel.add(filler29);
 
         checkEmailButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkEmailButton.setText(CHECK_BTN.getContent(language));
+        checkEmailButton.setText(CHECK_BTN.getContent());
         checkEmailButton.setEnabled(false);
         checkEmailButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkEmailButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -844,7 +756,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         changePWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         changePWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        changePWLabel.setText(CHANGE_PW_LABEL.getContent(language));
+        changePWLabel.setText(CHANGE_PW_LABEL.getContent());
         changePWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -872,7 +784,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW1Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW1Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW1Label.setText(NEW_PW_LABLE.getContent(language));
+        newPW1Label.setText(NEW_PW_LABLE.getContent());
         newPW1Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -924,7 +836,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW2Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW2Label.setText(REPEAT_PW_LABEL.getContent(language));
+        newPW2Label.setText(REPEAT_PW_LABEL.getContent());
         newPW2Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -940,7 +852,7 @@ public class AttListForm extends javax.swing.JFrame {
         repeatPWD_Panel.add(filler60);
 
         new2Password.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        new2Password.setToolTipText(REPEAT_PW_INPUT_TOOLTIP.getContent(language));
+        new2Password.setToolTipText(REPEAT_PW_INPUT_TOOLTIP.getContent());
         new2Password.setEnabled(false);
         new2Password.setMaximumSize(new java.awt.Dimension(32767, 30));
         repeatPWD_Panel.add(new2Password);
@@ -957,7 +869,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel.setText(MY_PW_LABEL.getContent(language));
+        userPWLabel.setText(MY_PW_LABEL.getContent());
         userPWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -991,7 +903,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel1.setText(CREATION_LABEL.getContent(language));
+        userPWLabel1.setText(CREATION_LABEL.getContent());
         userPWLabel1.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -1093,7 +1005,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         createButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         createButton.setMnemonic('r');
-        createButton.setText(CREATE_BTN.getContent(language));
+        createButton.setText(CREATE_BTN.getContent());
         createButton.setEnabled(false);
         createButton.setMaximumSize(new java.awt.Dimension(80, 60));
         createButton.setMinimumSize(new java.awt.Dimension(80, 40));
@@ -1108,7 +1020,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         deleteButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteButton.setMnemonic('d');
-        deleteButton.setText(DELETE_BTN.getContent(language));
+        deleteButton.setText(DELETE_BTN.getContent());
         deleteButton.setEnabled(false);
         deleteButton.setMaximumSize(new java.awt.Dimension(80, 60));
         deleteButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1123,7 +1035,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         multiFuncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         multiFuncButton.setMnemonic('m');
-        multiFuncButton.setText(MODIFY_BTN.getContent(language));
+        multiFuncButton.setText(MODIFY_BTN.getContent());
         multiFuncButton.setEnabled(false);
         multiFuncButton.setMaximumSize(new java.awt.Dimension(80, 60));
         multiFuncButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1138,7 +1050,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         cancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         cancelButton.setMnemonic('c');
-        cancelButton.setText(CANCEL_BTN.getContent(language));
+        cancelButton.setText(CANCEL_BTN.getContent());
         cancelButton.setEnabled(false);
         cancelButton.setMaximumSize(new java.awt.Dimension(80, 60));
         cancelButton.setMinimumSize(new java.awt.Dimension(80, 60));
@@ -1165,7 +1077,7 @@ public class AttListForm extends javax.swing.JFrame {
         btnPanel.add(filler85);
 
         searchText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        searchText.setToolTipText(SEARCH_INPUT_TOOLTIP.getContent(language));
+        searchText.setToolTipText(SEARCH_INPUT_TOOLTIP.getContent());
         searchText.setMaximumSize(new java.awt.Dimension(200, 30));
         searchText.setMinimumSize(new java.awt.Dimension(80, 30));
         searchText.setPreferredSize(new java.awt.Dimension(120, 30));
@@ -1174,7 +1086,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(SEARCH_BTN.getContent(language));
+        searchButton.setText(SEARCH_BTN.getContent());
         searchButton.setMaximumSize(new java.awt.Dimension(80, 60));
         searchButton.setMinimumSize(new java.awt.Dimension(80, 60));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1187,8 +1099,8 @@ public class AttListForm extends javax.swing.JFrame {
         btnPanel.add(filler81);
 
         saveTextFileButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        saveTextFileButton.setText(SAVE_AS_BTN.getContent(language));
-        saveTextFileButton.setToolTipText(SAVE_AS_TOOLTIP.getContent(language));
+        saveTextFileButton.setText(SAVE_AS_BTN.getContent());
+        saveTextFileButton.setToolTipText(SAVE_AS_TOOLTIP.getContent());
         saveTextFileButton.setAutoscrolls(true);
         saveTextFileButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         saveTextFileButton.setMaximumSize(new java.awt.Dimension(80, 40));
@@ -1204,7 +1116,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(CLOSE_BTN.getContent(language));
+        closeFormButton.setText(CLOSE_BTN.getContent());
         closeFormButton.setMaximumSize(new java.awt.Dimension(80, 60));
         closeFormButton.setMinimumSize(new java.awt.Dimension(80, 60));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1326,15 +1238,43 @@ public class AttListForm extends javax.swing.JFrame {
                     if (allFieldsAreGood(errorMsg)) {
                         String newUserID = userIDText.getText().trim();
                         int result = saveCreatedRecord();
+                        String dialogText = "";
+                        
                         if (result == 1) {
                             revokeCreationMode(true);
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText ="사용자(ID: " + newUserID + ") 정보가\n성공적으로 생성되었습니다.";
+                                    break;
+                                    
+                                case ENGLISH:
+                                    dialogText = "Successful Creation of a user" + System.lineSeparator() 
+                                            + "User ID: " + newUserID + "";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            
                             JOptionPane.showMessageDialog(this, 
-                                    getTextFor(CREATION_SUCCESS_DIALOG, userIDText.getText().trim()),    //
+                                    dialogText,
                                     ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                                     JOptionPane.PLAIN_MESSAGE);  
                         } else {
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText = "정보 생성에 실패하였습니다!\n  ID: " +   newUserID;
+                                    break;
+                                    
+                                case ENGLISH:
+                                    dialogText = "User Creation Failure!" + System.lineSeparator() 
+                                            + " Failed ID: " + newUserID + "";
+                                    break;
+                                default:
+                                    break;
+                            }                            
+                            
                             JOptionPane.showMessageDialog(this, 
-                                    getTextFor(CREATION_FAIL_DIALOG, userIDText.getText().trim()),
+                                    dialogText,
                                     ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                                     JOptionPane.PLAIN_MESSAGE);            
                         }
@@ -1541,15 +1481,33 @@ public class AttListForm extends javax.swing.JFrame {
                     File f = new File(pathname);
                     if(f.exists()) {
                         if (f.isDirectory()) {
+                            String dialogText = "";
+                            
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText = "같은 이름의 폴더(=디렉토리)가 존재합니다.\n " + 
+                                            pathname + "\n파일의 이름을 다른 것으로 변경하십시오.";
+                                    break;
+
+                                case ENGLISH:
+                                    dialogText = "A folder(=directory) of same name exists" +
+                                            System.lineSeparator() + 
+                                            pathname + "\nChange file name to a different one";
+                                    break;
+                                default:
+                                    break;
+                            }                            
+                            
                             JOptionPane.showConfirmDialog(this,
-                                    getTextFor(SAVE_AS_FAIL1_DIALOG, pathname),
+//                                    getTextFor(SAVE_AS_DIR_FAILURE_DIALOG, pathname),
+                                    dialogText,
                                     ((String[])Globals.DialogTitleList.get(ATT_SAVE_AS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
                                     JOptionPane.PLAIN_MESSAGE,
                                     WARNING_MESSAGE);
                             return;
                         } else {
                             int result = JOptionPane.showConfirmDialog(this, 
-                                    getTextFor(SAVE_AS_FAIL2_DIALOG, pathname),
+                                    getTextFor(SAVE_AS_FILE_FAILURE_DIALOG, pathname),
                                     ((String[])Globals.DialogTitleList.get(CONFIRM_DIALOGTITLE.ordinal()))[ourLang],
                                     JOptionPane.YES_NO_OPTION);
                             if (result != YES_OPTION) {
@@ -2698,24 +2656,13 @@ public class AttListForm extends javax.swing.JFrame {
         SetAColumnWidth(tcm.getColumn(6), 10, 120, 32767); // 6: Latest modification date and time
     }
     
-    private String getTextFor(ControlEnums.DialogMSGTypes msgType, String str) {
+//    private String getTextFor(ControlEnums.DialogMSGTypes msgType, String str) {
+    private String getTextFor(AttListDialogType dialogType, String str) {
         String label = null;
         
-        switch (msgType) {
-            case SAVE_AS_FAIL1_DIALOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    label = "같은 이름의 폴더(=디렉토리)가 존재합니다.\n " + 
-                            str + "\n파일의 이름을 다른 것으로 변경하십시오.";
-                    break;
-                default:
-                    label = "A folder(=directory) of same name exists" +
-                            System.lineSeparator() + 
-                            str + "\nChange file name to a different one";
-                    break;
-                }
-                break;
-            case SAVE_AS_FAIL2_DIALOG:
+        switch (dialogType) {
+           
+            case SAVE_AS_FILE_FAILURE_DIALOG:
             switch (parkingLotLocale.getLanguage()) {
                 case "ko":
                     label = "아래 파일이 이미 존재합니다.\n " + 
@@ -2727,30 +2674,8 @@ public class AttListForm extends javax.swing.JFrame {
                             str + "\nChange file name to a different one";
                     break;
                 }
-                break;
-            case CREATION_SUCCESS_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label ="사용자(ID: " + 
-                                    str + ") 정보가\n성공적으로 생성되었습니다.";
-                        break;
-                    default:
-                        label = "Successful Creation of a user" + System.lineSeparator() 
-                                + "User ID: " + str + "";
-                        break;
-                }
-                break;
-            case CREATION_FAIL_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "정보 생성에 실패하였습니다!\n  ID: " +   str;
-                        break;
-                    default:
-                        label = "User Creation Failure!" + System.lineSeparator() 
-                                + " Failed ID: " + str + "";
-                        break;
-                }
-                break;
+                break;          
+
             case DELETE_DIALOG:
                 switch (parkingLotLocale.getLanguage()) {
                     case "ko":
@@ -3024,4 +2949,20 @@ enum FormMode {
     NormalMode,
     CreateMode,
     UpdateMode
+}
+
+enum AttListDialogType {
+    SAVE_AS_FILE_FAILURE_DIALOG,
+    CREATION_SUCCESS_DIALOG,
+ 
+    DELETE_DIALOG,
+    DELETE_SUCCESS_DIALOG,
+    DELETE_FAIL3_DAILOG,
+    EMAIL_DUP_TURE_DIALOG,
+    EMAIL_DUP_FALSE_DIALOG,
+    EMAIL_CHECK_FAIL_DIALOG,
+    ID_DUP_CHECK_DIALOG,
+    ID_CHECK_GOOD_DIALOG,
+    USER_UPDATE_SUCCESS_DIALOG,
+    USER_UPDATE_FAIL_DIALOG,
 }

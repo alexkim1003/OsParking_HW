@@ -22,15 +22,12 @@ import static com.osparking.global.Globals.addMessageLine;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.logParkingOperation;
 import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.EBOARD_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
 import static com.osparking.global.names.ControlEnums.TextType.CONN_MSG;
-import static com.osparking.global.names.ControlEnums.TextType.DISCONN_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.DIS_CONN_MSG;
-import static com.osparking.global.names.ControlEnums.TextType.ERROR_RATE_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.NO_SOCKET_DISCON_MSG;
 import com.osparking.global.names.OSP_enums.DeviceType;
 
@@ -105,13 +102,13 @@ public class SocketConnStat {
                 String device = null;
                     switch(deviceType){
                         case Camera: 
-                            device = CAMERA_LABEL.getContent(language);
+                            device = CAMERA_LABEL.getContent();
                             break;
                         case GateBar :
-                            device = GATE_BAR_LABEL.getContent(language);
+                            device = GATE_BAR_LABEL.getContent();
                             break;
                         case E_Board :
-                            device = EBOARD_LABEL.getContent(language);
+                            device = EBOARD_LABEL.getContent();
                             break;
                         default :
                             break;
