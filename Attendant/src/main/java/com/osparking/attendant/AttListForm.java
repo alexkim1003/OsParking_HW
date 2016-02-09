@@ -1223,14 +1223,14 @@ public class AttListForm extends javax.swing.JFrame {
                     // <editor-fold defaultstate="collapsed" desc="-- Complete user creation operation">
                     if (!ID_usable) {
                         JOptionPane.showConfirmDialog(this, 
-                                ((String[])Globals.DialogMSGList.get(ID_CHECK_DIALOG.ordinal()))[ourLang],
+                                ID_CHECK_DIALOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
                     }
                     if (!Email_usable) {
                         JOptionPane.showConfirmDialog(this, 
-                                ((String[])Globals.DialogMSGList.get(EMAIL_CHECK_DIALOG.ordinal()))[ourLang],
+                                EMAIL_CHECK_DIALOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
@@ -1355,7 +1355,7 @@ public class AttListForm extends javax.swing.JFrame {
         StringBuilder wrongFields = new StringBuilder();
         // name should be longer than 2 characters
         if (userNameText.getText().trim().length() <= 1) {
-            wrongFields.append(((String[])Globals.DialogMSGList.get(ATT_NAME_CHECK_DIALOG.ordinal()))[ourLang] + System.lineSeparator());
+            wrongFields.append(ATT_NAME_CHECK_DIALOG.getContent() + System.lineSeparator());
             userNameText.requestFocus();
         }
 
@@ -1365,7 +1365,7 @@ public class AttListForm extends javax.swing.JFrame {
         if (cellPhone.length() > 0 && cellDigCount != 11) {
             if (wrongFields.toString().length() == 0)
                 cellPhoneText.requestFocus();
-            wrongFields.append(((String[])Globals.DialogMSGList.get(ATT_CELL_CHECK_DIALOG.ordinal()))[ourLang]+ System.lineSeparator());
+            wrongFields.append(ATT_CELL_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }      
         
         // given phone number exists, it should be longer than 4
@@ -1375,14 +1375,14 @@ public class AttListForm extends javax.swing.JFrame {
         if (phoneNumber.length() > 0 && phDigCount < 4) {
             if (wrongFields.toString().length() == 0)
                 phoneText.requestFocus();            
-            wrongFields.append(((String[])Globals.DialogMSGList.get(PHONE_CHECK_DIALOG.ordinal()))[ourLang]+ System.lineSeparator());
+            wrongFields.append(PHONE_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }        
         
         // one of cell or phone should be supplied
         if ((cellDigCount == 0) && (phDigCount == 0)) {
             if (wrongFields.toString().length() == 0)
                 cellPhoneText.requestFocus();                
-            wrongFields.append(((String[])Globals.DialogMSGList.get(CELL_PHONE_CHECK_DIALOG.ordinal()))[ourLang]+ System.lineSeparator());
+            wrongFields.append(CELL_PHONE_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }
         
         // when password is to be updated
@@ -1395,12 +1395,12 @@ public class AttListForm extends javax.swing.JFrame {
                 if (!pass1.equals(pass2)) {
                     if (wrongFields.toString().length() == 0)
                         new1Password.requestFocus();                            
-                    wrongFields.append(((String[])Globals.DialogMSGList.get(REPEAT_PW_CHECK_ERROR.ordinal()))[ourLang]+ System.lineSeparator());
+                    wrongFields.append(REPEAT_PW_CHECK_ERROR.getContent() + System.lineSeparator());
                 }
             } else {
                 if (wrongFields.toString().length() == 0)
                     new1Password.requestFocus();         
-                wrongFields.append(((String[])Globals.DialogMSGList.get(PASSWORD_CHECK_DIALOG.ordinal()))[ourLang]+ System.lineSeparator());
+                wrongFields.append(PASSWORD_CHECK_DIALOG.getContent() + System.lineSeparator());
             }
         }
         // </editor-fold>
@@ -1417,7 +1417,7 @@ public class AttListForm extends javax.swing.JFrame {
         } else {
             if (wrongFields.toString().length() == 0)
                 userPassword.requestFocus();                    
-            wrongFields.append(((String[])Globals.DialogMSGList.get(ADMIN_PW_CHECK_DIALOG.ordinal()))[ourLang]+ System.lineSeparator());
+            wrongFields.append(ADMIN_PW_CHECK_DIALOG.getContent() + System.lineSeparator());
             result = false;
         }        
         errorMsg[0] = wrongFields.toString();
@@ -1535,13 +1535,26 @@ public class AttListForm extends javax.swing.JFrame {
             // When deleting a user account, to compare user password (stored at a login time)
             // with the password entered in the delete form, dual table in the MySQL is needed.
             String pwHashed = getHashedPW(new String(userPassword.getPassword()));
+            String dialogText = "";
             if (loginPW.equals(pwHashed) ) {
                 // Get a confirmation from the user for the deletion.
-                int result = JOptionPane.showConfirmDialog(null, 
-                                getTextFor(DELETE_DIALOG, userIDText.getText()), 
-                                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
-                                JOptionPane.YES_NO_OPTION);
-                if(result == JOptionPane.YES_OPTION) {            
+                switch (language) {
+                    case KOREAN:
+                        dialogText = "아래 계정을 삭제합니까?" + System.lineSeparator()  
+                                + "계정 ID: " + userIDText.getText();
+                        break;
+                    case ENGLISH:
+                        dialogText = "Do you want to delete this user?" + System.lineSeparator() 
+                                + "User ID: " + userIDText.getText();
+                        break;
+                    default:
+                        break;
+                }                
+                
+                int result = JOptionPane.showConfirmDialog(null, dialogText, 
+                        ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {            
                     deleteAttendant();
                 } else {
                     // Clear password entered
@@ -1549,7 +1562,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }
             } else {
                 showMessageDialog(null, 
-                        ((String[])Globals.DialogMSGList.get(DELETE_FAIL_DAILOG.ordinal()))[ourLang]+ System.lineSeparator(),
+                        DELETE_FAIL_DAILOG.getContent() + System.lineSeparator(),
                         ((String[])Globals.DialogTitleList.get(DELETE_FAIL_DAILOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.INFORMATION_MESSAGE);             
             }
@@ -2676,18 +2689,18 @@ public class AttListForm extends javax.swing.JFrame {
                 }
                 break;          
 
-            case DELETE_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "아래 계정을 삭제합니까?" + System.lineSeparator()  
-                                + "n계정ID: " + str;
-                        break;
-                    default:
-                        label = "Do you want to delete this user?" + System.lineSeparator() 
-                                + "User ID: " + str;
-                        break;
-                }
-                break;
+//            case DELETE_DIALOG:
+//                switch (parkingLotLocale.getLanguage()) {
+//                    case "ko":
+//                        label = "아래 계정을 삭제합니까?" + System.lineSeparator()  
+//                                + "n계정ID: " + str;
+//                        break;
+//                    default:
+//                        label = "Do you want to delete this user?" + System.lineSeparator() 
+//                                + "User ID: " + str;
+//                        break;
+//                }
+//                break;
             case DELETE_SUCCESS_DIALOG:
                 switch (parkingLotLocale.getLanguage()) {
                     case "ko":
@@ -2955,7 +2968,7 @@ enum AttListDialogType {
     SAVE_AS_FILE_FAILURE_DIALOG,
     CREATION_SUCCESS_DIALOG,
  
-    DELETE_DIALOG,
+//    DELETE_DIALOG,
     DELETE_SUCCESS_DIALOG,
     DELETE_FAIL3_DAILOG,
     EMAIL_DUP_TURE_DIALOG,

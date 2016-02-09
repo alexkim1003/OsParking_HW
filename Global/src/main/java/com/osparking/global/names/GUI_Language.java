@@ -336,195 +336,195 @@ public class GUI_Language {
         //</editor-fold>  
     };
     
-    public static String[][] dialogMSG = {
-        // <editor-fold defaultstate="collapsed" desc="-- DialogMSG"> 
-        {"아이디 중복검사가 필요합니다.", "Need to check if 'id' is usable(unoccupied)."},
-        {"이메일 중복검사가 필요합니다.", "Need to check if 'E-Mail' is usable(unoccupied)."},
-        {"  - 관리원 이름 두 글자 이상", "  - Name should be longer than 1 character"},
-        {"  - 휴대폰 번호 입력 오류", "  - Wrong cell phone number"},
-        {"  - 전화 번호 입력 오류", "  - Phone number error"},
-        {"  - 전화번호 나 휴대폰 중 하나 입력", "  - Either phone, cell-phone or both is needed"},
-        {"  - 비밀번호 형식이 요구사항과 맞지 않음.", "  - Password doesn't meet syntax requirements"},
-        {"  - 새 비밀번호 반복입력 불일치", "  - New passwords don't match"},
-        {"  - 관리원 비밀번호 오류", "  - Your Password is Wrong!"},
-        {"비밀번호가 올바르지 않습니다.", "Password is wrong!"},
-        {"아이디는 두 자 이상이어야 합니다.", "ID should consists of at least 2 characters."},
-        {"첫 글자가 영문자가 아닙니다", "nested character isn't an alpha-numeric, space, or dot(.)" },
-        {"내포된 글자가 영숫자, 공백 혹은 점(.)이 아닙니다", "first character is not an alphabet" },
-        {"끝 글자가 영숫자가 아닙니다", "last character isn't an alpha-numeric" },
-        {"모든 상위 및 하위 소속들을 삭제합니까?", "Want to delete all of higher and lower affiliations?"},
-        {"모든 소속들이 성공적으로 삭제되었습니다", "Every affiliations are deleted successfully." },
-        {"모든 건물 및 소속 호실들을 삭제합니까?", "Want to delete all buildings and rooms?" },
-        {"모든 건물 및 소속 호실들이 성공적으로 삭제되었습니다", "Every Buildings and Rooms are deleted."},
-        {"차량번호가 누락되었습니다.", "Car Tag Number is missing."},
-        {"운전자 정보가 누락되었습니다.", "Car Owner/Driver is missing."},
-        {"차량 등록을 실패하였습니다.", "failed vehicle creation "},
-        {"작성 중인 차량정보를 포기하겠습니까?", "Want to desert car information created so far?"},
-        {"변경 중인 차량정보를 포기하겠습니까?", "Want to desert car information updated so far?"},
-        {"모든 등록 차량을 삭제합니까?", "Want do delete all vehicle information?"},
-        {"모든 차량 정보가 삭제되었습니다.", "All Vehicles are Deleted"},
-        {"등록된 차량이없습니다.", "No vehicle to save!"},
-        {"운전자 정보 생성 실패.", "Failed to create a owner/driver record."},
-        {"모든 운전자가 삭제되었습니다.", "All drivers were deleted"},
-        {"하나의 운전자만 선택하여 변경하십시오.", "Please narrow down to a single driver to update!"},
-        {"새로 생성중인 운전자 정보를 취소하시겟습니까?", "Do you want to quit creating a new driver?"},
-        {"변경 중인 운전자 정보를 취소하시겟습니까?", "Do you want to cancel modifying driver information?"},
-        
-        {
-         "\"필수사항\" 인 이름을 입력하시겟습니까?" 
-                            + System.getProperty("line.separator") 
-                            + "([예] 버튼을 누르면 이름 입력란으로 이동합니다." 
-                            + System.getProperty("line.separator") 
-                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
-            
-        "Want to input a \"required\" driver name?" 
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes] name field will have focus." 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, modification will be discarded.)"
-        },
-        
-        { 
-         "\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
-                            + System.getProperty("line.separator") 
-                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
-                            + System.getProperty("line.separator") 
-                            + "그렇지 않으면, 수정정보가 포기됩니다.)",
-            
-          "Want to input a \"required\" cell phone number?"  
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes], cell phone will have focus," 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, modification will be discarded.)" 
-        },
-        
-        {
-          "\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
-                            + System.getProperty("line.separator") 
-                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
-                            + System.getProperty("line.separator") 
-                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
-            
-          "Want to input a \"required\" cell phone number?" 
-                            + System.getProperty("line.separator") 
-                            + "(By pressing [Yes], cell phone will have focus," 
-                            + System.getProperty("line.separator") 
-                            + "Otherwise, creation will be discarded.)"
-        },
-        
-        {
-          "운전자 이름을입력하지 않으셧습니다." 
-                            + System.getProperty("line.separator")
-                            + "운전자 생성이 자동적으로 종료됩니다." ,
-            
-         "As the driver's name is missing," 
-                            + System.getProperty("line.separator") 
-                            + "driver creation is automatically cancelled."
-        },
-        
-        {"생성/수정 중인정보를 포기하시겟습니까?", "Want to desert car information being created/modified?"},
-        {"시작일과 종료일을 모두 입력하십시오", "Enter starting and ending date both"},
-        {
-            "종료일이 시작일보다 앞설 수 없습니다\n" +
-                                    "날짜를 변경하여 입력하십시오.", 
-            "Ending date can't precede starting date\n" +
-                                    "Please, correct search range."
-        },
-        
-        {"실행중인 프로그램을 종료합니다.", "Program stops running."},
-        {"프로그램을 종료하시겠습니까?", "Do you want to stop the system?"},
-        {
-            "현제 단계 (로깅하지 않음.)," + System.lineSeparator() 
-                    + " 다음과 같은 '필수적인' 항목들만 로깅 :" + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - 시스템 시작시간과 종료시간" + System.lineSeparator() 
-                    + " - 삭제 된 레코드 수"+ System.lineSeparator() 
-                    + " - 삭제 된 이미지의 수"+ System.lineSeparator() 
-                    + " - 삭제 된 로그 폴더 및 텍스트 파일의 개수"+ System.lineSeparator() 
-                    + " - 삭제 된 로그 폴더 및 텍스트 파일의 경로", 
-            "At this level (No Logging)," + System.lineSeparator() 
-                    + " Following 'Mandatory' items are logged :" + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - System start and stop time" + System.lineSeparator() 
-                    + " - Number of deleted old records"+ System.lineSeparator() 
-                    + " - Number of deleted old images"+ System.lineSeparator() 
-                    + " - Number of deleted log folders and text files"+ System.lineSeparator() 
-                    + " - File path of deleted log folders and text files"
-        },
-        {
-            " '시스템 설정 변경' 단계 로깅 항목 :" + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - 필수 항목" + System.lineSeparator() 
-                    + "   추가" + System.lineSeparator()
-                    + " - 시스템 설정 변경"+ System.lineSeparator() 
-                    + " - 관리원/사용자 정보 변경"+ System.lineSeparator() 
-                    + " - 운전자 정보 변경"+ System.lineSeparator() 
-                    + " - 차량정보 변경", 
-            "'System Settings' Level Logged Items:" + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - Mandatory Items" + System.lineSeparator() 
-                    + "   plus" + System.lineSeparator()
-                    + " - System Settings Change" + System.lineSeparator() 
-                    + " - Attendant/User Info Change" + System.lineSeparator() 
-                    + " - Drivers Info Change" + System.lineSeparator() 
-                    + " - Vehicles Info Change" + System.lineSeparator()
-        },
-        {
-                " '시스템, 사용자, 차량' 단계 로깅 항목 :" + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - 시스템 설정 변경 항목" + System.lineSeparator() 
-                    + "   추가"+ System.lineSeparator() 
-                    + " - 전광판 설정 변경"+ System.lineSeparator() ,
-            "'E-Board Settings' Level Logged Items: " + System.lineSeparator() 
-                    + System.lineSeparator() 
-                    + " - System Settings Logged Items" + System.lineSeparator() 
-                    + "   plus" + System.lineSeparator()
-                    + " - E-Board Settings Change" + System.lineSeparator()
-        },
-        {"GUI 언어 선택", "GUI language selection."},
-        {"사진크기를 100이상으로 입력해주시기 바랍니다.", "Please enter a picture size value of 100 or more."},
-        {
-            "입구 갯수를 변경할 경우," + System.lineSeparator() 
-                    + "'OsParking' 이 자동으로 종료됩니다." + System.lineSeparator() 
-                    + "'OsParking' 을 다시 실행시켜주시기 바랍니다.",
-            "After Gate count change," + System.lineSeparator() 
-                    + "'OSParking' shuts down by itself." + System.lineSeparator() 
-                    + "So, you need to start OSParking again."
-            
-        },
-        {"시스템 설정 저장에 실패하였습니다.", "The storage system settings failed."},
-        {"시스템 설정 저장에 성공하였습니다.", "The system settings have been saved successfully."},
-        {"1 이상의 값을 입력하세요.", "Enter a value of 1 or more .."},
-        {"의 IP 주소 형식이 올바르지 않습니다.", "in IP address format error"},
-        {"설정이 변경되었습니다..\n \n"
-                    + "[저장] 또는 [취소]버튼을 선택해 주세요.", 
-            "Settings Changed.\n \n"
-                    + "Either [Save] or [Cancel], please."
-        },
-        {"전광판 설정을 실패하였습니다.", "This e-board settings update saving DB operation failed."},
-        {"  - 문구를 입력해주십시오.", "  - Please enter a message"},
-        {"변경사항", "Changes"},
-        {"변경 전", "Current"},
-        {"변경 후", "Modified"},
-        {"저장되었습니다.", "Saved"},
-        {"아이디 혹은 비밀번호가 일치 하지 않습니다..", "ID or Password is wrong!"},
-        {"\"아이디\"를 입력하세요.", "Enter \'Login ID\'!"},
-        {"\"비밀번호\"를 입력하세요.", "Enter \'Password\'"},
-        
-        {"\"하위소속\"을 선택하지 않으셨습니다.\n"
-            + "하위소속을 선택 하시겠습니까 ?\n"
-            + "아니요 버튼을 누르게 되면 상위 소속이 초기화됩니다.\n", 
-        "You did not select \'Lower Affiliation\'\n"
-            + "Do you want to Select Lower Affiliation ?\n"
-            + "If you choose \'no\',  Higher will be reset"},
-        {"\"호실번호\"를 선택하지 않으셨습니다.\n"
-            + "\"호실번호\" 선택 하시겠습니까 ?\n"
-            + "아니요 버튼을 누르게 되면 건물 번호가 초기화됩니다.\n", 
-        "You did not select \'Room\'\n"
-            + "Do you want to Select Room ?\n"
-            + "If you choose \'no\' button will delete the changes"},
-        //</editor-fold>  
-    };
+//    public static String[][] dialogMSG = {
+//        // <editor-fold defaultstate="collapsed" desc="-- DialogMSG"> 
+//        {"아이디 중복검사가 필요합니다.", "Need to check if 'id' is usable(unoccupied)."},
+//        {"이메일 중복검사가 필요합니다.", "Need to check if 'E-Mail' is usable(unoccupied)."},
+//        {"  - 관리원 이름 두 글자 이상", "  - Name should be longer than 1 character"},
+//        {"  - 휴대폰 번호 입력 오류", "  - Wrong cell phone number"},
+//        {"  - 전화 번호 입력 오류", "  - Phone number error"},
+//        {"  - 전화번호 나 휴대폰 중 하나 입력", "  - Either phone, cell-phone or both is needed"},
+//        {"  - 비밀번호 형식이 요구사항과 맞지 않음.", "  - Password doesn't meet syntax requirements"},
+//        {"  - 새 비밀번호 반복입력 불일치", "  - New passwords don't match"},
+//        {"  - 관리원 비밀번호 오류", "  - Your Password is Wrong!"},
+//        {"비밀번호가 올바르지 않습니다.", "Password is wrong!"},
+//        {"아이디는 두 자 이상이어야 합니다.", "ID should consists of at least 2 characters."},
+//        {"첫 글자가 영문자가 아닙니다", "nested character isn't an alpha-numeric, space, or dot(.)" },
+//        {"내포된 글자가 영숫자, 공백 혹은 점(.)이 아닙니다", "first character is not an alphabet" },
+//        {"끝 글자가 영숫자가 아닙니다", "last character isn't an alpha-numeric" },
+//        {"모든 상위 및 하위 소속들을 삭제합니까?", "Want to delete all of higher and lower affiliations?"},
+//        {"모든 소속들이 성공적으로 삭제되었습니다", "Every affiliations are deleted successfully." },
+//        {"모든 건물 및 소속 호실들을 삭제합니까?", "Want to delete all buildings and rooms?" },
+//        {"모든 건물 및 소속 호실들이 성공적으로 삭제되었습니다", "Every Buildings and Rooms are deleted."},
+//        {"차량번호가 누락되었습니다.", "Car Tag Number is missing."},
+//        {"운전자 정보가 누락되었습니다.", "Car Owner/Driver is missing."},
+//        {"차량 등록을 실패하였습니다.", "failed vehicle creation "},
+//        {"작성 중인 차량정보를 포기하겠습니까?", "Want to desert car information created so far?"},
+//        {"변경 중인 차량정보를 포기하겠습니까?", "Want to desert car information updated so far?"},
+//        {"모든 등록 차량을 삭제합니까?", "Want do delete all vehicle information?"},
+//        {"모든 차량 정보가 삭제되었습니다.", "All Vehicles are Deleted"},
+//        {"등록된 차량이없습니다.", "No vehicle to save!"},
+//        {"운전자 정보 생성 실패.", "Failed to create a owner/driver record."},
+//        {"모든 운전자가 삭제되었습니다.", "All drivers were deleted"},
+//        {"하나의 운전자만 선택하여 변경하십시오.", "Please narrow down to a single driver to update!"},
+//        {"새로 생성중인 운전자 정보를 취소하시겟습니까?", "Do you want to quit creating a new driver?"},
+//        {"변경 중인 운전자 정보를 취소하시겟습니까?", "Do you want to cancel modifying driver information?"},
+//        
+//        {
+//         "\"필수사항\" 인 이름을 입력하시겟습니까?" 
+//                            + System.getProperty("line.separator") 
+//                            + "([예] 버튼을 누르면 이름 입력란으로 이동합니다." 
+//                            + System.getProperty("line.separator") 
+//                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
+//            
+//        "Want to input a \"required\" driver name?" 
+//                            + System.getProperty("line.separator") 
+//                            + "(By pressing [Yes] name field will have focus." 
+//                            + System.getProperty("line.separator") 
+//                            + "Otherwise, modification will be discarded.)"
+//        },
+//        
+//        { 
+//         "\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
+//                            + System.getProperty("line.separator") 
+//                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
+//                            + System.getProperty("line.separator") 
+//                            + "그렇지 않으면, 수정정보가 포기됩니다.)",
+//            
+//          "Want to input a \"required\" cell phone number?"  
+//                            + System.getProperty("line.separator") 
+//                            + "(By pressing [Yes], cell phone will have focus," 
+//                            + System.getProperty("line.separator") 
+//                            + "Otherwise, modification will be discarded.)" 
+//        },
+//        
+//        {
+//          "\"필수사항\" 인 휴대전화을 입력하시겟습니까?" 
+//                            + System.getProperty("line.separator") 
+//                            + "([예] 버튼을 누르면 휴대전화 입력란으로 이동합니다." 
+//                            + System.getProperty("line.separator") 
+//                            + "그렇지 않으면, 수정정보가 포기됩니다.)", 
+//            
+//          "Want to input a \"required\" cell phone number?" 
+//                            + System.getProperty("line.separator") 
+//                            + "(By pressing [Yes], cell phone will have focus," 
+//                            + System.getProperty("line.separator") 
+//                            + "Otherwise, creation will be discarded.)"
+//        },
+//        
+//        {
+//          "운전자 이름을입력하지 않으셧습니다." 
+//                            + System.getProperty("line.separator")
+//                            + "운전자 생성이 자동적으로 종료됩니다." ,
+//            
+//         "As the driver's name is missing," 
+//                            + System.getProperty("line.separator") 
+//                            + "driver creation is automatically cancelled."
+//        },
+//        
+//        {"생성/수정 중인정보를 포기하시겟습니까?", "Want to desert car information being created/modified?"},
+//        {"시작일과 종료일을 모두 입력하십시오", "Enter starting and ending date both"},
+//        {
+//            "종료일이 시작일보다 앞설 수 없습니다\n" +
+//                                    "날짜를 변경하여 입력하십시오.", 
+//            "Ending date can't precede starting date\n" +
+//                                    "Please, correct search range."
+//        },
+//        
+//        {"실행중인 프로그램을 종료합니다.", "Program stops running."},
+//        {"프로그램을 종료하시겠습니까?", "Do you want to stop the system?"},
+//        {
+//            "현제 단계 (로깅하지 않음.)," + System.lineSeparator() 
+//                    + " 다음과 같은 '필수적인' 항목들만 로깅 :" + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - 시스템 시작시간과 종료시간" + System.lineSeparator() 
+//                    + " - 삭제 된 레코드 수"+ System.lineSeparator() 
+//                    + " - 삭제 된 이미지의 수"+ System.lineSeparator() 
+//                    + " - 삭제 된 로그 폴더 및 텍스트 파일의 개수"+ System.lineSeparator() 
+//                    + " - 삭제 된 로그 폴더 및 텍스트 파일의 경로", 
+//            "At this level (No Logging)," + System.lineSeparator() 
+//                    + " Following 'Mandatory' items are logged :" + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - System start and stop time" + System.lineSeparator() 
+//                    + " - Number of deleted old records"+ System.lineSeparator() 
+//                    + " - Number of deleted old images"+ System.lineSeparator() 
+//                    + " - Number of deleted log folders and text files"+ System.lineSeparator() 
+//                    + " - File path of deleted log folders and text files"
+//        },
+//        {
+//            " '시스템 설정 변경' 단계 로깅 항목 :" + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - 필수 항목" + System.lineSeparator() 
+//                    + "   추가" + System.lineSeparator()
+//                    + " - 시스템 설정 변경"+ System.lineSeparator() 
+//                    + " - 관리원/사용자 정보 변경"+ System.lineSeparator() 
+//                    + " - 운전자 정보 변경"+ System.lineSeparator() 
+//                    + " - 차량정보 변경", 
+//            "'System Settings' Level Logged Items:" + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - Mandatory Items" + System.lineSeparator() 
+//                    + "   plus" + System.lineSeparator()
+//                    + " - System Settings Change" + System.lineSeparator() 
+//                    + " - Attendant/User Info Change" + System.lineSeparator() 
+//                    + " - Drivers Info Change" + System.lineSeparator() 
+//                    + " - Vehicles Info Change" + System.lineSeparator()
+//        },
+//        {
+//                " '시스템, 사용자, 차량' 단계 로깅 항목 :" + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - 시스템 설정 변경 항목" + System.lineSeparator() 
+//                    + "   추가"+ System.lineSeparator() 
+//                    + " - 전광판 설정 변경"+ System.lineSeparator() ,
+//            "'E-Board Settings' Level Logged Items: " + System.lineSeparator() 
+//                    + System.lineSeparator() 
+//                    + " - System Settings Logged Items" + System.lineSeparator() 
+//                    + "   plus" + System.lineSeparator()
+//                    + " - E-Board Settings Change" + System.lineSeparator()
+//        },
+//        {"GUI 언어 선택", "GUI language selection."},
+//        {"사진크기를 100이상으로 입력해주시기 바랍니다.", "Please enter a picture size value of 100 or more."},
+//        {
+//            "입구 갯수를 변경할 경우," + System.lineSeparator() 
+//                    + "'OsParking' 이 자동으로 종료됩니다." + System.lineSeparator() 
+//                    + "'OsParking' 을 다시 실행시켜주시기 바랍니다.",
+//            "After Gate count change," + System.lineSeparator() 
+//                    + "'OSParking' shuts down by itself." + System.lineSeparator() 
+//                    + "So, you need to start OSParking again."
+//            
+//        },
+//        {"시스템 설정 저장에 실패하였습니다.", "The storage system settings failed."},
+//        {"시스템 설정 저장에 성공하였습니다.", "The system settings have been saved successfully."},
+//        {"1 이상의 값을 입력하세요.", "Enter a value of 1 or more .."},
+//        {"의 IP 주소 형식이 올바르지 않습니다.", "in IP address format error"},
+//        {"설정이 변경되었습니다..\n \n"
+//                    + "[저장] 또는 [취소]버튼을 선택해 주세요.", 
+//            "Settings Changed.\n \n"
+//                    + "Either [Save] or [Cancel], please."
+//        },
+//        {"전광판 설정을 실패하였습니다.", "This e-board settings update saving DB operation failed."},
+//        {"  - 문구를 입력해주십시오.", "  - Please enter a message"},
+//        {"변경사항", "Changes"},
+//        {"변경 전", "Current"},
+//        {"변경 후", "Modified"},
+//        {"저장되었습니다.", "Saved"},
+//        {"아이디 혹은 비밀번호가 일치 하지 않습니다..", "ID or Password is wrong!"},
+//        {"\"아이디\"를 입력하세요.", "Enter \'Login ID\'!"},
+//        {"\"비밀번호\"를 입력하세요.", "Enter \'Password\'"},
+//        
+//        {"\"하위소속\"을 선택하지 않으셨습니다.\n"
+//            + "하위소속을 선택 하시겠습니까 ?\n"
+//            + "아니요 버튼을 누르게 되면 상위 소속이 초기화됩니다.\n", 
+//        "You did not select \'Lower Affiliation\'\n"
+//            + "Do you want to Select Lower Affiliation ?\n"
+//            + "If you choose \'no\',  Higher will be reset"},
+//        {"\"호실번호\"를 선택하지 않으셨습니다.\n"
+//            + "\"호실번호\" 선택 하시겠습니까 ?\n"
+//            + "아니요 버튼을 누르게 되면 건물 번호가 초기화됩니다.\n", 
+//        "You did not select \'Room\'\n"
+//            + "Do you want to Select Room ?\n"
+//            + "If you choose \'no\' button will delete the changes"},
+//        //</editor-fold>  
+//    };
     
     public static String[][] dialogTitle = {
         // <editor-fold defaultstate="collapsed" desc="-- DialogTitle"> 

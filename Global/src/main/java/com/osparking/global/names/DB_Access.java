@@ -325,10 +325,10 @@ public class DB_Access {
                 inData = comboBoxItem[i];
                 ComboBoxItemList.add(i, inData);
             }
-            for(int i = 0; i < dialogMSG.length; i++){
-                inData = dialogMSG[i];
-                DialogMSGList.add(i, inData);
-            }
+//            for(int i = 0; i < dialogMSG.length; i++){
+//                inData = dialogMSG[i];
+//                DialogMSGList.add(i, inData);
+//            }
             for(int i = 0; i < dialogTitle.length; i++){
                 inData = dialogTitle[i];
                 DialogTitleList.add(i, inData);
