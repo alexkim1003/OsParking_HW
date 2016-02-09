@@ -1586,8 +1586,26 @@ public class AttListForm extends javax.swing.JFrame {
         
         int relatedRecordCount = DB_Access.getRecordCount("car_arrival", "AttendantID", deleteID);
         if (relatedRecordCount > 0) {
-            JOptionPane.showMessageDialog(this, 
-                            getTextFor(DELETE_FAIL1_DAILOG, userIDText.getText(), relatedRecordCount),
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
+                    " - 아이디: " + userIDText.getText() + System.lineSeparator() + 
+                    " - 이  유: 차량 도착기록이 존재합니다.(" + relatedRecordCount + ")" +
+                    System.lineSeparator() + " * 자동차 도착 기록은 1 년간 저장됩니다.";
+                    break;
+                case ENGLISH:
+                    dialogMessage = "Following user can't be deleted" + System.lineSeparator() +
+                    " - User ID: " + userIDText.getText() + System.lineSeparator() + 
+                    " - Reason: has nonzero(" + relatedRecordCount + ") Car Arrival Records" +
+                    System.lineSeparator() + " * Car Arrival Records are stored for 1 year.";
+                    break;
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
                             ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.WARNING_MESSAGE);   
             return; 
@@ -1595,9 +1613,28 @@ public class AttListForm extends javax.swing.JFrame {
         
         relatedRecordCount = DB_Access.getRecordCount("loginrecord", "UserID", deleteID);
         if (relatedRecordCount > 0) {
+            String dialogMessage = "";
 
-            JOptionPane.showMessageDialog(this, 
-                            getTextFor(DELETE_FAIL2_DAILOG, userIDText.getText(),relatedRecordCount),
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
+                    " - 아이디 : " + userIDText.getText() + System.lineSeparator() + 
+                    " - 이  유 : 로그인기록이 존재합니다.(" + relatedRecordCount + ") " +
+                    System.lineSeparator() + " * 사용자 로그인 기록은 1 년간 저장됩니다.";
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "Following user can't be deleted" + System.lineSeparator() +
+                    " - User ID: " + userIDText.getText() + System.lineSeparator() + 
+                    " - Reason: has nonzero(" + relatedRecordCount + ") Login Records" +
+                    System.lineSeparator() + " * User Login Records are stored for 1 year.";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
                             ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.WARNING_MESSAGE);   
             return; 
@@ -1622,15 +1659,47 @@ public class AttListForm extends javax.swing.JFrame {
                 int realRow = usersTable.convertRowIndexToModel(selectedRowIndex);
                 ShowAttendantDetail(realRow);  
                 logParkingOperation(OpLogLevel.SettingsChange, 
-                        ("* User deleted (ID:" + deleteID + ")"));                    
-                JOptionPane.showMessageDialog(this, 
-                        getTextFor(DELETE_SUCCESS_DIALOG, userIDText.getText()),
+                        ("* User deleted (ID:" + deleteID + ")"));
+                
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "사용자(아이디: " + userIDText.getText() + ") 기록이" + 
+                                System.lineSeparator() + "성공적으로 삭제되었습니다.";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "User(ID: " + userIDText.getText() + ") record" + 
+                                System.lineSeparator() + "deleted successfully.";
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showMessageDialog(this, dialogMessage,
                         ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE);  
                 clearPasswordFields();
             } else {
-                JOptionPane.showMessageDialog(this, 
-                        getTextFor(DELETE_FAIL3_DAILOG, userIDText.getText()), 
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "사용자 삭제에 실패하였습니다!\n  아이디 : " + userIDText.getText();
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "Failed Deletion of a User Account!" + 
+                                System.lineSeparator() + " ID : " + userIDText.getText();
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showMessageDialog(this, dialogMessage,
                         ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE);            
             }
@@ -1798,8 +1867,24 @@ public class AttListForm extends javax.swing.JFrame {
                 String sql = "Select count(*) as dataCount From users_osp Where email = ?";
                 if (dataExistsInDB(sql, emailEntered)) {
                     // Access DB and find if entered e-mail is already registered to the system.
-                    JOptionPane.showConfirmDialog(this, 
-                            getTextFor(EMAIL_DUP_TURE_DIALOG, emailAddrText.getText().trim()), 
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "이메일 '" + emailAddrText.getText().trim() + "' 는 사용 중 입니다.\n"
+                                + "다른 이메일을 입력하십시오.";
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "E-mail '" + emailAddrText.getText().trim() + "' is in use"
+                            + System.lineSeparator() + "Choose a different one.";
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
                             ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                     emailAddrText.requestFocus();
@@ -1807,14 +1892,47 @@ public class AttListForm extends javax.swing.JFrame {
                     Email_usable = true;
                     usableEmail = emailEntered;
                     checkEmailButton.setEnabled(false);
-                    JOptionPane.showConfirmDialog(this,
-                            getTextFor(EMAIL_DUP_FALSE_DIALOG, emailAddrText.getText().trim()),
+                    
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "이메일 '" + emailAddrText.getText().trim() + 
+                                    "' 는 사용가능합니다." + System.lineSeparator();
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "E-mail '" + emailAddrText.getText().trim() + 
+                                    "' could be used." ;
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
                             ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             } else {
-                JOptionPane.showConfirmDialog(this,
-                        getTextFor(EMAIL_CHECK_FAIL_DIALOG, emailAddrText.getText().trim()),
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "이메일 주소 '" + emailAddrText.getText().trim() + 
+                                "'는 구문이 바르지 않습니다.\n";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "E-mail address '" + emailAddrText.getText().trim() + 
+                                "' has wrong syntax." + System.lineSeparator();
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                JOptionPane.showConfirmDialog(this, dialogMessage, 
                         ((String[])Globals.DialogTitleList.get(ATT_EMAIL_SYNTAX_CHECK_DIALOG.ordinal()))[ourLang],
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 emailAddrText.requestFocus();
@@ -1860,16 +1978,34 @@ public class AttListForm extends javax.swing.JFrame {
         try {
             if (idEntered.length() < 2) {
                 // Reject if ID were shorter than 2 characters
-                JOptionPane.showConfirmDialog(this, 
-                    ((String[])Globals.DialogMSGList.get(ID_LENGTH_CHECK_DIALOG.ordinal()))[ourLang],
+                JOptionPane.showConfirmDialog(this, ID_LENGTH_CHECK_DIALOG.getContent(),
                     ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
                 return;
             } else if (dataExistsInDB(sql, idEntered)) {
                 // Same ID is being used by other user, let the user know about this.
-                JOptionPane.showConfirmDialog(this, 
-                        getTextFor(ID_DUP_CHECK_DIALOG, userIDText.getText().trim()),
+                
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "아이디 '" + userIDText.getText().trim() + 
+                            "' 는 사용 중 입니다." + System.lineSeparator() 
+                            + "다른 아이디를 입력하십시오.";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "ID '" + userIDText.getText().trim() + 
+                            "' is preoccupied by someone else." + System.lineSeparator() 
+                            + "Choose a different ID";
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showConfirmDialog(this, dialogMessage,
                         ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
@@ -1879,8 +2015,26 @@ public class AttListForm extends javax.swing.JFrame {
                     ID_usable = true;
                     usableID = idEntered;
                     checkIDButton.setEnabled(false);
-                    JOptionPane.showConfirmDialog(this, 
-                            getTextFor(ID_CHECK_GOOD_DIALOG, userIDText.getText().trim()),
+                    
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "아이디 '" + userIDText.getText().trim() + 
+                                    "' 는 사용가능합니다." + System.lineSeparator() ;
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "ID '" + userIDText.getText().trim() + 
+                                    "' is usable." + System.lineSeparator() ;
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+//                            getTextFor(ID_CHECK_GOOD_DIALOG, userIDText.getText().trim()),
                             ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
                              JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 } else {
@@ -1958,8 +2112,35 @@ public class AttListForm extends javax.swing.JFrame {
                 bw.write(System.getProperty("line.separator"));
             }
             // Show the result in a ack popup box
-            JOptionPane.showMessageDialog(this, 
-                    getTextFor(SAVE_AS_SUCCESS_DIALOG, sb, filename, rowFrame).toString(), 
+            StringBuilder dialogBuilder = new StringBuilder();
+            
+            int lastSlash = filename.lastIndexOf((int)'\\');
+            switch (language) {
+                case KOREAN:
+                    dialogBuilder.append("생성 완료!\n  -파일이름: ");
+                    dialogBuilder.append(filename.substring(lastSlash + 1));
+                    dialogBuilder.append(" (총 ");
+                    dialogBuilder.append(rowFrame);
+                    dialogBuilder.append("행)");
+                    dialogBuilder.append("\n  -파일위치: ");
+                    dialogBuilder.append(filename.substring(0, lastSlash + 1));
+                    break;
+                    
+                case ENGLISH:
+                    dialogBuilder.append("File Created!" + System.lineSeparator() + "  - File name: ");
+                    dialogBuilder.append(filename.substring(lastSlash + 1));
+                    dialogBuilder.append(" (total ");
+                    dialogBuilder.append(rowFrame);
+                    dialogBuilder.append("lines)");
+                    dialogBuilder.append(System.lineSeparator() + "  - File Location: ");
+                    dialogBuilder.append(filename.substring(0, lastSlash + 1));
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            JOptionPane.showMessageDialog(this, dialogBuilder.toString(),
                     ((String[])Globals.DialogTitleList.get(ATT_SFAVE_AS_SUCCESS_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.PLAIN_MESSAGE);            
         } catch (Exception ex) {
@@ -2167,19 +2348,24 @@ public class AttListForm extends javax.swing.JFrame {
         
         StringBuilder tempStr = new StringBuilder();
         int idLen = idEntered.length();
+        
         if (!(Character.isLetter(idEntered.charAt(0)))) {
-            tempStr.append(((String[])Globals.DialogMSGList.get(ID_FIRST_CHAR_CHECK_DIALOG.ordinal()))[ourLang] + System.lineSeparator());
+            tempStr.append(ID_FIRST_CHAR_CHECK_DIALOG.getContent() + System.lineSeparator());
         } 
         for (int i = 0; i < idLen - 1; i++) {
             char ch = idEntered.charAt(i);
-            if (!(Character.isLetter(ch)) && !(Character.isDigit(ch)) &&
-                    ch != ' ' && ch != '.') {
-                tempStr.append(((String[])Globals.DialogMSGList.get(ID_CHAR_CHECK_DIALOG.ordinal()))[ourLang] + System.lineSeparator());
+            
+            if (!(Character.isLetter(ch)) && !(Character.isDigit(ch)) && ch != ' ' && ch != '.')
+            {
+                tempStr.append(ID_CHAR_CHECK_DIALOG.getContent()  + System.lineSeparator());
             }
         }
         char lastCh = idEntered.charAt(idLen - 1);
-        if (!(Character.isLetter(lastCh)) && !(Character.isDigit(lastCh))) {
-            tempStr.append(((String[])Globals.DialogMSGList.get(ID_END_CHAR_CHECK_DIALOG.ordinal()))[ourLang] + System.lineSeparator());
+        
+        if (!(Character.isLetter(lastCh)) && !(Character.isDigit(lastCh))) 
+        {
+            tempStr.append(ID_END_CHAR_CHECK_DIALOG.getContent() + System.lineSeparator());
+//                    ((String[])Globals.DialogMSGList.get(ID_END_CHAR_CHECK_DIALOG.ordinal()))[ourLang]
         }
         if (tempStr.length() >= 1) {
             tempStr.deleteCharAt(idLen - 1); // remove last newline character
@@ -2249,15 +2435,48 @@ public class AttListForm extends javax.swing.JFrame {
             List sortKeys = usersTable.getRowSorter().getSortKeys();
             RefreshTableContents(); 
             usersTable.getRowSorter().setSortKeys(sortKeys);    
-            logParkingOperation(OpLogLevel.SettingsChange, getModifiedUserInfo());            
-            JOptionPane.showMessageDialog(this, 
-                    getTextFor(USER_UPDATE_SUCCESS_DIALOG, userIDText.getText().trim()),
+            logParkingOperation(OpLogLevel.SettingsChange, getModifiedUserInfo());       
+            
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "사용자(ID: " + userIDText.getText().trim() + 
+                            ") 정보가\n성공적으로 수정되었습니다.";
+                    break;
+
+                case ENGLISH:
+                    dialogMessage ="A user(ID: " + userIDText.getText().trim() + ") information" + 
+                            System.lineSeparator() + "successfully modified.";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
                     ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.PLAIN_MESSAGE);  
             clearPasswordFields();
         } else {
-            JOptionPane.showMessageDialog(this, 
-                    getTextFor(USER_UPDATE_FAIL_DIALOG, userIDText.getText().trim()),
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "정보 수정에 실패하였습니다!\n  "
+                            + "ID: " +  userIDText.getText().trim();
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "User Info Change Failure!" + System.lineSeparator() + 
+                            "ID: " +  userIDText.getText().trim();
+                    break;
+                    
+                default:
+                    break;
+            }
+                
+            JOptionPane.showMessageDialog(this, dialogMessage,
                     ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.PLAIN_MESSAGE);            
         }
@@ -2687,210 +2906,14 @@ public class AttListForm extends javax.swing.JFrame {
                             str + "\nChange file name to a different one";
                     break;
                 }
-                break;          
+                break;                        
 
-//            case DELETE_DIALOG:
-//                switch (parkingLotLocale.getLanguage()) {
-//                    case "ko":
-//                        label = "아래 계정을 삭제합니까?" + System.lineSeparator()  
-//                                + "n계정ID: " + str;
-//                        break;
-//                    default:
-//                        label = "Do you want to delete this user?" + System.lineSeparator() 
-//                                + "User ID: " + str;
-//                        break;
-//                }
-//                break;
-            case DELETE_SUCCESS_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "사용자(아이디: " + str + ") 기록이" + 
-                                System.lineSeparator() + "성공적으로 삭제되었습니다.";
-                        break;
-                    default:
-                        label = "User(ID: " + str + ") record" + 
-                                System.lineSeparator() + "deleted successfully.";
-                        break;
-                }
-                break;   
-            case DELETE_FAIL3_DAILOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "사용자 삭제에 실패하였습니다!\n  아이디 : " + str;
-                        break;
-                    default:
-                        label = "Failed Deletion of a User Account!" + 
-                                System.lineSeparator() + " ID : " + str;
-                        break;
-                }
-                break;
-            case EMAIL_DUP_TURE_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "이메일 '" + str + "' 는 사용 중 입니다.\n"
-                            + "다른 이메일을 입력하십시오.";
-                        break;
-                    default:
-                        label = "E-mail '" + str + "' is in use"
-                        + System.lineSeparator() + "Choose a different one.";
-                        break;
-                }
-                break;
-            case EMAIL_DUP_FALSE_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "이메일 '" + str + 
-                                "' 는 사용가능합니다." + System.lineSeparator();
-                        break;
-                    default:
-                        label = "E-mail '" + str + 
-                                "' could be used." ;
-                        break;
-                }
-                break;
-            case EMAIL_CHECK_FAIL_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "이메일 주소 '" + str + 
-                                "'는 구문이 바르지 않습니다.\n";
-                        break;
-                    default:
-                        label = "E-mail address '" + str + 
-                                "' has wrong syntax." + System.lineSeparator();
-                        break;
-                }
-                break;   
-            case ID_DUP_CHECK_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "아이디 '" + str + 
-                            "' 는 사용 중 입니다." + System.lineSeparator() 
-                            + "다른 아이디를 입력하십시오.";
-                        break;
-                    default:
-                        label = "ID '" + str + 
-                            "' is preoccupied by someone else." + System.lineSeparator() 
-                            + "Choose a different ID";
-                        break;
-                }
-                break;
-             case ID_CHECK_GOOD_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "아이디 '" + str + 
-                                "' 는 사용가능합니다." + System.lineSeparator() ;
-                        break;
-                    default:
-                        label = "ID '" + str + 
-                                "' is usable." + System.lineSeparator() ;
-                        break;
-                }
-                break;
-            case USER_UPDATE_SUCCESS_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "사용자(ID: " + str + 
-                                ") 정보가\n성공적으로 수정되었습니다.";
-                        break;
-                    default:
-                        label ="A user(ID: " + str + ") information" + 
-                                System.lineSeparator() + "successfully modified.";
-                        break;
-                }
-                break;
-            case USER_UPDATE_FAIL_DIALOG:
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        label = "정보 수정에 실패하였습니다!\n  "
-                                + "ID: " +  str;
-                        break;
-                    default:
-                        label = "User Info Change Failure!" + System.lineSeparator() + 
-                                "ID: " +  str;
-                        break;
-                }
-                break;
             default :
                 break;
             
         
         }
         return label;
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes msgType, String str, int integer) {
-        String label = null;
-        
-        switch (msgType) {
-            case DELETE_FAIL1_DAILOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    label = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
-                    " - 아이디: " + str + System.lineSeparator() + 
-                    " - 이  유: 차량 도착기록이 존재합니다.(" + integer + ")" +
-                    System.lineSeparator() + " * 자동차 도착 기록은 1 년간 저장됩니다.";
-                    break;
-                default:
-                    label = "Following user can't be deleted" + System.lineSeparator() +
-                    " - User ID: " + str + System.lineSeparator() + 
-                    " - Reason: has nonzero(" + integer + ") Car Arrival Records" +
-                    System.lineSeparator() + " * Car Arrival Records are stored for 1 year.";
-                    break;
-                }
-                break;
-
-            case DELETE_FAIL2_DAILOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    label = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
-                    " - 아이디 : " + str + System.lineSeparator() + 
-                    " - 이  유 : 로그인기록이 존재합니다.(" + integer + ") " +
-                    System.lineSeparator() + " * 사용자 로그인 기록은 1 년간 저장됩니다.";
-                    break;
-                default:
-                    label = "Following user can't be deleted" + System.lineSeparator() +
-                    " - User ID: " + str + System.lineSeparator() + 
-                    " - Reason: has nonzero(" + integer + ") Login Records" +
-                    System.lineSeparator() + " * User Login Records are stored for 1 year.";
-                    break;
-                }
-                break;
-            default :
-                break;
-    
-        }
-        return label;
-    }
-    
-    private StringBuilder getTextFor(ControlEnums.DialogMSGTypes msgType, StringBuilder sb, String str, int integer) {
-        switch (msgType) {
-            case SAVE_AS_SUCCESS_DIALOG:
-            int lastSlash = str.lastIndexOf((int)'\\');
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    sb.append("생성 완료!\n  -파일이름: ");
-                    sb.append(str.substring(lastSlash + 1));
-                    sb.append(" (총 ");
-                    sb.append(integer);
-                    sb.append("행)");
-                    sb.append("\n  -파일위치: ");
-                    sb.append(str.substring(0, lastSlash + 1));
-                    break;
-                default:
-                    sb.append("File Created!" + System.lineSeparator() + "  - File name: ");
-                    sb.append(str.substring(lastSlash + 1));
-                    sb.append(" (total ");
-                    sb.append(integer);
-                    sb.append("lines)");
-                    sb.append(System.lineSeparator() + "  - File Location: ");
-                    sb.append(str.substring(0, lastSlash + 1));
-                    break;
-            }
-                break;
-            default :
-                break;
-        }
-        return sb;
     }
     
     /**
@@ -2967,15 +2990,9 @@ enum FormMode {
 enum AttListDialogType {
     SAVE_AS_FILE_FAILURE_DIALOG,
     CREATION_SUCCESS_DIALOG,
- 
-//    DELETE_DIALOG,
     DELETE_SUCCESS_DIALOG,
     DELETE_FAIL3_DAILOG,
     EMAIL_DUP_TURE_DIALOG,
     EMAIL_DUP_FALSE_DIALOG,
     EMAIL_CHECK_FAIL_DIALOG,
-    ID_DUP_CHECK_DIALOG,
-    ID_CHECK_GOOD_DIALOG,
-    USER_UPDATE_SUCCESS_DIALOG,
-    USER_UPDATE_FAIL_DIALOG,
 }

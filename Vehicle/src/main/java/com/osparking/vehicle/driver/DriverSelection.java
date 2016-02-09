@@ -42,14 +42,13 @@ import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.ourLang;
-import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.DRIVER_SELECTION_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import static com.osparking.global.names.ControlEnums.TableTypes.*;
 import static com.osparking.global.names.ControlEnums.TextType.*;
-import static com.osparking.global.names.ControlEnums.ToolTipTypesOld.*;
-import static com.osparking.global.names.DB_Access.parkingLotLocale;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CELL_PHONE_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.DRIVER_INPUT_TOOLTIP;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 
 /**

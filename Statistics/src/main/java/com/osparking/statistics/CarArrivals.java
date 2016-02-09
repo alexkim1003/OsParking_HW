@@ -35,8 +35,26 @@ import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_CHECK_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.DATE_INPUT_ERROR_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.AFFILIATION_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ARRIVAL_TIME_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ATTENDANT_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.BAR_OP_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.BUILDING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CAR_TAG_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.DURATION_SET_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.FILE_SIZE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_NAME_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LAST_1HOUR_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LAST_24HOURS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.NON_REGI_TAG1_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.NON_REGI_TAG2_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ORDER_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.RECOGNIZED_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.RECORD_COUNT_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.REGISTERED_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.VISIT_PURPOSE_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.*;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import static com.osparking.global.names.ControlEnums.TableTypes.ARRIVAL_TIME_HEADER;
 import static com.osparking.global.names.ControlEnums.TableTypes.CAR_TAG_HEADER;
 import static com.osparking.global.names.ControlEnums.TableTypes.ORDER_HEADER;
@@ -44,7 +62,9 @@ import static com.osparking.global.names.ControlEnums.TextType.LOG_OUT_TF;
 import static com.osparking.global.names.ControlEnums.TextType.NOT_APPLICABLE_TF;
 import static com.osparking.global.names.ControlEnums.TextType.UNKNOWN_TF;
 import static com.osparking.global.names.ControlEnums.TextType.UNREGISTERED_TF;
-import static com.osparking.global.names.ControlEnums.ToolTipTypesOld.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CAR_TAG_TF_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CLEAR_BTN_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.FIX_IT_BTN_TOOLTIP;
 import static com.osparking.global.names.DB_Access.gateCount;
 import static com.osparking.global.names.DB_Access.gateNames;
 import com.osparking.global.names.ImageDisplay;
@@ -1835,15 +1855,13 @@ public class CarArrivals extends javax.swing.JFrame {
 
             // Check if starting date and ending date both entered
             if (beginDate == null || endDate == null) {
-                JOptionPane.showConfirmDialog(this, 
-                        ((String[])Globals.DialogMSGList.get(DATE_INPUT_CHECK_DIALOG.ordinal()))[ourLang],
-                        ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang],
-                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
+                JOptionPane.showConfirmDialog(this, DATE_INPUT_CHECK_DIALOG.getContent(),
+                        ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
             } else {
                 // Check if starting date were later than ending date which is illogical.
                 if (beginDate.after(endDate)) {
-                    JOptionPane.showConfirmDialog(this, 
-                            ((String[])Globals.DialogMSGList.get(DATE_INPUT_ERROR_DIALOG.ordinal()))[ourLang],
+                    JOptionPane.showConfirmDialog(this, DATE_INPUT_ERROR_DIALOG.getContent(),
                             ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
                 } else {

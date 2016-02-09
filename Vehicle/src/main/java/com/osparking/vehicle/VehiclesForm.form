@@ -477,7 +477,6 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="((String[])Globals.ButtonLabels.get(OWNER_BTN.ordinal()))[ourLang]" type="code"/>
                     </Property>
->>>>>>> osparking/master
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>

@@ -45,7 +45,6 @@ import static com.osparking.global.Globals.insertNewLevel2Affiliation;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.ourLang;
 import com.osparking.global.names.ControlEnums;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.JDBCMySQL.getConnection;

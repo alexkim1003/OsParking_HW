@@ -36,6 +36,7 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.Globals.emptyLastRowPossible;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.removeEmptyRow;
 import com.osparking.global.names.ControlEnums;
@@ -95,8 +96,25 @@ public class DriverTable extends JTable {
     } 
     
     public int askUserOnUpdate(String name, int vCount) {
-        JOptionPane optionPane = new JOptionPane(
-                getTextFor(ControlEnums.DialogMSGTypes.MODIFY_DAILOG, name, vCount), 
+        
+        String optionMessage = "";
+        
+        switch(language){
+            case KOREAN :
+                optionMessage = "해당 운전자 정보를 수정하시겟습니까?"+ System.getProperty("line.separator") + 
+                        " - 운전자 이름 : "+ name + "(소유 차량 : " + vCount + "대)";
+                break;
+                
+            case ENGLISH:
+                optionMessage = "Do you want to Modify driver information?" + System.getProperty("line.separator") + 
+                        " - Driver name: " + name + " (owns " + vCount + " cars)";
+                break;
+                
+            default :
+                break;
+        }        
+        
+        JOptionPane optionPane = new JOptionPane(optionMessage,
                 JOptionPane.QUESTION_MESSAGE, 
                 JOptionPane.YES_NO_OPTION, null, null, null); // options[0]);
         JDialog dialog = optionPane.createDialog(((String[])Globals.DialogTitleList.get(MODIFY_DAILOGTITLE.ordinal()))[ourLang]);
@@ -304,28 +322,5 @@ public class DriverTable extends JTable {
             }
             parent.setFormMode(FormMode.SEARCHING);
         }        
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGType, String str, int integer){
-        String dialog = null;
-        
-        switch(dialogMSGType){
-            case MODIFY_DAILOG :
-                switch(parkingLotLocale.getLanguage()){
-                    case "ko" :
-                        dialog = "해당 운전자 정보를 수정하시겟습니까?"+ System.getProperty("line.separator") + 
-                                " - 운전자 이름 : "+ str + "(소유 차량 : " + integer + "대)";
-                        break;
-                    default :
-                        dialog = "Do you want to Modify driver information?" + System.getProperty("line.separator") + 
-                                " - Driver name: " + str + " (owns " + integer + " cars)";
-                        break;
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return dialog;
     }
 }
