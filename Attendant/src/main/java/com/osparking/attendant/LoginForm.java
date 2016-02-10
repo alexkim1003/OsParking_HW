@@ -225,11 +225,11 @@ public class LoginForm extends JFrame {
         // Check if both user ID and password were entered.
         if (userIDText.getText().length() == 0)            
         {
-            showMessageDialog(null, ((String[])Globals.DialogMSGList.get(INPUT_ID_DIALOG.ordinal()))[ourLang]);
+            showMessageDialog(null, INPUT_ID_DIALOG.getContent());
             return;
         } else if (password.getPassword().length== 0) 
         {
-            showMessageDialog(null, ((String[])Globals.DialogMSGList.get(INPUT_PW_DIALOG.ordinal()))[ourLang]);
+            showMessageDialog(null, INPUT_PW_DIALOG.getContent());
             return;            
         }        
         //</editor-fold>
@@ -239,8 +239,7 @@ public class LoginForm extends JFrame {
         if (checkGood) {
             dispose();
         } else {
-            showMessageDialog(null,
-                    ((String[])Globals.DialogMSGList.get(LOGIN_FAIL_DIALOG.ordinal()))[ourLang],
+            showMessageDialog(null, LOGIN_FAIL_DIALOG.ordinal(),
                     ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.INFORMATION_MESSAGE);
         }

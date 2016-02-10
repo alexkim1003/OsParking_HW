@@ -52,26 +52,40 @@ import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelContent.CAR_TAG_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CELL_PHONE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.COUNT_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CREATE_MODE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.EXACT_COMP_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.FORM_MODE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.MODIFY_MODE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.MODI_DATE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.NOTIFICATION_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ORDER_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.OTHER_INFO_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.PARK_ALLOWED_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.PHONE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.REASON_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.REGI_DATE_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_MODE_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.VEHICLESFORM_FRAME_TITLE;
-import static com.osparking.global.names.ControlEnums.LabelTypesOld.*;
 import com.osparking.global.names.ControlEnums.TableTypes;
 import static com.osparking.global.names.ControlEnums.TextType.*;
-import static com.osparking.global.names.ControlEnums.ToolTipTypesOld.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.AFFILIATION_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.BUILDING_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CAR_TAG_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.DRIVER_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.OTHER_TOOLTIP;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
-import com.osparking.global.names.InnoComboBoxItem;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 import com.osparking.global.names.JTextFieldLimit;
 import com.osparking.global.names.OSP_enums;
-import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
-import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL2;
-import static com.osparking.global.names.OSP_enums.DriverCol.BuildingNo;
-import static com.osparking.global.names.OSP_enums.DriverCol.UnitNo;
 import com.osparking.global.names.OSP_enums.FormMode;
 import com.osparking.global.names.OSP_enums.VehicleCol;
 import com.osparking.global.names.OdsFileOnly;
 import com.osparking.global.names.PComboBox;
 import com.osparking.global.names.WrappedInt;
-import com.osparking.vehicle.driver.ManageDrivers;
 import com.osparking.vehicle.driver.ODSReader;
 import static com.osparking.vehicle.driver.ODSReader.getWrongCellPointString;
 import java.awt.Point;
@@ -1012,14 +1026,12 @@ public class VehiclesForm extends javax.swing.JFrame {
             //<editor-fold defaultstate="collapsed" desc="--check and save vehicle info' ">
             // check if all the required fields are supplied
             if (carTagTextField.getText().trim().length() == 0) {
-                 JOptionPane.showConfirmDialog(null, 
-                                ((String[])Globals.DialogMSGList.get(CAR_TAG_DIALOG.ordinal()))[ourLang],
+                 JOptionPane.showConfirmDialog(null, CAR_TAG_DIALOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(VEHICLE_CHECK_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);  
                 carTagTextField.requestFocus();
             } else if (driverTextField.getText().trim().length() == 0) {
-                JOptionPane.showConfirmDialog(null, 
-                                ((String[])Globals.DialogMSGList.get(DRIVER_DIALOG.ordinal()))[ourLang],
+                JOptionPane.showConfirmDialog(null, DRIVER_DIALOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(VEHICLE_CHECK_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);  
                 selectDriverButton.requestFocus();
@@ -1035,8 +1047,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                     setFormMode(FormMode.SEARCHING);
                     loadVehicleTable(-1, plateNo.toString()); 
                 } else {
-                    JOptionPane.showConfirmDialog(null, 
-                            ((String[])Globals.DialogMSGList.get(VEHICLE_CREATION_FAIL_DIALOG.ordinal()))[ourLang],
+                    JOptionPane.showConfirmDialog(null, VEHICLE_CREATION_FAIL_DIALOG.getContent(),
                             ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.PLAIN_MESSAGE, 
                         WARNING_MESSAGE);
@@ -1080,8 +1091,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 loadVehicleTable(-1, carTagTextField.getText()); 
                 logParkingOperation(OSP_enums.OpLogLevel.SettingsChange, vehicleModification.toString());
             } else {
-                JOptionPane.showConfirmDialog(null, 
-                                getTextFor(VEHICLE_MODIFY_FAIL_DAILOG, carTagTextField.getText()),
+                JOptionPane.showConfirmDialog(null, VEHICLE_MODIFY_FAIL_DAILOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(VEHICLE_MODIFY_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
             }
@@ -1095,8 +1105,8 @@ public class VehiclesForm extends javax.swing.JFrame {
         // 3. delete current row(vehicle)
         if (formMode == FormMode.CREATION) {
             //<editor-fold defaultstate="collapsed" desc="--handle cancelling insertion">
-            int response = JOptionPane.showConfirmDialog(null, 
-                                ((String[])Globals.DialogMSGList.get(VEHICLE_CREATE_CANCEL_DIALOG.ordinal()))[ourLang], 
+            int response = JOptionPane.showConfirmDialog(null, VEHICLE_CREATE_CANCEL_DIALOG.getContent(),
+//                                ((String[])Globals.DialogMSGList.get(VEHICLE_CREATE_CANCEL_DIALOG.ordinal()))[ourLang], 
                                 ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.YES_NO_OPTION);
         
@@ -1114,8 +1124,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             
         } else if (formMode == FormMode.MODIFICATION) {
             //<editor-fold defaultstate="collapsed" desc="--handle cancelling update">
-            int response = JOptionPane.showConfirmDialog(null, 
-                                ((String[])Globals.DialogMSGList.get(VEHICLE_MODIFY_CANCEL_DAILOG.ordinal()))[ourLang], 
+            int response = JOptionPane.showConfirmDialog(null, VEHICLE_MODIFY_CANCEL_DAILOG.getContent(),
                                 ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.YES_NO_OPTION);
         
@@ -1166,8 +1175,8 @@ public class VehiclesForm extends javax.swing.JFrame {
 
     private void deleteAllVehiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllVehiclesActionPerformed
 
-        int result = JOptionPane.showConfirmDialog(this, 
-                        ((String[])Globals.DialogMSGList.get(VEHICLE_DELETE_ALL_DAILOG.ordinal()))[ourLang],
+        int result = JOptionPane.showConfirmDialog(this, VEHICLE_DELETE_ALL_DAILOG.getContent(),
+//                        ((String[])Globals.DialogMSGList.get(VEHICLE_DELETE_ALL_DAILOG.ordinal()))[ourLang],
                         ((String[])Globals.DialogTitleList.get(DELETE_ALL_DAILOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.YES_NO_OPTION);
 
@@ -1190,8 +1199,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             if (result >= 1) {
                 loadVehicleTable(0, "");
                 
-                JOptionPane.showConfirmDialog(this, 
-                    ((String[])Globals.DialogMSGList.get(VEHICLE_DELETE_ALL_RESULT_DAILOG.ordinal()))[ourLang],
+                JOptionPane.showConfirmDialog(this, VEHICLE_DELETE_ALL_RESULT_DAILOG.getContent(),
                     ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }
@@ -1224,8 +1232,26 @@ public class VehiclesForm extends javax.swing.JFrame {
 
                     if (objODSReader.chekcVehiclesODS(sheet, wrongCells, driverTotal))
                     {
-                        int result = JOptionPane.showConfirmDialog(null, 
-                                        getTextFor(READ_ODS_DIALOG, driverTotal.getValue()),
+                        StringBuilder sb = new StringBuilder();
+                        
+                        switch (language) {
+                            case KOREAN:
+                                sb.append("자료가 인식되었습니다. 자료를 불러오시겠습니까?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" -자료 갯수: 차량 기록" + driverTotal.getValue() + " 개");
+                                break;
+                                
+                            case ENGLISH:
+                                sb.append("Following data has been recognized. Want to load these data?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" -Data content: vehicle records " + driverTotal.getValue() + " rows");
+                                break;
+                                
+                            default:
+                                break;
+                        }
+                        
+                        int result = JOptionPane.showConfirmDialog(null, sb.toString(),
                                         ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
                                         JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
@@ -1235,10 +1261,10 @@ public class VehiclesForm extends javax.swing.JFrame {
                     } else {
                         // display wrong cell points if existed
                         if (wrongCells.size() > 0) {
-                            JOptionPane.showConfirmDialog(null, 
-                                            getTextFor(READ_ODS_FAIL_DIALOG, getWrongCellPointString(wrongCells)),
-                                            ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
-                                            JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);     
+                            JOptionPane.showConfirmDialog(null, READ_ODS_FAIL_DIALOG.getContent() +
+                                    System.getProperty("line.separator") + getWrongCellPointString(wrongCells),
+                                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);     
                         }
                     }
                 }
@@ -1252,8 +1278,7 @@ public class VehiclesForm extends javax.swing.JFrame {
     private void saveSheet_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveSheet_ButtonActionPerformed
         // Check the size of the list and if empty just return saying "noting to save"
         if (vehiclesTable.getModel().getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this,
-                    ((String[])Globals.DialogMSGList.get(VEHICLE_SAVE_ODS_FAIL_DIALOG.ordinal()))[ourLang], 
+            JOptionPane.showMessageDialog(this, VEHICLE_SAVE_ODS_FAIL_DIALOG.getContent(),
                     ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                     JOptionPane.YES_OPTION );
             return;
@@ -1734,8 +1759,25 @@ public class VehiclesForm extends javax.swing.JFrame {
                                 showVehicleDetail(vehiclesTable.convertRowIndexToModel(
                                         vehiclesTable.getSelectedRow()));  
                             } else {
-                                JOptionPane.showConfirmDialog(null, 
-                                        getTextFor(WORK_MODE_DIALOG),
+                                String dialogMessage = "";
+                                
+                                switch (language) {
+                                    case KOREAN:
+                                        dialogMessage = "차량정보 " 
+                                                + (formMode == FormMode.CREATION ? "생성" : "변경") 
+                                                + " 중입니다";
+                                        break;
+                                        
+                                    case ENGLISH:
+                                        dialogMessage = "Car information is being" 
+                                                + (formMode == FormMode.CREATION ? "created." : "modified.");
+                                        break;
+                                        
+                                    default:
+                                        break;
+                                }
+                                
+                                JOptionPane.showConfirmDialog(null, dialogMessage,
                                         ((String[])Globals.DialogTitleList.get(WORK_MODE_DIALOGTITLE.ordinal()))[ourLang],
                                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                                
                             }
@@ -1923,8 +1965,26 @@ public class VehiclesForm extends javax.swing.JFrame {
         if (formMode == FormMode.SEARCHING) {
             dispose();
         } else {
-            int response = JOptionPane.showConfirmDialog(null, 
-                                getTextFor(VEHICLE_CLOSE_FORM_DIALOG), 
+            
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = (formMode == FormMode.CREATION ? "생성" : "변경")
+                            + " 중인 차량정보를 포기하겠습니까?";
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "Do you want to give up " +
+                                (formMode == FormMode.CREATION ? "registering " : "modifying ")
+                                        + "a car?";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            int response = JOptionPane.showConfirmDialog(null, dialogMessage,
                                 ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
                                 JOptionPane.YES_NO_OPTION);
         
@@ -1969,15 +2029,47 @@ public class VehiclesForm extends javax.swing.JFrame {
         int modal_Index = vehiclesTable.convertRowIndexToModel(deleteIndice[0]);
         
         if (deleteIndice.length == 1) {
-            result = JOptionPane.showConfirmDialog(this, 
-                        getTextFor(DELETE_A_CAR_DIALOG, tagNumber), 
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 등록차량을 삭제합니까?" 
+                            + System.getProperty("line.separator") + "차량번호: " + tagNumber;
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "Unregister following vehicle?" 
+                        + System.getProperty("line.separator") + "Tag Number: " + tagNumber;
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            result = JOptionPane.showConfirmDialog(this, dialogMessage,
                         ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
                         JOptionPane.YES_NO_OPTION);
         } else {
-            result = JOptionPane.showConfirmDialog(this,
-                        getTextFor(DELETE_CARS_DIALOG, tagNumber, deleteIndice.length),
-                        ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
-                        JOptionPane.YES_NO_OPTION);
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 차량 및 총 " + deleteIndice.length + " 대 차량의 정보를 삭제합니까?" 
+                            + System.getProperty("line.separator") + "차량번호: " + tagNumber;
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage ="Unregistered total " + deleteIndice.length + " vehicles including following?" 
+                        + System.getProperty("line.separator") + "Tag number: " + tagNumber;
+                    break;
+                    
+                default:
+                    break;
+            }
+
+            result = JOptionPane.showConfirmDialog(this, dialogMessage,
+                    ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION);
         }    
         
         if (result == JOptionPane.YES_OPTION) {
@@ -2007,10 +2099,27 @@ public class VehiclesForm extends javax.swing.JFrame {
 
                 if (result == 1) {
                     loadVehicleTable(deleteIndice[0], ""); // pass row index of deleted vehicle
-                    JOptionPane.showConfirmDialog(this, 
-                                    getTextFor(DELETE_DIALOG, tagNumber), 
-                                    ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
-                                    JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                    
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "차량 '" + tagNumber + "'의 기록이" + System.getProperty("line.separator")
+                                    + "삭제되었습니다";
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage ="Record of car '" + tagNumber + "'" + System.getProperty("line.separator")
+                                    + "has been removed";
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                            JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
             //</editor-fold>
@@ -2166,147 +2275,4 @@ public class VehiclesForm extends javax.swing.JFrame {
         
         
     }  
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogType){
-        String dialog = null;
-        
-        switch(dialogType){
-            case WORK_MODE_DIALOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = "차량정보 " 
-                            + (formMode == FormMode.CREATION ? "생성" : "변경") 
-                            + " 중입니다";
-                    break;
-                default:
-                    dialog = "Car information is being" 
-                            + (formMode == FormMode.CREATION ? "creating" : "modifying");
-                    break;
-                }
-                break;
-            case VEHICLE_CLOSE_FORM_DIALOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = (formMode == FormMode.CREATION ? "생성" : "변경")
-                            + " 중인 차량정보를 포기하겠습니까?";
-                    break;
-                default:
-                    dialog = "Do you want to give up " +
-                                (formMode == FormMode.CREATION ? "creating" : "modifying")
-                                        + " car registration?";
-                    break;
-                }
-                break;
-            default :
-                break;
-        }
-        return dialog;
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGTypes, String str){
-        String dialog = null; 
-        
-        switch(dialogMSGTypes){
-            case DELETE_A_CAR_DIALOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = "다음 등록차량을 삭제합니까?" 
-                            + System.getProperty("line.separator") + "차량번호: " + str;
-                    break;
-                default:
-                    dialog = "Unregister following vehicle?" 
-                        + System.getProperty("line.separator") + "Tag Number: " + str;
-                    break;
-            }
-            break;
-        case VEHICLE_MODIFY_FAIL_DAILOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = str + "차량 갱신을 실패하였습니다.";
-                    break;
-                default:
-                    dialog = "failed vehicle modification: " + str;
-                    break;
-            }
-            break;
-        case READ_ODS_FAIL_DIALOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = "잘못된 형식의 자료가 포함되어 있습니다." + 
-                                    System.getProperty("line.separator") + str;
-                    break;
-                default:
-                    dialog = "Cells that include wrong formatted data" + 
-                                    System.getProperty("line.separator") + str;
-                    break;
-                }
-                case DELETE_DIALOG :
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        dialog = "차량 '" + str + "의 기록이" + System.getProperty("line.separator")
-                                + "삭제되었습니다";
-                        break;
-                    default:
-                        dialog ="Vehicle '" + str + " car record" + System.getProperty("line.separator")
-                                + "have been removed";
-                        break;
-                }
-                break;
-            default :
-                break;
-        }
-        return dialog;
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogMSGTypes, int integer){
-        String dialog = null; 
-        
-        switch(dialogMSGTypes){
-            case READ_ODS_DIALOG :
-            StringBuilder sb = new StringBuilder();
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    sb.append("자료가 인식되었습니다. 자료를 불러오시겠습니까?");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" -자료 갯수: 차량 기록" + integer + " 개");
-
-                    dialog = sb.toString();
-                    break;
-                default:
-                    sb.append("Following data has been recognized. Want to load these data?");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" -Data content: vehicle records " + integer + " rows");
-                    dialog = sb.toString();
-                    break;
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return dialog;
-    }
-    
-    private String getTextFor(ControlEnums.DialogMSGTypes dialogType, String str, int integer){
-        String dialog = null;
-        
-        switch(dialogType){
-        case DELETE_CARS_DIALOG :
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    dialog = "다음 차량 및 총 " + integer + " 대 차량의 정보를 삭제합니까?" 
-                            + System.getProperty("line.separator") + "차량번호: " + str;
-                    break;
-                default:
-                    dialog ="Unregistered total " + integer + " vehicles including following?" 
-                        + System.getProperty("line.separator") + "Tag number: " + str;
-                    break;
-                }
-                break;
-            default :
-                break;
-        }
-        return dialog;
-    }
-    
 }

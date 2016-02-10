@@ -367,6 +367,7 @@ public class ControlEnums {
         
         DRIVER_CLOSE_FORM_DIALOG(
                 "생성/수정 중인정보를 포기하시겟습니까?", "Want to desert car information being created/modified?"),
+        
         DATE_INPUT_CHECK_DIALOG("시작일과 종료일을 모두 입력하십시오", "Enter starting and ending date both"),
         
         DATE_INPUT_ERROR_DIALOG( "종료일이 시작일보다 앞설 수 없습니다\n" 
@@ -496,46 +497,48 @@ public class ControlEnums {
         BUILDING_IN_DIALOG("건물 번호", "Building number"),
         ROOM_IN_DIALOG("호실 번호", "Room number"),
         LEVEL1_NAME_DIALOG("상위 소속", "Higher Affiliation"),
-        LEVEL2_NAME_DIALOG("하위 소속", "Lower Affiliation");
-
+        LEVEL2_NAME_DIALOG("하위 소속", "Lower Affiliation"),
+        VEHICLE_MODIFY_FAIL_DAILOG("정보 갱신 실패 차량: ", "modification failed vehicle: "),
+        READ_ODS_FAIL_DIALOG("잘못된 형식의 자료가 포함되어 있습니다.", "Cells that include wrong formatted data"),
+        
+        CREATION_SUCCESS_DIALOG(
+                "운전자 생성 성공" + System.getProperty("line.separator") + "운전자 이름: ", 
+                "Driver Creation Succeeded" + System.getProperty("line.separator") + "Driver Name: "),
+        
+        USER_UPDATE_SUCCESS_DIALOG(
+                "수정하신 운전자 정보를 저장하시겠습니까?" + System.getProperty("line.separator") + " - 운전자 이름: ",
+                "Do you want to save modified driver?" +  System.getProperty("line.separator") + " - Driver Name: "
+        ),
+        
+        USER_CREATE_SUCCESS_DIALOG(
+                "생성하신 운전자 정보를 저장하시겠습니까?" + System.getProperty("line.separator") + " - 운전자 이름: ",
+                "Do you want to save created driver?" +  System.getProperty("line.separator") + " - Driver Name: "
+        );
+        
 //        SAVE_AS_FAIL2_DIALOG, 
 //        SAVE_ODS_FAIL_DIALOG,        
-        
 //        AFFILIATION_ODS_READ_DIALOG, 
 //        AFFILIATION_MODIFY_DIALOG,
-//        
 //        BUILDING_DELETE_RESULT_DIALOG,
 //        BUILDING_MODIFY_DIALOG,
-//        
 //        CREATION_FAIL_DIALOG, 
 //        CHECK_AFFILIATION_ODS_DIALOG, 
 //        CHECK_BUILDING_ODS_DIALOG, 
-//        CREATION_SUCCESS_DIALOG,
-//        
-//        DELETE_DIALOG,
 //        DELETE_SUCCESS_DIALOG, 
 //        DELETE_FAIL1_DAILOG, 
 //        DELETE_FAIL2_DAILOG, 
 //        DELETE_FAIL3_DAILOG, 
-//        DELETE_CARS_DIALOG, 
-//        DELETE_A_CAR_DIALOG, 
-//        DELETE_ALL_DAILOG, 
 //        DELETE_ONE_DIALOG, 
 //        DELETE_MORE_DIALOG,
-//        
 //        EMAIL_DUP_TURE_DIALOG, 
 //        EMAIL_DUP_FALSE_DIALOG, 
 //        EMAIL_CHECK_FAIL_DIALOG, 
-//        
 //        LOWER_DELETE_RESULT_DIALOG, 
 //        LOWER_MODIFY_DIALOG, 
 //        LOGOUT_DIAILG,
 //        LOGOUT_CONFIRM_DIALOG,
-//        
 //        READ_VEHICLE_ODS_DIALOG, 
 //        READ_DRIVER_ODS_DIALOG, 
-//        READ_ODS_DIALOG, 
-//        READ_ODS_FAIL_DIALOG,
 //        READ_BUILDING_ODS_DIALOG, 
 //        READ_FAIL_BUILDING_ODS_DIALOG,
 //        READ_AFFILIATION_ODS_DIALOG,
@@ -544,10 +547,7 @@ public class ControlEnums {
 //        UNIT_DELETE_DIALOG,
 //        UNIT_DELETE_RESULT_DIALOG,
 //        UNIT_DELETE_FAIL_RESULT_DIALOG,
-//        
-//        VEHICLE_CLOSE_FORM_DIALOG, 
 //        VEHICLE_MODIFY_FAIL_DAILOG,
-//        WORK_MODE_DIALOG, 
         
         DialogMSGTypes(String korean, String english) {
             contents[KOREAN.ordinal()] = korean;
