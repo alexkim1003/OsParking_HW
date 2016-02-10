@@ -511,9 +511,26 @@ public class ControlEnums {
         ),
         
         USER_CREATE_SUCCESS_DIALOG(
-                "생성하신 운전자 정보를 저장하시겠습니까?" + System.getProperty("line.separator") + " - 운전자 이름: ",
-                "Do you want to save created driver?" +  System.getProperty("line.separator") + " - Driver Name: "
-        );
+                "생성하신 운전자 정보를 저장하시겠습니까?" 
+                        + System.getProperty("line.separator") + " - 운전자 이름: ",
+                "Do you want to save created driver?" 
+                        +  System.getProperty("line.separator") + " - Driver Name: "
+        ),
+        CHECK_BUILDING_ODS_DIALOG(
+                "건물 및 호실 번호 종료마크(아래)가 누락됨" 
+                        + System.getProperty("line.separator") 
+                        +  "종료마크: 첫 열이 -1인 행",
+                "List of Building and Room lacks End Mark" 
+                        + System.getProperty("line.separator") 
+                        + "End Mark: a row having -1 at its first cell/column"),
+        
+        READ_FAIL_AFFILIATION_ODS_DIALOG(
+                "아래 하위소속이 속한 상위소속을 알수 없습니다." 
+                        + System.getProperty("line.separator") 
+                        + " - 하위 소속: ", 
+                "Can't tell to what higher affiliation do following lower affiliation belong" 
+                        + System.getProperty("line.separator") 
+                        + " - Lower Affiliation: ");        
         
 //        SAVE_AS_FAIL2_DIALOG, 
 //        SAVE_ODS_FAIL_DIALOG,        
@@ -522,8 +539,6 @@ public class ControlEnums {
 //        BUILDING_DELETE_RESULT_DIALOG,
 //        BUILDING_MODIFY_DIALOG,
 //        CREATION_FAIL_DIALOG, 
-//        CHECK_AFFILIATION_ODS_DIALOG, 
-//        CHECK_BUILDING_ODS_DIALOG, 
 //        DELETE_SUCCESS_DIALOG, 
 //        DELETE_FAIL1_DAILOG, 
 //        DELETE_FAIL2_DAILOG, 
@@ -539,10 +554,9 @@ public class ControlEnums {
 //        LOGOUT_CONFIRM_DIALOG,
 //        READ_VEHICLE_ODS_DIALOG, 
 //        READ_DRIVER_ODS_DIALOG, 
-//        READ_BUILDING_ODS_DIALOG, 
-//        READ_FAIL_BUILDING_ODS_DIALOG,
-//        READ_AFFILIATION_ODS_DIALOG,
-//        READ_FAIL_AFFILIATION_ODS_DIALOG,
+
+                
+                
 //        REJECT_USER_DIALOG,
 //        UNIT_DELETE_DIALOG,
 //        UNIT_DELETE_RESULT_DIALOG,
