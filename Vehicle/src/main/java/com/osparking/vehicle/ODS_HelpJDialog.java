@@ -39,7 +39,6 @@ import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;

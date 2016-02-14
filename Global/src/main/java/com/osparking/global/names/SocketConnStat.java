@@ -27,7 +27,6 @@ import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.EBOARD_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
 import static com.osparking.global.names.ControlEnums.TextType.CONN_MSG;
-import static com.osparking.global.names.ControlEnums.TextType.DIS_CONN_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.NO_SOCKET_DISCON_MSG;
 import com.osparking.global.names.OSP_enums.DeviceType;
 
@@ -71,7 +70,30 @@ public class SocketConnStat {
         if (disconnectionCount == 0) {
             sb.append(((String[])Globals.TextFieldList.get(NO_SOCKET_DISCON_MSG.ordinal()))[ourLang]);
         } else {
-            getTextFor(DIS_CONN_MSG, sb, disconnectionCount, disconnectionTotalMs, disconnPeriodMax);
+            switch(language){
+                case KOREAN :
+                    sb.append(": 재연결 횟수: ");
+                    sb.append(disconnectionCount);
+                    sb.append(System.lineSeparator());            
+                    sb.append("      단절 시간(ms)--평균: ");
+                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+                    sb.append(", 최대: ");
+                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+                    break;
+                    
+                case ENGLISH:
+                    sb.append(": connection count: ");
+                    sb.append(disconnectionCount);
+                    sb.append(System.lineSeparator());            
+                    sb.append("      disconnection(ms)--avg: ");
+                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+                    sb.append(", max: ");
+                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+                    break;
+                    
+                default :
+                    break;
+            }            
         }
         sb.append(System.lineSeparator());
         return sb.toString();
@@ -147,31 +169,31 @@ public class SocketConnStat {
     }
     
 
-    private static void getTextFor(ControlEnums.TextType textType, StringBuilder sb, 
-            int disconnectionCount, long disconnectionTotalMs, long disconnPeriodMax) {
-        switch(textType){
-            case DIS_CONN_MSG :
-                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
-                    sb.append(": 재연결 횟수: ");
-                    sb.append(disconnectionCount);
-                    sb.append(System.lineSeparator());            
-                    sb.append("      단절 시간(ms)--평균: ");
-                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
-                    sb.append(", 최대: ");
-                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
-                }
-                else {
-                    sb.append(": connection count: ");
-                    sb.append(disconnectionCount);
-                    sb.append(System.lineSeparator());            
-                    sb.append("      disconnection(ms)--avg: ");
-                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
-                    sb.append(", max: ");
-                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
-                }
-                break;
-            default :
-                break;
-        }
-    }
+//    private static void getTextFor(ControlEnums.TextType textType, StringBuilder sb, 
+//            int disconnectionCount, long disconnectionTotalMs, long disconnPeriodMax) {
+//        switch(textType){
+//            case DIS_CONN_MSG :
+//                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
+//                    sb.append(": 재연결 횟수: ");
+//                    sb.append(disconnectionCount);
+//                    sb.append(System.lineSeparator());            
+//                    sb.append("      단절 시간(ms)--평균: ");
+//                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+//                    sb.append(", 최대: ");
+//                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+//                }
+//                else {
+//                    sb.append(": connection count: ");
+//                    sb.append(disconnectionCount);
+//                    sb.append(System.lineSeparator());            
+//                    sb.append("      disconnection(ms)--avg: ");
+//                    sb.append(getFormattedRealNumber(disconnectionTotalMs/(float)disconnectionCount, 1));
+//                    sb.append(", max: ");
+//                    sb.append(getFormattedRealNumber(disconnPeriodMax, 0));
+//                }
+//                break;
+//            default :
+//                break;
+//        }
+//    }
 }

@@ -54,7 +54,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Arrival"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="ARRIVAL_MENU_ITEM.getContent()" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EntryRecordItemActionPerformed"/>
@@ -68,7 +70,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Booting"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="BOOTING_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -83,7 +87,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Login"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="LOGIN_RECORD_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -97,7 +103,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;V&lt;/U&gt;ehicles&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="VEHICLE_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>
@@ -118,7 +126,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Manage"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="VEHICLE_MANAGE_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -133,7 +143,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Drivers"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="DRIVERS_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -147,7 +159,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;A&lt;U&gt;f&lt;/U&gt;filiation&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="AFFILIATION_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>
@@ -171,7 +185,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Manage"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="MANAGE_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -185,7 +201,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;U&lt;/U&gt;sers&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="USERS_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="doubleBuffered" type="boolean" value="true"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
@@ -208,7 +226,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Manage"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="MANAGE_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -222,7 +242,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;S&lt;/U&gt;ystem&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="SYSTEM_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>
@@ -244,7 +266,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Settings"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="SETTING_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -259,7 +283,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Quit"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="QUIT_MENU_ITEM.getContent()" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="processCloseProgram"/>
@@ -303,7 +329,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;Log &lt;U&gt;I&lt;/U&gt;n&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="LOGIN_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>
@@ -329,7 +357,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;HTML&gt;Log &lt;U&gt;I&lt;/U&gt;n&lt;/HTML&gt;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="LOGIN_MENU_ITEM.getContent()" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="processLogIn"/>
@@ -343,7 +373,9 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;HTML&gt;Log &lt;U&gt;O&lt;/U&gt;ut&lt;/HTML&gt;"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="LOGOUT_MENU_ITEM.getContent()" type="code"/>
+                </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
@@ -354,7 +386,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="IsManagerLabelMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Manager : -  "/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="MANAGER_MANU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>
@@ -516,7 +550,9 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;A&lt;/U&gt;rrivals&lt;/HTML&gt;"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="ARRIVALS_BTN.getContent()" type="code"/>
+                    </Property>
                     <Property name="alignmentY" type="float" value="0.0"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -543,7 +579,9 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;V&lt;/U&gt;ehicles&lt;/HTML&gt;"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="VEHICLES_BTN.getContent()" type="code"/>
+                    </Property>
                     <Property name="alignmentY" type="float" value="0.0"/>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
@@ -571,7 +609,9 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;U&lt;/U&gt;sers&lt;/HTML&gt;"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="USERS_BTN.getContent()" type="code"/>
+                    </Property>
                     <Property name="alignmentY" type="float" value="0.0"/>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="focusable" type="boolean" value="false"/>
@@ -609,7 +649,9 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="open gate"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="OPEN_LABEL.getContent()" type="code"/>
+                    </Property>
                     <Property name="alignmentY" type="float" value="0.0"/>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalAlignment" type="int" value="4"/>
@@ -733,7 +775,9 @@
                       <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </Property>
                     <Property name="horizontalAlignment" type="int" value="0"/>
-                    <Property name="text" type="java.lang.String" value="Recent Events"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="STATUS_LABEL.getContent()" type="code"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" value=""/>
                     <Property name="horizontalTextPosition" type="int" value="10"/>
                     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -791,7 +835,7 @@
                         <Property name="alignmentX" type="float" value="0.0"/>
                         <Property name="alignmentY" type="float" value="0.0"/>
                         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                          <Color id="&#xae30;&#xbcf8; &#xcee4;&#xc11c;"/>
+                          <Color id="Default Cursor"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="new Dimension(Short.MAX_VALUE, Short.MAX_VALUE)" type="code"/>
@@ -1144,7 +1188,9 @@
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="Car Arrival"/>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="CAR_ARRIVAL_BTN.getContent()" type="code"/>
+                                </Property>
                                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                   <Dimension value="[120, 40]"/>
                                 </Property>
@@ -1180,7 +1226,9 @@
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                                 </Property>
-                                <Property name="text" type="java.lang.String" value="statistics"/>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="STATISTICS_BTN.getContent()" type="code"/>
+                                </Property>
                                 <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                                   <Dimension value="[120, 40]"/>
                                 </Property>

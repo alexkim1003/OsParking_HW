@@ -186,6 +186,9 @@ public class GUI_Language {
     };
     public static String[][] textField = {
         // <editor-fold defaultstate="collapsed" desc="-- Button"> 
+        
+        
+        
         {"(차량번호)", "(Tag No.)"},
         {"(운전자)", "(Driver)"},
         {"(기타정보)", "(Other Info)"},
@@ -318,27 +321,5 @@ public class GUI_Language {
         {"사진 크기 입력 오류", "Picture Size Input Error"},
         {"IP주소 형식 오류", "IP address format error"},
         //</editor-fold>  
-    };
-    public static String[][] menuItem = {
-         // <editor-fold defaultstate="collapsed" desc="-- MenuItem"> 
-        {"<HTML>주차기록(<U>A</U>)</HTML>", "<HTML><U>A</U> Records</HTML>"},
-        {"입차기록", "Arrival"},
-        {"실행기록", "Booting"},
-        {"로그인기록", "Login"},
-        {"<HTML>등록차량(<U>V</U>)</HTML>", "<HTML><U>V</U>ehicles</HTML>"},
-        {"차량관리", "Vehicle"},
-        {"운전자", "Driver"},
-        {"<HTML>건물소속(<U>F</U>)</HTML>", "<HTML>A<U>f</U>filiation</HTML>"},
-        {"목록관리", "Manage"},
-        {"<HTML>사용자(<U>U</U>)</HTML>", "<HTML><U>U</U>sers</HTML>"},
-        {"<HTML>실행명령(<U>S</U>)</HTML>", "<HTML><U>S</U>ystem</HTML>"},
-        {"설정", "Settins"},
-        {"종료", "Quit"},
-        {"<HTML>로그인(<U>I</U>)</HTML>", "<HTML>Log <U>I</U>n</HTML>"},
-        {"<HTML>로그아웃(<U>O</U>)</HTML>", "<HTML>Log <U>O</U>ut</HTML>"},
-        {"로그인", "Log In"},
-        {"로그아웃", "Log Out"},
-        {"매니저 :", "Manager :"},
-        //</editor-fold>
     };
 }

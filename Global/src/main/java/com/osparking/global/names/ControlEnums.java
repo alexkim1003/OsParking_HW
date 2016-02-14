@@ -629,18 +629,62 @@ public class ControlEnums {
     }
     
     public enum TextType{
-        CAR_TAG_TF, DRIVER_TF, OTHER_INFO_TF, CELL_PHONE_TF, LANDLINE_TF,
-        LOG_OUT_TF, UNKNOWN_TF, UNREGISTERED_TF, NOT_APPLICABLE_TF,
-        STATUS_TF, START_MSG, STOP_MSG, FIRST_RUN_MSG, 
-        NO_MSG, ERROR_RATE_MSG , NO_APP_MSG, NO_SOCKET_DISCON_MSG, NO_COMMAND_MSG,
-        OPEN_MSG, INTERRUPT_MSG, DISCONN_MSG, CONN_MSG, ON_ARTIFI_ERROR_MSG, ERROR_RATE_MSG2,
-        ERROR_MSG, ERROR_CHECK_BOX_MSG, LETEST_MSG, PASSING_MSG,
-        DELETE_LOG_MSG, DELETE_FILE_MSG,
+        CAR_TAG_TF("(차량번호)", "(Tag No.)"),
+        DRIVER_TF("(운전자)", "(Driver)"),
+        OTHER_INFO_TF("(기타정보)", "(Other Info)"),
+        CELL_PHONE_TF("(휴대전화)", "(Cell Phone)"),
+	LANDLINE_TF("(유선전화)", "(LandLine)"),
+        LOG_OUT_TF("(로그아웃)", "(Log Out)"),
+	UNKNOWN_TF("(자료없음)", "(unknown)"),
+	UNREGISTERED_TF("(미등록)", "(Non-Registered)"),
+	NOT_APPLICABLE_TF("(해당사항없음)", "(Not Applicable)"),
+        STATUS_TF("<중요 상태 정보>", "<Critical Status Information>"),
+	START_MSG("시스템 시작", "System started"),
+	STOP_MSG("시스템 종료", "System stopped"),
+	FIRST_RUN_MSG("OsParking 의 첫 번째 실행", 
+                "Very First Run of OsParking!"),
+        NO_MSG("없음", "N/A"),
+	ERROR_RATE_MSG ("인공 에러율: ", "Artificial error rate: "),
+	NO_APP_MSG("인공 에러 없음", "No artificial error"),
+	NO_SOCKET_DISCON_MSG(": 소켓 단절 없음.", ": no socket disconn'"),
+        NO_COMMAND_MSG("개방 명령 없음.", "no Open command statistics"),
+        OPEN_MSG("개방", "Open"),
+        INTERRUPT_MSG("입차", "Interrupt"),
+        DISCONN_MSG("단절됨", "disconnected"),
+        CONN_MSG("연결됨", "connected"),
+        ON_ARTIFI_ERROR_MSG("인공 에러 삽입", "Artificial error is on"),
+        ERROR_RATE_MSG2("에러율 : ", "prob of error: "),
+        ERROR_MSG("에러 ", "error"),
+        ERROR_CHECK_BOX_MSG("에러 체크 박스를 먼저 선택해주세요. ", 
+                "First, select error check box, OK?"),
+        LETEST_MSG("최근 ", "latest"),
+	PASSING_MSG(" 대 도착, 평균 통과 시간", 
+                " car arrivals, average passing delay is"),
+        DELETE_LOG_MSG("삭제된 기록--폴더: ", "Deleted logs--directory: "),
+	DELETE_FILE_MSG(", 파일: ", "files: ");
         
-        REFUSED_CONN_TF, HELP_TA, PASSING_DELAY_AVG_MSG, 
-        DIS_CONN_MSG, COMMAND_ACK_MSG, TRY_CONN_MSG,
-        LOGIN_MSG, LOGOUT_MSG, PASSING_DELAY_MSG, 
-        ERR_INC_MSG, ERR_DEC_MSG,
+//        REFUSED_CONN_TF,
+//	HELP_TA,
+//	PASSING_DELAY_AVG_MSG, 
+//        DIS_CONN_MSG,
+//	COMMAND_ACK_MSG,
+//	TRY_CONN_MSG,
+//        LOGIN_MSG,
+//	LOGOUT_MSG,
+//	PASSING_DELAY_MSG, 
+//        ERR_INC_MSG,
+//	ERR_DEC_MSG,
+                
+        TextType(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+                return contents[language.ordinal()];
+        }                  
     }
     
     public enum ComboBoxItemTypes{
@@ -668,8 +712,8 @@ public class ControlEnums {
         VEHICLE_MANAGE_MENU_ITEM("차량관리", "Vehicle"),
         DRIVERS_MENU_ITEM("운전자", "Driver"),
         AFFILIATION_MENU("<HTML>건물소속(<U>F</U>)</HTML>", "<HTML>A<U>f</U>filiation</HTML>"),
-        MANAGE_MENU_ITEM("목록관리", "Manage"),
         USERS_MENU("<HTML>사용자(<U>U</U>)</HTML>", "<HTML><U>U</U>sers</HTML>"),
+        MANAGE_MENU_ITEM("목록관리", "Manage"),
         SYSTEM_MENU("<HTML>실행명령(<U>S</U>)</HTML>", "<HTML><U>S</U>ystem</HTML>"),
         SETTING_MENU_ITEM("설정", "Settins"),
         QUIT_MENU_ITEM("종료", "Quit"),

@@ -23,7 +23,30 @@ import com.osparking.attendant.LoginWindowEvent;
 import com.osparking.global.Globals;
 import static com.osparking.global.Globals.*;
 import com.osparking.global.names.CarAdmission;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.ARRIVALS_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.CAR_ARRIVAL_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.STATISTICS_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.USERS_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.VEHICLES_BTN;
+import static com.osparking.global.names.ControlEnums.LabelContent.OPEN_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.STATUS_LABEL;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.AFFILIATION_MENU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.ARRIVAL_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.BOOTING_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.DRIVERS_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.LOGIN_MENU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.LOGIN_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.LOGIN_RECORD_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.LOGOUT_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.MANAGER_MANU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.MANAGE_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.QUIT_MENU_ITEM;
 import static com.osparking.global.names.ControlEnums.MenuITemTypes.RECORD_MENU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.SETTING_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.SYSTEM_MENU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.USERS_MENU;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.VEHICLE_MANAGE_MENU_ITEM;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.VEHICLE_MENU;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -672,7 +695,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         CarIOListButton.setBackground(MainBackground);
         CarIOListButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CarIOListButton.setText("<HTML><U>A</U>rrivals</HTML>");
+        CarIOListButton.setText(ARRIVALS_BTN.getContent());
         CarIOListButton.setAlignmentY(0.0F);
         CarIOListButton.setFocusable(false);
         CarIOListButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -689,7 +712,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         VehiclesButton.setBackground(MainBackground);
         VehiclesButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        VehiclesButton.setText("<HTML><U>V</U>ehicles</HTML>");
+        VehiclesButton.setText(VEHICLES_BTN.getContent());
         VehiclesButton.setAlignmentY(0.0F);
         VehiclesButton.setEnabled(false);
         VehiclesButton.setFocusable(false);
@@ -707,7 +730,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         UsersButton.setBackground(MainBackground);
         UsersButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        UsersButton.setText("<HTML><U>U</U>sers</HTML>");
+        UsersButton.setText(USERS_BTN.getContent());
         UsersButton.setAlignmentY(0.0F);
         UsersButton.setEnabled(false);
         UsersButton.setFocusable(false);
@@ -726,7 +749,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         MainToolBar.add(filler3);
 
         autoGateOpenCheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        autoGateOpenCheckBox.setText("open gate");
+        autoGateOpenCheckBox.setText(OPEN_LABEL.getContent());
         autoGateOpenCheckBox.setAlignmentY(0.0F);
         autoGateOpenCheckBox.setFocusable(false);
         autoGateOpenCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -768,7 +791,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         LeftSide_Label.setBackground(MainBackground);
         LeftSide_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LeftSide_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LeftSide_Label.setText("Recent Events");
+        LeftSide_Label.setText(STATUS_LABEL.getContent());
         LeftSide_Label.setToolTipText("");
         LeftSide_Label.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
         LeftSide_Label.setMaximumSize(new java.awt.Dimension(280, 17));
@@ -913,7 +936,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
 
         CarEnteredButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CarEnteredButton.setText("Car Arrival");
+        CarEnteredButton.setText(CAR_ARRIVAL_BTN.getContent());
         CarEnteredButton.setMaximumSize(new java.awt.Dimension(120, 40));
         CarEnteredButton.setMinimumSize(new java.awt.Dimension(120, 40));
         CarEnteredButton.setPreferredSize(new java.awt.Dimension(120, 40));
@@ -926,7 +949,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         jPanel2.add(filler7);
 
         showStatisticsBtn.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        showStatisticsBtn.setText("statistics");
+        showStatisticsBtn.setText(STATISTICS_BTN.getContent());
         showStatisticsBtn.setMaximumSize(new java.awt.Dimension(120, 40));
         showStatisticsBtn.setMinimumSize(new java.awt.Dimension(120, 40));
         showStatisticsBtn.setPreferredSize(new java.awt.Dimension(120, 40));
@@ -1120,7 +1143,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         EntryRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.ALT_MASK));
         EntryRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        EntryRecordItem.setText("Arrival");
+        EntryRecordItem.setText(ARRIVAL_MENU_ITEM.getContent());
         EntryRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EntryRecordItemActionPerformed(evt);
@@ -1130,7 +1153,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         RunRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK));
         RunRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        RunRecordItem.setText("Booting");
+        RunRecordItem.setText(BOOTING_MENU_ITEM.getContent());
         RunRecordItem.setEnabled(false);
         RunRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1141,7 +1164,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LoginRecordItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK));
         LoginRecordItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LoginRecordItem.setText("Login");
+        LoginRecordItem.setText(LOGIN_RECORD_MENU_ITEM.getContent());
         LoginRecordItem.setEnabled(false);
         LoginRecordItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1155,7 +1178,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(RecordsMenu);
 
         jMenu6.setBackground(MainBackground);
-        jMenu6.setText("<HTML><U>V</U>ehicles</HTML>");
+        jMenu6.setText(VEHICLE_MENU.getContent());
         jMenu6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jMenu6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jMenu6.setMaximumSize(new java.awt.Dimension(120, 32767));
@@ -1163,7 +1186,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         VehicleListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.ALT_MASK));
         VehicleListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        VehicleListItem.setText("Manage");
+        VehicleListItem.setText(VEHICLE_MANAGE_MENU_ITEM.getContent());
         VehicleListItem.setEnabled(false);
         VehicleListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1174,7 +1197,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         DriverListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.ALT_MASK));
         DriverListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        DriverListItem.setText("Drivers");
+        DriverListItem.setText(DRIVERS_MENU_ITEM.getContent());
         DriverListItem.setEnabled(false);
         DriverListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1186,7 +1209,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(jMenu6);
 
         BuildingMenu.setBackground(MainBackground);
-        BuildingMenu.setText("<HTML>A<U>f</U>filiation</HTML>");
+        BuildingMenu.setText(AFFILIATION_MENU.getContent());
         BuildingMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         BuildingMenu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BuildingMenu.setMaximumSize(new java.awt.Dimension(120, 32767));
@@ -1199,7 +1222,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         BuildingListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.ALT_MASK));
         BuildingListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        BuildingListItem.setText("Manage");
+        BuildingListItem.setText(MANAGE_MENU_ITEM.getContent());
         BuildingListItem.setEnabled(false);
         BuildingListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1211,7 +1234,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(BuildingMenu);
 
         AttendantMenu.setBackground(MainBackground);
-        AttendantMenu.setText("<HTML><U>U</U>sers</HTML>");
+        AttendantMenu.setText(USERS_MENU.getContent());
         AttendantMenu.setDoubleBuffered(true);
         AttendantMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         AttendantMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -1221,7 +1244,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         AttendantListItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.ALT_MASK));
         AttendantListItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        AttendantListItem.setText("Manage");
+        AttendantListItem.setText(MANAGE_MENU_ITEM.getContent());
         AttendantListItem.setEnabled(false);
         AttendantListItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1233,7 +1256,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(AttendantMenu);
 
         CommandMenu.setBackground(MainBackground);
-        CommandMenu.setText("<HTML><U>S</U>ystem</HTML>");
+        CommandMenu.setText(SYSTEM_MENU.getContent());
         CommandMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         CommandMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         CommandMenu.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -1242,7 +1265,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         SettingsItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.ALT_MASK));
         SettingsItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        SettingsItem.setText("Settings");
+        SettingsItem.setText(SETTING_MENU_ITEM.getContent());
         SettingsItem.setEnabled(false);
         SettingsItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1253,7 +1276,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         CloseProgramItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK));
         CloseProgramItem.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CloseProgramItem.setText("Quit");
+        CloseProgramItem.setText(QUIT_MENU_ITEM.getContent());
         CloseProgramItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 processCloseProgram(evt);
@@ -1281,7 +1304,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.add(Box.createHorizontalGlue());
 
         LogInOutMenu.setBackground(MainBackground);
-        LogInOutMenu.setText("<HTML>Log <U>I</U>n</HTML>");
+        LogInOutMenu.setText(LOGIN_MENU.getContent());
         LogInOutMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         LogInOutMenu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LogInOutMenu.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
@@ -1292,7 +1315,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LoginUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK));
         LoginUser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LoginUser.setText("<HTML>Log <U>I</U>n</HTML>");
+        LoginUser.setText(LOGIN_MENU_ITEM.getContent());
         LoginUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 processLogIn(evt);
@@ -1302,7 +1325,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LogoutUser.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.ALT_MASK));
         LogoutUser.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LogoutUser.setText("<HTML>Log <U>O</U>ut</HTML>");
+        LogoutUser.setText(LOGOUT_MENU_ITEM.getContent());
         LogoutUser.setEnabled(false);
         LogoutUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1313,7 +1336,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         visibleMenuBar.add(LogInOutMenu);
 
-        IsManagerLabelMenu.setText("Manager : -  ");
+        IsManagerLabelMenu.setText(MANAGER_MANU.getContent());
         IsManagerLabelMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         IsManagerLabelMenu.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         visibleMenuBar.add(IsManagerLabelMenu);
