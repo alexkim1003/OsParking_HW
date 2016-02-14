@@ -189,12 +189,12 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(false);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+                deleteDriver_Button.setText(CANCEL_BTN.getContent());
                 deleteDriver_Button.setMnemonic('c');
                 deleteDriver_Button.setEnabled(true);
                 modifyDriver_Button.setEnabled(false);
                 
-                createDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+                createDriver_Button.setText(SAVE_BTN.getContent());
                 createDriver_Button.setMnemonic('s');
                 requiredLabel.setVisible(true);
                 
@@ -210,12 +210,12 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(false);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+                deleteDriver_Button.setText(CANCEL_BTN.getContent());
                 deleteDriver_Button.setMnemonic('c');
                 deleteDriver_Button.setEnabled(true);
                 createDriver_Button.setEnabled(false);
                 
-                modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+                modifyDriver_Button.setText(SAVE_BTN.getContent());
                 modifyDriver_Button.setMnemonic('s');
                 requiredLabel.setVisible(true);
                 
@@ -231,15 +231,15 @@ public class ManageDrivers extends javax.swing.JFrame {
                 readSheet_Button.setEnabled(true);
                 deleteAllDrivers.setEnabled(false);
                 
-                deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+                deleteDriver_Button.setText(DELETE_BTN.getContent());
                 deleteDriver_Button.setMnemonic('d');
                 deleteDriver_Button.setEnabled(false);
                 
-                modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+                modifyDriver_Button.setText(MODIFY_BTN.getContent());
                 modifyDriver_Button.setMnemonic('m');
                 modifyDriver_Button.setEnabled(false);
                 
-                createDriver_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
+                createDriver_Button.setText(CREATE_BTN.getContent());
                 createDriver_Button.setMnemonic('r');
                 requiredLabel.setVisible(true);
                 
@@ -482,7 +482,7 @@ public class ManageDrivers extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(DRIVER_LIST_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(DRIVER_LIST_FRAME_TITLE.getContent());
         setMinimumSize(new java.awt.Dimension(991, 566));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -1712,13 +1712,13 @@ public class ManageDrivers extends javax.swing.JFrame {
     void setUpdateMode (boolean toModify) {
         setFormMode(toModify ? FormMode.MODIFICATION : FormMode.SEARCHING);
         if (toModify) {
-            modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
-            deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+            modifyDriver_Button.setText(SAVE_BTN.getContent());
+            deleteDriver_Button.setText(CANCEL_BTN.getContent());
             deleteDriver_Button.setEnabled(true);
             createDriver_Button.setEnabled(false);        }
         else {
-            modifyDriver_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
-            deleteDriver_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+            modifyDriver_Button.setText(MODIFY_BTN.getContent());
+            deleteDriver_Button.setText(DELETE_BTN.getContent());
             deleteDriver_Button.setEnabled(false);            
         }
         requiredLabel.setVisible(toModify);

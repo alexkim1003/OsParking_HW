@@ -23,6 +23,7 @@ import com.osparking.attendant.LoginWindowEvent;
 import com.osparking.global.Globals;
 import static com.osparking.global.Globals.*;
 import com.osparking.global.names.CarAdmission;
+import static com.osparking.global.names.ControlEnums.MenuITemTypes.RECORD_MENU;
 import static com.osparking.global.names.DB_Access.deviceType;
 import static com.osparking.global.names.DB_Access.enteranceAllowed;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -1110,7 +1111,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         visibleMenuBar.setPreferredSize(new java.awt.Dimension(660, 32));
 
         RecordsMenu.setBackground(MainBackground);
-        RecordsMenu.setText("<HTML><U>A</U> Records</HTML>");
+        RecordsMenu.setText(RECORD_MENU.getContent());
         RecordsMenu.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         RecordsMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         RecordsMenu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

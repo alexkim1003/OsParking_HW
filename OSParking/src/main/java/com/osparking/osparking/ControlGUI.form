@@ -27,7 +27,9 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="MainBackground" type="code"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="&lt;HTML&gt;&lt;U&gt;A&lt;/U&gt; Records&lt;/HTML&gt;"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="RECORD_MENU.getContent()" type="code"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
             </Property>

@@ -2097,7 +2097,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsSaveButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsSaveButton.setMnemonic('s');
-        SettingsSaveButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+        SettingsSaveButton.setText(SAVE_BTN.getContent());
         SettingsSaveButton.setToolTipText(SETTINGS_SAVE_TOOLTIP.getContent());
         SettingsSaveButton.setEnabled(false);
         SettingsSaveButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -2111,7 +2111,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsCancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCancelButton.setMnemonic('c');
-        SettingsCancelButton.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+        SettingsCancelButton.setText(CANCEL_BTN.getContent());
         SettingsCancelButton.setToolTipText(SETTINGS_CANCEL_TOOLTIP.getContent());
         SettingsCancelButton.setEnabled(false);
         SettingsCancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -2125,7 +2125,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         SettingsCloseButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         SettingsCloseButton.setMnemonic('c');
-        SettingsCloseButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        SettingsCloseButton.setText(CLOSE_BTN.getContent());
         SettingsCloseButton.setToolTipText(CLOSE_BTN_TOOLTIP.getContent());
         SettingsCloseButton.setPreferredSize(new java.awt.Dimension(90, 40));
         SettingsCloseButton.addActionListener(new java.awt.event.ActionListener() {

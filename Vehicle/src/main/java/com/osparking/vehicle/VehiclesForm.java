@@ -330,7 +330,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(VEHICLESFORM_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(VEHICLESFORM_FRAME_TITLE.getContent());
         setMinimumSize(new java.awt.Dimension(1350, 750));
         setPreferredSize(new java.awt.Dimension(1250, 750));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -364,7 +364,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeFormButton.setText(CLOSE_BTN.getContent());
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -382,7 +382,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(((String[])Globals.TitleList.get(VEHICLESFORM_FRAME_TITLE.ordinal()))[ourLang]);
+        jLabel1.setText(VEHICLESFORM_FRAME_TITLE.getContent());
         jLabel1.setMaximumSize(new java.awt.Dimension(113, 30));
         jLabel1.setMinimumSize(new java.awt.Dimension(113, 30));
         jLabel1.setPreferredSize(new java.awt.Dimension(113, 30));
@@ -446,7 +446,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         jPanel12.add(filler40);
 
         selectDriverButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        selectDriverButton.setText(((String[])Globals.ButtonLabels.get(OWNER_BTN.ordinal()))[ourLang]);
+        selectDriverButton.setText(OWNER_BTN.getContent());
         selectDriverButton.setEnabled(false);
         selectDriverButton.setFocusable(false);
         selectDriverButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -826,7 +826,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         clearButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearButton.setMnemonic('l');
-        clearButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
+        clearButton.setText(CLEAR_BTN.getContent());
         clearButton.setMaximumSize(new java.awt.Dimension(90, 40));
         clearButton.setMinimumSize(new java.awt.Dimension(100, 40));
         clearButton.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -840,7 +840,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+        searchButton.setText(SEARCH_BTN.getContent());
         searchButton.setMaximumSize(new java.awt.Dimension(90, 40));
         searchButton.setMinimumSize(new java.awt.Dimension(90, 40));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -917,7 +917,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         saveSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         saveSheet_Button.setMnemonic('a');
-        saveSheet_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_ODS_BTN.ordinal()))[ourLang]);
+        saveSheet_Button.setText(SAVE_ODS_BTN.getContent());
         saveSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -931,7 +931,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         readSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         readSheet_Button.setMnemonic('o');
-        readSheet_Button.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
+        readSheet_Button.setText(READ_ODS_BTN.getContent());
         readSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -945,7 +945,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteAllVehicles.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteAllVehicles.setMnemonic('e');
-        deleteAllVehicles.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
+        deleteAllVehicles.setText(DELETE_ALL_BTN.getContent());
         deleteAllVehicles.setMaximumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setMinimumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -959,7 +959,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteCancel_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteCancel_Button.setMnemonic('d');
-        deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+        deleteCancel_Button.setText(DELETE_BTN.getContent());
         deleteCancel_Button.setEnabled(false);
         deleteCancel_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         deleteCancel_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -974,7 +974,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         modiSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         modiSave_Button.setMnemonic('m');
-        modiSave_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+        modiSave_Button.setText(MODIFY_BTN.getContent());
         modiSave_Button.setEnabled(false);
         modiSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         modiSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -989,7 +989,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         insertSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         insertSave_Button.setMnemonic('r');
-        insertSave_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
+        insertSave_Button.setText(CREATE_BTN.getContent());
         insertSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1113,7 +1113,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             if (response == JOptionPane.YES_OPTION) 
             {
                 setFormMode(FormMode.SEARCHING);
-                insertSave_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);                
+                insertSave_Button.setText(CREATE_BTN.getContent());
                 int selRow = vehiclesTable.getSelectedRow();
                 if (selRow >= 0)
                     showVehicleDetail(selRow);  
@@ -1131,7 +1131,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             if (response == JOptionPane.YES_OPTION) 
             {
                 setFormMode(FormMode.SEARCHING);
-                modiSave_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);                
+                modiSave_Button.setText(MODIFY_BTN.getContent());
                 int selRow = vehiclesTable.getSelectedRow();
                 if (selRow >= 0)
                     showVehicleDetail(selRow);  
@@ -1811,10 +1811,10 @@ public class VehiclesForm extends javax.swing.JFrame {
                 closeFormButton.setEnabled(false);
                 
                 formModeLabel.setText(((String[])Globals.LabelsText.get(CREATE_MODE_LABEL.ordinal()))[ourLang]);
-                insertSave_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+                insertSave_Button.setText(SAVE_BTN.getContent());
                 insertSave_Button.setMnemonic('s');
                 deleteCancel_Button.setEnabled(true);    
-                deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+                deleteCancel_Button.setText(CANCEL_BTN.getContent());
                 deleteCancel_Button.setMnemonic('c');
                 
                 saveSheet_Button.setEnabled(false);
@@ -1834,10 +1834,10 @@ public class VehiclesForm extends javax.swing.JFrame {
                 closeFormButton.setEnabled(false);
                 
                 formModeLabel.setText(((String[])Globals.LabelsText.get(MODIFY_MODE_LABEL.ordinal()))[ourLang]);
-                modiSave_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+                modiSave_Button.setText(SAVE_BTN.getContent());
                 modiSave_Button.setMnemonic('s');
                 deleteCancel_Button.setEnabled(true);    
-                deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]);
+                deleteCancel_Button.setText(CANCEL_BTN.getContent());
                 deleteCancel_Button.setMnemonic('c');
                 
                 saveSheet_Button.setEnabled(false);
@@ -1858,11 +1858,11 @@ public class VehiclesForm extends javax.swing.JFrame {
                 closeFormButton.setMnemonic('c');
                 formModeLabel.setText(((String[])Globals.LabelsText.get(SEARCH_MODE_LABEL.ordinal()))[ourLang]);
                 
-                insertSave_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
+                insertSave_Button.setText(CREATE_BTN.getContent());
                 insertSave_Button.setMnemonic('r');
-                modiSave_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+                modiSave_Button.setText(MODIFY_BTN.getContent());
                 modiSave_Button.setMnemonic('m');
-                deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+                deleteCancel_Button.setText(DELETE_BTN.getContent());
                 deleteCancel_Button.setMnemonic('d');
                 clearButton.setEnabled(true);
                 
