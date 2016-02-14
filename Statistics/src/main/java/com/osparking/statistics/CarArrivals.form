@@ -10,7 +10,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="((String[])Globals.TitleList.get(CAR_ARRIVALS_FRAME_TITLE.ordinal()))[ourLang]" type="code"/>
+      <Connection code="CAR_ARRIVALS_FRAME_TITLE.getContent()" type="code"/>
     </Property>
     <Property name="focusCycleRoot" type="boolean" value="false"/>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -101,7 +101,7 @@
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="&lt;User Code&gt;">
-                      <Connection PropertyName="titleX" code="((String[])Globals.TitleList.get(SEARCH_CRITERIA_PANEL_TITLE.ordinal()))[ourLang]" type="code"/>
+                      <Connection PropertyName="titleX" code="SEARCH_CRITERIA_PANEL_TITLE.getContent()" type="code"/>
                       <Connection PropertyName="font" code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </TitledBorder>
                   </Border>
@@ -186,7 +186,7 @@
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder title="&lt;User Code&gt;">
-                              <Connection PropertyName="titleX" code="((String[])Globals.TitleList.get(ARRIVAL_PROPERTIES_PANEL_TITLE.ordinal()))[ourLang]" type="code"/>
+                              <Connection PropertyName="titleX" code="ARRIVAL_PROPERTIES_PANEL_TITLE.getContent()" type="code"/>
                               <Connection PropertyName="font" code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                             </TitledBorder>
                           </Border>
@@ -739,7 +739,7 @@
                             </Property>
                             <Property name="mnemonic" type="int" value="108"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="CLEAR_BTN.getContent()" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                               <Connection code="((String[])Globals.ToolTipLabels.get(CLEAR_BTN_TOOLTIP.ordinal()))[ourLang]" type="code"/>
@@ -762,7 +762,7 @@
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                             <TitledBorder title="&lt;User Code&gt;">
-                              <Connection PropertyName="titleX" code="((String[])Globals.TitleList.get(ARRIVAL_TIME_PANEL_TITLE.ordinal()))[ourLang]" type="code"/>
+                              <Connection PropertyName="titleX" code="ARRIVAL_TIME_PANEL_TITLE.getContent()" type="code"/>
                               <Connection PropertyName="font" code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                             </TitledBorder>
                           </Border>
@@ -1117,7 +1117,7 @@
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="&lt;User Code&gt;">
-                      <Connection PropertyName="titleX" code="((String[])Globals.TitleList.get(VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE.ordinal()))[ourLang]" type="code"/>
+                      <Connection PropertyName="titleX" code="VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE.getContent()" type="code"/>
                       <Connection PropertyName="font" code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </TitledBorder>
                   </Border>
@@ -1861,7 +1861,7 @@
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                     <TitledBorder title="&lt;User Code&gt;">
-                      <Connection PropertyName="titleX" code="((String[])Globals.TitleList.get(VEHICLE_ARRIVAL_LIST_PANEL_TITLE.ordinal()))[ourLang]" type="code"/>
+                      <Connection PropertyName="titleX" code="VEHICLE_ARRIVAL_LIST_PANEL_TITLE.getContent()" type="code"/>
                       <Connection PropertyName="font" code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                     </TitledBorder>
                   </Border>

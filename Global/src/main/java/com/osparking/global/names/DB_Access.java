@@ -297,14 +297,10 @@ public class DB_Access {
                 EBD_blinkCycle = rs.getInt("EBD_blink_cycle");
             }
             
-            for(int i = 0; i < title.length; i++){
-                inData = title[i];
-                TitleList.add(i, inData);
-            }
-            for(int i = 0; i < button.length; i++){
-                inData = button[i];
-                ButtonLabels.add(i, inData);
-            }
+//            for(int i = 0; i < button.length; i++){
+//                inData = button[i];
+//                ButtonLabels.add(i, inData);
+//            }
             for(int i = 0; i < label.length; i++){
                 inData = label[i];
                 LabelsText.add(i, inData);
@@ -333,10 +329,10 @@ public class DB_Access {
                 inData = dialogTitle[i];
                 DialogTitleList.add(i, inData);
             }
-            for(int i = 0; i < menuItem.length; i++){
-                inData = menuItem[i];
-                MenuItemList.add(i, inData);
-            }
+//            for(int i = 0; i < menuItem.length; i++){
+//                inData = menuItem[i];
+//                MenuItemList.add(i, inData);
+//            }
         } catch (SQLException ex) {
             logParkingException(Level.SEVERE, ex, "(Loading System Settings from the DB)");
         } finally {

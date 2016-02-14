@@ -117,7 +117,7 @@ public class LoginForm extends JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(LOGIN_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(LOGIN_FRAME_TITLE.getContent());
         setFocusTraversalPolicyProvider(true);
         setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         setResizable(false);
@@ -156,7 +156,7 @@ public class LoginForm extends JFrame {
 
         loginButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         loginButton.setMnemonic('L');
-        loginButton.setText(((String[])Globals.ButtonLabels.get(LOGIN_BTN.ordinal()))[ourLang]);
+        loginButton.setText(LOGIN_BTN.getContent());
         loginButton.setPreferredSize(new java.awt.Dimension(100, 35));
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -176,7 +176,7 @@ public class LoginForm extends JFrame {
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeButton.setMnemonic('C');
-        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeButton.setText(CLOSE_BTN.getContent());
         closeButton.setPreferredSize(new java.awt.Dimension(90, 35));
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

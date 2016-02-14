@@ -380,14 +380,15 @@ public class AttListForm extends javax.swing.JFrame {
         spacePanel2 = new javax.swing.JPanel();
 
         saveFileName.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveFileName.setApproveButtonText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+        saveFileName.setApproveButtonText(SAVE_BTN.getContent());
         saveFileName.setFileFilter(new TextFileOnly());
         saveFileName.setToolTipText("");
         saveFileName.setEnabled(false);
         saveFileName.setName(""); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(ATTLIST_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(ATTLIST_FRAME_TITLE.getContent()
+        );
         setMinimumSize(new java.awt.Dimension(1100, 710));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -928,7 +929,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font(font_Type, font_Style, 16));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText(((String[])Globals.TitleList.get(ATTLIST_FRAME_TITLE.ordinal()))[ourLang]);
+        jLabel11.setText(ATTLIST_FRAME_TITLE.getContent());
         centerPanel.add(jLabel11, java.awt.BorderLayout.PAGE_START);
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(600, 474));
@@ -1193,7 +1194,7 @@ public class AttListForm extends javax.swing.JFrame {
                 case NormalMode:
                     // <editor-fold defaultstate="collapsed" desc="-- Prepare to change user information">
                     formMode = FormMode.UpdateMode;
-                    multiFuncButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+                    multiFuncButton.setText(SAVE_BTN.getContent());
                     multiFuncButton.setMnemonic('s');
                     setModificationState(true); // change to modification mode
                     createButton.setEnabled(false);
@@ -1206,7 +1207,7 @@ public class AttListForm extends javax.swing.JFrame {
                     if (allFieldsAreGood(errorMsg)) {
                         // each field satisfies data requirements
                         formMode = FormMode.NormalMode;
-                        multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+                        multiFuncButton.setText(MODIFY_BTN.getContent());
                         multiFuncButton.setMnemonic('m');
                         setModificationState(false);
                         int result = saveUpdatedRecord();
@@ -1433,7 +1434,7 @@ public class AttListForm extends javax.swing.JFrame {
                 setModificationState(false);
                 multiFuncButton.setMnemonic('s');
                 formMode = FormMode.NormalMode;
-                multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);  
+                multiFuncButton.setText(MODIFY_BTN.getContent());
                 multiFuncButton.setMnemonic('m');
                 createButton.setEnabled(true);
                 deleteButton.setEnabled(true);
@@ -1774,7 +1775,7 @@ public class AttListForm extends javax.swing.JFrame {
 
             // <editor-fold defaultstate="collapsed" desc="-- Change visibility lower buttons">
             createButton.setEnabled(false);
-            multiFuncButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
+            multiFuncButton.setText(SAVE_BTN.getContent());
             multiFuncButton.setMnemonic('s');
             changeButtonEnabled(false);
             multiFuncButton.setEnabled(true);
@@ -2268,7 +2269,7 @@ public class AttListForm extends javax.swing.JFrame {
         
         // <editor-fold defaultstate="collapsed" desc="-- Enable two buttons back again">        
         createButton.setEnabled(true);
-        multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+        multiFuncButton.setText(MODIFY_BTN.getContent());
         changeButtonEnabled(true);
         multiFuncButton.setMnemonic('m');
         // </editor-fold>   
