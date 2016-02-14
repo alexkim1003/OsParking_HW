@@ -255,7 +255,7 @@ public class CarArrivals extends javax.swing.JFrame {
         arrivalsList = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(CAR_ARRIVALS_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(CAR_ARRIVALS_FRAME_TITLE.getContent());
         setFocusCycleRoot(false);
         setMinimumSize(new java.awt.Dimension(1200, 850));
         setPreferredSize(new java.awt.Dimension(1150, 850));
@@ -267,7 +267,7 @@ public class CarArrivals extends javax.swing.JFrame {
         topPanel.setPreferredSize(new java.awt.Dimension(910, 280));
 
         searchPanel.setBackground(new java.awt.Color(243, 243, 243));
-        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(SEARCH_CRITERIA_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+        searchPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, SEARCH_CRITERIA_PANEL_TITLE.getContent(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
         searchPanel.setAlignmentX(0.0F);
         searchPanel.setMinimumSize(new java.awt.Dimension(800, 113));
         searchPanel.setPreferredSize(new java.awt.Dimension(900, 400));
@@ -276,7 +276,7 @@ public class CarArrivals extends javax.swing.JFrame {
         criteriaPanel.setPreferredSize(new java.awt.Dimension(882, 230));
 
         searchTop.setBackground(new java.awt.Color(243, 243, 243));
-        searchTop.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(ARRIVAL_PROPERTIES_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+        searchTop.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ARRIVAL_PROPERTIES_PANEL_TITLE.getContent(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
         searchTop.setForeground(new java.awt.Color(255, 255, 255));
         searchTop.setAlignmentX(0.0F);
         searchTop.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -527,7 +527,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         clearSearchPropertiesButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearSearchPropertiesButton.setMnemonic('l');
-        clearSearchPropertiesButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
+        clearSearchPropertiesButton.setText(CLEAR_BTN.getContent());
         clearSearchPropertiesButton.setToolTipText(((String[])Globals.ToolTipLabels.get(CLEAR_BTN_TOOLTIP.ordinal()))[ourLang]);
         clearSearchPropertiesButton.setPreferredSize(new java.awt.Dimension(100, 35));
         clearSearchPropertiesButton.addActionListener(new java.awt.event.ActionListener() {
@@ -581,7 +581,7 @@ public class CarArrivals extends javax.swing.JFrame {
         );
 
         searchBottom.setBackground(new java.awt.Color(244, 244, 244));
-        searchBottom.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(ARRIVAL_TIME_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+        searchBottom.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ARRIVAL_TIME_PANEL_TITLE.getContent(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
         searchBottom.setForeground(new java.awt.Color(153, 153, 153));
         searchBottom.setAlignmentX(0.0F);
         searchBottom.setFocusTraversalPolicyProvider(true);
@@ -625,7 +625,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         setSearchPeriodOptionButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         setSearchPeriodOptionButton.setMnemonic('f');
-        setSearchPeriodOptionButton.setText(((String[])Globals.ButtonLabels.get(FIX_IT_BTN.ordinal()))[ourLang]);
+        setSearchPeriodOptionButton.setText(FIX_IT_BTN.getContent());
         setSearchPeriodOptionButton.setToolTipText(((String[])Globals.ToolTipLabels.get(FIX_IT_BTN_TOOLTIP.ordinal()))[ourLang]);
         setSearchPeriodOptionButton.setPreferredSize(new java.awt.Dimension(77, 35));
         setSearchPeriodOptionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -733,7 +733,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+        searchButton.setText(SEARCH_BTN.getContent());
         searchButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
         searchButton.setMaximumSize(new java.awt.Dimension(80, 80));
         searchButton.setMinimumSize(new java.awt.Dimension(80, 80));
@@ -770,7 +770,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeButton.setMnemonic('c');
-        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeButton.setText(CLOSE_BTN.getContent());
         closeButton.setMaximumSize(new java.awt.Dimension(77, 52));
         closeButton.setMinimumSize(new java.awt.Dimension(77, 52));
         closeButton.setPreferredSize(new java.awt.Dimension(85, 52));
@@ -804,7 +804,7 @@ public class CarArrivals extends javax.swing.JFrame {
         bottomPanel.setPreferredSize(new java.awt.Dimension(965, 400));
         bottomPanel.setLayout(new javax.swing.BoxLayout(bottomPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+        bottomLeftPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE.getContent(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
         bottomLeftPanel.setMaximumSize(new java.awt.Dimension(32767, 163835));
         bottomLeftPanel.setMinimumSize(new java.awt.Dimension(400, 195));
         bottomLeftPanel.setPreferredSize(new java.awt.Dimension(650, 445));
@@ -1063,7 +1063,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         bottomPanel.add(bottomLeftPanel);
 
-        bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, ((String[])Globals.TitleList.get(VEHICLE_ARRIVAL_LIST_PANEL_TITLE.ordinal()))[ourLang], javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
+        bottomRightPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(null, VEHICLE_ARRIVAL_LIST_PANEL_TITLE.getContent(), javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font(font_Type, font_Style, font_Size)));
         bottomRightPanel.setMaximumSize(new java.awt.Dimension(32779, 33293));
         bottomRightPanel.setPreferredSize(new java.awt.Dimension(400, 300));
         bottomRightPanel.setLayout(new java.awt.BorderLayout());
@@ -1114,7 +1114,8 @@ public class CarArrivals extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (originalImg != null)
         {
-            ImageDisplay bigImage = new ImageDisplay(originalImg, "100% " + ((String[])Globals.TitleList.get(FULL_SIZE_IMAGE_FRAME_TITLE.ordinal()))[ourLang]);
+//            ImageDisplay bigImage = new ImageDisplay(originalImg, "100% " + ((String[])Globals.TitleList.get(FULL_SIZE_IMAGE_FRAME_TITLE.ordinal()))[ourLang]);
+            ImageDisplay bigImage = new ImageDisplay(originalImg, "100% " + FULL_SIZE_IMAGE_FRAME_TITLE.getContent());
             bigImage.setVisible(true);               
         }        
     }//GEN-LAST:event_imageLabelMouseClicked

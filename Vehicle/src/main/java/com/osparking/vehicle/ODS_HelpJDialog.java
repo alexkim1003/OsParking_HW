@@ -37,6 +37,7 @@ import static com.osparking.global.Globals.createStretchedIcon;
 import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.ourLang;
 import com.osparking.global.names.ControlEnums;
@@ -70,7 +71,23 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         this.odsType = odsType;
         initComponents();
         setIconImages(OSPiconList);
-        setTitle(getTextFor(ControlEnums.TitleTypes.ODS_HELP_DIALOG_FRAME_TITLE));
+
+        String title = "";
+        
+        switch (language) {
+            case KOREAN:
+                title = (odsType == ODS_TYPE.AFFILIATION ? "소속" : "건물") + " ods 파일 도움말";
+                break;
+                
+            case ENGLISH:
+                title = "Help on '" + (odsType == ODS_TYPE.AFFILIATION ? "Affliation" : "Building") + "' ods File";
+                break;
+                
+            default:
+                break;
+        }        
+        
+        setTitle(title);
         setHelpContents(helpTitle, odsType);
 
         // Close the dialog when Esc is pressed
@@ -118,6 +135,7 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         odsHelpLabel = new javax.swing.JLabel();
 
+        setTitle("Help on ods File");
         setMinimumSize(new java.awt.Dimension(560, 550));
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -147,7 +165,7 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         jPanel3.add(filler4);
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeButton.setText(CLOSE_BTN.getContent());
         closeButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -353,27 +371,6 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
                 return false;
             }
         }
-    }
-    
-    private String getTextFor(ControlEnums.TitleTypes titleType){
-        String title = null;
-        
-        switch(titleType){
-            case ODS_HELP_DIALOG_FRAME_TITLE :
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        title = (odsType == ODS_TYPE.AFFILIATION ? "소속" : "건물") + " ods 파일 도움말";
-                        break;
-                    default:
-                        title = "Help on '" + (odsType == ODS_TYPE.AFFILIATION ? "Affliation" : "Building") + "' ods File";
-                        break;
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return title;
     }
     
     private String getTextFor(ControlEnums.TextType TextType){

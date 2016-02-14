@@ -30,16 +30,42 @@ public class ControlEnums {
     }
     
     public enum TitleTypes {
-        LOGIN_FRAME_TITLE, ATTLIST_FRAME_TITLE, AFFILI_BUILD_FRAME_TITLE, 
-        VEHICLESFORM_FRAME_TITLE, DRIVER_SELECTION_FRAME_TITLE, DRIVER_LIST_FRAME_TITLE,
-        CAR_ARRIVALS_FRAME_TITLE, SEARCH_CRITERIA_PANEL_TITLE, ARRIVAL_PROPERTIES_PANEL_TITLE,
-        ARRIVAL_TIME_PANEL_TITLE, VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE, VEHICLE_ARRIVAL_LIST_PANEL_TITLE,
-        FULL_SIZE_IMAGE_FRAME_TITLE, DISALLOWED_CAR_FRAME_TITLE, VISITING_CAR_FRAME_TITLE,
-        LOGIN_RECORD_FRAME_TITLE, RUN_RECORD_FRAME_TITLE, GATE_PANEL_TITLE, SYSTEM_SETTINGS_FRAME_TITLE,
-        E_BOARD_SETTINGS_FRAME_TITLE,
-        DEFAULT_PANEL_TITLE, VEHICLE_PANEL_TITLE, TOP_PANEL_TITLE, BOTTOM_PANEL_TITLE,
+        LOGIN_FRAME_TITLE("주차관리 로그인", "Attendant Login"),
+        ATTLIST_FRAME_TITLE("사용자 정보관리 및 목록", "User List Management"),
+        AFFILI_BUILD_FRAME_TITLE("소속 및 건물", "Affiliation and Building"),
+        VEHICLESFORM_FRAME_TITLE("등록차량 관리", "Registered Vehicles"),
+        DRIVER_SELECTION_FRAME_TITLE("운전자 검색", "Find Driver"),
+        DRIVER_LIST_FRAME_TITLE("운전자 목록", "Driver List"),
+        CAR_ARRIVALS_FRAME_TITLE("도착 목록", "Arrival Records"),
+        SEARCH_CRITERIA_PANEL_TITLE("검색 기준", "Search Criteria"),
+        ARRIVAL_PROPERTIES_PANEL_TITLE("도착 속성", "Arrival Properties"),
+        ARRIVAL_TIME_PANEL_TITLE("도착 기간", "Arrival Time"),
+        VEHICLE_ARIIVAL_DETAILS_PANEL_TITLE("도착차량 상세정보", "Vehicle Arrival Details"),
+        VEHICLE_ARRIVAL_LIST_PANEL_TITLE("도착차량 목록", "Vehicle Arrival List"),
+        FULL_SIZE_IMAGE_FRAME_TITLE("입차 사진", "car arrival image"),
+        DISALLOWED_CAR_FRAME_TITLE("허가되지 않은 차량", "DisAllowed Car"),
+        VISITING_CAR_FRAME_TITLE("방문객 정보 입력", "Visitor Information Entry"),
+        LOGIN_RECORD_FRAME_TITLE("사용자 로그인 기록", "User Login Record"),
+        RUN_RECORD_FRAME_TITLE("OsParking 실행 기록", "OsParking Program Run Record"),
+        GATE_PANEL_TITLE("최근 도착 차량", "Recent car Arrivals"),
+        SYSTEM_SETTINGS_FRAME_TITLE("시스템 설정", "System Settings"),
+        E_BOARD_SETTINGS_FRAME_TITLE("전광판 설정", "Electronic Display Settings"),
+        DEFAULT_PANEL_TITLE("평시", "Default"),
+        VEHICLE_PANEL_TITLE("차량", "Vehicle"),
+        TOP_PANEL_TITLE("상단", "TOP"), 
+        BOTTOM_PANEL_TITLE("하단", "BOTTOM");
         
-        ODS_HELP_DIALOG_FRAME_TITLE,
+        TitleTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+            return contents[language.ordinal()];
+        }        
+        
     }
     
     public enum LabelContent {
@@ -492,7 +518,7 @@ public class ControlEnums {
                 + "  - includes at least one special character shown below"
                 ),
         
-        SAME_DATA_INPUT_DIALOG("'에 같은 값이 존재합니다.", "Same data exists in '"),
+//        SAME_DATA_INPUT_DIALOG("'에 같은 값이 존재합니다.", "Same data exists in '"),
         
         BUILDING_IN_DIALOG("건물 번호", "Building number"),
         ROOM_IN_DIALOG("호실 번호", "Room number"),
@@ -554,9 +580,6 @@ public class ControlEnums {
 //        LOGOUT_CONFIRM_DIALOG,
 //        READ_VEHICLE_ODS_DIALOG, 
 //        READ_DRIVER_ODS_DIALOG, 
-
-                
-                
 //        REJECT_USER_DIALOG,
 //        UNIT_DELETE_DIALOG,
 //        UNIT_DELETE_RESULT_DIALOG,
@@ -637,13 +660,35 @@ public class ControlEnums {
     }
     
     public enum MenuITemTypes{
-        RECORD_MENU, ARRIVAL_MENU_ITEM, BOOTING_MENU_ITEM, LOGIN_RECORD_MENU_ITEM,
-        VEHICLE_MENU, VEHICLE_MANAGE_MENU_ITEM, DRIVERS_MENU_ITEM,
-        AFFILIATION_MENU, MANAGE_MENU_ITEM, 
-        USERS_MENU,  
-        SYSTEM_MENU, SETTING_MENU_ITEM, QUIT_MENU_ITEM,
-        LOGIN_MENU, LOGOUT_MENU, LOGIN_MENU_ITEM, LOGOUT_MENU_ITEM,
-        MANAGER_MANU, 
+        RECORD_MENU("<HTML>주차기록(<U>A</U>)</HTML>", "<HTML><U>A</U> Records</HTML>"),
+        ARRIVAL_MENU_ITEM("입차기록", "Arrival"),
+        BOOTING_MENU_ITEM("실행기록", "Booting"),
+        LOGIN_RECORD_MENU_ITEM("로그인기록", "Login"),
+        VEHICLE_MENU("<HTML>등록차량(<U>V</U>)</HTML>", "<HTML><U>V</U>ehicles</HTML>"),
+        VEHICLE_MANAGE_MENU_ITEM("차량관리", "Vehicle"),
+        DRIVERS_MENU_ITEM("운전자", "Driver"),
+        AFFILIATION_MENU("<HTML>건물소속(<U>F</U>)</HTML>", "<HTML>A<U>f</U>filiation</HTML>"),
+        MANAGE_MENU_ITEM("목록관리", "Manage"),
+        USERS_MENU("<HTML>사용자(<U>U</U>)</HTML>", "<HTML><U>U</U>sers</HTML>"),
+        SYSTEM_MENU("<HTML>실행명령(<U>S</U>)</HTML>", "<HTML><U>S</U>ystem</HTML>"),
+        SETTING_MENU_ITEM("설정", "Settins"),
+        QUIT_MENU_ITEM("종료", "Quit"),
+        LOGIN_MENU("<HTML>로그인(<U>I</U>)</HTML>", "<HTML>Log <U>I</U>n</HTML>"),
+        LOGOUT_MENU("<HTML>로그아웃(<U>O</U>)</HTML>", "<HTML>Log <U>O</U>ut</HTML>"),
+        LOGIN_MENU_ITEM("로그인", "Log In"),
+        LOGOUT_MENU_ITEM("로그아웃", "Log Out"),
+        MANAGER_MANU("매니저 :", "Manager :");
+        
+        MenuITemTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+                return contents[language.ordinal()];
+        }            
     }
     
     public enum MessageTypes{

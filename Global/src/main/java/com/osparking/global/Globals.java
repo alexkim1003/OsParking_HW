@@ -16,8 +16,6 @@
  */
 package com.osparking.global;
 
-import com.osparking.global.names.ControlEnums;
-import static com.osparking.global.names.ControlEnums.DialogMSGTypes.SAME_DATA_INPUT_DIALOG;
 import com.osparking.global.names.ControlEnums.Languages;
 import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
 import java.awt.Color;
@@ -1701,38 +1699,14 @@ public class Globals {
         }       
     }
     
-    
-    public static ArrayList TitleList = new ArrayList();
-    public static ArrayList ButtonLabels = new ArrayList();
     public static ArrayList LabelsText = new ArrayList();
     public static ArrayList ToolTipLabels = new ArrayList();
     public static ArrayList TableHeaderList = new ArrayList();
     public static ArrayList TextFieldList = new ArrayList();
     public static ArrayList ComboBoxItemList = new ArrayList();
-//    public static ArrayList DialogMSGList = new ArrayList();
     public static ArrayList DialogTitleList = new ArrayList();
-    public static ArrayList MenuItemList = new ArrayList();
+//    public static ArrayList MenuItemList = new ArrayList();
     
     public static int ourLang;
     public static Languages language;
-    
-    private static String getTextFor(ControlEnums.DialogMSGTypes dialogMSGTypes, String str){
-        String dialogMSG = null;
-        
-        switch(dialogMSGTypes){
-            case SAME_DATA_INPUT_DIALOG : 
-                String msg = SAME_DATA_INPUT_DIALOG.getContent();
-                if(ourLang == ControlEnums.Languages.KOREAN.ordinal()){
-                    dialogMSG = "'" + str + msg;
-                }
-                else{
-                    dialogMSG = msg + str + "'";
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return dialogMSG;
-    }
 }

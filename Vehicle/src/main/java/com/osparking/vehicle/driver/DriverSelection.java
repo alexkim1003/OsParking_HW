@@ -131,7 +131,7 @@ public class DriverSelection extends javax.swing.JFrame {
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(DRIVER_SELECTION_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(DRIVER_SELECTION_FRAME_TITLE.getContent());
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -147,7 +147,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText(((String[])Globals.TitleList.get(DRIVER_SELECTION_FRAME_TITLE.ordinal()))[ourLang]);
+        jLabel1.setText(DRIVER_SELECTION_FRAME_TITLE.getContent());
         jLabel1.setMaximumSize(new java.awt.Dimension(120, 28));
         jLabel1.setMinimumSize(new java.awt.Dimension(120, 28));
         jLabel1.setPreferredSize(new java.awt.Dimension(120, 28));
@@ -156,7 +156,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeFormButton.setText(CLOSE_BTN.getContent());
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -182,7 +182,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         clearButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearButton.setMnemonic('l');
-        clearButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
+        clearButton.setText(CLEAR_BTN.getContent());
         clearButton.setMaximumSize(new java.awt.Dimension(90, 40));
         clearButton.setMinimumSize(new java.awt.Dimension(90, 40));
         clearButton.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -196,7 +196,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+        searchButton.setText(SEARCH_BTN.getContent());
         searchButton.setMaximumSize(new java.awt.Dimension(90, 40));
         searchButton.setMinimumSize(new java.awt.Dimension(90, 40));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -315,7 +315,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         manageDriversButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         manageDriversButton.setMnemonic('m');
-        manageDriversButton.setText(((String[])Globals.ButtonLabels.get(MANAGE_BTN.ordinal()))[ourLang]);
+        manageDriversButton.setText(MANAGE_BTN.getContent());
         manageDriversButton.setMaximumSize(new java.awt.Dimension(90, 40));
         manageDriversButton.setMinimumSize(new java.awt.Dimension(90, 40));
         manageDriversButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -334,7 +334,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         fixDriverButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         fixDriverButton.setMnemonic('t');
-        fixDriverButton.setText(((String[])Globals.ButtonLabels.get(SELECT_BTN.ordinal()))[ourLang]);
+        fixDriverButton.setText(SELECT_BTN.getContent());
         fixDriverButton.setMaximumSize(new java.awt.Dimension(90, 40));
         fixDriverButton.setMinimumSize(new java.awt.Dimension(90, 40));
         fixDriverButton.setPreferredSize(new java.awt.Dimension(90, 40));

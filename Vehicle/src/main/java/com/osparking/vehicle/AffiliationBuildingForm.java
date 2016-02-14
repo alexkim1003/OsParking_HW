@@ -210,7 +210,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         odsFileChooser.setFileFilter(new OdsFileOnly());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(((String[])Globals.TitleList.get(AFFILI_BUILD_FRAME_TITLE.ordinal()))[ourLang]);
+        setTitle(AFFILI_BUILD_FRAME_TITLE.getContent());
         setBackground(PopUpBackground);
         setMinimumSize(new java.awt.Dimension(740, 550));
 
@@ -231,7 +231,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeFormButton.setText(CLOSE_BTN.getContent());
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -312,7 +312,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
     insertL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertL1_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    insertL1_Button.setText(CREATE_NO_SHORT_BTN.getContent());
     insertL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertL1_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -324,7 +324,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.add(insertL1_Button);
 
     modifyL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyL1_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
+    modifyL1_Button.setText(MODIFY_NO_SHORT_BTN.getContent());
     modifyL1_Button.setEnabled(false);
     modifyL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -337,7 +337,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.add(modifyL1_Button);
 
     deleteL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteL1_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    deleteL1_Button.setText(DELETE_NO_SHORT_BTN.getContent());
     deleteL1_Button.setEnabled(false);
     deleteL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -411,7 +411,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
 
     insertL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertL2_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    insertL2_Button.setText(CREATE_NO_SHORT_BTN.getContent());
     insertL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertL2_Button.setName(""); // NOI18N
@@ -424,7 +424,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.add(insertL2_Button);
 
     modifyL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyL2_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
+    modifyL2_Button.setText(MODIFY_NO_SHORT_BTN.getContent());
     modifyL2_Button.setEnabled(false);
     modifyL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -438,7 +438,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.add(modifyL2_Button);
 
     deleteL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteL2_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    deleteL2_Button.setText(DELETE_NO_SHORT_BTN.getContent());
     deleteL2_Button.setEnabled(false);
     deleteL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -460,7 +460,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel3.setPreferredSize(new java.awt.Dimension(318, 50));
 
     deleteAll_Affiliation.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteAll_Affiliation.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
+    deleteAll_Affiliation.setText(DELETE_ALL_BTN.getContent());
     deleteAll_Affiliation.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteAll_Affiliation.setPreferredSize(new java.awt.Dimension(110, 40));
     deleteAll_Affiliation.addActionListener(new java.awt.event.ActionListener() {
@@ -471,7 +471,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel3.add(deleteAll_Affiliation);
 
     readSheet_Affiliation.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    readSheet_Affiliation.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
+    readSheet_Affiliation.setText(READ_ODS_BTN.getContent());
     readSheet_Affiliation.setMaximumSize(new java.awt.Dimension(90, 40));
     readSheet_Affiliation.setPreferredSize(new java.awt.Dimension(110, 40));
     readSheet_Affiliation.addActionListener(new java.awt.event.ActionListener() {
@@ -556,7 +556,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.Y_AXIS));
 
     insertBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertBuilding_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    insertBuilding_Button.setText(CREATE_NO_SHORT_BTN.getContent());
     insertBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertBuilding_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -568,7 +568,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.add(insertBuilding_Button);
 
     modifyBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyBuilding_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
+    modifyBuilding_Button.setText(MODIFY_NO_SHORT_BTN.getContent());
     modifyBuilding_Button.setEnabled(false);
     modifyBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -581,7 +581,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.add(modifyBuilding_Button);
 
     deleteBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteBuilding_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    deleteBuilding_Button.setText(DELETE_NO_SHORT_BTN.getContent());
     deleteBuilding_Button.setEnabled(false);
     deleteBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -648,7 +648,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.Y_AXIS));
 
     insertUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertUnit_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    insertUnit_Button.setText(CREATE_NO_SHORT_BTN.getContent());
     insertUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertUnit_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -660,7 +660,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.add(insertUnit_Button);
 
     modifyUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyUnit_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
+    modifyUnit_Button.setText(MODIFY_NO_SHORT_BTN.getContent());
     modifyUnit_Button.setEnabled(false);
     modifyUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -673,7 +673,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.add(modifyUnit_Button);
 
     deleteUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteUnit_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
+    deleteUnit_Button.setText(DELETE_NO_SHORT_BTN.getContent());
     deleteUnit_Button.setEnabled(false);
     deleteUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -694,7 +694,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel6.setPreferredSize(new java.awt.Dimension(318, 50));
 
     deleteAll_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteAll_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
+    deleteAll_Button.setText(DELETE_ALL_BTN.getContent());
     deleteAll_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteAll_Button.setPreferredSize(new java.awt.Dimension(110, 40));
     deleteAll_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -705,7 +705,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel6.add(deleteAll_Button);
 
     readSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    readSheet_Button.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
+    readSheet_Button.setText(READ_ODS_BTN.getContent());
     readSheet_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     readSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
     readSheet_Button.addActionListener(new java.awt.event.ActionListener() {
