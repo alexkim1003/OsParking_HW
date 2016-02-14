@@ -68,7 +68,11 @@ import no.geosoft.cc.graphics.*;
 import no.geosoft.cc.geometry.Matrix4x4;
 
 /**
+<<<<<<< HEAD
  * Gate Bar Simulator GUI -- Part of OsParking simulator package which is developed by Open Source 
+=======
+ * Gate Bar Simulator GUI -- Part of OSParking simulator package which is developed by Open Source 
+>>>>>>> osparking/master
  * Parking Inc.
  * <p>Company Web Site : <a href="http://www.osparking.com">http://www.osparking.com</a><p>
  * <p>(Company logo: <img src ="doc-files/64px.png"/>)</p>
@@ -697,8 +701,9 @@ errorCheckBox.addActionListener(new java.awt.event.ActionListener() {
                             setBarAngle(Math.PI / 2);
                             barStatus = BarStatus.Closing;
                             
-                            // schedule to close the gate bar
                             timerRotateBar.cancelTask();
+
+                            // schedule to close the gate bar
                             if (timerRotateBar == null) {
                                 timerRotateBar = new ParkingTimer("timerRotateBar_" + gateBarID, false, 
                                         new BarRotator(gateBar), 0, FigureRedrawPeriodMS);

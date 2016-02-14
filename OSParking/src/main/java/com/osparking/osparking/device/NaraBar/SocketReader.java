@@ -77,14 +77,14 @@ public class SocketReader extends Thread {
             } catch (SocketTimeoutException ex) {
                 System.out.println("time out");
             } catch (IOException ex) {
-//                System.out.println("IO excep");
                 barManager.finishConnection(null, "IO excep", gateID);
             }
+            
             if (barManager.getMsg() != Broken) {
-                System.out.println("message type: " + barManager.getMsg());
                 synchronized(barManager.getMsgArrived()) {
                     barManager.getMsgArrived().notify();
                 }
+                System.out.println("\t\t  <~ " + barManager.getMsg() + " [Bar]");
             }            
         }
     }

@@ -24,7 +24,6 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.DEBUG;
-import static com.osparking.global.Globals.LED_PERIOD;
 import static com.osparking.global.Globals.PULSE_PERIOD;
 import static com.osparking.global.Globals.getGateDevicePortNo;
 import static com.osparking.global.Globals.logParkingException;
@@ -90,11 +89,9 @@ public class ConnectDeviceTask implements Runnable {
                         IDevice.ISerial serialMan = (IDevice.ISerial)manager;
                         
                         if (serialMan.getPortIdentifier().isCurrentlyOwned()) {
-                            System.out.println("owned...................................................");
                             JOptionPane.showMessageDialog(managerGUI, "Gate #" + deviceID +" " 
                                     + deviceType + " serial port is currently OWNed");
                         } else {
-                            System.out.println("not owned+++++++++++++++++++");
                             serialMan.setCommPort(serialMan.getPortIdentifier().open(this.getClass().getName(), 1000));
                             if (serialMan.getCommPort() instanceof SerialPort) {
                                 SerialPort serialPort = (SerialPort) serialMan.getCommPort();
@@ -121,7 +118,7 @@ public class ConnectDeviceTask implements Runnable {
 
                     managerGUI.tolerance[deviceType.ordinal()][deviceID].assignMAX();  
                     managerGUI.getSocketMutex()[deviceType.ordinal()][deviceID].notifyAll();
-                    System.out.println("after notify all");
+//                    System.out.println("after notify all");
                 }
                 //</editor-fold>
                 return;

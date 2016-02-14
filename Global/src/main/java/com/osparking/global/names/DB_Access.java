@@ -17,7 +17,6 @@
 package com.osparking.global.names;
 
 import com.osparking.global.Globals;
-import static com.osparking.global.Globals.OSP_FALSE;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,17 +24,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Locale;
 import java.util.logging.Level;
-import static com.osparking.global.Globals.closeDBstuff;
-import static com.osparking.global.Globals.initDeviceTypes;
-import static com.osparking.global.Globals.isInteger;
-import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.*;
 import static com.osparking.global.Globals.sdf;
-import static com.osparking.global.names.OSP_enums.EBD_ContentType.*;
-import com.osparking.global.names.OSP_enums.*;
+import com.osparking.global.names.ControlEnums.Languages;
+import static com.osparking.global.names.ControlEnums.Languages.ENGLISH;
+import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
+import static com.osparking.global.names.GUI_Language.*;
+import com.osparking.global.names.OSP_enums.DeviceType;
 import static com.osparking.global.names.OSP_enums.DeviceType.Camera;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
-import static com.osparking.global.names.OSP_enums.EBD_Effects.*;
+import com.osparking.global.names.OSP_enums.EBD_Colors;
+import com.osparking.global.names.OSP_enums.EBD_ContentType;
+import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
+import com.osparking.global.names.OSP_enums.EBD_CycleType;
+import com.osparking.global.names.OSP_enums.EBD_DisplayUsage;
+import com.osparking.global.names.OSP_enums.EBD_Effects;
+import static com.osparking.global.names.OSP_enums.EBD_Effects.BLINKING;
+import static com.osparking.global.names.OSP_enums.EBD_Effects.LTOR_FLOW;
+import static com.osparking.global.names.OSP_enums.EBD_Effects.RTOL_FLOW;
+import com.osparking.global.names.OSP_enums.EBD_Fonts;
+import com.osparking.global.names.OSP_enums.OpLogLevel;
+import com.osparking.global.names.OSP_enums.PWStrengthLevel;
 import com.osparking.global.names.OSP_enums.PermissionType;
 import java.util.Date;
 
@@ -116,11 +126,11 @@ public class DB_Access {
     
     public static byte [][] deviceType = null;    
     
-//    public static String [] e_boardPortNumber = null;  
-    
     public static String[][] devicePort = null;
     public static byte [][] connectionType = null;  
     
+    public static String[][] deviceComID = null;
+
     public static boolean passwordMatched(String userID, String passwd) 
     {
         boolean result = false;
@@ -182,6 +192,10 @@ public class DB_Access {
                     float average = ((float)passingDelayCurrentTotalMs)/statCount;
                     msg = "Gate #" + gateID + ": latest " + statCount + " car arrivals, average passing delay is: "
                             + String.format("%.3f seconds", average/1000f);
+                    //msg = ((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] 
+                    //        + " #" + gateID + ": " + ((String[])Globals.TextFieldList.get(LETEST_MSG.ordinal()))[ourLang] + " " 
+                    //        + statCount + ((String[])Globals.TextFieldList.get(PASSING_MSG.ordinal()))[ourLang] + ": "
+                    //        + String.format("%.3f " + ((String[])Globals.LabelsText.get(SECONDS_LABEL.ordinal()))[ourLang], average/1000f);
                     recordPassingDelay(gateID, average);
                     passingCountCurrent = 0;         // Initialize passing delay statistics for the next cycle
                     passingDelayCurrentTotalMs = 0;
@@ -239,6 +253,9 @@ public class DB_Access {
         Connection conn = null;
         Statement selectStmt = null;
         ResultSet rs = null;
+        int index = Languages.values().length;
+        String[] inData = new String[index];
+
         try {
             conn = JDBCMySQL.getConnection();
             selectStmt = conn.createStatement();
@@ -250,9 +267,21 @@ public class DB_Access {
                 else 
                     storePassingDelay = false;
                             
+                parkingLotName = rs.getString("Lot_Name");
                 pwStrengthLevel = rs.getShort("PWStrengthLevel");   // Password Complexity Level
                 opLoggingIndex = rs.getShort("OptnLoggingLevel");
                 parkingLotLocale = new Locale(rs.getString("languageCode"), rs.getString("countryCode"));
+                switch(parkingLotLocale.getLanguage()){
+                    case "ko" : 
+                        ourLang = ControlEnums.Languages.KOREAN.ordinal();
+                        language = KOREAN;
+                        font_Type = "맑은 고딕";
+                        break;
+                    default:
+                        ourLang = ControlEnums.Languages.ENGLISH.ordinal();
+                        language = ENGLISH;
+                        break;
+                }
                 localeIndex = rs.getShort("localeIndex");
                 statCount = rs.getInt("statCount");     // Statistics Population Size
                 maxMessageLines = rs.getInt("maxMessageLines");
@@ -267,6 +296,47 @@ public class DB_Access {
                 EBD_flowCycle = rs.getInt("EBD_flow_cycle");
                 EBD_blinkCycle = rs.getInt("EBD_blink_cycle");
             }
+            
+            for(int i = 0; i < title.length; i++){
+                inData = title[i];
+                TitleList.add(i, inData);
+            }
+            for(int i = 0; i < button.length; i++){
+                inData = button[i];
+                ButtonLabels.add(i, inData);
+            }
+            for(int i = 0; i < label.length; i++){
+                inData = label[i];
+                LabelsText.add(i, inData);
+            }
+            for(int i = 0; i < toolTip.length; i++){
+                inData = toolTip[i];
+                ToolTipLabels.add(i, inData);
+            }
+            for(int i = 0; i < tableHeader.length; i++){
+                inData = tableHeader[i];
+                TableHeaderList.add(i, inData);
+            }
+            for(int i = 0; i < textField.length; i++){
+                inData = textField[i];
+                TextFieldList.add(i, inData);
+            }
+            for(int i = 0; i < comboBoxItem.length; i++){
+                inData = comboBoxItem[i];
+                ComboBoxItemList.add(i, inData);
+            }
+//            for(int i = 0; i < dialogMSG.length; i++){
+//                inData = dialogMSG[i];
+//                DialogMSGList.add(i, inData);
+//            }
+            for(int i = 0; i < dialogTitle.length; i++){
+                inData = dialogTitle[i];
+                DialogTitleList.add(i, inData);
+            }
+            for(int i = 0; i < menuItem.length; i++){
+                inData = menuItem[i];
+                MenuItemList.add(i, inData);
+            }
         } catch (SQLException ex) {
             logParkingException(Level.SEVERE, ex, "(Loading System Settings from the DB)");
         } finally {
@@ -274,7 +344,6 @@ public class DB_Access {
         }
         readGateDevices();
         initDeviceTypes();
-        
     }
     
     /**
@@ -541,6 +610,7 @@ public class DB_Access {
             deviceIP = new String[DeviceType.values().length][gateCount + 1];
             devicePort = new String[DeviceType.values().length][gateCount + 1];
             deviceType = new byte[DeviceType.values().length][gateCount + 1];
+            deviceComID = new String[DeviceType.values().length][gateCount + 1];
             connectionType = new byte[DeviceType.values().length][gateCount + 1];
             passingCountCurrent = new int[gateCount + 1];
             passingDelayCurrentTotalMs = new int[gateCount + 1];
@@ -555,6 +625,7 @@ public class DB_Access {
                 
                 strField = rs.getString("cameraIP");
                 deviceIP[Camera.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
+
                 strField = rs.getString("cameraPort");
                 devicePort[Camera.ordinal()][gateID] = getPortNumber(strField);
                 deviceType[Camera.ordinal()][gateID] = (byte) rs.getInt("cameraType");
@@ -565,6 +636,7 @@ public class DB_Access {
                 devicePort[E_Board.ordinal()][gateID] = getPortNumber(strField);
                 deviceType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardType");
                 connectionType[E_Board.ordinal()][gateID] = (byte) rs.getInt("e_boardConnType");
+                deviceComID[E_Board.ordinal()][gateID] = rs.getString("e_boardCOM_ID");
                 
                 strField = rs.getString("gatebarIP");
                 deviceIP[GateBar.ordinal()][gateID] = (strField == null ? "127.0.0.1" : strField);
@@ -572,6 +644,7 @@ public class DB_Access {
                 devicePort[GateBar.ordinal()][gateID] = getPortNumber(strField);
                 deviceType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarType");
                 connectionType[GateBar.ordinal()][gateID] = (byte) rs.getInt("gateBarConnType");
+                deviceComID[GateBar.ordinal()][gateID] =  rs.getString("gatebarCOM_ID");
                 
                 passingCountCurrent[gateID] = rs.getInt("passingCountCurrent");
                 

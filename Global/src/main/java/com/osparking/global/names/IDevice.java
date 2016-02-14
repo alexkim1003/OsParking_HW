@@ -40,6 +40,10 @@ public class IDevice {
         boolean isNeverConnected();
     }
     
+    public static interface IE_Board {
+        public void showDefaultMessage();
+    }
+    
     public static interface ISocket {
         public void setSocket(Socket eBoardSocket);
         Socket getSocket();
@@ -58,12 +62,21 @@ public class IDevice {
         public String getAckStatistics();
     }    
 
-    public static boolean isConnected(IManager manager, DeviceType devType, byte deviceNo) 
+    /**
+     * Check if a device manager is connected to the device.
+     * The manager program processes a given device(of a type) at a gate(with a number).
+     * 
+     * @param manager Device manager program.
+     * @param devType Type of the device handled by the device.
+     * @param gateNo ID number of the gate where device is located.
+     * @return true if device is connected, false otherwise.
+     */
+    public static boolean isConnected(IManager manager, DeviceType devType, byte gateNo) 
     {
         if (manager == null) 
             return false;
         
-        if (connectionType[devType.ordinal()][deviceNo] == RS_232.ordinal())
+        if (connectionType[devType.ordinal()][gateNo] == RS_232.ordinal())
         {
             if (((ISerial)manager).getSerialPort() == null)
                 return false;

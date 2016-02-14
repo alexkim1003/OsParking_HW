@@ -153,6 +153,7 @@ public class RS_232_Manager implements SerialPortEventListener {
         }
         
         if (msgLength != -1 && byteIndex > 0 && validMessage(preMsg, MsgPost[byteIndex - 1])) {
+            System.out.println("msg code uint: " + preMsg[2]);
             msgFromLED = getLED_MsgType(LedProtocol.byteToUint(preMsg[2]));
         }
         return msgFromLED;

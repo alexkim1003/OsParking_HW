@@ -36,12 +36,14 @@ import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgTy
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_INTR;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_RAM;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_TEXT;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_CLOCK;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_COMM_SPD;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_ID;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_MONITOR;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -314,6 +316,8 @@ public class LedProtocol {
 
         for (int n=0; n < L; n = n + 2) {
             String D = data.substring(n, n+2);
+            if (D.substring(0, 1).equals(" "))
+                System.out.println("");
             variable = variable + Integer.parseInt(D, 16);    
         }
 
@@ -361,15 +365,6 @@ public class LedProtocol {
             startEffect = EffectType.FLOW_RtoL;
         }
                 
-//        if (fullDemo) 
-//        {
-//            if (isLtoRFlowType(startEffect)) {
-//                displayReal = blankString.substring(0, 10) + displayCore;
-//            } else if (isRtoLFlowType(startEffect)) {
-//                displayReal = displayCore + blankString.substring(0, 10);
-//            }
-//        }
-        
         // Display text storage room number
         String index = String.format("%02X", roomNum + ROOM_START); // (0~31) starts with 0x30
         String Coordinate = setCoordinate(pos);
@@ -423,16 +418,9 @@ public class LedProtocol {
         String dataVariable = null;
         try {
             String index = String.format("%02X", indexnumber+80);
-//            String Coordinate = setCoordinate(pos);
-//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
-//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
-            
-            
-                
-            
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -467,19 +455,12 @@ public class LedProtocol {
                 
         try {
             String index = String.format("%02X", indexnumber+80);
-//            String Coordinate = setCoordinate(p);
-//            String effect = setEffect(se, ss, st, ee, es, re);
-//            String effect2 = setEffect(se2, ss2, st2, ee2, es2, re2);
             String font = setFonts(setF);
             String font2 = setFonts(setF2);
             byte [] message = text.getBytes("x-windows-949");
             byte [] message2 = text2.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
             String stringData2 = (byteArrayToHex(message2)).toUpperCase();
-//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1bE1" + stringData2;
-//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData + "1b61" + font2 + stringData2;
-            
-            
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -505,21 +486,13 @@ public class LedProtocol {
         String dataVariable = null;
         try {
             String index = String.format("%02X", indexnumber+48);
-//            String Coordinate = setCoordinate(p);
-//            String effect = setEffect(se, ss, st, ee, es, re);
             String font = setFonts(setF);
             byte [] message = text.getBytes("x-windows-949");
             String stringData = (byteArrayToHex(message)).toUpperCase();
-            
-//            dataVariable = index + R6 + R6 + R5 + Coordinate + R9 + type2 + effect + font + stringData;
-            
-                
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(LedProtocol.class.getName()).log(Level.SEVERE, null, ex);
         }
             return sendMSG(SAVE_RAM, dataVariable);
-    
-    
     }
 
     public String getScreenSetString(int i, int w, int h) {
@@ -572,9 +545,7 @@ public class LedProtocol {
             {data = "1023";}
             alter_Data += data;
         }
-
-    return alter_Data.toUpperCase();    
-
+        return alter_Data.toUpperCase();    
     }    
     
     public String setTime() {
@@ -615,8 +586,6 @@ public class LedProtocol {
         String dataOut = STX + removeSpecialCharacter(ScreenArea) + ETX;   
 
         return dataOut;
-
-
     }
 
     /**
@@ -694,7 +663,6 @@ public class LedProtocol {
     public String intOn(IntOnType type, int index, int count) {
         String id = String.format("%02X", index);
         String ct = String.format("%02X", count);
-
         String dataVariable = type.getHexStr() + id + ct;
 
         return getStringToTransmit(INTR_TXT_ON, dataVariable);    
@@ -706,16 +674,13 @@ public class LedProtocol {
     }
 
     public String setCom(int com0, int com1, int ack, int rs) {
-
         String comeZero = String.format("%02X", com0);
         String comeOne = String.format("%02X", com1); 
         String ackSet = String.format("%02X", ack);
         String rsSet = String.format("%02X", rs);
-
         String dataVariable = comeZero + comeOne + "00" + ackSet + rsSet + "0000";
 
         return sendMSG(SET_COMM_SPD, dataVariable);    
-
     }
 
     //TCP/IP 맥어드래스 명명과 같이 한다. 
@@ -728,11 +693,19 @@ public class LedProtocol {
     }
 
     public String getVersion() {
-
         String dataVariable = "0EF2F0FA0000";
 
-        return sendMSG(GET_VERSION, dataVariable);    
+        return sendMSG(GET_VERSION, dataVariable);
+    }
 
+    public String setClock() {
+        LocalDateTime currTm = LocalDateTime.now();
+        String dataVariable = String.format("%04x%02x%02x%02x%02x%02x%04x", currTm.getYear(), 
+                currTm.getMonthValue(), currTm.getDayOfMonth(), currTm.getHour(), currTm.getMinute(), 
+                currTm.getSecond(), (int)(currTm.getNano()/1000000));
+//        String dataVariable = "07DF 0C 1D 0C 14 00 0000"; // 년(2), 월(1), 일(1), 시(1), 분(1), 초(1), 밀리(2)
+                                    // 2015 12 29 12 20(분) 00(초) 0000
+        return sendMSG(SET_CLOCK, dataVariable);    
     }
 
     public static boolean isRtoLFlowType(EffectType startEffect) {

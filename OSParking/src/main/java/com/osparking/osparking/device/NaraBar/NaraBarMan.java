@@ -13,6 +13,7 @@ import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceComID;
 import com.osparking.global.names.IDevice;
 import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
@@ -70,20 +71,37 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         this.deviceNo = deviceNo;
         naraBarMessages = new NaraMessageQueue(getMsgQdoor(),
                                 mainGUI.getPerfomStatistics()[GateBar.ordinal()][deviceNo]);
+
+        naraBarMessages.add(new NaraMsgItem(Nara_MsgType.Status));
+        naraBarMessages.add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         if (connectionType[GateBar.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-            String port = "COM6";
+            String portNumStr = "COM" + deviceComID[GateBar.ordinal()][deviceNo];
             try {
-                portIdentifier = CommPortIdentifier.getPortIdentifier(port);
+                portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
             } catch (NoSuchPortException ex) {
-                JOptionPane.showMessageDialog(null, "No such port: " + port);
                 logParkingException(Level.SEVERE, ex, "prepare logging file", deviceNo);
+                String errorMsg = "'" + portNumStr + "'" + " : no such port error!";
+                String questMsg = "오즈파킹 실행을 중지하겠습니까?";
+                int response = JOptionPane.showConfirmDialog(mainGUI, 
+                        errorMsg + System.lineSeparator() + questMsg + System.lineSeparator(),
+                        "Error: " + portNumStr, JOptionPane.YES_NO_OPTION);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    mainGUI.stopRunningTheProgram();
+                }                
             }
         } else {
             // 차단기 연결 소켓을 통하여 들어오는 메시지를 읽은 쓰레드 생성 및 가동
-            SocketReader reader = new SocketReader(mainGUI, this, (byte)1);
+            SocketReader reader = new SocketReader(mainGUI, this, deviceNo);
             reader.start();
         }
+        
+
+//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
+//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
+//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));        
         
         msgSender = new Thread("osp_NaraBarWriterThread")
         {
@@ -97,20 +115,13 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                             {
                                 try {
                                     mainGUI.getSocketMutex()[GateBar.ordinal()][deviceNo].wait();
-                                    
-                                    if (neverConnected) {
-                                        neverConnected = false;
-                                        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-                                                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
-                                        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-                                                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));
-                                    }
-                                    
-                                    System.out.println("after woke up");
                                 } catch (InterruptedException ex) {
                                     logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket", deviceNo);
                                 }
                             }
+                        }
+                        if (neverConnected) {
+                            neverConnected = false;
                         }
                         //</editor-fold>
                         synchronized (getMsgQdoor()) {
@@ -121,6 +132,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                         while (!naraBarMessages.isEmpty()) {
                             //<editor-fold desc="-- Write message to LEDnotice if connected">
                             NaraMsgItem currItem = getNaraBarMessages().peek();
+//                            System.out.println("curr Item : " + currItem.getType());
                             
                             try {
                                 OutputStream oStream = null;
@@ -137,9 +149,12 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                                 //<editor-fold desc="-- Handle Serial connection">
                                 if (oStream != null) 
                                 {
+                                    System.out.print("\t\t[Bar] ");
                                     switch (currItem.getType()) {
+                                        
                                         case GateDown:
-                                            if (barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
+                                            if (barState == UNKNOWN || 
+                                                    barState == BarStatus.OPENED || barState == BarStatus.OPENING) {
                                                 oStream.write(getBarCommand(currItem.getType()));
                                                 getNaraBarMessages().peek().incSendCount();
                                                 System.out.println(currItem.getType().toString() + "~>");
@@ -536,7 +551,7 @@ class RS_232_Manager implements SerialPortEventListener {
                 // 자료를 포트에서 읽어서 바른 차단기 메시지이면 차단기 명령 수신 대기자를 깨움
                 manager.setMsg(readDeliveredMessage(inStream));
                 if (manager.getMsg() != Broken) {
-                    System.out.println("      <~ " + manager.getMsg());
+                    System.out.println("\t\t  <~ " + manager.getMsg() + " [Bar]");
                     synchronized(manager.getMsgArrived()) {
                         manager.getMsgArrived().notify();
                     }

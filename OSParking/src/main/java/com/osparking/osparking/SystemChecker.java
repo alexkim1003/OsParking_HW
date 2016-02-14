@@ -26,9 +26,9 @@ import java.util.TimerTask;
 import static com.osparking.global.names.DB_Access.maxMaintainDate;
 import static com.osparking.global.Globals.closeDBstuff;
 import static com.osparking.global.Globals.logParkingOperation;
-import static com.osparking.global.Globals.ourLang;
-import static com.osparking.global.names.ControlEnums.TextType.DELETE_LOG_MSG;
+import com.osparking.global.names.DB_Access;
 import com.osparking.global.names.OSP_enums;
+import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,14 +43,17 @@ import javax.swing.JTextArea;
  * (<code>MAX_MAINTAIN_DATE</code> column)
  * @author Open Source Parking Inc.
  */
-class ArrivalRecordLimitEnforcer extends TimerTask {
+class SystemChecker extends TimerTask {
+    ControlGUI mainGUI;
     int numDeletedFolders;
     int numDeletedFiles;
     JTextArea messageArea;
     static int maxMaintainDates = 366;
-    ArrivalRecordLimitEnforcer(JTextArea controlGUI) {
-        this.messageArea = controlGUI;
+    SystemChecker(ControlGUI controlGUI) {
+        mainGUI = controlGUI;
+        this.messageArea = controlGUI.getMessageTextArea();
     }
+    
     @Override
     public void run() {
         int numRecords = 0;
@@ -169,13 +172,22 @@ class ArrivalRecordLimitEnforcer extends TimerTask {
         yearFolder = deleteOldLogFolders(new File(path + "operation"), agoYear);
         deleteOldLogFolders(yearFolder, agoMonth);
         if (numDeletedFolders != 0 || numDeletedFiles != 0) {
-            String logMsg = ((String[])Globals.TextFieldList.get(DELETE_LOG_MSG.ordinal()))[ourLang] + numDeletedFolders + 
-                    ((String[])Globals.TextFieldList.get(DELETE_LOG_MSG.ordinal()))[ourLang] + numDeletedFiles;
+            String logMsg = "Deleted logs--directory: " + numDeletedFolders + ", files: " + numDeletedFiles;
             logParkingOperation(OSP_enums.OpLogLevel.LogAlways, "Log deleted: " +  logMsg);        
             addMessageLine(messageArea, logMsg);
         }
             
         //</editor-fold>            
+        
+        //<editor-fold desc="Set periperal device clocks">
+        for (int gateNo = 1; gateNo <= DB_Access.gateCount; gateNo++) {
+            if (Globals.gateDeviceTypes[gateNo].eBoardType == OSP_enums.E_BoardType.LEDnotice) {
+                LEDnoticeManager manager = 
+                    (LEDnoticeManager)mainGUI.getDeviceManagers()[OSP_enums.DeviceType.E_Board.ordinal()][gateNo];
+                manager.setDeviceClock();
+            }
+        }
+        //</editor-fold>
     }
 
     private File deleteOldLogFolders(File fileOrFolder, int agoTimeUnitValue) {

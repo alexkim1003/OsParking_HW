@@ -27,6 +27,7 @@ import com.osparking.global.names.OSP_enums.DisplayArea;
 import static com.osparking.global.names.OSP_enums.DisplayArea.TOP_ROW;
 import static com.osparking.global.names.OSP_enums.EBD_ContentType.VERBATIM;
 import static com.osparking.global.names.OSP_enums.EBD_Effects.*;
+import static javax.swing.text.html.HTML.Tag.HEAD;
 
 /**
  *

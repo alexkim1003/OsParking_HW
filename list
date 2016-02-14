@@ -1,0 +1,20 @@
+597d7360 Nara gate bar fixed and LEDnotice being fixed.
+88ccda06 Version number increased to 1.2.1
+97993092 Update README.md
+0ba36eab Merge branch 'master' of https://github.com/osparking/OsParking_HW
+0ac3f303 Made Nara gate bar sockect connection working
+d05348e8 Update README.md
+4db18dd2 LEDnotice and NaraBar(only RS-232) added
+4a5053b3 before Mr.Kim H.R. visit
+a070fccd settings saved well
+aa2faa2e monday
+682befec Dec. 14 2015
+1cdc5a6d TCP/IP connected NEDnotice
+89bbd43d separating ledsettings form
+206f30e9 system settings [save] button enabled
+4d1306d6 text type from OsPa succeeded
+fcffcb01 monitor size set partly succeeded
+bc68608f adding default text function
+87d17e40 flow cycle combobox min size set
+9bc573bb device heartbeat handling code modified
+59f11eb5 connected with LEDnotice

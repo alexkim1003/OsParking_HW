@@ -42,9 +42,8 @@ import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT1;
 import static com.osparking.global.names.OSP_enums.MsgCode.EBD_INTERRUPT2;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
 import static com.osparking.osparking.ControlGUI.EBD_DisplaySettings;
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
+
 import java.nio.ByteBuffer;
 
 /**
@@ -54,7 +53,8 @@ import java.nio.ByteBuffer;
  * 
  * @author Open Source Parking Inc.
  */
-public class EBoardManager extends Thread implements IDevice.IManager, IDevice.ISocket {
+public class EBoardManager extends Thread implements
+        IDevice.IManager, IDevice.ISocket,  IDevice.IE_Board {
 
     private static byte[] getEBDSimulatorDefaultMessage(byte deviceNo, EBD_Row row, int msgSN) {
         EBD_DisplaySetting setting = null;
@@ -199,8 +199,7 @@ public class EBoardManager extends Thread implements IDevice.IManager, IDevice.I
                     
                         if (justBooted) {
                             justBooted = false;
-                            sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.TOP);
-                            sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.BOTTOM);
+                            showDefaultMessage();
                         } 
                     }
                     //</editor-fold>
@@ -412,5 +411,11 @@ public class EBoardManager extends Thread implements IDevice.IManager, IDevice.I
     @Override
     public boolean isNeverConnected() {
         return neverConnected;
+    }
+
+    @Override
+    public void showDefaultMessage() {
+        sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.TOP);
+        sendEBoardDefaultSetting(mainForm, deviceNo, EBD_Row.BOTTOM);
     }
 }

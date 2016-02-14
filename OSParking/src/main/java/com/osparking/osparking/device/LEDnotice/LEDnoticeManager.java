@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import static com.osparking.global.Globals.*;
 import com.osparking.global.names.DB_Access;
 import static com.osparking.global.names.DB_Access.connectionType;
+import static com.osparking.global.names.DB_Access.deviceComID;
 import static com.osparking.global.names.OSP_enums.DeviceType.*;
 import com.osparking.global.names.ParkingTimer;
 import static com.osparking.global.names.DB_Access.gateCount;
@@ -38,6 +39,7 @@ import static com.osparking.global.names.OSP_enums.EBD_DisplayUsage.DEFAULT_TOP_
 import com.osparking.global.names.OSP_enums.EBD_Row;
 import com.osparking.global.names.OSP_enums.PermissionType;
 import com.osparking.global.names.IDevice;
+import com.osparking.global.names.OSP_enums;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Green;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorBox.Red;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.ColorFont;
@@ -49,13 +51,7 @@ import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeDefault
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeVehicleContentType;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LEDnoticeVehicleContentType.VehicleTag;
 import com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_GROUP;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.DEL_TEXT_ONE;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.INTR_TXT_OFF;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.INTR_TXT_ON;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_INTR;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SAVE_TEXT;
-import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.SET_MONITOR;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.LED_MsgType.*;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.RoomType.GENERAL_TEXT;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.delGroup;
 import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.delTextOne;
@@ -74,13 +70,13 @@ import static com.osparking.osparking.device.LEDnotice.LedProtocol.getViewWidth;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.isLtoRFlowType;
 import static com.osparking.osparking.device.LEDnotice.LedProtocol.isRtoLFlowType;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeMessageQueue.MsgItem;
+import static com.osparking.osparking.device.LEDnotice.LEDnotice_enums.setClock;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.SerialPort;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.SocketTimeoutException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -96,7 +92,8 @@ import javax.swing.JOptionPane;
  * 
  * @author Open Source Parking Inc.
  */
-public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevice.ISerial, IDevice.ISocket {
+public class LEDnoticeManager extends Thread implements 
+        IDevice.IManager, IDevice.ISerial, IDevice.ISocket, IDevice.IE_Board {
 
    //<editor-fold desc="--class variables">
     private byte deviceNo = 0; // ID of the gate bar being served by this manager. A valid ID starts from 1.
@@ -140,6 +137,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     //</editor-fold>    
     Thread msgSender = null;
     
+    private Object msgArrived = new Object();
+    
+    private LED_MsgType msg;
     private CommPortIdentifier portIdentifier;
     private CommPort commPort;
     
@@ -158,20 +158,28 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         
         ledNoticeMessages = new LEDnoticeMessageQueue(msgQdoor, 
                     mainForm.getPerfomStatistics()[E_Board.ordinal()][deviceNo]);
-        String portNumStr = "COM6";
-        try {
-            portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
-        } catch (NoSuchPortException ex) {
-            logParkingException(Level.SEVERE, ex, "getting port identifier", deviceNo);
-            String errorMsg = "'" + portNumStr + "'" + " : no such port error!";
-            String questMsg = "오즈파킹 실행을 중지하겠습니까?";
-            int response = JOptionPane.showConfirmDialog(mainForm, 
-                    errorMsg + System.lineSeparator() + questMsg + System.lineSeparator(),
-                    "Error: " + portNumStr, JOptionPane.YES_NO_OPTION);
+        
+        if (connectionType[E_Board.ordinal()][deviceNo] == OSP_enums.ConnectionType.RS_232.ordinal()) {
+            String portNumStr = "COM" + deviceComID[E_Board.ordinal()][deviceNo];
             
-            if (response == JOptionPane.YES_OPTION) {
-                mainForm.stopRunningTheProgram();
+            try {
+                portIdentifier = CommPortIdentifier.getPortIdentifier(portNumStr);
+            } catch (NoSuchPortException ex) {
+                logParkingException(Level.SEVERE, ex, "getting port identifier", deviceNo);
+                String errorMsg = "'" + portNumStr + "'" + " : no such port error!";
+                String questMsg = "오즈파킹 실행을 중지하겠습니까?";
+                int response = JOptionPane.showConfirmDialog(mainForm, 
+                        errorMsg + System.lineSeparator() + questMsg + System.lineSeparator(),
+                        "Error: " + portNumStr, JOptionPane.YES_NO_OPTION);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    mainForm.stopRunningTheProgram();
+                }
             }
+        } else {
+            // 차단기 연결 소켓을 통하여 들어오는 메시지를 읽은 쓰레드 생성 및 가동
+            SocketReader reader = new SocketReader(mainForm, this, deviceNo);
+            reader.start();            
         }
         
         msgSender = new Thread("osp_LEDnoticeWriterThread")
@@ -181,40 +189,44 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                     try {
                         //<editor-fold desc="-- Wait until it is connected">
                         synchronized (mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo]) {
-//                            if (!isConnected(socket, serialPort, E_Board, deviceNo, mainForm.tolerance))
                             if (!IDevice.isConnected(mainForm.getDeviceManagers()[E_Board.ordinal()][deviceNo], 
                                     E_Board, deviceNo))
                             {
                                 try {
-                                    System.out.println("before wait");
                                     mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo].wait();
-                                    System.out.println("after woke up");
                                 } catch (InterruptedException ex) {
                                     logParkingException(Level.SEVERE, ex, "waiting LEDnotice socket", deviceNo);
                                 }
                             }
                         }
                         //</editor-fold>
+                        
+                        //<editor-fold desc="-- Wait uitil message Q has some item">
                         if (ledNoticeMessages.isEmpty()) {
                             synchronized (msgQdoor) {
                                 msgQdoor.wait();
                             }
                         }
+                        //</editor-fold>
                         
                         while (!ledNoticeMessages.isEmpty()) {
-                            //<editor-fold desc="-- Write message to LEDnotice if connected">
+                            //<editor-fold desc="-- Write message to LEDnotice">
                             MsgItem currItem = getLedNoticeMessages().peek();
-                            
+
                             try {
-                                System.out.println(currItem.getType().toString() + "~> " + currItem.getHexStr());
                                 if (connectionType[E_Board.ordinal()][deviceNo] == RS_232.ordinal()) {
-                                    if (serialPort != null)
+                                    if (serialPort != null) {
                                         serialPort.getOutputStream().write(currItem.getMessage());
+                                        System.out.println(currItem.getType().toString() + "~> "); // + currItem.getHexStr());
+                                    }
                                 } else {
-                                    socket.getOutputStream().write(currItem.getMessage());
+                                    if (socket != null) {
+                                        socket.getOutputStream().write(currItem.getMessage());
+                                        System.out.println(currItem.getType().toString() + "~> "); // + currItem.getHexStr());
+                                    }
                                 }
                                 getLedNoticeMessages().peek().incSendCount();
-                                
+
                                 if (currItem.getType() == LED_MsgType.GET_ID) 
                                 {
                                     currItem = getLedNoticeMessages().remove();
@@ -223,17 +235,17 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                                 logParkingException(Level.SEVERE, ex, "writing LEDnotice serial port", deviceNo);
                             }
                             //</editor-fold>
-                            
+
                             try {
                                 //<editor-fold desc="-- Delay some milliseconds by message type">
                                 switch (currItem.getType()) {
                                     case DEL_TEXT_ONE:
                                     case SAVE_TEXT:
-                                        Thread.sleep(300);
+                                        Thread.sleep(300); // 300
                                         break;
 
                                     default:
-                                        Thread.sleep(100);
+                                        Thread.sleep(100); // 100
                                         break;
                                 }
                                 //</editor-fold>
@@ -246,6 +258,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                                 }
                             }
                         }
+                        
                     } catch (InterruptedException ex) {
                         logParkingException(Level.SEVERE, ex, "Interrupted while waiting queue item added", deviceNo);
                         return;
@@ -262,12 +275,26 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             // 전광판 모니터 크기 설정을 지시한다.
             getLedNoticeMessages().add(new MsgItem(SET_MONITOR, 
                     ledNoticeProtocol.getScreenSetString(1, LED_COLUMN_CNT, 2)));
-
-            showLEDnoticeDefaultMessage(EBD_Row.TOP);
-            showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
-
+            
+            // 전광판 시계 현재 시각을 설정한다.
+            setDeviceClock();
+            
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    // If interrupt texts were being displayed now, clear them.
+                    mainForm.getSendEBDmsgTimer()[deviceNo][EBD_Row.TOP.ordinal()].reRunOnce(
+                            new FinishLEDnoticeIntrTask(mainForm, deviceNo, EBD_Row.TOP), 0);                
+                }
+            });
+            
+            showDefaultMessage();
             //</editor-fold>
         }         
+    }
+    
+    public void setDeviceClock() {
+        getLedNoticeMessages().add(new MsgItem(SET_CLOCK, ledNoticeProtocol.setClock()));
     }
     
     Object ackArrival = new Object();
@@ -305,13 +332,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
 
     @Override
     public void run()
-    {
-        byte[] preMsg = new byte[3];
-        byte typeInt;
-        byte posiETX;
-        
-        byte[] MsgPost = new byte[100];
-                    
+    {                  
         while (true) // infinite communication with an e-board
         {
             if (mainForm.isSHUT_DOWN()) {
@@ -333,65 +354,22 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                     //</editor-fold>
                 } 
                 
-                inStream = socket.getInputStream();
-            
-                //<editor-fold desc="-- Read arriving message from LEDnotice">
-                // SocketTimeoutException will arise when no data on the socket during 1 second
-                int byteIndex = 0;
-                int msgLength = inStream.read(preMsg); // waits for PULSE_PERIOD miliseconds 
-
-                typeInt = preMsg[2];  
-
-                int typeUint = LedProtocol.byteToUint(typeInt);
-
-                while ( true )
-                {
-                    posiETX = (byte)(inStream.read());
-                    if (posiETX == -1) {
-                        finishConnection(null, "LEDnotice closed socket", getDeviceNo());
-                        break;
-                    } else 
-                    if (posiETX == 3) {
-                        MsgPost[byteIndex++] = posiETX;
-                        break;
-                    } else {
-                        if (posiETX == 0x10) {
-                            byte aByte = (byte)inStream.read();
-                            posiETX = (byte)(aByte - 0x20);
-                        }
-                        MsgPost[byteIndex++] = posiETX;
+                synchronized(getMsgArrived()) {
+                    try {
+                        // 포트에 메시지가 도달할 때까지 대기
+                        getMsgArrived().wait();
+                        mainForm.tolerance[E_Board.ordinal()][deviceNo].assignMAX();
+                    } catch (InterruptedException ex) {
+                        logParkingException(Level.SEVERE, ex, "closing serial port", deviceNo);
                     }
-                }
-                
-                if (msgLength == -1) {
-                    // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    finishConnection(null,  "End of stream reached, gate #" + getDeviceNo(), getDeviceNo());
-                } else {
-                    if (byteIndex > 0 && validMessage(preMsg, MsgPost[byteIndex - 1])) 
-                    {
-                        processValidMessage(preMsg, byteIndex, MsgPost, typeUint);
-                    }
-                }
-                //</editor-fold>
-            } catch (SocketTimeoutException e) {
-                // exit this try statement and go to the following statement
+                }      
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "E-Board manager #" + getDeviceNo() + " waits socket conn'");
                     finishConnection(ex,  "E-Board manager #" + getDeviceNo() + " waits socket conn'", getDeviceNo());
-                }
-            } catch (IOException e) {
-                if (!mainForm.isSHUT_DOWN()) {
-                    logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, E-board #" + getDeviceNo(),
-                            mainForm.getStatusTextField(), getDeviceNo());
-                    finishConnection(e, "server closed socket for ", getDeviceNo());
-                }
-            } catch (Exception e2) {
-                logParkingExceptionStatus(Level.SEVERE, e2, 
-                        e2.getMessage() + "server- closed socket forE-Board #" + getDeviceNo(),
-                        mainForm.getStatusTextField(), getDeviceNo());
-                finishConnection(e2, "E-Board manager Excp", getDeviceNo());
+                }                
             }
+            processValidMessage(getMsg());
             //</editor-fold>
             
             if (mainForm.tolerance[E_Board.ordinal()][getDeviceNo()].getLevel() <= 0) {
@@ -462,17 +440,8 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             
         if (mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo] != null) {
             if (!mainForm.isSHUT_DOWN()) {
-//                try {
-                    //                if (getPortIdentifier().isCurrentlyOwned()) {
-//                    getPortIdentifier().removePortOwnershipListener(null);
-//                }
-//                    commPort.close();
-//                    inStream.close();
                 mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo].reRunOnce();
                 addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to E-Board #" + gateNo);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(LEDnoticeManager.class.getName()).log(Level.SEVERE, null, ex);
-//                }
             }
         }
     }
@@ -581,8 +550,8 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
         
         mQueue.add(new MsgItem(INTR_TXT_ON, ledNoticeProtocol.intOn(Unlimited, interruptRoom, 1)));
         mainForm.getSendEBDmsgTimer()[gateNo][EBD_Row.TOP.ordinal()].reRunOnce(
-                new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.BOTTOM), delay);    
-        System.out.println("scheduled after ms: " + delay);
+                new FinishLEDnoticeIntrTask(mainForm, gateNo, EBD_Row.TOP), delay);    
+//        System.out.println("scheduled after ms: " + delay);
     }
 
     Thread demoThread = null;
@@ -673,8 +642,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                                 new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
                         
                         // display default message
-                        showLEDnoticeDefaultMessage(EBD_Row.TOP);
-                        showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);                        
+                        showDefaultMessage();
                         demoThread = null;
                         return;
                     }
@@ -705,8 +673,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             demoThread.interrupt();
         } else {
             getLedNoticeMessages().add(new MsgItem(DEL_GROUP, ledNoticeProtocol.delGroup(TEXT_GROUP)));
-            showLEDnoticeDefaultMessage(EBD_Row.TOP);
-            showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);
+            showDefaultMessage();
         }
     }
 
@@ -752,7 +719,6 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     }
 
     public String getAckStatistics(byte deviceNo) {
-        
 //        if (ledNoticeMessages.recentCount == 0)
 //            return "avg not accumed yet";
 //        else 
@@ -861,6 +827,18 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
             case ParkingLot_GateName:
                 result = DB_Access.parkingLotName + "-" + gateNames[getDeviceNo()];
                 break;
+            
+            case CurrentDate:
+                result = "%Y-%m-%d";
+                break;
+            
+            case CurrentTime:
+                result = "%H:%M:%S";
+                break;
+            
+            case CurrentDateTime:
+                result = "%Y-%m-%d %H:%M:%S";
+                break;
 
             default:
                 result = ledNoticeSetting.verbatimContent;
@@ -897,13 +875,6 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
     }
 
     /**
-     * @param portIdentifier the portIdentifier to set
-     */
-    public void setPortIdentifier(CommPortIdentifier portIdentifier) {
-        this.portIdentifier = portIdentifier;
-    }
-
-    /**
      * @return the commPort
      */
     public CommPort getCommPort() {
@@ -926,16 +897,8 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
 
         mainForm.tolerance[E_Board.ordinal()][getDeviceNo()].assignMAX();
         
-        if (typeUint == getID) {
-            // process LEDnotice device heartbeat
-            if (byteIndex == 1)
-                System.out.println("      <~GET_ID");
-            return;
-        } else {
-            System.out.println("<~~: " + msgCame);
-        }
-        
         switch (typeUint) {
+            //<editor-fold desc="-- 상응하는 메시지 항목을 보낼 메시지 큐에서 삭제">
             case saveIntr:
                 // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
                 if (getLedNoticeMessages().peek() != null && 
@@ -944,7 +907,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveIntr ignored!!!");
+//                    System.out.println("duplicate saveIntr ignored!!!");
                 }
                 break;
 
@@ -956,7 +919,7 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                     MsgItem item = getLedNoticeMessages().remove();
                     System.out.println("LED interrupt ON after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOn ignored!!!");
+//                    System.out.println("duplicate intrTxtOn ignored!!!");
                 }
                 break;
 
@@ -966,9 +929,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                         getLedNoticeMessages().peek().getType() == INTR_TXT_OFF) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate intrTxtOff ignored!!!");
+//                    System.out.println("duplicate intrTxtOff ignored!!!");
                 }
                 break;
 
@@ -978,9 +941,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                         getLedNoticeMessages().peek().getType() == DEL_GROUP) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
+//                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate delGroup ignored!!!");
+//                    System.out.println("duplicate delGroup ignored!!!");
                 }
                 break;
 
@@ -990,9 +953,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                         getLedNoticeMessages().peek().getType() == SET_MONITOR) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
+//                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate setMonitor ignored!!!");
+//                    System.out.println("duplicate setMonitor ignored!!!");
                 }
                 break;
 
@@ -1002,9 +965,9 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                         getLedNoticeMessages().peek().getType() == DEL_TEXT_ONE) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate del text one ignored!!!");
+//                    System.out.println("duplicate del text one ignored!!!");
                 }
                 break;
 
@@ -1014,9 +977,137 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
                         getLedNoticeMessages().peek().getType() == SAVE_TEXT) 
                 {
                     MsgItem item = getLedNoticeMessages().remove();
-                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
+//                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
                 } else {
-                    System.out.println("duplicate saveText ignored!!!");
+//                    System.out.println("duplicate saveText ignored!!!");
+                }
+                break;
+
+            case setClock:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == SET_CLOCK) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate clock set ignored!!!");
+                }
+                break;
+                
+            default:
+                break;
+                //</editor-fold>
+        }
+        
+        if (typeUint == getID) {
+            // process LEDnotice device heartbeat
+            if (byteIndex == 1)
+                System.out.println("  <~GET_ID");
+            return;
+        } else {
+            System.out.println("  <~" + getMessageType(typeUint));
+        }        
+    }    
+    
+    public void processValidMessage(LED_MsgType ledMessage) {
+        if (ledMessage == null )
+            return;
+        
+        switch (ledMessage) {
+            case SAVE_INTR:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == SAVE_INTR) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+                    System.out.println("LED interrupt written after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate saveIntr ignored!!!");
+                }
+                break;
+
+            case INTR_TXT_ON:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == INTR_TXT_ON) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+                    System.out.println("LED interrupt ON after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate intrTxtOn ignored!!!");
+                }
+                break;
+
+            case INTR_TXT_OFF:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == INTR_TXT_OFF) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("LED interrupt OFF after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate intrTxtOff ignored!!!");
+                }
+                break;
+
+            case DEL_GROUP:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == DEL_GROUP) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("Group memory deleted after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate delGroup ignored!!!");
+                }
+                break;
+
+            case SET_MONITOR:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == SET_MONITOR) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("Monitor size set after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate setMonitor ignored!!!");
+                }
+                break;
+
+            case DEL_TEXT_ONE:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == DEL_TEXT_ONE) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("LED row cleared after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate del text one ignored!!!");
+                }
+                break;
+
+            case SAVE_TEXT:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == SAVE_TEXT) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("LED text written after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate saveText ignored!!!");
+                }
+                break;
+
+            case SET_CLOCK:
+                // 큐의 첫 항목이 같은 타입이면 그 항목을 제거한다
+                if (getLedNoticeMessages().peek() != null && 
+                        getLedNoticeMessages().peek().getType() == SET_CLOCK) 
+                {
+                    MsgItem item = getLedNoticeMessages().remove();
+//                    System.out.println("LED clock set after " + item.getSendCount() + " trials.");
+                } else {
+//                    System.out.println("duplicate clock set ignored!!!");
                 }
                 break;
                 
@@ -1039,5 +1130,45 @@ public class LEDnoticeManager extends Thread implements IDevice.IManager, IDevic
      */
     public byte getDeviceNo() {
         return deviceNo;
+    }
+
+    void setMsg(LED_MsgType deliveredMessage) {
+        msg = deliveredMessage;
+    }
+
+    /**
+     * @return the msg
+     */
+    public LED_MsgType getMsg() {
+        return msg;
+    }
+
+    /**
+     * @return the msgArrived
+     */
+    public Object getMsgArrived() {
+        return msgArrived;
+    }
+
+    /**
+     * @param msgArrived the msgArrived to set
+     */
+    public void setMsgArrived(Object msgArrived) {
+        this.msgArrived = msgArrived;
+    }
+
+    @Override
+    public void showDefaultMessage() {
+        showLEDnoticeDefaultMessage(EBD_Row.TOP);
+        showLEDnoticeDefaultMessage(EBD_Row.BOTTOM);        
+    }
+
+    private LED_MsgType getMessageType(int typeUint) {
+        for (LED_MsgType type : LED_MsgType.values()) {
+            if (type.getValue() == typeUint) {
+                return type;
+            }
+        }
+        return Broken;
     }
 }

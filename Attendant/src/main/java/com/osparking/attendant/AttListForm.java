@@ -16,7 +16,7 @@
  */
 package com.osparking.attendant;
 
-import java.awt.Dimension;
+import static com.osparking.attendant.AttListDialogType.SAVE_AS_FILE_FAILURE_DIALOG;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -52,6 +52,41 @@ import com.osparking.global.names.PasswordValidator;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static com.osparking.global.names.DB_Access.*;
 import com.osparking.global.Globals;
+import com.osparking.global.names.ControlEnums;
+import com.osparking.global.names.ControlEnums.ATTLIST_ComboBoxTypes;
+import static com.osparking.global.names.ControlEnums.ButtonContent.CHECK_BTN;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_EMAIL_DUP_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_EMAIL_SYNTAX_CHECK_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_HELP_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_ID_DUP_CHCEK_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_SAVE_AS_FAIL_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_SFAVE_AS_SUCCESS_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.ATT_USER_UPDATE_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.CONFIRM_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.CREATION_RESULT_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.CREATTION_FAIL_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_FAIL_DAILOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_RESULT_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.*;
+import static com.osparking.global.names.ControlEnums.TableTypes.CELL_PHONE_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.EMAIL_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.MANAGER_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.MODIFIED_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.NAME_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.PHONE_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.USER_ID_HEADER;
+import static com.osparking.global.names.ControlEnums.TitleTypes.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CELL_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.ID_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.NAME_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.PHONE_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.PW_INPUT_TOOTLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.REPEAT_PW_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.SAVE_AS_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.SEARCH_INPUT_TOOLTIP;
 import com.osparking.global.names.DB_Access;
 import com.osparking.global.names.JDBCMySQL;
 import static com.osparking.global.names.JDBCMySQL.getHashedPW;
@@ -65,7 +100,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
-import net.proteanit.sql.DbUtils;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -158,14 +193,14 @@ public class AttListForm extends javax.swing.JFrame {
     
     private void initComponentsUser()
     {
-        userID2Label.setText("My ID: " + loginID);
+        userID2Label.setText(((String[])Globals.LabelsText.get(USER_ID_LABEL.ordinal()))[ourLang] + loginID);
         adminAuth2CheckBox.setSelected(isManager);
         saveFileName.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        legendLLabel.setText("\u203BData Condition\u2212");
+        legendLLabel.setText("\u203B" + ((String[])Globals.LabelsText.get(REQUIRED_LABEL.ordinal()))[ourLang] + "\u2212");
         legendMLabel.setText("\u25CF");
-        legendRLabel.setText(": Required");
+        legendRLabel.setText(((String[])Globals.LabelsText.get(REQUIRED1_LABEL.ordinal()))[ourLang]);
         legendMLabel2.setText("\uu25B2");
-        legendRLabel2.setText(": Choose 1");
+        legendRLabel2.setText(((String[])Globals.LabelsText.get(REQUIRED2_LABEL.ordinal()))[ourLang]);
         isIDreqLabel.setText("\u25CF");
         nameReqLabel.setText("\u25CF");
         cellReqLabel.setText("\u25B2");
@@ -345,16 +380,14 @@ public class AttListForm extends javax.swing.JFrame {
         spacePanel2 = new javax.swing.JPanel();
 
         saveFileName.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveFileName.setApproveButtonText("Save");
-        saveFileName.setApproveButtonToolTipText("Save as file");
-        saveFileName.setDialogTitle("Select the folder and file names");
+        saveFileName.setApproveButtonText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
         saveFileName.setFileFilter(new TextFileOnly());
         saveFileName.setToolTipText("");
         saveFileName.setEnabled(false);
         saveFileName.setName(""); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("User List Management");
+        setTitle(((String[])Globals.TitleList.get(ATTLIST_FRAME_TITLE.ordinal()))[ourLang]);
         setMinimumSize(new java.awt.Dimension(1100, 710));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -386,7 +419,7 @@ public class AttListForm extends javax.swing.JFrame {
         topInPanel.add(filler2);
 
         adminAuth2CheckBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        adminAuth2CheckBox.setText("Manager");
+        adminAuth2CheckBox.setText(ADMIN_LABEL.getContent());
         adminAuth2CheckBox.setToolTipText("");
         adminAuth2CheckBox.setEnabled(false);
         adminAuth2CheckBox.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -396,7 +429,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userID2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userID2Label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        userID2Label.setText("My ID");
+        userID2Label.setText(LOGIN_ID_LABEL.getContent() + ": " +loginID);
         topInPanel.add(userID2Label);
         topInPanel.add(filler46);
 
@@ -471,7 +504,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userIDLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userIDLabel.setText("Login ID");
+        userIDLabel.setText(LOGIN_ID_LABEL.getContent());
         userIDLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userIDLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -490,12 +523,12 @@ public class AttListForm extends javax.swing.JFrame {
 
         userIDText.setEditable(false);
         userIDText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userIDText.setToolTipText("Up to 20 alphanumeric characters");
+        userIDText.setToolTipText(ID_INPUT_TOOLTIP.getContent());
         userIDText.setDisabledTextColor(new java.awt.Color(102, 102, 102));
         userIDText.setEnabled(false);
         userIDText.setMaximumSize(new java.awt.Dimension(32767, 30));
-        userIDText.setMinimumSize(new java.awt.Dimension(111, 14));
-        userIDText.setPreferredSize(new java.awt.Dimension(111, 14));
+        userIDText.setMinimumSize(new java.awt.Dimension(80, 21));
+        userIDText.setPreferredSize(new java.awt.Dimension(80, 21));
         userIDText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 newIDtyped(evt);
@@ -514,8 +547,7 @@ public class AttListForm extends javax.swing.JFrame {
         idCheckPanel.add(filler28);
 
         checkIDButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkIDButton.setMnemonic('k');
-        checkIDButton.setText("Check");
+        checkIDButton.setText(CHECK_BTN.getContent());
         checkIDButton.setEnabled(false);
         checkIDButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkIDButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -539,7 +571,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         adminAuthLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         adminAuthLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        adminAuthLabel.setText("Manager");
+        adminAuthLabel.setText(ADMIN_LABEL.getContent());
         adminAuthLabel.setToolTipText("");
         adminAuthLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         adminAuthLabel.setMinimumSize(new java.awt.Dimension(130, 21));
@@ -563,7 +595,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         nameLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        nameLabel.setText("Name");
+        nameLabel.setText(NAME_LABEL.getContent());
         nameLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         nameLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         nameLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -580,7 +612,7 @@ public class AttListForm extends javax.swing.JFrame {
         namePanel.add(filler45);
 
         userNameText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userNameText.setToolTipText("Please enter at least two characters");
+        userNameText.setToolTipText(NAME_INPUT_TOOLTIP.getContent());
         userNameText.setEnabled(false);
         userNameText.setMaximumSize(new java.awt.Dimension(32767, 30));
         userNameText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -600,7 +632,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText("Cell Phone");
+        jLabel5.setText(CELL_PHONE_LABEL.getContent()   );
         jLabel5.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel5.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel5.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -609,7 +641,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         cellReqLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         cellReqLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        cellReqLabel.setText("M");
+        cellReqLabel.setText("w");
         cellReqLabel.setMaximumSize(new java.awt.Dimension(15, 21));
         cellReqLabel.setMinimumSize(new java.awt.Dimension(15, 21));
         cellReqLabel.setPreferredSize(new java.awt.Dimension(15, 21));
@@ -617,7 +649,7 @@ public class AttListForm extends javax.swing.JFrame {
         cellPhonePanel.add(filler48);
 
         cellPhoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        cellPhoneText.setToolTipText("Enter the 11-digit number");
+        cellPhoneText.setToolTipText(CELL_INPUT_TOOLTIP.getContent());
         cellPhoneText.setEnabled(false);
         cellPhoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         cellPhoneText.setMinimumSize(new java.awt.Dimension(80, 21));
@@ -636,7 +668,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("Phone");
+        jLabel6.setText(PHONE_LABEL.getContent());
         jLabel6.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel6.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel6.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -645,7 +677,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         phoneReqLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         phoneReqLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        phoneReqLabel.setText("M");
+        phoneReqLabel.setText("w");
         phoneReqLabel.setMaximumSize(new java.awt.Dimension(15, 21));
         phoneReqLabel.setMinimumSize(new java.awt.Dimension(15, 21));
         phoneReqLabel.setPreferredSize(new java.awt.Dimension(15, 21));
@@ -653,7 +685,7 @@ public class AttListForm extends javax.swing.JFrame {
         phonePanel.add(filler63);
 
         phoneText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        phoneText.setToolTipText("Please enter at least a four-digit number");
+        phoneText.setToolTipText(PHONE_INPUT_TOOLTIP.getContent());
         phoneText.setEnabled(false);
         phoneText.setMaximumSize(new java.awt.Dimension(32767, 30));
         phonePanel.add(phoneText);
@@ -670,7 +702,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText("E-Mail");
+        jLabel4.setText(EMAIL_LABEL.getContent());
         jLabel4.setMaximumSize(new java.awt.Dimension(130, 21));
         jLabel4.setMinimumSize(new java.awt.Dimension(130, 21));
         jLabel4.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -700,7 +732,7 @@ public class AttListForm extends javax.swing.JFrame {
         emailCheckPanel.add(filler29);
 
         checkEmailButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        checkEmailButton.setText("Check");
+        checkEmailButton.setText(CHECK_BTN.getContent());
         checkEmailButton.setEnabled(false);
         checkEmailButton.setMaximumSize(new java.awt.Dimension(90, 23));
         checkEmailButton.setMinimumSize(new java.awt.Dimension(90, 23));
@@ -724,7 +756,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         changePWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         changePWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        changePWLabel.setText("Change Password");
+        changePWLabel.setText(CHANGE_PW_LABEL.getContent());
         changePWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         changePWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -752,7 +784,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW1Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW1Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW1Label.setText("New Password");
+        newPW1Label.setText(NEW_PW_LABLE.getContent());
         newPW1Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW1Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -804,7 +836,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         newPW2Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         newPW2Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        newPW2Label.setText("Repeat New P.W.");
+        newPW2Label.setText(REPEAT_PW_LABEL.getContent());
         newPW2Label.setMaximumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setMinimumSize(new java.awt.Dimension(130, 21));
         newPW2Label.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -820,7 +852,7 @@ public class AttListForm extends javax.swing.JFrame {
         repeatPWD_Panel.add(filler60);
 
         new2Password.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        new2Password.setToolTipText("Please enter it again.");
+        new2Password.setToolTipText(REPEAT_PW_INPUT_TOOLTIP.getContent());
         new2Password.setEnabled(false);
         new2Password.setMaximumSize(new java.awt.Dimension(32767, 30));
         repeatPWD_Panel.add(new2Password);
@@ -837,7 +869,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel.setText("My Password");
+        userPWLabel.setText(MY_PW_LABEL.getContent());
         userPWLabel.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -855,6 +887,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPassword.setEditable(false);
         userPassword.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        userPassword.setToolTipText("");
         userPassword.setMaximumSize(new java.awt.Dimension(32767, 30));
         currentPWD_Panel.add(userPassword);
         currentPWD_Panel.add(filler56);
@@ -870,7 +903,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         userPWLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         userPWLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        userPWLabel1.setText("Creation Date");
+        userPWLabel1.setText(CREATION_LABEL.getContent());
         userPWLabel1.setMaximumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setMinimumSize(new java.awt.Dimension(130, 21));
         userPWLabel1.setPreferredSize(new java.awt.Dimension(130, 21));
@@ -878,7 +911,7 @@ public class AttListForm extends javax.swing.JFrame {
         datePanel.add(filler68);
 
         creationDateText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        creationDateText.setToolTipText("Enter the 11-digit number");
+        creationDateText.setToolTipText("");
         creationDateText.setEnabled(false);
         creationDateText.setMaximumSize(new java.awt.Dimension(32767, 30));
         datePanel.add(creationDateText);
@@ -895,7 +928,7 @@ public class AttListForm extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font(font_Type, font_Style, 16));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel11.setText("User List");
+        jLabel11.setText(((String[])Globals.TitleList.get(ATTLIST_FRAME_TITLE.ordinal()))[ourLang]);
         centerPanel.add(jLabel11, java.awt.BorderLayout.PAGE_START);
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(600, 474));
@@ -906,206 +939,216 @@ public class AttListForm extends javax.swing.JFrame {
         usersTable.setFont(new java.awt.Font(font_Type, 0, font_Size));
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
             },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4",
-                "Title 5", "Title 6", "Title 7", "Title 8"
+            new String[]{
+                ((String[])Globals.TableHeaderList.get(USER_ID_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(NAME_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(MANAGER_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(CELL_PHONE_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(PHONE_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(EMAIL_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(MODIFIED_HEADER.ordinal()))[ourLang],
             }
-        )
-    );
-    usersTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-    usersTable.setFillsViewportHeight(true);
-    usersTable.setFocusCycleRoot(true);
-    usersTable.setFocusTraversalPolicy(null);
-    usersTable.setMaximumSize(new java.awt.Dimension(32767, 32767));
-    usersTable.setMinimumSize(new java.awt.Dimension(600, 474));
-    usersTable.setName(""); // NOI18N
-    usersTable.setNextFocusableComponent(userNameText);
-    usersTable.setPreferredSize(new java.awt.Dimension(600, 5000));
-    usersTable.setRowHeight(22);
-    usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            usersTableMouseClicked(evt);
-        }
-    });
-    usersTable.addKeyListener(new java.awt.event.KeyAdapter() {
-        public void keyPressed(java.awt.event.KeyEvent evt) {
-            usersTableKeyPressed(evt);
-        }
-    });
-    jScrollPane1.setViewportView(usersTable);
+        ));
+        usersTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        usersTable.setFillsViewportHeight(true);
+        usersTable.setFocusCycleRoot(true);
+        usersTable.setFocusTraversalPolicy(null);
+        usersTable.setMaximumSize(new java.awt.Dimension(32767, 32767));
+        usersTable.setMinimumSize(new java.awt.Dimension(600, 474));
+        usersTable.setName(""); // NOI18N
+        usersTable.setNextFocusableComponent(userNameText);
+        usersTable.setPreferredSize(new java.awt.Dimension(600, 5000));
+        usersTable.setRowHeight(22);
+        usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                usersTableMouseClicked(evt);
+            }
+        });
+        usersTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                usersTableKeyPressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(usersTable);
 
-    centerPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        centerPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-    wholePanel.add(centerPanel, java.awt.BorderLayout.CENTER);
-    wholePanel.add(filler3, java.awt.BorderLayout.LINE_END);
+        wholePanel.add(centerPanel, java.awt.BorderLayout.CENTER);
+        wholePanel.add(filler3, java.awt.BorderLayout.LINE_END);
 
-    southPanel.setMinimumSize(new java.awt.Dimension(920, 40));
-    southPanel.setPreferredSize(new java.awt.Dimension(761, 80));
-    southPanel.setLayout(new javax.swing.BoxLayout(southPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        southPanel.setMinimumSize(new java.awt.Dimension(920, 40));
+        southPanel.setPreferredSize(new java.awt.Dimension(761, 80));
+        southPanel.setLayout(new javax.swing.BoxLayout(southPanel, javax.swing.BoxLayout.PAGE_AXIS));
 
-    javax.swing.GroupLayout spacePanel1Layout = new javax.swing.GroupLayout(spacePanel1);
-    spacePanel1.setLayout(spacePanel1Layout);
-    spacePanel1Layout.setHorizontalGroup(
-        spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-    spacePanel1Layout.setVerticalGroup(
-        spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
+        javax.swing.GroupLayout spacePanel1Layout = new javax.swing.GroupLayout(spacePanel1);
+        spacePanel1.setLayout(spacePanel1Layout);
+        spacePanel1Layout.setHorizontalGroup(
+            spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        spacePanel1Layout.setVerticalGroup(
+            spacePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-    southPanel.add(spacePanel1);
+        southPanel.add(spacePanel1);
 
-    btnPanel.setMaximumSize(new java.awt.Dimension(33747, 40));
-    btnPanel.setMinimumSize(new java.awt.Dimension(950, 40));
-    btnPanel.setLayout(new javax.swing.BoxLayout(btnPanel, javax.swing.BoxLayout.LINE_AXIS));
-    btnPanel.add(filler70);
+        btnPanel.setMaximumSize(new java.awt.Dimension(33747, 40));
+        btnPanel.setMinimumSize(new java.awt.Dimension(950, 40));
+        btnPanel.setLayout(new javax.swing.BoxLayout(btnPanel, javax.swing.BoxLayout.LINE_AXIS));
+        btnPanel.add(filler70);
 
-    createButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    createButton.setMnemonic('r');
-    createButton.setText("Create");
-    createButton.setEnabled(false);
-    createButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    createButton.setMinimumSize(new java.awt.Dimension(80, 40));
-    createButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    createButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            createButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(createButton);
-    btnPanel.add(filler71);
+        createButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        createButton.setMnemonic('r');
+        createButton.setText(CREATE_BTN.getContent());
+        createButton.setEnabled(false);
+        createButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        createButton.setMinimumSize(new java.awt.Dimension(80, 40));
+        createButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        createButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(createButton);
+        btnPanel.add(filler71);
 
-    deleteButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteButton.setMnemonic('d');
-    deleteButton.setText("Delete");
-    deleteButton.setEnabled(false);
-    deleteButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    deleteButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    deleteButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    deleteButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            deleteButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(deleteButton);
-    btnPanel.add(filler72);
+        deleteButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        deleteButton.setMnemonic('d');
+        deleteButton.setText(DELETE_BTN.getContent());
+        deleteButton.setEnabled(false);
+        deleteButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        deleteButton.setMinimumSize(new java.awt.Dimension(80, 60));
+        deleteButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(deleteButton);
+        btnPanel.add(filler72);
 
-    multiFuncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    multiFuncButton.setMnemonic('m');
-    multiFuncButton.setText("Modify");
-    multiFuncButton.setEnabled(false);
-    multiFuncButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    multiFuncButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    multiFuncButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    multiFuncButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            multiFuncButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(multiFuncButton);
-    btnPanel.add(filler73);
+        multiFuncButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        multiFuncButton.setMnemonic('m');
+        multiFuncButton.setText(MODIFY_BTN.getContent());
+        multiFuncButton.setEnabled(false);
+        multiFuncButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        multiFuncButton.setMinimumSize(new java.awt.Dimension(80, 60));
+        multiFuncButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        multiFuncButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                multiFuncButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(multiFuncButton);
+        btnPanel.add(filler73);
 
-    cancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    cancelButton.setMnemonic('c');
-    cancelButton.setText("Cancel");
-    cancelButton.setEnabled(false);
-    cancelButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    cancelButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    cancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    cancelButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            cancelButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(cancelButton);
-    btnPanel.add(filler22);
+        cancelButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        cancelButton.setMnemonic('c');
+        cancelButton.setText(CANCEL_BTN.getContent());
+        cancelButton.setEnabled(false);
+        cancelButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        cancelButton.setMinimumSize(new java.awt.Dimension(80, 60));
+        cancelButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(cancelButton);
+        btnPanel.add(filler22);
 
-    searchCriteriaComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchCriteriaComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Name", "Login ID" }));
-    searchCriteriaComboBox.setMaximumSize(new java.awt.Dimension(100, 30));
-    searchCriteriaComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
-    searchCriteriaComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
-    btnPanel.add(searchCriteriaComboBox);
-    btnPanel.add(filler85);
+        searchCriteriaComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        searchCriteriaComboBox.setModel(new javax.swing.DefaultComboBoxModel(
+            new String[]{
+                ((String[])Globals.LabelsText.get(NAME_LABEL.ordinal()))[ourLang],
+                LOGIN_ID_LABEL.getContent()
+            }
+        ));
+        searchCriteriaComboBox.setMaximumSize(new java.awt.Dimension(100, 30));
+        searchCriteriaComboBox.setMinimumSize(new java.awt.Dimension(100, 30));
+        searchCriteriaComboBox.setPreferredSize(new java.awt.Dimension(100, 30));
+        btnPanel.add(searchCriteriaComboBox);
+        btnPanel.add(filler85);
 
-    searchText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchText.setToolTipText("Enter Search Key");
-    searchText.setMaximumSize(new java.awt.Dimension(200, 30));
-    searchText.setMinimumSize(new java.awt.Dimension(80, 30));
-    searchText.setPreferredSize(new java.awt.Dimension(120, 30));
-    btnPanel.add(searchText);
-    btnPanel.add(filler76);
+        searchText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        searchText.setToolTipText(SEARCH_INPUT_TOOLTIP.getContent());
+        searchText.setMaximumSize(new java.awt.Dimension(200, 30));
+        searchText.setMinimumSize(new java.awt.Dimension(80, 30));
+        searchText.setPreferredSize(new java.awt.Dimension(120, 30));
+        btnPanel.add(searchText);
+        btnPanel.add(filler76);
 
-    searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    searchButton.setMnemonic('s');
-    searchButton.setText("Search");
-    searchButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    searchButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    searchButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            searchButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(searchButton);
-    btnPanel.add(filler81);
+        searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        searchButton.setMnemonic('s');
+        searchButton.setText(SEARCH_BTN.getContent());
+        searchButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        searchButton.setMinimumSize(new java.awt.Dimension(80, 60));
+        searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(searchButton);
+        btnPanel.add(filler81);
 
-    saveTextFileButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    saveTextFileButton.setMnemonic('a');
-    saveTextFileButton.setText("<HTML>Save <U>A</U>s</HTML>");
-    saveTextFileButton.setToolTipText("Save as a Text File");
-    saveTextFileButton.setAutoscrolls(true);
-    saveTextFileButton.setDisplayedMnemonicIndex(0);
-    saveTextFileButton.setMargin(new java.awt.Insets(0, 0, 4, 0));
-    saveTextFileButton.setMaximumSize(new java.awt.Dimension(90, 60));
-    saveTextFileButton.setMinimumSize(new java.awt.Dimension(90, 60));
-    saveTextFileButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    saveTextFileButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            saveTextFileButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(saveTextFileButton);
-    btnPanel.add(filler82);
+        saveTextFileButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        saveTextFileButton.setText(SAVE_AS_BTN.getContent());
+        saveTextFileButton.setToolTipText(SAVE_AS_TOOLTIP.getContent());
+        saveTextFileButton.setAutoscrolls(true);
+        saveTextFileButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        saveTextFileButton.setMaximumSize(new java.awt.Dimension(80, 40));
+        saveTextFileButton.setMinimumSize(new java.awt.Dimension(80, 40));
+        saveTextFileButton.setPreferredSize(new java.awt.Dimension(100, 40));
+        saveTextFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveTextFileButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(saveTextFileButton);
+        btnPanel.add(filler82);
 
-    closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    closeFormButton.setMnemonic('c');
-    closeFormButton.setText("Close");
-    closeFormButton.setMaximumSize(new java.awt.Dimension(80, 60));
-    closeFormButton.setMinimumSize(new java.awt.Dimension(80, 60));
-    closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
-    closeFormButton.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            closeFormButtonActionPerformed(evt);
-        }
-    });
-    btnPanel.add(closeFormButton);
-    btnPanel.add(filler83);
+        closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        closeFormButton.setMnemonic('c');
+        closeFormButton.setText(CLOSE_BTN.getContent());
+        closeFormButton.setMaximumSize(new java.awt.Dimension(80, 60));
+        closeFormButton.setMinimumSize(new java.awt.Dimension(80, 60));
+        closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        closeFormButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeFormButtonActionPerformed(evt);
+            }
+        });
+        btnPanel.add(closeFormButton);
+        btnPanel.add(filler83);
 
-    southPanel.add(btnPanel);
+        southPanel.add(btnPanel);
 
-    javax.swing.GroupLayout spacePanel2Layout = new javax.swing.GroupLayout(spacePanel2);
-    spacePanel2.setLayout(spacePanel2Layout);
-    spacePanel2Layout.setHorizontalGroup(
-        spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
-    spacePanel2Layout.setVerticalGroup(
-        spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 0, Short.MAX_VALUE)
-    );
+        javax.swing.GroupLayout spacePanel2Layout = new javax.swing.GroupLayout(spacePanel2);
+        spacePanel2.setLayout(spacePanel2Layout);
+        spacePanel2Layout.setHorizontalGroup(
+            spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        spacePanel2Layout.setVerticalGroup(
+            spacePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
 
-    southPanel.add(spacePanel2);
+        southPanel.add(spacePanel2);
 
-    wholePanel.add(southPanel, java.awt.BorderLayout.SOUTH);
+        wholePanel.add(southPanel, java.awt.BorderLayout.SOUTH);
 
-    getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(wholePanel, java.awt.BorderLayout.CENTER);
 
-    setSize(new java.awt.Dimension(1054, 696));
-    setLocationRelativeTo(null);
+        setSize(new java.awt.Dimension(1054, 696));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void usersTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_usersTableMouseClicked
@@ -1150,7 +1193,7 @@ public class AttListForm extends javax.swing.JFrame {
                 case NormalMode:
                     // <editor-fold defaultstate="collapsed" desc="-- Prepare to change user information">
                     formMode = FormMode.UpdateMode;
-                    multiFuncButton.setText("Save");
+                    multiFuncButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
                     multiFuncButton.setMnemonic('s');
                     setModificationState(true); // change to modification mode
                     createButton.setEnabled(false);
@@ -1163,7 +1206,7 @@ public class AttListForm extends javax.swing.JFrame {
                     if (allFieldsAreGood(errorMsg)) {
                         // each field satisfies data requirements
                         formMode = FormMode.NormalMode;
-                        multiFuncButton.setText("Modify");
+                        multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
                         multiFuncButton.setMnemonic('m');
                         setModificationState(false);
                         int result = saveUpdatedRecord();
@@ -1179,27 +1222,61 @@ public class AttListForm extends javax.swing.JFrame {
                 case CreateMode:
                     // <editor-fold defaultstate="collapsed" desc="-- Complete user creation operation">
                     if (!ID_usable) {
-                        JOptionPane.showConfirmDialog(this, "Need to check if 'id' is usable(unoccupied).",
-                                "User Creation Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
+                        JOptionPane.showConfirmDialog(this, 
+                                ID_CHECK_DIALOG.getContent(),
+                                ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
                     }
                     if (!Email_usable) {
-                        JOptionPane.showConfirmDialog(this, "Need to check if 'E-Mail' is usable(unoccupied).",
-                                "User Creation Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
+                        JOptionPane.showConfirmDialog(this, 
+                                EMAIL_CHECK_DIALOG.getContent(),
+                                ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
                     }
                     if (allFieldsAreGood(errorMsg)) {
                         String newUserID = userIDText.getText().trim();
                         int result = saveCreatedRecord();
+                        String dialogText = "";
+                        
                         if (result == 1) {
                             revokeCreationMode(true);
-                            JOptionPane.showMessageDialog(this, "Successful Creation of a user" + 
-                                    System.lineSeparator() + "User ID: " + newUserID + "",
-                                    "User Creation Result", JOptionPane.PLAIN_MESSAGE);  
-                        } else {
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText ="사용자(ID: " + newUserID + ") 정보가\n성공적으로 생성되었습니다.";
+                                    break;
+                                    
+                                case ENGLISH:
+                                    dialogText = "Successful Creation of a user" + System.lineSeparator() 
+                                            + "User ID: " + newUserID + "";
+                                    break;
+                                default:
+                                    break;
+                            }
+                            
                             JOptionPane.showMessageDialog(this, 
-                                    "User Creation Failure!" + System.lineSeparator() + " Failed ID: " +  newUserID,
-                                    "User Creation Result", JOptionPane.PLAIN_MESSAGE);            
+                                    dialogText,
+                                    ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.PLAIN_MESSAGE);  
+                        } else {
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText = "정보 생성에 실패하였습니다!\n  ID: " +   newUserID;
+                                    break;
+                                    
+                                case ENGLISH:
+                                    dialogText = "User Creation Failure!" + System.lineSeparator() 
+                                            + " Failed ID: " + newUserID + "";
+                                    break;
+                                default:
+                                    break;
+                            }                            
+                            
+                            JOptionPane.showMessageDialog(this, 
+                                    dialogText,
+                                    ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.PLAIN_MESSAGE);            
                         }
                     } else {
                         if (errorMsg[0].length() > 0) {
@@ -1278,7 +1355,7 @@ public class AttListForm extends javax.swing.JFrame {
         StringBuilder wrongFields = new StringBuilder();
         // name should be longer than 2 characters
         if (userNameText.getText().trim().length() <= 1) {
-            wrongFields.append("  - Name should be longer than 1 character" + System.lineSeparator());
+            wrongFields.append(ATT_NAME_CHECK_DIALOG.getContent() + System.lineSeparator());
             userNameText.requestFocus();
         }
 
@@ -1288,7 +1365,7 @@ public class AttListForm extends javax.swing.JFrame {
         if (cellPhone.length() > 0 && cellDigCount != 11) {
             if (wrongFields.toString().length() == 0)
                 cellPhoneText.requestFocus();
-            wrongFields.append("  - Wrong cell phone number" + System.lineSeparator());
+            wrongFields.append(ATT_CELL_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }      
         
         // given phone number exists, it should be longer than 4
@@ -1298,14 +1375,14 @@ public class AttListForm extends javax.swing.JFrame {
         if (phoneNumber.length() > 0 && phDigCount < 4) {
             if (wrongFields.toString().length() == 0)
                 phoneText.requestFocus();            
-            wrongFields.append("  - Phone number error" + System.lineSeparator());
+            wrongFields.append(PHONE_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }        
         
         // one of cell or phone should be supplied
         if ((cellDigCount == 0) && (phDigCount == 0)) {
             if (wrongFields.toString().length() == 0)
                 cellPhoneText.requestFocus();                
-            wrongFields.append("  - Either phone, cell-phone or both is needed" + System.lineSeparator());
+            wrongFields.append(CELL_PHONE_CHECK_DIALOG.getContent()+ System.lineSeparator());
         }
         
         // when password is to be updated
@@ -1318,12 +1395,12 @@ public class AttListForm extends javax.swing.JFrame {
                 if (!pass1.equals(pass2)) {
                     if (wrongFields.toString().length() == 0)
                         new1Password.requestFocus();                            
-                    wrongFields.append("  - New passwords don't match" + System.lineSeparator());
+                    wrongFields.append(REPEAT_PW_CHECK_ERROR.getContent() + System.lineSeparator());
                 }
             } else {
                 if (wrongFields.toString().length() == 0)
                     new1Password.requestFocus();         
-                wrongFields.append("  - Password doesn't meet syntax requirements");
+                wrongFields.append(PASSWORD_CHECK_DIALOG.getContent() + System.lineSeparator());
             }
         }
         // </editor-fold>
@@ -1340,7 +1417,7 @@ public class AttListForm extends javax.swing.JFrame {
         } else {
             if (wrongFields.toString().length() == 0)
                 userPassword.requestFocus();                    
-            wrongFields.append("  - Your Password is Wrong!" + System.lineSeparator());
+            wrongFields.append(ADMIN_PW_CHECK_DIALOG.getContent() + System.lineSeparator());
             result = false;
         }        
         errorMsg[0] = wrongFields.toString();
@@ -1356,7 +1433,7 @@ public class AttListForm extends javax.swing.JFrame {
                 setModificationState(false);
                 multiFuncButton.setMnemonic('s');
                 formMode = FormMode.NormalMode;
-                multiFuncButton.setText("Modify");  
+                multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);  
                 multiFuncButton.setMnemonic('m');
                 createButton.setEnabled(true);
                 deleteButton.setEnabled(true);
@@ -1404,17 +1481,35 @@ public class AttListForm extends javax.swing.JFrame {
                     File f = new File(pathname);
                     if(f.exists()) {
                         if (f.isDirectory()) {
-                            JOptionPane.showConfirmDialog(this, "A folder(=directory) of same name exists" +
-                                    System.lineSeparator() + 
-                                    pathname + "\nChange file name to a different one",
-                                    "Choose Different File Name", JOptionPane.PLAIN_MESSAGE,
+                            String dialogText = "";
+                            
+                            switch (language) {
+                                case KOREAN:
+                                    dialogText = "같은 이름의 폴더(=디렉토리)가 존재합니다.\n " + 
+                                            pathname + "\n파일의 이름을 다른 것으로 변경하십시오.";
+                                    break;
+
+                                case ENGLISH:
+                                    dialogText = "A folder(=directory) of same name exists" +
+                                            System.lineSeparator() + 
+                                            pathname + "\nChange file name to a different one";
+                                    break;
+                                default:
+                                    break;
+                            }                            
+                            
+                            JOptionPane.showConfirmDialog(this,
+//                                    getTextFor(SAVE_AS_DIR_FAILURE_DIALOG, pathname),
+                                    dialogText,
+                                    ((String[])Globals.DialogTitleList.get(ATT_SAVE_AS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.PLAIN_MESSAGE,
                                     WARNING_MESSAGE);
                             return;
                         } else {
-                            int result = JOptionPane.showConfirmDialog(this, "A file having the following name exists" +
-                                    System.lineSeparator() + 
-                                    pathname + "\nDo you want to overwrite it?",
-                                    "Confirm to Overwrite File", JOptionPane.YES_NO_OPTION);
+                            int result = JOptionPane.showConfirmDialog(this, 
+                                    getTextFor(SAVE_AS_FILE_FAILURE_DIALOG, pathname),
+                                    ((String[])Globals.DialogTitleList.get(CONFIRM_DIALOGTITLE.ordinal()))[ourLang],
+                                    JOptionPane.YES_NO_OPTION);
                             if (result != YES_OPTION) {
                                 return;
                             }
@@ -1440,20 +1535,36 @@ public class AttListForm extends javax.swing.JFrame {
             // When deleting a user account, to compare user password (stored at a login time)
             // with the password entered in the delete form, dual table in the MySQL is needed.
             String pwHashed = getHashedPW(new String(userPassword.getPassword()));
+            String dialogText = "";
             if (loginPW.equals(pwHashed) ) {
                 // Get a confirmation from the user for the deletion.
-                int result = JOptionPane.showConfirmDialog(null, 
-                   "Do you want to delete this user?" + System.lineSeparator() + "User ID: " 
-                           + userIDText.getText(), "Confirm Account Deletion", JOptionPane.YES_NO_OPTION);
-                if(result == JOptionPane.YES_OPTION) {            
+                switch (language) {
+                    case KOREAN:
+                        dialogText = "아래 계정을 삭제합니까?" + System.lineSeparator()  
+                                + "계정 ID: " + userIDText.getText();
+                        break;
+                    case ENGLISH:
+                        dialogText = "Do you want to delete this user?" + System.lineSeparator() 
+                                + "User ID: " + userIDText.getText();
+                        break;
+                    default:
+                        break;
+                }                
+                
+                int result = JOptionPane.showConfirmDialog(null, dialogText, 
+                        ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {            
                     deleteAttendant();
                 } else {
                     // Clear password entered
                     userPassword.setText("");
                 }
             } else {
-                showMessageDialog(null, "Password is wrong!",
-                        "Deletion Failure", JOptionPane.INFORMATION_MESSAGE);                
+                showMessageDialog(null, 
+                        DELETE_FAIL_DAILOG.getContent() + System.lineSeparator(),
+                        ((String[])Globals.DialogTitleList.get(DELETE_FAIL_DAILOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.INFORMATION_MESSAGE);             
             }
 
             //throw new Exception("dummy");
@@ -1475,23 +1586,57 @@ public class AttListForm extends javax.swing.JFrame {
         
         int relatedRecordCount = DB_Access.getRecordCount("car_arrival", "AttendantID", deleteID);
         if (relatedRecordCount > 0) {
-
-            JOptionPane.showMessageDialog(this, "Following user can't be deleted" + System.lineSeparator() +
-                    " - User ID: " + deleteID + System.lineSeparator() + 
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
+                    " - 아이디: " + userIDText.getText() + System.lineSeparator() + 
+                    " - 이  유: 차량 도착기록이 존재합니다.(" + relatedRecordCount + ")" +
+                    System.lineSeparator() + " * 자동차 도착 기록은 1 년간 저장됩니다.";
+                    break;
+                case ENGLISH:
+                    dialogMessage = "Following user can't be deleted" + System.lineSeparator() +
+                    " - User ID: " + userIDText.getText() + System.lineSeparator() + 
                     " - Reason: has nonzero(" + relatedRecordCount + ") Car Arrival Records" +
-                    System.lineSeparator() + " * Car Arrival Records are stored for 1 year.",
-                    "User Deletion Result", JOptionPane.WARNING_MESSAGE);   
+                    System.lineSeparator() + " * Car Arrival Records are stored for 1 year.";
+                    break;
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                            JOptionPane.WARNING_MESSAGE);   
             return; 
         }
         
         relatedRecordCount = DB_Access.getRecordCount("loginrecord", "UserID", deleteID);
         if (relatedRecordCount > 0) {
+            String dialogMessage = "";
 
-            JOptionPane.showMessageDialog(this, "Following user can't be deleted" + System.lineSeparator() +
-                    " - User ID: " + deleteID + System.lineSeparator() + 
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "다음 사용자는 삭제할 수 없습니다" + System.lineSeparator() +
+                    " - 아이디 : " + userIDText.getText() + System.lineSeparator() + 
+                    " - 이  유 : 로그인기록이 존재합니다.(" + relatedRecordCount + ") " +
+                    System.lineSeparator() + " * 사용자 로그인 기록은 1 년간 저장됩니다.";
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "Following user can't be deleted" + System.lineSeparator() +
+                    " - User ID: " + userIDText.getText() + System.lineSeparator() + 
                     " - Reason: has nonzero(" + relatedRecordCount + ") Login Records" +
-                    System.lineSeparator() + " * User Login Records are stored for 1 year.",
-                    "User Deletion Result", JOptionPane.WARNING_MESSAGE);   
+                    System.lineSeparator() + " * User Login Records are stored for 1 year.";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                            JOptionPane.WARNING_MESSAGE);   
             return; 
         }
         
@@ -1514,15 +1659,49 @@ public class AttListForm extends javax.swing.JFrame {
                 int realRow = usersTable.convertRowIndexToModel(selectedRowIndex);
                 ShowAttendantDetail(realRow);  
                 logParkingOperation(OpLogLevel.SettingsChange, 
-                        ("* User deleted (ID:" + deleteID + ")"));                    
-                JOptionPane.showMessageDialog(this, "User(ID: " + 
-                        deleteID + ") record" + System.lineSeparator() + "deleted successfully.",
-                        "User Deletion Result", JOptionPane.PLAIN_MESSAGE);  
+                        ("* User deleted (ID:" + deleteID + ")"));
+                
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "사용자(아이디: " + userIDText.getText() + ") 기록이" + 
+                                System.lineSeparator() + "성공적으로 삭제되었습니다.";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "User(ID: " + userIDText.getText() + ") record" + 
+                                System.lineSeparator() + "deleted successfully.";
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showMessageDialog(this, dialogMessage,
+                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE);  
                 clearPasswordFields();
             } else {
-                JOptionPane.showMessageDialog(this, 
-                        "Failed Deletion of a User Account!" + System.lineSeparator() + " ID: " 
-                                +  userIDText.getText(), "User Deletion Result", JOptionPane.PLAIN_MESSAGE);            
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "사용자 삭제에 실패하였습니다!\n  아이디 : " + userIDText.getText();
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "Failed Deletion of a User Account!" + 
+                                System.lineSeparator() + " ID : " + userIDText.getText();
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showMessageDialog(this, dialogMessage,
+                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE);            
             }
         } catch (Exception se) {
             logParkingException(Level.SEVERE, se, "(ID: " + deleteID + ")");
@@ -1565,7 +1744,7 @@ public class AttListForm extends javax.swing.JFrame {
             formMode = FormMode.CreateMode;
             usersTable.setEnabled(false);
             ID_usable = false;
-            legendLLabel.setText("\u203BGuideline\u2212");
+            legendLLabel.setText("\u203B"+((String[])Globals.LabelsText.get(GUIDELINE_LABEL.ordinal()))[ourLang]+"\u2212");
             // <editor-fold defaultstate="collapsed" desc="-- Enable data input fields">
             userIDText.setEnabled(true);
             userIDText.setText("");
@@ -1595,7 +1774,7 @@ public class AttListForm extends javax.swing.JFrame {
 
             // <editor-fold defaultstate="collapsed" desc="-- Change visibility lower buttons">
             createButton.setEnabled(false);
-            multiFuncButton.setText("Save");
+            multiFuncButton.setText(((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]);
             multiFuncButton.setMnemonic('s');
             changeButtonEnabled(false);
             multiFuncButton.setEnabled(true);
@@ -1607,9 +1786,9 @@ public class AttListForm extends javax.swing.JFrame {
             newPW1ReqLabel.setText("\u25CF");
             newPW2ReqLabel.setText("\u25CF");
             changePWLabel.setEnabled(false);
-            newPW1Label.setText("New Password");
-            newPW2Label.setText("Repeat New P.W.");
-            userPWLabel.setText("My Password");
+            newPW1Label.setText(((String[])Globals.LabelsText.get(NEW_PW_LABLE.ordinal()))[ourLang]);
+            newPW2Label.setText(((String[])Globals.LabelsText.get(REPEAT_PW_LABEL.ordinal()))[ourLang]);
+            userPWLabel.setText(((String[])Globals.LabelsText.get(MY_PW_LABEL.ordinal()))[ourLang]);
             // </editor-fold>   
         } catch (Exception ex) {
             logParkingException(Level.SEVERE, ex, "(User Action: Clicked Create New User Button)");         
@@ -1621,23 +1800,11 @@ public class AttListForm extends javax.swing.JFrame {
         final EmailValidator emailValidator = EmailValidator.getInstance();
         
         return emailValidator.isValid(email);
-//        boolean isValid = false;
-//
-//        try {
-//            //Create InternetAddress object and validated the email address.
-//            InternetAddress internetAddress = new InternetAddress(email);
-//            internetAddress.validate();
-//            isValid = true;
-//        } catch (AddressException ex) {
-//            //logParkingException(Level.SEVERE, ex, "(email: " + email + ")");
-//        }
-//        return isValid;
     }    
     
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         try {
-            Object selectedObj = searchCriteriaComboBox.getSelectedItem();
-            if (selectedObj.toString().equals("Login ID")) {
+            if (searchCriteriaComboBox.getSelectedIndex() == ATTLIST_ComboBoxTypes.ID.ordinal()) {
                 searchCondition = " where id like '" + "%" + searchText.getText() + "%';";
             } else {
                 searchCondition = " where name like '" + "%" + searchText.getText() + "%';";
@@ -1670,7 +1837,8 @@ public class AttListForm extends javax.swing.JFrame {
         pwValidator = new PasswordValidator();
         String helpText = pwValidator.getWrongPWFormatMsg(pwStrengthLevel);
 
-        JDialog helpDialog = new PWHelpJDialog(this, false, "Password Requirements", helpText);
+        JDialog helpDialog = new PWHelpJDialog(this, false, 
+                ((String[])Globals.DialogTitleList.get(ATT_HELP_DIALOGTITLE.ordinal()))[ourLang], helpText);
         Point buttonPoint = new Point();
         PWHelpButton.getLocation(buttonPoint);
 
@@ -1699,22 +1867,74 @@ public class AttListForm extends javax.swing.JFrame {
                 String sql = "Select count(*) as dataCount From users_osp Where email = ?";
                 if (dataExistsInDB(sql, emailEntered)) {
                     // Access DB and find if entered e-mail is already registered to the system.
-                    JOptionPane.showConfirmDialog(this, "E-mail '" + emailEntered + "' is in use"
-                        + System.lineSeparator() + "Choose a different one.", "Duplicate Check Result",
-                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "이메일 '" + emailAddrText.getText().trim() + "' 는 사용 중 입니다.\n"
+                                + "다른 이메일을 입력하십시오.";
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "E-mail '" + emailAddrText.getText().trim() + "' is in use"
+                            + System.lineSeparator() + "Choose a different one.";
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
+                            JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                     emailAddrText.requestFocus();
                 } else {
                     Email_usable = true;
                     usableEmail = emailEntered;
                     checkEmailButton.setEnabled(false);
-                    JOptionPane.showConfirmDialog(this,
-                        "E-mail '" + emailEntered + "' could be used." + System.lineSeparator(),
-                        "Duplicate Check Result", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                    
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "이메일 '" + emailAddrText.getText().trim() + 
+                                    "' 는 사용가능합니다." + System.lineSeparator();
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "E-mail '" + emailAddrText.getText().trim() + 
+                                    "' could be used." ;
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
+                            JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             } else {
-                JOptionPane.showConfirmDialog(this,
-                    "E-mail address '" + emailEntered + "' has wrong syntax." + System.lineSeparator(),
-                    "Syntax Check Result", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "이메일 주소 '" + emailAddrText.getText().trim() + 
+                                "'는 구문이 바르지 않습니다.\n";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "E-mail address '" + emailAddrText.getText().trim() + 
+                                "' has wrong syntax." + System.lineSeparator();
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                JOptionPane.showConfirmDialog(this, dialogMessage, 
+                        ((String[])Globals.DialogTitleList.get(ATT_EMAIL_SYNTAX_CHECK_DIALOG.ordinal()))[ourLang],
+                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 emailAddrText.requestFocus();
             }
         } catch (Exception ex) {
@@ -1758,15 +1978,36 @@ public class AttListForm extends javax.swing.JFrame {
         try {
             if (idEntered.length() < 2) {
                 // Reject if ID were shorter than 2 characters
-                JOptionPane.showConfirmDialog(this, "ID should consists of at least 2 characters.",
-                    "ID Check Result", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+                JOptionPane.showConfirmDialog(this, ID_LENGTH_CHECK_DIALOG.getContent(),
+                    ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
                 return;
             } else if (dataExistsInDB(sql, idEntered)) {
                 // Same ID is being used by other user, let the user know about this.
-                JOptionPane.showConfirmDialog(this, "ID '" + idEntered + "' is preoccupied by someone else."
-                    + System.lineSeparator() + "Choose a different ID", "Duplicate ID Error",
-                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+                
+                String dialogMessage = "";
+                
+                switch (language) {
+                    case KOREAN:
+                        dialogMessage = "아이디 '" + userIDText.getText().trim() + 
+                            "' 는 사용 중 입니다." + System.lineSeparator() 
+                            + "다른 아이디를 입력하십시오.";
+                        break;
+                        
+                    case ENGLISH:
+                        dialogMessage = "ID '" + userIDText.getText().trim() + 
+                            "' is preoccupied by someone else." + System.lineSeparator() 
+                            + "Choose a different ID";
+                        break;
+                        
+                    default:
+                        break;
+                }                
+                
+                JOptionPane.showConfirmDialog(this, dialogMessage,
+                        ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
             } else {
                 String checkResult = IDSyntaxCheckResult(idEntered);
@@ -1774,11 +2015,33 @@ public class AttListForm extends javax.swing.JFrame {
                     ID_usable = true;
                     usableID = idEntered;
                     checkIDButton.setEnabled(false);
-                    JOptionPane.showConfirmDialog(this, "ID '" + idEntered + "' is usable.\n",
-                        "ID Check Result", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                    
+                    String dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "아이디 '" + userIDText.getText().trim() + 
+                                    "' 는 사용가능합니다." + System.lineSeparator() ;
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "ID '" + userIDText.getText().trim() + 
+                                    "' is usable." + System.lineSeparator() ;
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+//                            getTextFor(ID_CHECK_GOOD_DIALOG, userIDText.getText().trim()),
+                            ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showConfirmDialog(this, checkResult,
-                        "ID Check Result", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
+                    JOptionPane.showConfirmDialog(this, 
+                            checkResult,
+                            ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                            JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 }
             }
         } catch (Exception ex) {
@@ -1810,6 +2073,8 @@ public class AttListForm extends javax.swing.JFrame {
     private void CreateAttendantListTextFile(String filename) {
         //FileWriter writer = null;
         BufferedWriter bw = null;
+        StringBuilder sb  = new StringBuilder();
+
         try {
             //writer = new FileWriter(filename);
             bw = new BufferedWriter(new OutputStreamWriter(
@@ -1847,8 +2112,37 @@ public class AttListForm extends javax.swing.JFrame {
                 bw.write(System.getProperty("line.separator"));
             }
             // Show the result in a ack popup box
-            String message =  buildMessage(filename, rowFrame);
-            JOptionPane.showMessageDialog(this, message, "Text File(*.txt) Creation", JOptionPane.PLAIN_MESSAGE);            
+            StringBuilder dialogBuilder = new StringBuilder();
+            
+            int lastSlash = filename.lastIndexOf((int)'\\');
+            switch (language) {
+                case KOREAN:
+                    dialogBuilder.append("생성 완료!\n  -파일이름: ");
+                    dialogBuilder.append(filename.substring(lastSlash + 1));
+                    dialogBuilder.append(" (총 ");
+                    dialogBuilder.append(rowFrame);
+                    dialogBuilder.append("행)");
+                    dialogBuilder.append("\n  -파일위치: ");
+                    dialogBuilder.append(filename.substring(0, lastSlash + 1));
+                    break;
+                    
+                case ENGLISH:
+                    dialogBuilder.append("File Created!" + System.lineSeparator() + "  - File name: ");
+                    dialogBuilder.append(filename.substring(lastSlash + 1));
+                    dialogBuilder.append(" (total ");
+                    dialogBuilder.append(rowFrame);
+                    dialogBuilder.append("lines)");
+                    dialogBuilder.append(System.lineSeparator() + "  - File Location: ");
+                    dialogBuilder.append(filename.substring(0, lastSlash + 1));
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            JOptionPane.showMessageDialog(this, dialogBuilder.toString(),
+                    ((String[])Globals.DialogTitleList.get(ATT_SFAVE_AS_SUCCESS_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE);            
         } catch (Exception ex) {
         } finally {
             try {
@@ -1881,19 +2175,6 @@ public class AttListForm extends javax.swing.JFrame {
         }
     }
 
-    private String buildMessage(String filename, int rowFrame) {
-        StringBuilder sBuild = new StringBuilder();
-        
-        sBuild.append("File Created!" + System.lineSeparator() + "  - File name: ");
-        int lastSlash = filename.lastIndexOf((int)'\\');
-        sBuild.append(filename.substring(lastSlash + 1));
-        sBuild.append(" (total ");
-        sBuild.append(rowFrame);
-        sBuild.append("lines)");
-        sBuild.append(System.lineSeparator() + "  - File Location: ");
-        sBuild.append(filename.substring(0, lastSlash + 1));
-        return sBuild.toString();
-    }
 
     private void clearPasswordFields() {
         userPassword.setText("");
@@ -1976,18 +2257,18 @@ public class AttListForm extends javax.swing.JFrame {
 
     private void revokeCreationMode(boolean created) {
         // Reset properties set for a new user as it was.
-        // <editor-fold defaultstate="collapsed" desc="-- Reset Password Labels">
+        // <editor-fold defaultstate="collapsed" desc="-- Reset Password LabelsText">
         newPW1ReqLabel.setText("");
         newPW2ReqLabel.setText("");
         changePWLabel.setEnabled(true);
-        newPW1Label.setText("New Password");
-        newPW2Label.setText("Repeat New P.W.");
-        userPWLabel.setText("My Password");
+        newPW1Label.setText(((String[])Globals.LabelsText.get(NEW_PW_LABLE.ordinal()))[ourLang]);
+        newPW2Label.setText(((String[])Globals.LabelsText.get(REPEAT_PW_LABEL.ordinal()))[ourLang]);
+        userPWLabel.setText(((String[])Globals.LabelsText.get(MY_PW_LABEL.ordinal()))[ourLang]);
         // </editor-fold> 
         
         // <editor-fold defaultstate="collapsed" desc="-- Enable two buttons back again">        
         createButton.setEnabled(true);
-        multiFuncButton.setText("Modify");
+        multiFuncButton.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
         changeButtonEnabled(true);
         multiFuncButton.setMnemonic('m');
         // </editor-fold>   
@@ -2016,6 +2297,8 @@ public class AttListForm extends javax.swing.JFrame {
         
         usersTable.setEnabled(true);
         formMode = FormMode.NormalMode;
+        if(selectedRowIndex < 0)
+            selectedRowIndex = 0;
         ShowAttendantDetail(usersTable.convertRowIndexToModel(selectedRowIndex));     
         
         // <editor-fold defaultstate="collapsed" desc="-- Disable login ID related controls in search mode">            
@@ -2025,7 +2308,7 @@ public class AttListForm extends javax.swing.JFrame {
         checkIDButton.setEnabled(false); 
         // </editor-fold>   
 
-        legendLLabel.setText("\u203BRequirements \u2212");       
+        legendLLabel.setText("\u203B" + ((String[])Globals.LabelsText.get(REQUIRED_LABEL.ordinal()))[ourLang] + "\u2212");       
     }
 
     private boolean dataExistsInDB(String sql, String dataEntered) {
@@ -2065,19 +2348,24 @@ public class AttListForm extends javax.swing.JFrame {
         
         StringBuilder tempStr = new StringBuilder();
         int idLen = idEntered.length();
+        
         if (!(Character.isLetter(idEntered.charAt(0)))) {
-            tempStr.append("first character is not an alphabet" + System.lineSeparator());
+            tempStr.append(ID_FIRST_CHAR_CHECK_DIALOG.getContent() + System.lineSeparator());
         } 
         for (int i = 0; i < idLen - 1; i++) {
             char ch = idEntered.charAt(i);
-            if (!(Character.isLetter(ch)) && !(Character.isDigit(ch)) &&
-                    ch != ' ' && ch != '.') {
-                tempStr.append("nested character isn't an alpha-numeric, space, or dot(.)" + System.lineSeparator());
+            
+            if (!(Character.isLetter(ch)) && !(Character.isDigit(ch)) && ch != ' ' && ch != '.')
+            {
+                tempStr.append(ID_CHAR_CHECK_DIALOG.getContent()  + System.lineSeparator());
             }
         }
         char lastCh = idEntered.charAt(idLen - 1);
-        if (!(Character.isLetter(lastCh)) && !(Character.isDigit(lastCh))) {
-            tempStr.append("last character isn't an alpha-numeric" + System.lineSeparator());
+        
+        if (!(Character.isLetter(lastCh)) && !(Character.isDigit(lastCh))) 
+        {
+            tempStr.append(ID_END_CHAR_CHECK_DIALOG.getContent() + System.lineSeparator());
+//                    ((String[])Globals.DialogMSGList.get(ID_END_CHAR_CHECK_DIALOG.ordinal()))[ourLang]
         }
         if (tempStr.length() >= 1) {
             tempStr.deleteCharAt(idLen - 1); // remove last newline character
@@ -2126,7 +2414,6 @@ public class AttListForm extends javax.swing.JFrame {
                     ", phone: " + phoneText.getText().trim() + ")");                    
         } finally {
             closeDBstuff(conn, createAttendant, null, "(ID: " + userIDText.getText() + ")");
-
             return result;
         }
     }
@@ -2148,15 +2435,50 @@ public class AttListForm extends javax.swing.JFrame {
             List sortKeys = usersTable.getRowSorter().getSortKeys();
             RefreshTableContents(); 
             usersTable.getRowSorter().setSortKeys(sortKeys);    
-            logParkingOperation(OpLogLevel.SettingsChange, getModifiedUserInfo());            
-            JOptionPane.showMessageDialog(this, "A user(ID: " + 
-                    userIDText.getText() + ") information" + System.lineSeparator() + "successfully modified.",
-                    "User Info Change Result", JOptionPane.PLAIN_MESSAGE);  
+            logParkingOperation(OpLogLevel.SettingsChange, getModifiedUserInfo());       
+            
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "사용자(ID: " + userIDText.getText().trim() + 
+                            ") 정보가\n성공적으로 수정되었습니다.";
+                    break;
+
+                case ENGLISH:
+                    dialogMessage ="A user(ID: " + userIDText.getText().trim() + ") information" + 
+                            System.lineSeparator() + "successfully modified.";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+            JOptionPane.showMessageDialog(this, dialogMessage,
+                    ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE);  
             clearPasswordFields();
         } else {
-            JOptionPane.showMessageDialog(this, 
-                    "User Info Change Failure!" + System.lineSeparator() + "ID: " +  userIDText.getText(),
-                    "User Info Change Result", JOptionPane.PLAIN_MESSAGE);            
+            String dialogMessage = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialogMessage = "정보 수정에 실패하였습니다!\n  "
+                            + "ID: " +  userIDText.getText().trim();
+                    break;
+                    
+                case ENGLISH:
+                    dialogMessage = "User Info Change Failure!" + System.lineSeparator() + 
+                            "ID: " +  userIDText.getText().trim();
+                    break;
+                    
+                default:
+                    break;
+            }
+                
+            JOptionPane.showMessageDialog(this, dialogMessage,
+                    ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE);            
         }
         selectedRowIndex = searchRow(userIDText.getText());
         usersTable.changeSelection(selectedRowIndex, 0, false, false); 
@@ -2429,6 +2751,7 @@ public class AttListForm extends javax.swing.JFrame {
     // </editor-fold>
     
     private void RefreshTableContents() {
+        DefaultTableModel model =  (DefaultTableModel) usersTable.getModel();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -2445,12 +2768,28 @@ public class AttListForm extends javax.swing.JFrame {
             conn = JDBCMySQL.getConnection();
             pstmt = conn.prepareStatement(sb.toString());
             rs = pstmt.executeQuery();
+	    /*
             usersTable.setModel(DbUtils.resultSetToTableModel(rs));
             int dimX = usersTable.getPreferredSize().width;
             int rowHeight = usersTable.getRowHeight();
             usersTable.setPreferredSize(new Dimension(dimX, 
                     rowHeight * usersTable.getRowCount()));
             SetTableColumnWidth();
+	    */
+
+            model.setRowCount(0);
+            while(rs.next()){
+                model.addRow(new Object[]{
+                    rs.getString("User ID"),
+                    rs.getString("Name"),
+                    rs.getString("Manager"),
+                    rs.getString("Cell"),
+                    rs.getString("Phone"),
+                    rs.getString("E-mail"),
+                    rs.getString("Created"),
+                    rs.getString("Modified")
+                });
+            }
         } catch (Exception ex) {
             logParkingException(Level.SEVERE, ex, "(refresh user list displaying table)");
         } finally {
@@ -2512,8 +2851,8 @@ public class AttListForm extends javax.swing.JFrame {
 
         if (isManager)
         {
-            userPassword.setToolTipText("Enter User Password!");
-            userPWLabel.setToolTipText("Enter User Password!");
+            userPassword.setToolTipText(((String[])Globals.ToolTipLabels.get(PW_INPUT_TOOTLTIP.ordinal()))[ourLang]);
+            userPWLabel.setToolTipText(((String[])Globals.ToolTipLabels.get(PW_INPUT_TOOTLTIP.ordinal()))[ourLang]);
         }
     }
 
@@ -2545,10 +2884,38 @@ public class AttListForm extends javax.swing.JFrame {
         SetAColumnWidth(tcm.getColumn(3), 10, 100, 32767); // 2: Cell Phone 
         SetAColumnWidth(tcm.getColumn(4), 10, 100, 32767); // 3: Phone number
         SetAColumnWidth(tcm.getColumn(5), 10, 120, 32767); // 5: E-mail address
-        SetAColumnWidth(tcm.getColumn(6), 0, 0, 0); // 6: Hidden creation date and time
-        SetAColumnWidth(tcm.getColumn(7), 10, 120, 32767); // 7: Latest modification date and time
+        //SetAColumnWidth(tcm.getColumn(7), 10, 120, 32767); // 7: Latest modification date and time
+        SetAColumnWidth(tcm.getColumn(6), 10, 120, 32767); // 6: Latest modification date and time
     }
-   
+    
+//    private String getTextFor(ControlEnums.DialogMSGTypes msgType, String str) {
+    private String getTextFor(AttListDialogType dialogType, String str) {
+        String label = null;
+        
+        switch (dialogType) {
+           
+            case SAVE_AS_FILE_FAILURE_DIALOG:
+            switch (parkingLotLocale.getLanguage()) {
+                case "ko":
+                    label = "아래 파일이 이미 존재합니다.\n " + 
+                            str + "\n이 파일에 덮어 쓰겠습니까?";
+                    break;
+                default:
+                    label = "A folder(=directory) of same name exists" +
+                            System.lineSeparator() + 
+                            str + "\nChange file name to a different one";
+                    break;
+                }
+                break;                        
+
+            default :
+                break;
+            
+        
+        }
+        return label;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -2618,4 +2985,14 @@ enum FormMode {
     NormalMode,
     CreateMode,
     UpdateMode
+}
+
+enum AttListDialogType {
+    SAVE_AS_FILE_FAILURE_DIALOG,
+    CREATION_SUCCESS_DIALOG,
+    DELETE_SUCCESS_DIALOG,
+    DELETE_FAIL3_DAILOG,
+    EMAIL_DUP_TURE_DIALOG,
+    EMAIL_DUP_FALSE_DIALOG,
+    EMAIL_CHECK_FAIL_DIALOG,
 }

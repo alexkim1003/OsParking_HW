@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
  * Copyright (C) 2015 Open Source Parking Inc.
+=======
+ * Copyright (C) 2015 YongSeok
+>>>>>>> osparking/master
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +21,8 @@
 package com.osparking.global.names;
 
 import java.util.Set;
+import java.awt.Component;
+import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 
@@ -25,7 +31,9 @@ import javax.swing.SwingUtilities;
  * @author Open Source Parking Inc.
  */
 public class ChangeSettings {
-    public static void changeEnabled_of_SaveCancelButtons(JButton saveBtn, JButton cancelBtn, JButton closeBtn, int size) {
+    public static void changeEnabled_of_SaveCancelButtons
+        (JButton saveBtn, JButton cancelBtn, JButton closeBtn, int size) 
+    {
         if (size > 0){
             saveBtn.setEnabled(true);
             cancelBtn.setEnabled(true);        
@@ -37,16 +45,38 @@ public class ChangeSettings {
         }  
     } 
     
-    public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final boolean current, final boolean original){
+    public static void changeStatus_Manager
+        (final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
+            final HashSet<Component> changedControls, final Component compo, 
+            final boolean current, final boolean original)
+    {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current == original) {
                     // remove from changedControls set
-                    changedControls.remove(name);
+                    changedControls.remove(compo);
                 } else {
                     // add to the changedControls set
-                    changedControls.add(name);
+                    changedControls.add(compo);
+                }
+                changeEnabled_of_SaveCancelButtons(saveBtn, cancelBtn, closeBtn, changedControls.size());
+            }
+        });
+    }
+    
+    public static void changeStatus_Manager
+        (final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
+            final HashSet<Component> changedControls, final Component compo, 
+            final int current, final int original)
+    {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (current == original) {
+                    // remove from changedControls set
+                    changedControls.remove(compo);
+                } else {
+                    // add to the changedControls set
+                    changedControls.add(compo);
                 }
                 changeEnabled_of_SaveCancelButtons(saveBtn, cancelBtn, closeBtn, changedControls.size());
             }
@@ -54,23 +84,7 @@ public class ChangeSettings {
     }
     
     public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final int current, final int original){
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (current == original) {
-                    // remove from changedControls set
-                    changedControls.remove(name);
-                } else {
-                    // add to the changedControls set
-                    changedControls.add(name);
-                }
-                changeEnabled_of_SaveCancelButtons(saveBtn, cancelBtn, closeBtn, changedControls.size());
-            }
-        });
-    }
-    
-    public static void changeStatus_Manager(final JButton saveBtn, final JButton cancelBtn, final JButton closeBtn,
-            final Set<String> changedControls, final String name, final String current, final String original){
+            final HashSet<Component> changedControls, final Component name, final String current, final String original){
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 if (current.equals(original)) {
@@ -84,5 +98,4 @@ public class ChangeSettings {
             }
         });
     }
-    
 }

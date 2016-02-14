@@ -42,7 +42,12 @@ import static com.osparking.global.Globals.insertNewBuilding;
 import static com.osparking.global.Globals.insertNewBuildingUnit;
 import static com.osparking.global.Globals.insertNewLevel1Affiliation;
 import static com.osparking.global.Globals.insertNewLevel2Affiliation;
+import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.CHECK_BUILDING_ODS_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.READ_FAIL_AFFILIATION_ODS_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 import com.osparking.global.names.OSP_enums.DriverCol;
 import com.osparking.global.names.OSP_enums.VehicleCol;
@@ -79,7 +84,7 @@ public class ODSReader {
         }
         return sb.toString();
     }
-
+    
     private static void readBuildingAndUnits(Sheet sheet) {
         ODSReader objODSReader = new ODSReader();
         
@@ -95,17 +100,22 @@ public class ODSReader {
             sb.append(" - Data count: number of buildings " + buildingTotal.getValue());
             sb.append(", number of rooms " + unitTotal.getValue());
 
-            int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                    "Sheet Check Result", JOptionPane.YES_NO_OPTION);            
+            int result = JOptionPane.showConfirmDialog(null, 
+                            sb.toString(),
+                            "Sheet Check Result", 
+                            JOptionPane.YES_NO_OPTION);            
+
             if (result == JOptionPane.YES_OPTION) {                
                 objODSReader.readODS(sheet, null);
             }
         } else {
             // display wrong cell points if existed
             if (wrongCells.size() > 0) {
-                JOptionPane.showConfirmDialog(null, "Cells containing data other than numbers" + 
-                        System.getProperty("line.separator") + getWrongCellPointString(wrongCells),
-                        "Sheet Cell Value Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                      
+                JOptionPane.showConfirmDialog(null, 
+                        "Cells containing data other than numbers" + 
+                            System.getProperty("line.separator") + getWrongCellPointString(wrongCells),
+                       "Sheet Cell Value Error", 
+                       JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                      
             }
         }    
     }
@@ -125,14 +135,16 @@ public class ODSReader {
             sb.append(" - Data count: higher affiliation " + level1_total.getValue());
             sb.append(", lower affiliation " + level2_total.getValue());
 
-            int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                    "Sheet Check Result", JOptionPane.YES_NO_OPTION);            
+            int result = JOptionPane.showConfirmDialog(null,
+                                sb.toString(),
+                                "Sheet Check Result", 
+                                JOptionPane.YES_NO_OPTION);            
             if (result == JOptionPane.YES_OPTION) {                
                 objODSReader.readAffiliationODS(sheet, null);
             }
         } 
     }
-    
+
     final int MAX_BLANK_ROW = 5;
     private static boolean upperLevelMissingWarningNotGiven = true;
     
@@ -174,17 +186,40 @@ public class ODSReader {
                             if (parentForm != null) {
                                 parentForm.loadBuilding(0, 0);
                             }
+                            
                             StringBuilder sb = new StringBuilder();
-                            sb.append("Loaded Data Summaryt");
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Loaded Buildings: " + buildingCount);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Rejected Buildings: " + buildingReject);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Loaded Rooms: " + unitCount);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Rejected Rooms: " + unitReject);
-                            JOptionPane.showConfirmDialog(null, sb.toString(), "Sheet Check Result", 
+                            
+                            switch (language) {
+                                case KOREAN:
+                                    sb.append("자료 요약");
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 불러온 건물 수: " + buildingCount);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 거부된 건물 수: " + buildingReject);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 불러온 호실 수: " + unitCount);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 거부된 호실 수: " + unitReject);
+                                    break;
+
+                                case ENGLISH:
+                                    sb.append("Loaded Data Summary");
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Loaded Buildings: " + buildingCount);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Rejected Buildings: " + buildingReject);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Loaded Rooms: " + unitCount);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Rejected Rooms: " + unitReject);
+                                    break;
+
+                                default:
+                                    break;
+                            }
+                            
+                            JOptionPane.showConfirmDialog(null, sb.toString(),
+                                    ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
                                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                             return;
                         }
@@ -239,11 +274,28 @@ public class ODSReader {
                             if (upperLevelMissingWarningNotGiven)
                             {
                                 upperLevelMissingWarningNotGiven = false;
-                                JOptionPane.showConfirmDialog(null, 
-                                        "It's unknown where this room belongs" 
-                                                + System.getProperty("line.separator") 
-                                                + " - room ID#: " + cellValue.getValue(),
-                                        "Unknown Building Number", 
+                                
+                                String dialogMessage = "";
+                                
+                                switch (language) {
+                                    case KOREAN:
+                                        dialogMessage = "호실이 정확하지 않습니다." 
+                                                    + System.getProperty("line.separator") 
+                                                    + " - 호실 ID#: " + cellValue.getValue();
+                                        break;
+
+                                    case ENGLISH:
+                                        dialogMessage = "It's unknown where this room belongs" 
+                                                    + System.getProperty("line.separator") 
+                                                    + " - room ID#: " + cellValue.getValue();
+                                        break;
+
+                                    default:
+                                        break;
+                                }                                
+                                
+                                JOptionPane.showConfirmDialog(null, dialogMessage,
+                                        ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
                                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                             }                            
                         }
@@ -344,11 +396,28 @@ public class ODSReader {
         }
         if (numBlankRow > MAX_BLANK_ROW) {
             // Give warning that data end(building number '-1') mark is missing
-            JOptionPane.showConfirmDialog(null, 
-                    "Higher and Lower Affiliation Name End Mark Missong" + 
-                    System.getProperty("line.separator") +  
-                            "End Mark: a row that begins with '" + DATA_END_MARKER + "' (except quot mark)",
-                    "Data Sheet Format Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
+            String dialogMessage = "";
+            
+            switch(language){
+                case KOREAN :
+                    dialogMessage ="상위 및 하위 소속 조직명칭 종료마크(아래)가 누락됨" + 
+                                System.getProperty("line.separator") +  
+                                "종료마크: 첫 열이 " + DATA_END_MARKER + "인 행";
+                    break;
+                    
+                case ENGLISH:                    
+                    dialogMessage = "Higher and Lower Affiliation Name End Mark Missing" + 
+                                System.getProperty("line.separator") +  
+                                "End Mark: a row that begins with '" + DATA_END_MARKER + "' (except quit mark)";
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            JOptionPane.showConfirmDialog(null, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                            JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
             return false;
         } else {
             return true;
@@ -409,9 +478,9 @@ public class ODSReader {
         }
         if (numBlankRow > MAX_BLANK_ROW) {
             // Give warning that data end(building number '-1') mark is missing
-            JOptionPane.showConfirmDialog(null, "List of Building and Room lacks End Mark" + 
-                    System.getProperty("line.separator") +  "End Mark: a wor having -1 at its first cell/column",
-                    "Data Sheet Format Error", JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
+            JOptionPane.showConfirmDialog(null, CHECK_BUILDING_ODS_DIALOG.getContent(), 
+                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
             return false;
         } else {
             if (wrongCells.size() > 0) {
@@ -505,16 +574,40 @@ public class ODSReader {
                             }
 
                             StringBuilder sb = new StringBuilder();
-                            sb.append("Result of ods file loading");
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Higher Affiliation Loaded: " + level1Count);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Higher Affiliation Rejected: " + level1Reject);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Lower Affiliation Loaded: " + level2Count);
-                            sb.append(System.getProperty("line.separator"));
-                            sb.append(" - Lower Affiliation Rejected: " + level2Reject);
-                            JOptionPane.showConfirmDialog(null, sb.toString(), "Result of ods file Loading", 
+                            
+                            switch (language) {
+                                case KOREAN:
+                                    sb.append("ods파일 불러오기 결과");
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 불러온 상위 소속 수: " + level1Count);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 거부된 상위 소속 수: " + level1Reject);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 불러온 하위 소속 수: " + level2Count);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - 거부된 하위 소속 수: " + level2Reject);
+                                    break;
+
+                                case ENGLISH:
+                                    sb.append("Result of ods file loading");
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Higher Affiliation Loaded: " + level1Count);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Higher Affiliation Rejected: " + level1Reject);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Lower Affiliation Loaded: " + level2Count);
+                                    sb.append(System.getProperty("line.separator"));
+                                    sb.append(" - Lower Affiliation Rejected: " + level2Reject);
+                                    break;
+
+                                default:
+                                    break;
+                            }                            
+                            
+                            JOptionPane.showConfirmDialog(null, sb.toString(),
+//                                    getTextFor(READ_AFFILIATION_ODS_DIALOG, sb, level1Count, level1Reject, 
+//                                            level2Count, level2Reject).toString(), 
+                                     ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
                                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                             return;
                         }
@@ -572,10 +665,9 @@ public class ODSReader {
                             {
                                 upperLevelMissingWarningNotGiven = false;
                                 JOptionPane.showConfirmDialog(null, 
-                                        "Can't tell to what higher affiliation do following lower affiliation belong" 
-                                                + System.getProperty("line.separator") 
-                                                + " - Lower Affiliation: " + cellStr,
-                                        "Higher Affiliation Unknown", 
+                                        READ_FAIL_AFFILIATION_ODS_DIALOG.getContent() + cellStr,
+//                                        getTextFor(READ_FAIL_AFFILIATION_ODS_DIALOG, cellStr), 
+                                        ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
                                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                             }
                         }
@@ -680,15 +772,36 @@ public class ODSReader {
                     }
                     
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Sheet Loading Result");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Loaded vehicle: " + vehicleCount);
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Duplicates rejected: " + duplicateCount);
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Total rejected: " + vehicleReject);
                     
-                    JOptionPane.showConfirmDialog(null, sb.toString(), "Sheet Analysis Result", 
+                    switch (language) {
+                        case KOREAN:
+                            sb.append("자료 불러오기 결과");
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 불러온 차량: " + vehicleCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 중복 자료: " + duplicateCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 총 거부 자료: " + vehicleReject);
+                            break;
+
+                        case ENGLISH:
+                            sb.append("Sheet Loading Result");
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Loaded vehicle: " + vehicleCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Duplicates rejected: " + duplicateCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Total rejected: " + vehicleReject);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    
+                    JOptionPane.showConfirmDialog(null, sb.toString(),
+//                            getTextFor(READ_VEHICLE_ODS_DIALOG, sb, 
+//                                    vehicleCount, duplicateCount, vehicleReject).toString(), 
+                            ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                     return;                    
                 } else {
@@ -759,7 +872,7 @@ public class ODSReader {
             }
         }
     }
-    
+
     int searchDriver(String name){
         Connection conn = null;
         Statement selectStmt = null;
@@ -781,7 +894,7 @@ public class ODSReader {
             return seq;
         }
     }
-    
+
     void readDriverODS(Sheet sheet, ManageDrivers parentForm) {
         int driverCount = 0, driverReject = 0;
         int duplicateCount = 0;
@@ -799,15 +912,34 @@ public class ODSReader {
                     }
                     
                     StringBuilder sb = new StringBuilder();
-                    sb.append("Sheet Loading Result");
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Loaded drivers: " + driverCount);
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Duplicates rejected: " + duplicateCount);
-                    sb.append(System.getProperty("line.separator"));
-                    sb.append(" - Total rejected: " + driverReject);
                     
-                    JOptionPane.showConfirmDialog(null, sb.toString(), "Sheet Analysis Result", 
+                    switch (language) {
+                        case KOREAN:
+                            sb.append("자료 불러오기 결과");
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 불러온 운전자: " + driverCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 중복 자료: " + duplicateCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - 총 거부 자료: " + driverReject);
+                            break;
+                            
+                        case ENGLISH:
+                            sb.append("Sheet Loading Result");
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Loaded drivers: " + driverCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Duplicates rejected: " + duplicateCount);
+                            sb.append(System.getProperty("line.separator"));
+                            sb.append(" - Total rejected: " + driverReject);
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    
+                    JOptionPane.showConfirmDialog(null, sb.toString(),
+                            ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                     return;                    
                 } else {
@@ -948,7 +1080,6 @@ public class ODSReader {
             return true;
         }
     }
-    
     
     boolean checkDriverODS(Sheet sheet, ArrayList<Point> wrongCells, WrappedInt driverTotal) {
         int numBlankRow = 0;

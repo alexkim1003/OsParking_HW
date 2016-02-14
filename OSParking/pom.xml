@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.osparking</groupId>
-    <version>1.2.1</version>        
+    <version>1.2.2</version>        
     <artifactId>OSParking</artifactId>
     <packaging>jar</packaging>
     <dependencies>
@@ -37,16 +37,11 @@
             <artifactId>commons-validator</artifactId>
             <version>1.4.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.bidib.jbidib.org.qbang.rxtx</groupId>
-            <artifactId>rxtxcomm</artifactId>
-            <version>2.2</version>
-        </dependency>
         
         <dependency>
             <groupId>com.osparking</groupId>
             <artifactId>Global</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bidib.jbidib.org.qbang.rxtx</groupId>
@@ -57,23 +52,17 @@
         <dependency>
             <groupId>com.osparking</groupId>
             <artifactId>Attendant</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
         </dependency>        
         <dependency>
             <groupId>com.osparking</groupId>
             <artifactId>Vehicle</artifactId>
-            <version>1.2.1</version>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>com.osparking</groupId>
             <artifactId>Statistics</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bidib.jbidib.org.qbang.rxtx</groupId>
-            <artifactId>rxtxcomm</artifactId>
-            <version>2.2</version>
-            <type>jar</type>
+            <version>1.2.2</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -139,7 +128,6 @@
             </resource>
         </resources>
     </build>    
-    
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

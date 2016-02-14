@@ -16,6 +16,7 @@
  */
 package com.osparking.vehicle.driver;
 
+import com.osparking.global.Globals;
 import static com.osparking.vehicle.driver.ManageDrivers.driverTable;
 import java.awt.Component;
 import java.awt.Point;
@@ -35,7 +36,12 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.Globals.emptyLastRowPossible;
+import static com.osparking.global.Globals.language;
+import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.removeEmptyRow;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.MODIFY_DAILOGTITLE;
+import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.OSP_enums.DriverCol;
 import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
@@ -90,21 +96,28 @@ public class DriverTable extends JTable {
     } 
     
     public int askUserOnUpdate(String name, int vCount) {
-//        Object[] options = {"Yes(modify)", "No(cancel)"};
-//        int response = JOptionPane.showOptionDialog(parent, 
-//                "Do you want to Modify driver information?" +  System.getProperty("line.separator") 
-//                        + " - Driver name: " + name 
-//                        + " (owns " + vCount + " cars)", 
-//                "Mocify Confirmation", JOptionPane.YES_NO_OPTION,
-//                JOptionPane.INFORMATION_MESSAGE, 
-//                null, 
-//                options, options[0]);  
         
+        String optionMessage = "";
         
-        JOptionPane optionPane = new JOptionPane("Do you want to Modify driver information?" +
-                System.getProperty("line.separator") + " - Driver name: " + name + " (owns " + vCount + " cars)", 
-                JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION, null, null, null); // options[0]);
-        JDialog dialog = optionPane.createDialog("Confirm Modification");
+        switch(language){
+            case KOREAN :
+                optionMessage = "해당 운전자 정보를 수정하시겟습니까?"+ System.getProperty("line.separator") + 
+                        " - 운전자 이름 : "+ name + "(소유 차량 : " + vCount + "대)";
+                break;
+                
+            case ENGLISH:
+                optionMessage = "Do you want to Modify driver information?" + System.getProperty("line.separator") + 
+                        " - Driver name: " + name + " (owns " + vCount + " cars)";
+                break;
+                
+            default :
+                break;
+        }        
+        
+        JOptionPane optionPane = new JOptionPane(optionMessage,
+                JOptionPane.QUESTION_MESSAGE, 
+                JOptionPane.YES_NO_OPTION, null, null, null); // options[0]);
+        JDialog dialog = optionPane.createDialog(((String[])Globals.DialogTitleList.get(MODIFY_DAILOGTITLE.ordinal()))[ourLang]);
         dialog.addKeyListener(new KeyListener () {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -146,11 +159,6 @@ public class DriverTable extends JTable {
             return null;
         }
 
-//        ManageDrivers.messageLabel.setText("row: " + row + ", col: " + column 
-//                + "; Mrow: " + modRow
-//                + ", Mcol: " + modCol
-//                + ", key: " + (keyObj == null ? "(null)" : (Integer) keyObj)
-//        );
 
         TableCellEditor cellEditor = null; 
         

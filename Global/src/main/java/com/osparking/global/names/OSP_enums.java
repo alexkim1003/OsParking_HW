@@ -16,6 +16,14 @@
  */
 package com.osparking.global.names;
 
+import com.osparking.global.Globals;
+import static com.osparking.global.Globals.language;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
+import com.osparking.global.names.ControlEnums.Languages;
+import static com.osparking.global.names.ControlEnums.Languages.ENGLISH;
+import static com.osparking.global.names.ControlEnums.Languages.KOREAN;
+
 /**
  *
  * @author Open Source Parking Inc.S
@@ -95,7 +103,7 @@ public class OSP_enums {
 
         public String getLabel() {
             return label;
-        }            
+        }    
     }
 
     public enum VehicleCol {
@@ -244,7 +252,22 @@ public class OSP_enums {
     }      
     
     public enum DeviceType {
-        Camera, E_Board, GateBar
+        Camera ("카메라",  "Camera"),
+        E_Board ("전광판",  "E-Board"),
+        GateBar ("차단기",  "Gate Bar");
+//        CAMERA_LABEL ("카메라",  "Camera"),
+//        EBOARD_LABEL ("전광판",  "E-Board"),
+//        GATE_BAR_LABEL ("차단기",  "G-Bar"),     
+        DeviceType(String korean, String english) {
+            label[KOREAN.ordinal()] = korean;
+            label[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] label = new String[Languages.values().length];
+        
+        public String getLabel() {
+            return label[language.ordinal()];
+        }        
     }    
     
     public enum EBD_CycleType {
@@ -258,7 +281,7 @@ public class OSP_enums {
          * to allow the car to come on in.
          */
         ALLOWED, DISALLOWED, UNREGISTERED, BADTAGFORMAT       
-    }  
+    }
 
     public enum EBD_DisplayUsage {        
         DEFAULT_TOP_ROW(1),            // used for the top row when no vehicle arrives
@@ -277,13 +300,13 @@ public class OSP_enums {
     }
 
     public enum EBD_ContentType {
-        VERBATIM("Exact Words"),           // display as it is (character by character)
-        VEHICLE_TAG("Plate Number"),        // car license tag number
-        REGISTRATION_STAT("Registration Status"),      // registered, un-registered, parking-restricted
-        GATE_NAME("Gate Name"),        // gate name which is stored in the system settings already 
-        CURRENT_DATE("Current Date"),     // format: 20XX-12-31(Mon.)
-        CURRENT_TIME("Current Time"),     // format: AM/PM HH:MM:SS
-        CURRENT_DATE_TIME("Current Date and Time"); // format: 20XX-12-31(Mon.) HH:MM:SS AM/PM
+        VERBATIM(((String[])Globals.ComboBoxItemList.get(VERBATIM_CB_ITEM.ordinal()))[ourLang]),           // display as it is (character by character)
+        VEHICLE_TAG(((String[])Globals.ComboBoxItemList.get(VEHICLE_TAG_CB_ITEM.ordinal()))[ourLang]),        // car license tag number
+        REGISTRATION_STAT(((String[])Globals.ComboBoxItemList.get(REGISTRATION_STAT_CB_ITEM.ordinal()))[ourLang]),      // registered, un-registered, parking-restricted
+        GATE_NAME(((String[])Globals.ComboBoxItemList.get(GATE_NAME_CB_ITEM.ordinal()))[ourLang]),        // gate name which is stored in the system settings already 
+        CURRENT_DATE(((String[])Globals.ComboBoxItemList.get(CURRENT_DATE_CB_ITEM.ordinal()))[ourLang]),     // format: 20XX-12-31(Mon.)
+        CURRENT_TIME(((String[])Globals.ComboBoxItemList.get(CURRENT_TIME_CB_ITEM.ordinal()))[ourLang]),     // format: AM/PM HH:MM:SS
+        CURRENT_DATE_TIME(((String[])Globals.ComboBoxItemList.get(CURRENT_DATE_TIME_CB_ITEM.ordinal()))[ourLang]); // format: 20XX-12-31(Mon.) HH:MM:SS AM/PM
         
         private String label;
         
@@ -294,14 +317,14 @@ public class OSP_enums {
         public String getLabel() {
             return label;
         }           
-    };
-            
+    }
+
     public enum EBD_Effects {
         RTOL_FLOW,            // flow to the left
         LTOR_FLOW,           // flow to the right
         BLINKING,                 // blink    
         STILL_FRAME           // stationary
-    };
+    }
     
     public enum EBD_Fonts {
         Dialog,
@@ -312,11 +335,21 @@ public class OSP_enums {
     }   
     
     public enum EBD_Colors {
-        RED,
-        ORANGE,
-        GREEN,
-        BLACK,
-        BLUE
+        RED(((String[])Globals.ComboBoxItemList.get(RED_COLOR_CB_ITEM.ordinal()))[ourLang]),
+        ORANGE(((String[])Globals.ComboBoxItemList.get(ORANGE_COLOR_CB_ITEM.ordinal()))[ourLang]),
+        GREEN(((String[])Globals.ComboBoxItemList.get(GREEN_COLOR_CB_ITEM.ordinal()))[ourLang]),
+        BLACK(((String[]) Globals.ComboBoxItemList.get(BLACK_COLOR_CB_ITEM.ordinal()))[ourLang]),
+        BLUE(((String[])Globals.ComboBoxItemList.get(BLUE_COLOR_CB_ITEM.ordinal()))[ourLang]);
+        
+        private String label;
+        
+        EBD_Colors(String label) {
+            this.label = label;
+        }
+
+        public String getLabel() {
+            return label;
+        }    
     }
     
     public enum DisplayArea {
@@ -332,5 +365,5 @@ public class OSP_enums {
         int getValue() {
             return value;
         }
-    }       
+    }
 }

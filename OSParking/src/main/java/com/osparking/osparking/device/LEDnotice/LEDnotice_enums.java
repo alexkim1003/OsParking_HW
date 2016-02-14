@@ -35,7 +35,10 @@ public class LEDnotice_enums {
         Verbatim("문구 자체"), // 문구를 그대로 표시
         ParkingLotName("주차장 명"), // 주차장/아파트-단지 이름
         GateName("정문 명칭"), // 출입구 명칭
-        ParkingLot_GateName("주차장-정문"); // 주차장이름-정문 명칭
+        ParkingLot_GateName("주차장-정문"), // 주차장이름-정문 명칭
+        CurrentDate("날짜(요일)"),     // 형태: 20XX-12-31(Mon.)
+        CurrentTime("시:분:초"),     // 형태: AM/PM HH:MM:SS
+        CurrentDateTime("날짜-시:분:초"); // 형태: 20XX-12-31(Mon) AM/PM HH:MM:SS
         
         private String label;
 
@@ -265,6 +268,7 @@ public class LEDnotice_enums {
     final static int getID = 0x43;
     final static int getVersion = 0x44;
     final static int saveFlash = 0x53;
+    final static int setClock = 0x61;
     final static int saveText = 0x71;
     final static int saveIntr = 0x75;
     final static int saveRAM = 0x76;
@@ -285,6 +289,7 @@ public class LEDnotice_enums {
         
         SAVE_FLASH (saveFlash), // store into flash memory
         SAVE_TEXT (saveText), // store display text
+        SET_CLOCK (setClock), // set E-board clock
         SAVE_INTR (saveIntr), // store interrupt text
         SAVE_RAM (saveRAM), // store RAM text 
         

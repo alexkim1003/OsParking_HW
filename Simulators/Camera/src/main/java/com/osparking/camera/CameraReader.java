@@ -16,14 +16,13 @@
  */
 package com.osparking.camera;
 
+import static com.osparking.global.Globals.addMessageLine;
+import static com.osparking.global.Globals.closeSocket;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
 import com.osparking.global.names.DeviceReader;
-import static com.osparking.global.Globals.addMessageLine;
-import static com.osparking.global.Globals.closeSocket;
 import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.Globals.noArtificialErrorInserted;
@@ -33,6 +32,7 @@ import static com.osparking.global.names.OSP_enums.MsgCode.AreYouThere;
 import static com.osparking.global.names.OSP_enums.MsgCode.IAmHere;
 import static com.osparking.global.names.OSP_enums.MsgCode.Img_ACK;
 import static com.osparking.global.names.OSP_enums.MsgCode.JustBooted;
+import java.util.logging.Level;
 
 /**
  * thread dedicated to read the socket input stream from the manager.

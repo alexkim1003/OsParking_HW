@@ -41,6 +41,14 @@ import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_LABEL;
+import static com.osparking.global.names.ControlEnums.TitleTypes.DRIVER_SELECTION_FRAME_TITLE;
+import static com.osparking.global.names.ControlEnums.TableTypes.*;
+import static com.osparking.global.names.ControlEnums.TextType.*;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.CELL_PHONE_INPUT_TOOLTIP;
+import static com.osparking.global.names.ControlEnums.ToolTipContent.DRIVER_INPUT_TOOLTIP;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 
 /**
@@ -123,7 +131,7 @@ public class DriverSelection extends javax.swing.JFrame {
         filler15 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Find Driver");
+        setTitle(((String[])Globals.TitleList.get(DRIVER_SELECTION_FRAME_TITLE.ordinal()))[ourLang]);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -139,7 +147,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Find Driver");
+        jLabel1.setText(((String[])Globals.TitleList.get(DRIVER_SELECTION_FRAME_TITLE.ordinal()))[ourLang]);
         jLabel1.setMaximumSize(new java.awt.Dimension(120, 28));
         jLabel1.setMinimumSize(new java.awt.Dimension(120, 28));
         jLabel1.setPreferredSize(new java.awt.Dimension(120, 28));
@@ -148,8 +156,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText("Close");
-        closeFormButton.setToolTipText("");
+        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -175,11 +182,10 @@ public class DriverSelection extends javax.swing.JFrame {
 
         clearButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearButton.setMnemonic('l');
-        clearButton.setText("Clear");
-        clearButton.setToolTipText("");
+        clearButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
         clearButton.setMaximumSize(new java.awt.Dimension(90, 40));
         clearButton.setMinimumSize(new java.awt.Dimension(90, 40));
-        clearButton.setPreferredSize(new java.awt.Dimension(90, 40));
+        clearButton.setPreferredSize(new java.awt.Dimension(100, 40));
         clearButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearButtonActionPerformed(evt);
@@ -190,7 +196,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText("Search");
+        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
         searchButton.setMaximumSize(new java.awt.Dimension(90, 40));
         searchButton.setMinimumSize(new java.awt.Dimension(90, 40));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -215,16 +221,16 @@ public class DriverSelection extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText("Key :");
+        jLabel3.setText(((String[])Globals.LabelsText.get(SEARCH_LABEL.ordinal()))[ourLang]);
         jLabel3.setMaximumSize(new java.awt.Dimension(30, 28));
-        jLabel3.setPreferredSize(new java.awt.Dimension(57, 28));
+        jLabel3.setPreferredSize(new java.awt.Dimension(85, 28));
         jPanel1.add(jLabel3);
         jPanel1.add(filler6);
 
         searchName.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        searchName.setText("(Owner Name)");
-        searchName.setToolTipText("Search Name");
+        searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+        searchName.setToolTipText(((String[])Globals.ToolTipLabels.get(DRIVER_INPUT_TOOLTIP.ordinal()))[ourLang]);
         searchName.setMinimumSize(new java.awt.Dimension(6, 28));
         searchName.setPreferredSize(new java.awt.Dimension(82, 28));
         searchName.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -242,8 +248,8 @@ public class DriverSelection extends javax.swing.JFrame {
 
         searchCell.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchCell.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        searchCell.setText("(Cell Phone)");
-        searchCell.setToolTipText("Search CellPhone");
+        searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_TF.ordinal()))[ourLang]);
+        searchCell.setToolTipText(((String[])Globals.ToolTipLabels.get(CELL_PHONE_INPUT_TOOLTIP.ordinal()))[ourLang]);
         searchCell.setMinimumSize(new java.awt.Dimension(6, 28));
         searchCell.setPreferredSize(new java.awt.Dimension(110, 28));
         searchCell.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -275,7 +281,10 @@ public class DriverSelection extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Order", "Owner Name", "Cell Phone", "Phone No.", "SEQ_NO"
+                ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(NAME_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(CELL_PHONE_HEADER.ordinal()))[ourLang],
+                "Phone No.", "SEQ_NO"
             })
             {
                 @Override
@@ -306,8 +315,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         manageDriversButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         manageDriversButton.setMnemonic('m');
-        manageDriversButton.setText("Manage");
-        manageDriversButton.setToolTipText("");
+        manageDriversButton.setText(((String[])Globals.ButtonLabels.get(MANAGE_BTN.ordinal()))[ourLang]);
         manageDriversButton.setMaximumSize(new java.awt.Dimension(90, 40));
         manageDriversButton.setMinimumSize(new java.awt.Dimension(90, 40));
         manageDriversButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -326,8 +334,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         fixDriverButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         fixDriverButton.setMnemonic('t');
-        fixDriverButton.setText("Select");
-        fixDriverButton.setToolTipText("");
+        fixDriverButton.setText(((String[])Globals.ButtonLabels.get(SELECT_BTN.ordinal()))[ourLang]);
         fixDriverButton.setMaximumSize(new java.awt.Dimension(90, 40));
         fixDriverButton.setMinimumSize(new java.awt.Dimension(90, 40));
         fixDriverButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -427,12 +434,12 @@ public class DriverSelection extends javax.swing.JFrame {
 
     private void searchNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchNameFocusLost
         if(searchName.getText().trim().equals(""))
-            searchName.setText("(Owner Name)");
+            searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
     }//GEN-LAST:event_searchNameFocusLost
 
     private void searchCellFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchCellFocusLost
         if(searchCell.getText().trim().equals(""))
-            searchCell.setText("(Cell Phone)");
+            searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]);
     }//GEN-LAST:event_searchCellFocusLost
 
     private void searchNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchNameMousePressed
@@ -444,8 +451,8 @@ public class DriverSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_searchCellMousePressed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        searchName.setText("(Owner Name)");
-        searchCell.setText("(Cell Phone)");
+        searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+        searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]);
         skinnyDriverTable.requestFocus();
     }//GEN-LAST:event_clearButtonActionPerformed
 
@@ -586,10 +593,10 @@ public class DriverSelection extends javax.swing.JFrame {
         // Hide drivers table sequence number which is used by only inside the code
         TableColumnModel skinnyModel = skinnyDriverTable.getColumnModel();
         
-        // <editor-fold defaultstate="collapsed" desc="-- Adjust Column Width ">                    
-        SetAColumnWidth(skinnyModel.getColumn(0), 60, 60, 60); // 0: row number
-        SetAColumnWidth(skinnyModel.getColumn(NAME), 120, 120, 120); // 1: driver name
-        SetAColumnWidth(skinnyModel.getColumn(CELL), 150, 150, 150); // 2: cell phone
+        // <editor-fold defaultstate="collapsezd" desc="-- Adjust Column Width ">                    
+        SetAColumnWidth(skinnyModel.getColumn(0), 80, 80, 80); // 0: row number
+        SetAColumnWidth(skinnyModel.getColumn(NAME), 140, 140, 140); // 1: driver name
+        SetAColumnWidth(skinnyModel.getColumn(CELL), 160, 160, 160); // 2: cell phone
         //</editor-fold>        
         // <editor-fold defaultstate="collapsed" desc="-- Hide Some Columns">                         
         skinnyModel.removeColumn(skinnyModel.getColumn(SEQ_NO));
@@ -622,9 +629,11 @@ public class DriverSelection extends javax.swing.JFrame {
     
     private String formSearchCondition() {
         StringBuffer cond = new StringBuffer();
-        if(!searchName.getText().trim().equals("(Owner Name)"))
+        if(!searchName.getText().trim().equals(
+                ((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]))
             attachCondition(cond, "name", searchName.getText().trim());
-        if(!searchCell.getText().trim().equals("(Cell Phone)"))
+        if(!searchCell.getText().trim().equals(
+                ((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]))
             attachCondition(cond, "cellphone", searchCell.getText().trim());
         
         return cond.length() > 0 ? "Where " + cond.toString() : "";

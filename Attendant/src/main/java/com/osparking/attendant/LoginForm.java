@@ -16,6 +16,7 @@
  */
 package com.osparking.attendant;
 
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.sql.Connection;
@@ -37,6 +38,14 @@ import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_ID_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_PW_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGIN_FAIL_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.WARING_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOGIN_ID_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.PW_LABEL;
+import static com.osparking.global.names.ControlEnums.TitleTypes.LOGIN_FRAME_TITLE;
 import com.osparking.global.names.JDBCMySQL;
 
 /**
@@ -90,8 +99,8 @@ public class LoginForm extends JFrame {
 
         loginDialog = new javax.swing.JDialog();
         userIDText = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        ID_Label = new javax.swing.JLabel();
+        PW_Label = new javax.swing.JLabel();
         loginButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
         password = new javax.swing.JPasswordField();
@@ -108,16 +117,13 @@ public class LoginForm extends JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Attendant Login");
+        setTitle(((String[])Globals.TitleList.get(LOGIN_FRAME_TITLE.ordinal()))[ourLang]);
         setFocusTraversalPolicyProvider(true);
         setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         setResizable(false);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         userIDText.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        userIDText.setText("admin");
-        userIDText.setToolTipText("");
-        userIDText.setNextFocusableComponent(password);
         userIDText.setPreferredSize(new java.awt.Dimension(80, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -125,36 +131,33 @@ public class LoginForm extends JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
         getContentPane().add(userIDText, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Login ID");
-        jLabel1.setMaximumSize(new java.awt.Dimension(70, 16));
-        jLabel1.setName(""); // NOI18N
-        jLabel1.setPreferredSize(new java.awt.Dimension(80, 30));
-        jLabel1.setRequestFocusEnabled(false);
-        jLabel1.setVerifyInputWhenFocusTarget(false);
+        ID_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        ID_Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        ID_Label.setText(LOGIN_ID_LABEL.getContent());
+        ID_Label.setMaximumSize(new java.awt.Dimension(70, 16));
+        ID_Label.setPreferredSize(new java.awt.Dimension(80, 30));
+        ID_Label.setRequestFocusEnabled(false);
+        ID_Label.setVerifyInputWhenFocusTarget(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jLabel1, gridBagConstraints);
+        getContentPane().add(ID_Label, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("Password");
-        jLabel2.setToolTipText("");
-        jLabel2.setPreferredSize(new java.awt.Dimension(80, 30));
+        PW_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        PW_Label.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        PW_Label.setText(PW_LABEL.getContent());
+        PW_Label.setPreferredSize(new java.awt.Dimension(80, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
-        getContentPane().add(jLabel2, gridBagConstraints);
+        getContentPane().add(PW_Label, gridBagConstraints);
 
         loginButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        loginButton.setText("Login");
-        loginButton.setToolTipText("Click to Login");
-        loginButton.setNextFocusableComponent(closeButton);
-        loginButton.setPreferredSize(new java.awt.Dimension(70, 35));
+        loginButton.setMnemonic('L');
+        loginButton.setText(((String[])Globals.ButtonLabels.get(LOGIN_BTN.ordinal()))[ourLang]);
+        loginButton.setPreferredSize(new java.awt.Dimension(100, 35));
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
@@ -172,10 +175,9 @@ public class LoginForm extends JFrame {
         getContentPane().add(loginButton, gridBagConstraints);
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        closeButton.setText("Quit");
-        closeButton.setToolTipText("Close Login Window");
-        closeButton.setNextFocusableComponent(userIDText);
-        closeButton.setPreferredSize(new java.awt.Dimension(70, 35));
+        closeButton.setMnemonic('C');
+        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeButton.setPreferredSize(new java.awt.Dimension(90, 35));
         closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeButtonActionPerformed(evt);
@@ -193,9 +195,6 @@ public class LoginForm extends JFrame {
         getContentPane().add(closeButton, gridBagConstraints);
 
         password.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        password.setText("1234");
-        password.setToolTipText("");
-        password.setNextFocusableComponent(loginButton);
         password.setPreferredSize(new java.awt.Dimension(80, 30));
         password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -226,11 +225,11 @@ public class LoginForm extends JFrame {
         // Check if both user ID and password were entered.
         if (userIDText.getText().length() == 0)            
         {
-            showMessageDialog(null, "Enter \'Login ID\'!");
+            showMessageDialog(null, INPUT_ID_DIALOG.getContent());
             return;
         } else if (password.getPassword().length== 0) 
         {
-            showMessageDialog(null, "Enter \'Password\'!");
+            showMessageDialog(null, INPUT_PW_DIALOG.getContent());
             return;            
         }        
         //</editor-fold>
@@ -240,8 +239,9 @@ public class LoginForm extends JFrame {
         if (checkGood) {
             dispose();
         } else {
-            showMessageDialog(null, "ID or Password is wrong!",
-                    "Login Error", JOptionPane.INFORMATION_MESSAGE);
+            showMessageDialog(null, LOGIN_FAIL_DIALOG.ordinal(),
+                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
     
@@ -343,9 +343,9 @@ public class LoginForm extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ID_Label;
+    private javax.swing.JLabel PW_Label;
     private javax.swing.JButton closeButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JButton loginButton;
     private javax.swing.JDialog loginDialog;
     private javax.swing.JPasswordField password;

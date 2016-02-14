@@ -221,7 +221,6 @@ public class JDateChooser extends JPanel implements ActionListener,
 		calendarButton.addActionListener(this);
 
 		// Alt + 'C' selects the calendar.
-		calendarButton.setMnemonic(KeyEvent.VK_C);
 
 		add(calendarButton, BorderLayout.EAST);
 		add(this.dateEditor.getUiComponent(), BorderLayout.CENTER);

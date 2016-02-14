@@ -17,7 +17,68 @@
 package com.osparking.vehicle;
 
 import static com.mysql.jdbc.MysqlErrorNumbers.ER_DUP_ENTRY;
+import com.osparking.global.Globals;
+import static com.osparking.global.Globals.PopUpBackground;
+import static com.osparking.global.Globals.font_Size;
+import static com.osparking.global.Globals.font_Style;
+import static com.osparking.global.Globals.font_Type;
+import static com.osparking.global.Globals.OSPiconList;
+import static com.osparking.global.Globals.checkOptions;
+import static com.osparking.global.Globals.closeDBstuff;
+import static com.osparking.global.Globals.emptyLastRowPossible;
+import static com.osparking.global.Globals.getQuest20_Icon;
+import static com.osparking.global.Globals.getTopLeftPointToPutThisFrameAtScreenCenter;
+import static com.osparking.global.Globals.highlightTableRow;
+import static com.osparking.global.Globals.initializeLoggers;
+import static com.osparking.global.Globals.insertNewBuilding;
+import static com.osparking.global.Globals.insertNewBuildingUnit;
+import static com.osparking.global.Globals.insertNewLevel1Affiliation;
+import static com.osparking.global.Globals.insertNewLevel2Affiliation;
+import static com.osparking.global.Globals.language;
+import static com.osparking.global.Globals.logParkingException;
+import static com.osparking.global.Globals.ourLang;
+import static com.osparking.global.Globals.rejectEmptyInput;
+import static com.osparking.global.Globals.removeEmptyRow;
+import static com.osparking.global.Globals.shortLicenseDialog;
+import static com.osparking.global.Globals.showLicensePanel;
+import com.osparking.global.names.ControlEnums;
+import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.AFFILIATION_DELETE_ALL_DAILOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.AFFILIATION_DELETE_ALL_RESULT_DAILOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.BUILDING_DELETE_ALL_DAILOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.BUILDING_DELETE_ALL_RESULT_DAILOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.BUILDING_IN_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LEVEL1_NAME_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LEVEL2_NAME_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogMSGTypes.ROOM_IN_DIALOG;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.AFFILIATION_MODIFY_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.BUILDING_MODIFY_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_ALL_DAILOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_ALL_RESULT_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.DELETE_RESULT_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.LOWER_MODIFY_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.READ_ODS_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.READ_ODS_FAIL_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.REJECT_USER_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.UNIT_MODIFY_DIALOGTITLE;
+import static com.osparking.global.names.ControlEnums.LabelContent.AFFILIATION_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.BUILDING_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.HELP_AFFIL_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.HELP_BUILDING_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LIST_LABEL;
+import static com.osparking.global.names.ControlEnums.TableTypes.*;
+import static com.osparking.global.names.ControlEnums.TitleTypes.AFFILI_BUILD_FRAME_TITLE;
+import static com.osparking.global.names.DB_Access.parkingLotLocale;
+import static com.osparking.global.names.DB_Access.readSettings;
+import static com.osparking.global.names.JDBCMySQL.getConnection;
+import com.osparking.global.names.OSP_enums.FormMode;
 import com.osparking.global.names.OSP_enums.ODS_TYPE;
+import com.osparking.global.names.OdsFileOnly;
+import com.osparking.global.names.WrappedInt;
 import com.osparking.vehicle.driver.ODSReader;
 import static com.osparking.vehicle.driver.ODSReader.getWrongCellPointString;
 import java.awt.Point;
@@ -51,31 +112,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import static com.osparking.global.names.DB_Access.readSettings;
-import static com.osparking.global.Globals.PopUpBackground;
-import static com.osparking.global.Globals.checkOptions;
-import static com.osparking.global.Globals.closeDBstuff;
-import static com.osparking.global.Globals.emptyLastRowPossible;
-import static com.osparking.global.Globals.font_Size;
-import static com.osparking.global.Globals.font_Style;
-import static com.osparking.global.Globals.font_Type;
-import static com.osparking.global.Globals.getQuest20_Icon;
-import static com.osparking.global.Globals.getTopLeftPointToPutThisFrameAtScreenCenter;
-import static com.osparking.global.Globals.highlightTableRow;
-import static com.osparking.global.Globals.OSPiconList;
-import static com.osparking.global.Globals.initializeLoggers;
-import static com.osparking.global.Globals.insertNewBuilding;
-import static com.osparking.global.Globals.insertNewBuildingUnit;
-import static com.osparking.global.Globals.insertNewLevel1Affiliation;
-import static com.osparking.global.Globals.insertNewLevel2Affiliation;
-import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.rejectEmptyInput;
-import static com.osparking.global.Globals.removeEmptyRow;
-import static com.osparking.global.Globals.shortLicenseDialog;
-import static com.osparking.global.Globals.showLicensePanel;
-import static com.osparking.global.names.JDBCMySQL.getConnection;
-import com.osparking.global.names.OdsFileOnly;
-import com.osparking.global.names.WrappedInt;
 import org.jopendocument.dom.spreadsheet.Sheet;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
@@ -84,6 +120,7 @@ import org.jopendocument.dom.spreadsheet.SpreadSheet;
  * @author Open Source Parking Inc.
  */
 public class AffiliationBuildingForm extends javax.swing.JFrame {
+    FormMode formMode = FormMode.SEARCHING;
     /**
      * Creates new form BuildingManageFrame
      */
@@ -173,7 +210,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         odsFileChooser.setFileFilter(new OdsFileOnly());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Affiliation and Building");
+        setTitle(((String[])Globals.TitleList.get(AFFILI_BUILD_FRAME_TITLE.ordinal()))[ourLang]);
         setBackground(PopUpBackground);
         setMinimumSize(new java.awt.Dimension(740, 550));
 
@@ -194,7 +231,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText("Close");
+        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -220,7 +257,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel1.setText("Higher Affiliations");
+        jLabel1.setText(((String[])Globals.LabelsText.get(AFFILIATION_LIST_LABEL.ordinal()))[ourLang]);
         jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
         jLabel1.getAccessibleContext().setAccessibleName("");
 
@@ -231,8 +268,10 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 {1, "Janitor's Office", 2},
                 {2, "Engineering Bldg", 1}
             },
-            new String [] {
-                "Order", "Higher Affiliation", "L1_NO"
+            new String[]{
+                ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
+                ((String[])Globals.TableHeaderList.get(HIGHER_HEADER.ordinal()))[ourLang],
+                "L1_NO"
             }
         )
         {
@@ -273,7 +312,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
     insertL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertL1_Button.setText("Create");
+    insertL1_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
     insertL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertL1_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -285,7 +324,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.add(insertL1_Button);
 
     modifyL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyL1_Button.setText("Modify");
+    modifyL1_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
     modifyL1_Button.setEnabled(false);
     modifyL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -298,7 +337,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel7.add(modifyL1_Button);
 
     deleteL1_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteL1_Button.setText("Delete");
+    deleteL1_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
     deleteL1_Button.setEnabled(false);
     deleteL1_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteL1_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -320,7 +359,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel2.setLayout(new java.awt.BorderLayout());
 
     L2AffilLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    L2AffilLabel.setText("Lower Affiliations");
+    L2AffilLabel.setText(((String[])Globals.LabelsText.get(LOWER_LIST_LABEL.ordinal()))[ourLang]);
     jPanel2.add(L2AffilLabel, java.awt.BorderLayout.NORTH);
 
     L2_Affiliation.setAutoCreateRowSorter(true);
@@ -331,7 +370,9 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             {2, "Group 2", 4}
         },
         new String [] {
-            "Order", "Lower Affiliation", "PARTY_NO"
+            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
+            ((String[])Globals.TableHeaderList.get(LOWER_HEADER.ordinal()))[ourLang],
+            "PARTY_NO"
         }
     )
     {
@@ -370,7 +411,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
 
     insertL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertL2_Button.setText("Create");
+    insertL2_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
     insertL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertL2_Button.setName(""); // NOI18N
@@ -383,7 +424,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.add(insertL2_Button);
 
     modifyL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyL2_Button.setText("Modify");
+    modifyL2_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
     modifyL2_Button.setEnabled(false);
     modifyL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -397,7 +438,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel10.add(modifyL2_Button);
 
     deleteL2_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteL2_Button.setText("Delete");
+    deleteL2_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
     deleteL2_Button.setEnabled(false);
     deleteL2_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteL2_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -419,7 +460,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel3.setPreferredSize(new java.awt.Dimension(318, 50));
 
     deleteAll_Affiliation.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteAll_Affiliation.setText("Delete All");
+    deleteAll_Affiliation.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
     deleteAll_Affiliation.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteAll_Affiliation.setPreferredSize(new java.awt.Dimension(110, 40));
     deleteAll_Affiliation.addActionListener(new java.awt.event.ActionListener() {
@@ -430,7 +471,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel3.add(deleteAll_Affiliation);
 
     readSheet_Affiliation.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    readSheet_Affiliation.setText("Read ods");
+    readSheet_Affiliation.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
     readSheet_Affiliation.setMaximumSize(new java.awt.Dimension(90, 40));
     readSheet_Affiliation.setPreferredSize(new java.awt.Dimension(110, 40));
     readSheet_Affiliation.addActionListener(new java.awt.event.ActionListener() {
@@ -469,15 +510,17 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel4.setLayout(new java.awt.BorderLayout());
 
     jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    jLabel4.setText("Building Numbers");
-    jLabel4.setToolTipText("");
+    jLabel4.setText(((String[])Globals.LabelsText.get(BUILDING_LIST_LABEL.ordinal()))[ourLang]);
     jPanel4.add(jLabel4, java.awt.BorderLayout.NORTH);
 
     BuildingTable.setAutoCreateRowSorter(true);
     BuildingTable.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
     BuildingTable.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] { {1, 101, 5}, {2, 102, 6} },
-        new String [] {"Order", "Building", "SEQ_NO"})
+        new String [] {
+            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
+            ((String[])Globals.TableHeaderList.get(BUILDING_HEADER.ordinal()))[ourLang],
+            "SEQ_NO"})
     {
         public boolean isCellEditable(int row, int column)
         {
@@ -513,7 +556,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.Y_AXIS));
 
     insertBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertBuilding_Button.setText("Create");
+    insertBuilding_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
     insertBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertBuilding_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -525,7 +568,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.add(insertBuilding_Button);
 
     modifyBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyBuilding_Button.setText("Modify");
+    modifyBuilding_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
     modifyBuilding_Button.setEnabled(false);
     modifyBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -538,7 +581,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel11.add(modifyBuilding_Button);
 
     deleteBuilding_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteBuilding_Button.setText("Delete");
+    deleteBuilding_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
     deleteBuilding_Button.setEnabled(false);
     deleteBuilding_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteBuilding_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -560,14 +603,17 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel5.setLayout(new java.awt.BorderLayout());
 
     UnitLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    UnitLabel.setText("Room Numbers");
+    UnitLabel.setText(((String[])Globals.LabelsText.get(ROOM_LIST_LABEL.ordinal()))[ourLang]);
     jPanel5.add(UnitLabel, java.awt.BorderLayout.NORTH);
 
     UnitTable.setAutoCreateRowSorter(true);
     UnitTable.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
     UnitTable.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {{1, 803, 1}, {2, 805, 2}},
-        new String [] {"Order", "Room", "SEQ_NO"})
+        new String [] {
+            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
+            ((String[])Globals.TableHeaderList.get(ROOM_HEADER.ordinal()))[ourLang],
+            "SEQ_NO"})
     {
         public boolean isCellEditable(int row, int column)
         {
@@ -602,7 +648,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.setLayout(new javax.swing.BoxLayout(jPanel12, javax.swing.BoxLayout.Y_AXIS));
 
     insertUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    insertUnit_Button.setText("Create");
+    insertUnit_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_NO_SHORT_BTN.ordinal()))[ourLang]);
     insertUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     insertUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
     insertUnit_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -614,7 +660,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.add(insertUnit_Button);
 
     modifyUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    modifyUnit_Button.setText("Modify");
+    modifyUnit_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_NO_SHORT_BTN.ordinal()))[ourLang]);
     modifyUnit_Button.setEnabled(false);
     modifyUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     modifyUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -627,7 +673,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel12.add(modifyUnit_Button);
 
     deleteUnit_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteUnit_Button.setText("Delete");
+    deleteUnit_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_NO_SHORT_BTN.ordinal()))[ourLang]);
     deleteUnit_Button.setEnabled(false);
     deleteUnit_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteUnit_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -648,7 +694,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel6.setPreferredSize(new java.awt.Dimension(318, 50));
 
     deleteAll_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    deleteAll_Button.setText("Delete All");
+    deleteAll_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
     deleteAll_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     deleteAll_Button.setPreferredSize(new java.awt.Dimension(110, 40));
     deleteAll_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -659,7 +705,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel6.add(deleteAll_Button);
 
     readSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    readSheet_Button.setText("Read ods");
+    readSheet_Button.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
     readSheet_Button.setMaximumSize(new java.awt.Dimension(90, 40));
     readSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
     readSheet_Button.addActionListener(new java.awt.event.ActionListener() {
@@ -704,9 +750,10 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             public void valueChanged(ListSelectionEvent  e) {
                 if (!e.getValueIsAdjusting())
                 {
+                    System.out.println("valueChanged");
                     int index1 = followAndGetTrueIndex(L1_Affiliation);
-                    
-                    if (index1 >= 0)
+                     
+                    if (index1 >= 0) 
                     {
                         Object L1_no = L1_Affiliation.getModel().getValueAt(index1, 2);
                         modifyL1_Button.setEnabled(L1_no == null ? false : true);
@@ -787,7 +834,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     result = insertNewLevel1Affiliation(L1Name);
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                        rejectUserInput(L1_Affiliation, rowIndex, "Higher Affiliation");
+                        rejectUserInput(L1_Affiliation, rowIndex, LEVEL1_NAME_DIALOG.getContent());
                     }
                     else {
                         logParkingException(Level.SEVERE, ex, 
@@ -832,7 +879,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     result = modifyAffiliation.executeUpdate();
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                        rejectUserInput(L1_Affiliation, rowIndex, "Higher Affiliation");                     
+                        rejectUserInput(L1_Affiliation, rowIndex, LEVEL1_NAME_DIALOG.getContent());
                     }
                     else {
                         logParkingException(Level.SEVERE, ex, excepMsg);
@@ -861,10 +908,29 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         int modal_Index = L1_Affiliation.convertRowIndexToModel(viewIndex);
         int L1_no = (int)L1_Affiliation.getModel().getValueAt(modal_Index, 2);
         int count = getL2RecordCount(L1_no);
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete the following affiliation and its lower affiliations?" + System.getProperty("line.separator") 
-                        + " - Affiliation name: '" + affiliation + "' (lower affiliations count: " + count + ")", 
-                "Affiliation Delete Confirmation", JOptionPane.YES_NO_OPTION); 
+        
+        String dialogMessage = "";
+        
+        switch (language) {
+            case KOREAN:
+                dialogMessage = "다음 소속 및 그 하위 소속을 삭제합니까?" + System.getProperty("line.separator") 
+                + "소속명: '" + affiliation + "' (하위소속: " + count + " 건)";
+                break;
+                
+            case ENGLISH:
+                dialogMessage = "Want to delete the following affiliation and its lower affiliations?" 
+                + System.getProperty("line.separator") 
+                + " - Affiliation name: '" + affiliation 
+                + "' (lower affiliations count: " + count + ")";
+                break;
+                
+            default:
+                break;
+        }
+            
+        int result = JOptionPane.showConfirmDialog(this, dialogMessage,
+                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             //<editor-fold desc="delete upper level affliation (unit name)">
@@ -886,8 +952,26 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
                 if (result == 1) {
                     loadL1_Affiliation(viewIndex, ""); // Deliver the index of deleted row
-                    JOptionPane.showConfirmDialog(this, "Affiliation '" + affiliation + 
-                            "' has been successfully deleted", "Affiliation Deletion Result", 
+                    
+                    dialogMessage = "";
+                    
+                    switch (language) {
+                        case KOREAN:
+                            dialogMessage = "소속 '" + affiliation + 
+                                "'이 성공적으로 삭제되었습니다";
+                            break;
+                            
+                        case ENGLISH:
+                            dialogMessage = "Affiliation '" + affiliation + 
+                                "' has been successfully deleted";
+                            break;
+                            
+                        default:
+                            break;
+                    }                    
+                    
+                    JOptionPane.showConfirmDialog(this, dialogMessage,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
@@ -921,7 +1005,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY)
                     {
-                        rejectUserInput(L2_Affiliation, rowIndex, "Lower Affiliation");
+                        rejectUserInput(L2_Affiliation, rowIndex, LEVEL2_NAME_DIALOG.getContent());
                     }
                     else
                     {
@@ -969,7 +1053,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     result = updateL2name.executeUpdate();
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                        rejectUserInput(L2_Affiliation, rowIndex, "Lower Affiliation");    
+                        rejectUserInput(L2_Affiliation, rowIndex, LEVEL2_NAME_DIALOG.getContent());
                     }
                     else {
                         logParkingException(Level.SEVERE, ex, excepMsg);
@@ -1000,10 +1084,23 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         String BelongName = (String)L2_Affiliation.getValueAt(index2, 1);
         int modal_Index = L2_Affiliation.convertRowIndexToModel(index2);        
         int L2_no = (int)L2_Affiliation.getModel().getValueAt(modal_Index, 2);
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete the following lower affiliation?" + System.getProperty("line.separator") 
-                        + " - Affiliation name: " + BelongName, 
-                "Affiliation Delete Confirmation", JOptionPane.YES_NO_OPTION); 
+        
+        String dialogMessage = "";
+                
+        switch (parkingLotLocale.getLanguage()) {
+            case "ko":
+                dialogMessage = "다음 하위 소속을 삭제합니까?" + System.getProperty("line.separator") 
+                + " -하위 소속명: " + BelongName;
+                break;
+            default:
+                dialogMessage = "Want to delete the following lower affiliation?" + System.getProperty("line.separator") 
+                + " - Affiliation name: " + BelongName;
+                break;
+            }
+            
+        int result = JOptionPane.showConfirmDialog(this, dialogMessage,
+                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             // <editor-fold defaultstate="collapsed" desc="-- deletion of a lower level affiliation">               
@@ -1029,8 +1126,21 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     int index1 = L1_Affiliation.convertRowIndexToView(L1_Affiliation.getSelectedRow());
                     Object L1_No = L1_Affiliation.getModel().getValueAt(index1, 2);                    
                     loadL2_Affiliation((Integer)L1_No, index2, ""); // Deliver the deleted L2 affiliation name
-                    JOptionPane.showConfirmDialog(this, "Lower Affiliation '" + BelongName + 
-                            "' has been successfully deleted", "Affiliation Deletion Result", 
+                    
+                    String dialog = "";
+
+                    switch (parkingLotLocale.getLanguage()) {
+                        case "ko":
+                            dialog = "하위 소속 '" + BelongName + 
+                                "'이 성공적으로 삭제되었습니다";
+                            break;
+                        default:
+                            dialog = "Lower Affiliation '" + BelongName + "' has been successfully deleted";
+                            break;
+                    }
+                    
+                    JOptionPane.showConfirmDialog(this, dialog,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
@@ -1058,7 +1168,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY)
                     {
-                        rejectUserInput(BuildingTable, rowIndex, "Building Number");
+                        rejectUserInput(BuildingTable, rowIndex, BUILDING_IN_DIALOG.getContent());
                     }
                     else
                     {
@@ -1105,7 +1215,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     result = modifyBuilding.executeUpdate();
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                        rejectUserInput(BuildingTable, rowIndex, "Building number");                        
+                        rejectUserInput(BuildingTable, rowIndex, BUILDING_IN_DIALOG.getContent());
                     }
                     else {
                         logParkingException(Level.SEVERE, ex, excepMsg);
@@ -1152,7 +1262,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY)
                     {
-                        rejectUserInput(UnitTable, uIndex, "Room Number");
+                        rejectUserInput(UnitTable, uIndex, ROOM_IN_DIALOG.getContent());
                     }
                     else
                     {
@@ -1196,7 +1306,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     result = updateUnit.executeUpdate();
                 } catch (SQLException ex) {
                     if (ex.getErrorCode() == ER_DUP_ENTRY) {
-                        rejectUserInput(UnitTable, uIndex, "Room Number");
+                        rejectUserInput(UnitTable, uIndex, ROOM_IN_DIALOG.getContent());
                     }
                     else {
                         logParkingException(Level.SEVERE, ex, excepMsg);
@@ -1230,10 +1340,22 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         int bldg_seq_no = (Integer)BuildingTable.getModel().getValueAt(modal_Index, 2);        
         int count = getUnitCount(bldg_seq_no);
         
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete the following building and its rooms?" + System.getProperty("line.separator") 
-                        + "Building No.: " + bldg_no + " (Number of Rooms: " + count + ")", 
-                "Building Delete Confirmation", JOptionPane.YES_NO_OPTION); 
+        String dialog = "";
+        
+        switch (parkingLotLocale.getLanguage()) {
+                case "ko":
+                    dialog = "다음 건물 및 그의 호실들을 삭제합니까?" + System.getProperty("line.separator") 
+                    + "건물번호: " + bldg_no + " (소속 호실: " + count + " 개)";
+                    break;
+                default:
+                    dialog = "Want to delete the following building and its rooms?" + System.getProperty("line.separator") 
+                    + "Building No.: " + bldg_no + " (Number of Rooms: " + count + ")";
+                    break;
+            }        
+        
+        int result = JOptionPane.showConfirmDialog(this, dialog,
+                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             //<editor-fold desc="actual delete of a building(its number)">
@@ -1259,8 +1381,25 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             
             if (result == 1) {
                 loadBuilding(viewIndex, 0); // Deliver the index of deleted row
-                JOptionPane.showConfirmDialog(this, "Building No. " + bldg_no + 
-                            " has been successfully deleted", "Building Deletion Result", 
+                
+                switch (language) {
+                    case KOREAN:
+                        dialog = "다음 건물 이 성공적으로 삭제되었습니다" 
+                        +  System.getProperty("line.separator") 
+                        + "건물 번호: " + bldg_no;
+                        break;
+                        
+                    case ENGLISH:
+                        dialog = "Building No. " + bldg_no + 
+                            " has been successfully deleted";
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                JOptionPane.showConfirmDialog(this, dialog,
+                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                
             }
         }
@@ -1279,10 +1418,27 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         int unitNo = (Integer)UnitTable.getValueAt(uIndex, 1);
         int modal_Index = UnitTable.convertRowIndexToModel(uIndex);                
         int seqNo = (Integer)UnitTable.getModel().getValueAt(modal_Index, 2);
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete the following room number?" + System.getProperty("line.separator") 
-                        + " -Room No.: " + unitNo, 
-                "Room Delete Confirmation", JOptionPane.YES_NO_OPTION); 
+        
+        String dialog = "";
+        
+        switch (language) {
+            case KOREAN:
+                dialog = "다음 호실(번호)을 삭제합니까?" + System.getProperty("line.separator") 
+                + " -호실번호: " + unitNo;
+                break;
+                
+            case ENGLISH:
+                dialog = "Want to delete the following roon number?" + System.getProperty("line.separator") 
+                + " -Room No.: " + unitNo;
+                break;
+                
+            default:
+                break;
+        }        
+        
+        int result = JOptionPane.showConfirmDialog(this, dialog,
+                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             // <editor-fold defaultstate="collapsed" desc="-- Deletion of a room number">
@@ -1317,13 +1473,40 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                  * Refresh room number list after a room has been deleted.
                  */
                 loadUnitNumberTable(bldgNo, bldgSeqNo, uIndex, unitNo); 
-                JOptionPane.showConfirmDialog(this, "Followind Data Item Has Been Deleted" 
-                        + System.getProperty("line.separator") + " - Room No.: " + unitNo, 
-                        "Deletion Result", 
+                
+                switch (language) {
+                    case KOREAN:
+                        dialog = "다음 호실이 삭제되었습니다" 
+                        + System.getProperty("line.separator") + " -호실번호: " + unitNo;
+                        break;
+                        
+                    case ENGLISH:
+                        dialog = "Followind Data Item Has Been Deleted" 
+                        + System.getProperty("line.separator") + " - Room No.: " + unitNo;
+                        break;
+                        
+                    default:
+                        break;
+                }
+                
+                JOptionPane.showConfirmDialog(this, dialog,
+                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showConfirmDialog(this, "Room No.: '" + unitNo + 
-                        "' Deletion Failure", "Deletion Result", 
+                
+                switch (parkingLotLocale.getLanguage()) {
+                    case "ko":
+                        dialog = "호실번호 '" + unitNo + 
+                        "' 삭제에 실패하였습니다";
+                        break;
+                    default:
+                        dialog = "Room No.: '" + unitNo + 
+                        "' Deletion Failure";
+                        break;
+                }                
+                
+                JOptionPane.showConfirmDialog(this, dialog, 
+                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                
             }
         }
@@ -1399,9 +1582,9 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     }//GEN-LAST:event_UnitTableFocusLost
 
     private void deleteAll_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAll_ButtonActionPerformed
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete all buildings and rooms?", 
-                "Delete All Building", JOptionPane.YES_NO_OPTION); 
+        int result = JOptionPane.showConfirmDialog(this, BUILDING_DELETE_ALL_DAILOG.getContent(), 
+                ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             Connection conn = null;
@@ -1422,8 +1605,9 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             
             if (result >= 1) {
                 loadBuilding(0, 0); 
-                JOptionPane.showConfirmDialog(this, "Every Buildings and Rooms are deleted.", 
-                        "Buildings Deletion Result", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                JOptionPane.showConfirmDialog(this, BUILDING_DELETE_ALL_RESULT_DAILOG.getContent(),
+                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                       JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }
         }
     }//GEN-LAST:event_deleteAll_ButtonActionPerformed
@@ -1451,13 +1635,29 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     if (objODSReader.checkODS(sheet, wrongCells, buildingTotal, unitTotal))
                     {
                         StringBuilder sb = new StringBuilder();
-                        sb.append("Below Data Recognized. Want to continue loading?");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append(" - Data: Buildings count: " + buildingTotal.getValue());
-                        sb.append(", Room count: " + unitTotal.getValue());
 
+                        switch (language) {
+                            case KOREAN:
+                                sb.append("아래 자료가 식별되었습니다. 로딩을 계속합니까?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" -자료: 건물 번호 " + buildingTotal.getValue());
+                                sb.append("건, 호실 번호 " + unitTotal.getValue() + "건");
+                                break;
+                                
+                            case ENGLISH:
+                                sb.append("Below Data Recognized. Want to continue loading?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" - Data: Buildings count: " + buildingTotal.getValue());
+                                sb.append(", Room count: " + unitTotal.getValue());
+                                break;
+                                
+                            default:
+                                break;
+                        }
+                        
                         int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                "Sheet Scan Result", JOptionPane.YES_NO_OPTION);            
+                                ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readODS(sheet, this);
                             //loadBuilding(0, 0);
@@ -1465,11 +1665,27 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     } else {
                         // display wrong cell points if existed
                         if (wrongCells.size() > 0) {
-                            JOptionPane.showConfirmDialog(null, 
-                                    "Cells containing data other than numbers" 
-                                    + System.getProperty("line.separator") 
-                                    + getWrongCellPointString(wrongCells),
-                                    "Sheet Cell Data Format Error", 
+                            String dialog = "";
+                            
+                            switch (language) {
+                                case KOREAN:
+                                    dialog = "다음 셀에서 숫자 이외의 자료가 탐지됨" 
+                                                + System.getProperty("line.separator") 
+                                                + getWrongCellPointString(wrongCells);
+                                    break;
+                                    
+                                case ENGLISH:
+                                    dialog = "Cells containing data other than numbers" 
+                                                + System.getProperty("line.separator") 
+                                                + getWrongCellPointString(wrongCells);
+                                    break;
+                                    
+                                default:
+                                    break;
+                            } 
+                            
+                            JOptionPane.showConfirmDialog(null, dialog,
+                                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
                                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                      
                         }
                     }
@@ -1483,9 +1699,9 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     private void deleteAll_AffiliationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAll_AffiliationActionPerformed
         // TODO add your handling code here:
         
-        int result = JOptionPane.showConfirmDialog(this, 
-                "Want to delete all of higher and lower affiliations?", 
-                "Delete All Affiliation", JOptionPane.YES_NO_OPTION); 
+        int result = JOptionPane.showConfirmDialog(this, AFFILIATION_DELETE_ALL_DAILOG.getContent(),
+                ((String[])Globals.DialogTitleList.get(DELETE_ALL_DAILOGTITLE.ordinal()))[ourLang], 
+                JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
             Connection conn = null;
@@ -1507,8 +1723,9 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             
             if (result >= 1) {
                 loadL1_Affiliation(0, "");
-                JOptionPane.showConfirmDialog(this, "Every affiliations are deleted successfully.", 
-                        "Affiliations Deletion Result", JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
+                JOptionPane.showConfirmDialog(this, AFFILIATION_DELETE_ALL_RESULT_DAILOG.getContent(),
+                        ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }  
         }
     }//GEN-LAST:event_deleteAll_AffiliationActionPerformed
@@ -1541,8 +1758,28 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                         sb.append(" -Data: Higher Affiliation count: " + level1_total.getValue());
                         sb.append(", Lower Affiliation count: " + level2_total.getValue());
 
+                        switch (language) {
+                            case KOREAN:
+                                sb.append("아래 자료가 식별되었습니다. 로딩을 계속합니까?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" -자료: 상위소속 " + level1_total.getValue());
+                                sb.append("건, 하위소속 " + level2_total.getValue() + "건");
+                                break;
+                                
+                            case ENGLISH:
+                                sb.append("Below Data Recognized. Want to continue loading?");
+                                sb.append(System.getProperty("line.separator"));
+                                sb.append(" -Data: Higher Affiliation count: " + level1_total.getValue());
+                                sb.append(", Lower Affiliation count: " + level2_total.getValue());
+                                break;
+                                
+                            default:
+                                break;
+                        }
+                        
                         int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                "Sheet Scan Result", JOptionPane.YES_NO_OPTION);            
+                                ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readAffiliationODS(sheet, this);
                         }
@@ -1556,7 +1793,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
     private void ODSAffiliHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ODSAffiliHelpActionPerformed
 
-        JDialog helpDialog = new ODS_HelpJDialog(this, false, "Affiliation name list ods file content", 
+        JDialog helpDialog = new ODS_HelpJDialog(this, false, 
+                ((String[])Globals.LabelsText.get(HELP_AFFIL_LABEL.ordinal()))[ourLang], 
                 ODS_TYPE.AFFILIATION);
         Point buttonPoint = new Point();
         ODSAffiliHelp.getLocation(buttonPoint);
@@ -1568,7 +1806,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
     private void ODSBuildPWHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ODSBuildPWHelpActionPerformed
 
-        JDialog helpDialog = new ODS_HelpJDialog(this, false, "Building room number list ods file content", 
+        JDialog helpDialog = new ODS_HelpJDialog(this, false, 
+                ((String[])Globals.LabelsText.get(HELP_BUILDING_LABEL.ordinal()))[ourLang], 
                 ODS_TYPE.BUILDING);
         Point buttonPoint = new Point();
         ODSBuildPWHelp.getLocation(buttonPoint);
@@ -1706,7 +1945,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     private void loadL2_Affiliation(Object L1_no, int viewIndex, String l2Name) {
         if (L1_no == null)
         {
-            L2AffilLabel.setText("Lower Affiliations");
+            L2AffilLabel.setText(((String[])Globals.LabelsText.get(LOWER_LIST_LABEL.ordinal()))[ourLang]);
             insertL2_Button.setEnabled(false);
             ((DefaultTableModel) L2_Affiliation.getModel()).setRowCount(0);
         }
@@ -1715,7 +1954,20 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             int L1_index = L1_Affiliation.
                     convertRowIndexToModel(L1_Affiliation.getSelectedRow());
             String L1_Affil = L1_Affiliation.getModel().getValueAt(L1_index, 1).toString();
-            L2AffilLabel.setText("Lower affiliations of " + L1_Affil);
+            
+            String label = "";
+            switch (language) {
+                case KOREAN:
+                    label = L1_Affil + LOWER_LABEL.getContent();
+                    break;
+                case ENGLISH:
+                    label = LOWER_LABEL.getContent() + L1_Affil; 
+                    break;
+                default:
+                    break;
+            }  
+            L2AffilLabel.setText(label);
+            
             insertL2_Button.setEnabled(true);
             
             Connection conn = null;
@@ -1910,13 +2162,28 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     {
         if (bldg_seq_no == null)
         {
-            UnitLabel.setText("Rooms of a Building");            
+            UnitLabel.setText(((String[])Globals.LabelsText.get(ROOM_LIST_LABEL.ordinal()))[ourLang]);            
             insertUnit_Button.setEnabled(false);
             ((DefaultTableModel) UnitTable.getModel()).setRowCount(0);
         }
         else 
         {
-            UnitLabel.setText("Rooms of Building " + bldgNo);
+            String label = "";
+            
+            switch (language) {
+                case KOREAN:
+                    label = bldgNo + "동 호실 목록";
+                    break;
+                    
+                case ENGLISH:
+                    label = "Rooms of Building" + bldgNo;
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            UnitLabel.setText(label); 
             
             insertUnit_Button.setEnabled(true);
             
@@ -2167,8 +2434,6 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     static Object prevL1Name = null;
     static Object prevL2Name = null;
     
-    static Object prevDriver = null;
-    
     private void processUnitNoChangeTrial(int rowIndex) {
         int model_index = UnitTable.convertRowIndexToModel(rowIndex);        
         Object lineNo = UnitTable.getModel().getValueAt(model_index, 0);
@@ -2179,11 +2444,27 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     BuildingTable.getSelectedRow());
             int bldgNo = (Integer)BuildingTable.getModel().getValueAt(bIndex, 1);
             
-            int result = JOptionPane.showConfirmDialog(this, 
-                    "Waht to change following room number?" + System.getProperty("line.separator") 
+            String dialog = "";
+            switch (language) {
+                case KOREAN:
+                    dialog = "다음 건물의 호실 번호를 변경합니까?" + System.getProperty("line.separator") 
+                            + " - 건물 번호: " + bldgNo + System.getProperty("line.separator") 
+                            + " - 호실 번호: " + prevUnitNo;
+                    break;
+                    
+                case ENGLISH:
+                    dialog =  "Waht to change following room number?" + System.getProperty("line.separator") 
                             + " - Building number: " + bldgNo + System.getProperty("line.separator") 
-                            + " - Room number: " + prevUnitNo, 
-                    "Room Number Change Confirm'", JOptionPane.YES_NO_OPTION); 
+                            + " - Room number: " + prevUnitNo;
+                    break;
+                    
+                default:
+                    break;
+                }            
+            
+            int result = JOptionPane.showConfirmDialog(this, dialog,
+                    ((String[])Globals.DialogTitleList.get(UNIT_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
                 UnitTable.getCellEditor().stopCellEditing();
@@ -2201,11 +2482,24 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     L1_Affiliation.getSelectedRow());
             String nameL1 = L1_Affiliation.getModel().getValueAt(index1, 1).toString();
             
-            int result = JOptionPane.showConfirmDialog(this, 
-                    "Waht to change following lower affiliation?" + System.getProperty("line.separator") 
+            String dialog = "";
+            
+            switch (parkingLotLocale.getLanguage()) {
+                case "ko":
+                    dialog = "다음 하위 소속 이름을 변경합니까?" + System.getProperty("line.separator") 
+                            + " - 상위 소속: " + nameL1 + System.getProperty("line.separator") 
+                            + " - 하위 소속: " + prevL2Name;
+                    break;
+                default:
+                    dialog =  "Waht to change following lower affiliation?" + System.getProperty("line.separator") 
                             + " - Higher Affiliation: " + nameL1 + System.getProperty("line.separator") 
-                            + " - Lower Affiliation: " + prevL2Name, 
-                    "Change Low Affil' Confirm'", JOptionPane.YES_NO_OPTION); 
+                            + " - Lower Affiliation: " + prevL2Name;
+                    break;
+            }            
+            
+            int result = JOptionPane.showConfirmDialog(this, dialog,
+                    ((String[])Globals.DialogTitleList.get(LOWER_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
                 L2_Affiliation.getCellEditor().stopCellEditing();
@@ -2221,11 +2515,29 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         if (modelB.getValueAt(model_index, 0) != null) 
         {
             int bldg_seq_no = (Integer)modelB.getValueAt(model_index, 2);
-            int result = JOptionPane.showConfirmDialog(this, 
-                    "Want to change the following building number?" + System.getProperty("line.separator") 
+            
+            String dialog = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialog = "다음 건물의 번호를 변경합니까?" + System.getProperty("line.separator") 
+                            + " - 건물번호: " + prevBldgNo 
+                            + " (관련 호실: " + getUnitCount(bldg_seq_no) + " 개)";
+                    break;
+                    
+                case ENGLISH:
+                    dialog =  "Want to change the following building number?" + System.getProperty("line.separator") 
                             + " - Building no.: " + prevBldgNo 
-                            + " (number of rooms: " + getUnitCount(bldg_seq_no) + ")", 
-                    "Building No. Change Confirm'", JOptionPane.YES_NO_OPTION); 
+                            + " (number of rooms: " + getUnitCount(bldg_seq_no) + ")";
+                    break;
+                    
+                default:
+                    break;
+            }            
+            
+            int result = JOptionPane.showConfirmDialog(this, dialog,
+                    ((String[])Globals.DialogTitleList.get(BUILDING_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
                 BuildingTable.getCellEditor().stopCellEditing();
@@ -2241,11 +2553,28 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         if (model1.getValueAt(model_index, 0) != null) 
         {
             int L1_no = (int)model1.getValueAt(model_index, 2);
-            int result = JOptionPane.showConfirmDialog(this, 
-                    "Want to change the following higher affil'?" + System.getProperty("line.separator") 
+            String dialog = "";
+            
+            switch (language) {
+                case KOREAN:
+                    dialog = "다음 상위 소속 이름을 변경합니까?" + System.getProperty("line.separator") 
+                            + " - 상위 소속: " + prevL1Name 
+                            + " (관련 하위 소속: " + getL2RecordCount(L1_no) + " 개)"; 
+                    break;
+                    
+                case ENGLISH:
+                    dialog =  "Want to change the following higher affil'?" + System.getProperty("line.separator") 
                             + " - Higher Affiliation: " + prevL1Name 
-                            + " (number of lower affiliations: " + getL2RecordCount(L1_no) + ")", 
-                    "Higher Affiliation Change", JOptionPane.YES_NO_OPTION); 
+                            + " (number of lower affiliations: " + getL2RecordCount(L1_no) + ")";
+                    break;
+                    
+                default:
+                    break;
+                }            
+            
+            int result = JOptionPane.showConfirmDialog(this, dialog,
+                    ((String[])Globals.DialogTitleList.get(AFFILIATION_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
                 L1_Affiliation.getCellEditor().stopCellEditing();
@@ -2273,13 +2602,30 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         insertButton.setEnabled(false);      
     }
 
-    private void rejectUserInput(JTable thisTable, int rowIndex, String tableName) {
+    private void rejectUserInput(JTable thisTable, int rowIndex, String groupName) {
         if (thisTable.editCellAt(rowIndex, 1))
         {
             thisTable.getEditorComponent().requestFocus();
         }
-        showMessageDialog(null, "It already exists in " + tableName + " table",
-                "Duplicate Data Error", JOptionPane.INFORMATION_MESSAGE);     
+        
+        String dialog = "";
+        
+        switch (language) {
+            case KOREAN:
+                dialog = "이미 존재하는 " + groupName + "입니다";
+                break;
+                
+            case ENGLISH:
+                dialog =  "It already exists in " + groupName + " table";
+                break;
+                
+            default:
+                break;
+        }
+        
+        showMessageDialog(null, dialog,
+                ((String[])Globals.DialogTitleList.get(REJECT_USER_DIALOGTITLE.ordinal()))[ourLang],
+                JOptionPane.INFORMATION_MESSAGE);     
     }   
     
     /**
