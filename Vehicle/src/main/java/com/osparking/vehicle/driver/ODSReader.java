@@ -44,7 +44,6 @@ import static com.osparking.global.Globals.insertNewLevel1Affiliation;
 import static com.osparking.global.Globals.insertNewLevel2Affiliation;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.CHECK_BUILDING_ODS_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.READ_FAIL_AFFILIATION_ODS_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.*;
@@ -219,7 +218,7 @@ public class ODSReader {
                             }
                             
                             JOptionPane.showConfirmDialog(null, sb.toString(),
-                                    ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                    READ_ODS_DIALOGTITLE.getContent(), 
                                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                             return;
                         }
@@ -295,7 +294,7 @@ public class ODSReader {
                                 }                                
                                 
                                 JOptionPane.showConfirmDialog(null, dialogMessage,
-                                        ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                        READ_ODS_FAIL_DIALOGTITLE.getContent(), 
                                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                             }                            
                         }
@@ -416,7 +415,7 @@ public class ODSReader {
             }            
             
             JOptionPane.showConfirmDialog(null, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                            READ_ODS_FAIL_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
             return false;
         } else {
@@ -479,7 +478,7 @@ public class ODSReader {
         if (numBlankRow > MAX_BLANK_ROW) {
             // Give warning that data end(building number '-1') mark is missing
             JOptionPane.showConfirmDialog(null, CHECK_BUILDING_ODS_DIALOG.getContent(), 
-                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                    READ_ODS_FAIL_DIALOGTITLE.getContent(), 
                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                
             return false;
         } else {
@@ -607,7 +606,7 @@ public class ODSReader {
                             JOptionPane.showConfirmDialog(null, sb.toString(),
 //                                    getTextFor(READ_AFFILIATION_ODS_DIALOG, sb, level1Count, level1Reject, 
 //                                            level2Count, level2Reject).toString(), 
-                                     ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                     READ_ODS_DIALOGTITLE.getContent(), 
                                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                             return;
                         }
@@ -667,7 +666,7 @@ public class ODSReader {
                                 JOptionPane.showConfirmDialog(null, 
                                         READ_FAIL_AFFILIATION_ODS_DIALOG.getContent() + cellStr,
 //                                        getTextFor(READ_FAIL_AFFILIATION_ODS_DIALOG, cellStr), 
-                                        ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                        READ_ODS_FAIL_DIALOGTITLE.getContent(), 
                                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                             }
                         }
@@ -801,7 +800,7 @@ public class ODSReader {
                     JOptionPane.showConfirmDialog(null, sb.toString(),
 //                            getTextFor(READ_VEHICLE_ODS_DIALOG, sb, 
 //                                    vehicleCount, duplicateCount, vehicleReject).toString(), 
-                            ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                            READ_ODS_DIALOGTITLE.getContent(), 
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                     return;                    
                 } else {
@@ -939,7 +938,7 @@ public class ODSReader {
                     }
                     
                     JOptionPane.showConfirmDialog(null, sb.toString(),
-                            ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                            READ_ODS_DIALOGTITLE.getContent(), 
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                               
                     return;                    
                 } else {

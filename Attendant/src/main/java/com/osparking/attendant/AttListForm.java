@@ -16,7 +16,6 @@
  */
 package com.osparking.attendant;
 
-import static com.osparking.attendant.AttListDialogType.SAVE_AS_FILE_FAILURE_DIALOG;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -52,7 +51,6 @@ import com.osparking.global.names.PasswordValidator;
 import static javax.swing.JOptionPane.showMessageDialog;
 import static com.osparking.global.names.DB_Access.*;
 import com.osparking.global.Globals;
-import com.osparking.global.names.ControlEnums;
 import com.osparking.global.names.ControlEnums.ATTLIST_ComboBoxTypes;
 import static com.osparking.global.names.ControlEnums.ButtonContent.CHECK_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
@@ -193,14 +191,14 @@ public class AttListForm extends javax.swing.JFrame {
     
     private void initComponentsUser()
     {
-        userID2Label.setText(((String[])Globals.LabelsText.get(USER_ID_LABEL.ordinal()))[ourLang] + loginID);
+        userID2Label.setText(USER_ID_LABEL.getContent() + loginID);
         adminAuth2CheckBox.setSelected(isManager);
         saveFileName.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        legendLLabel.setText("\u203B" + ((String[])Globals.LabelsText.get(REQUIRED_LABEL.ordinal()))[ourLang] + "\u2212");
+        legendLLabel.setText("\u203B" + REQUIRED_LABEL.getContent() + "\u2212");
         legendMLabel.setText("\u25CF");
-        legendRLabel.setText(((String[])Globals.LabelsText.get(REQUIRED1_LABEL.ordinal()))[ourLang]);
+        legendRLabel.setText(REQUIRED1_LABEL.getContent());
         legendMLabel2.setText("\uu25B2");
-        legendRLabel2.setText(((String[])Globals.LabelsText.get(REQUIRED2_LABEL.ordinal()))[ourLang]);
+        legendRLabel2.setText(REQUIRED2_LABEL.getContent());
         isIDreqLabel.setText("\u25CF");
         nameReqLabel.setText("\u25CF");
         cellReqLabel.setText("\u25B2");
@@ -946,13 +944,13 @@ public class AttListForm extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null},
             },
             new String[]{
-                ((String[])Globals.TableHeaderList.get(USER_ID_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(NAME_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(MANAGER_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(CELL_PHONE_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(PHONE_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(EMAIL_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(MODIFIED_HEADER.ordinal()))[ourLang],
+                USER_ID_HEADER.getContent(),
+                NAME_HEADER.getContent(),
+                MANAGER_HEADER.getContent(),
+                CELL_PHONE_HEADER.getContent(),
+                PHONE_HEADER.getContent(),
+                EMAIL_HEADER.getContent(),
+                MODIFIED_HEADER.getContent()
             }
         ));
         usersTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -1067,7 +1065,7 @@ public class AttListForm extends javax.swing.JFrame {
         searchCriteriaComboBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchCriteriaComboBox.setModel(new javax.swing.DefaultComboBoxModel(
             new String[]{
-                ((String[])Globals.LabelsText.get(NAME_LABEL.ordinal()))[ourLang],
+                NAME_LABEL.getContent(),
                 LOGIN_ID_LABEL.getContent()
             }
         ));
@@ -1225,14 +1223,14 @@ public class AttListForm extends javax.swing.JFrame {
                     if (!ID_usable) {
                         JOptionPane.showConfirmDialog(this, 
                                 ID_CHECK_DIALOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                CREATTION_FAIL_DIALOGTITLE.getContent(),
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
                     }
                     if (!Email_usable) {
                         JOptionPane.showConfirmDialog(this, 
                                 EMAIL_CHECK_DIALOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(CREATTION_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                CREATTION_FAIL_DIALOGTITLE.getContent(),
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
                         return;
                     }
@@ -1258,7 +1256,7 @@ public class AttListForm extends javax.swing.JFrame {
                             
                             JOptionPane.showMessageDialog(this, 
                                     dialogText,
-                                    ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                                    CREATION_RESULT_DIALOGTITLE.getContent(),
                                     JOptionPane.PLAIN_MESSAGE);  
                         } else {
                             switch (language) {
@@ -1276,7 +1274,7 @@ public class AttListForm extends javax.swing.JFrame {
                             
                             JOptionPane.showMessageDialog(this, 
                                     dialogText,
-                                    ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                                    CREATION_RESULT_DIALOGTITLE.getContent(),
                                     JOptionPane.PLAIN_MESSAGE);            
                         }
                     } else {
@@ -1500,23 +1498,27 @@ public class AttListForm extends javax.swing.JFrame {
                             }                            
                             
                             JOptionPane.showConfirmDialog(this,
-//                                    getTextFor(SAVE_AS_DIR_FAILURE_DIALOG, pathname),
                                     dialogText,
-                                    ((String[])Globals.DialogTitleList.get(ATT_SAVE_AS_FAIL_DIALOGTITLE.ordinal()))[ourLang],
+                                    ATT_SAVE_AS_FAIL_DIALOGTITLE.getContent(),
                                     JOptionPane.PLAIN_MESSAGE,
                                     WARNING_MESSAGE);
                             return;
                         } else {
-                            int result = JOptionPane.showConfirmDialog(this, 
-                                    getTextFor(SAVE_AS_FILE_FAILURE_DIALOG, pathname),
-                                    ((String[])Globals.DialogTitleList.get(CONFIRM_DIALOGTITLE.ordinal()))[ourLang],
+                            String message = 
+                                    SAVE_AS_EXIST_DIALOG.getContent() + System.lineSeparator() +
+                                    pathname + System.lineSeparator() +
+                                    SAVE_OVERWRITE_DIALOG.getContent();
+                            
+                            int result = JOptionPane.showConfirmDialog(this, message,
+                                    CONFIRM_DIALOGTITLE.getContent(),
                                     JOptionPane.YES_NO_OPTION);
+                            
                             if (result != YES_OPTION) {
                                 return;
                             }
                         }
                     }
-                    // </editor-fold>                
+                    // </editor-fold>                 
                     CreateAttendantListTextFile(pathname);
                 } catch (Exception ex) {
                     logParkingException(Level.SEVERE, ex, 
@@ -1553,7 +1555,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }                
                 
                 int result = JOptionPane.showConfirmDialog(null, dialogText, 
-                        ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_DIALOGTITLE.getContent(), 
                         JOptionPane.YES_NO_OPTION);
                 if (result == JOptionPane.YES_OPTION) {            
                     deleteAttendant();
@@ -1564,7 +1566,7 @@ public class AttListForm extends javax.swing.JFrame {
             } else {
                 showMessageDialog(null, 
                         DELETE_FAIL_DAILOG.getContent() + System.lineSeparator(),
-                        ((String[])Globals.DialogTitleList.get(DELETE_FAIL_DAILOGTITLE.ordinal()))[ourLang], 
+                        DELETE_FAIL_DAILOGTITLE.getContent(), 
                         JOptionPane.INFORMATION_MESSAGE);             
             }
 
@@ -1607,7 +1609,7 @@ public class AttListForm extends javax.swing.JFrame {
             }
             
             JOptionPane.showMessageDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                            DELETE_RESULT_DIALOGTITLE.getContent(), 
                             JOptionPane.WARNING_MESSAGE);   
             return; 
         }
@@ -1636,7 +1638,7 @@ public class AttListForm extends javax.swing.JFrame {
             }
             
             JOptionPane.showMessageDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                            DELETE_RESULT_DIALOGTITLE.getContent(), 
                             JOptionPane.WARNING_MESSAGE);   
             return; 
         }
@@ -1680,7 +1682,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }                
                 
                 JOptionPane.showMessageDialog(this, dialogMessage,
-                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_RESULT_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE);  
                 clearPasswordFields();
             } else {
@@ -1701,7 +1703,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }                
                 
                 JOptionPane.showMessageDialog(this, dialogMessage,
-                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_RESULT_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE);            
             }
         } catch (Exception se) {
@@ -1745,7 +1747,7 @@ public class AttListForm extends javax.swing.JFrame {
             formMode = FormMode.CreateMode;
             usersTable.setEnabled(false);
             ID_usable = false;
-            legendLLabel.setText("\u203B"+((String[])Globals.LabelsText.get(GUIDELINE_LABEL.ordinal()))[ourLang]+"\u2212");
+            legendLLabel.setText("\u203B"+GUIDELINE_LABEL.getContent()+"\u2212");
             // <editor-fold defaultstate="collapsed" desc="-- Enable data input fields">
             userIDText.setEnabled(true);
             userIDText.setText("");
@@ -1787,9 +1789,9 @@ public class AttListForm extends javax.swing.JFrame {
             newPW1ReqLabel.setText("\u25CF");
             newPW2ReqLabel.setText("\u25CF");
             changePWLabel.setEnabled(false);
-            newPW1Label.setText(((String[])Globals.LabelsText.get(NEW_PW_LABLE.ordinal()))[ourLang]);
-            newPW2Label.setText(((String[])Globals.LabelsText.get(REPEAT_PW_LABEL.ordinal()))[ourLang]);
-            userPWLabel.setText(((String[])Globals.LabelsText.get(MY_PW_LABEL.ordinal()))[ourLang]);
+            newPW1Label.setText(NEW_PW_LABLE.getContent());
+            newPW2Label.setText(REPEAT_PW_LABEL.getContent());
+            userPWLabel.setText(MY_PW_LABEL.getContent());
             // </editor-fold>   
         } catch (Exception ex) {
             logParkingException(Level.SEVERE, ex, "(User Action: Clicked Create New User Button)");         
@@ -1839,7 +1841,7 @@ public class AttListForm extends javax.swing.JFrame {
         String helpText = pwValidator.getWrongPWFormatMsg(pwStrengthLevel);
 
         JDialog helpDialog = new PWHelpJDialog(this, false, 
-                ((String[])Globals.DialogTitleList.get(ATT_HELP_DIALOGTITLE.ordinal()))[ourLang], helpText);
+                ATT_HELP_DIALOGTITLE.getContent(), helpText);
         Point buttonPoint = new Point();
         PWHelpButton.getLocation(buttonPoint);
 
@@ -1886,7 +1888,7 @@ public class AttListForm extends javax.swing.JFrame {
                     }                    
                     
                     JOptionPane.showConfirmDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
+                            ATT_EMAIL_DUP_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                     emailAddrText.requestFocus();
                 } else {
@@ -1912,7 +1914,7 @@ public class AttListForm extends javax.swing.JFrame {
                     }                    
                     
                     JOptionPane.showConfirmDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(ATT_EMAIL_DUP_DIALOGTITLE.ordinal()))[ourLang],
+                            ATT_EMAIL_DUP_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             } else {
@@ -1934,7 +1936,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }
                 
                 JOptionPane.showConfirmDialog(this, dialogMessage, 
-                        ((String[])Globals.DialogTitleList.get(ATT_EMAIL_SYNTAX_CHECK_DIALOG.ordinal()))[ourLang],
+                        ATT_EMAIL_SYNTAX_CHECK_DIALOG.getContent(),
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 emailAddrText.requestFocus();
             }
@@ -1980,7 +1982,7 @@ public class AttListForm extends javax.swing.JFrame {
             if (idEntered.length() < 2) {
                 // Reject if ID were shorter than 2 characters
                 JOptionPane.showConfirmDialog(this, ID_LENGTH_CHECK_DIALOG.getContent(),
-                    ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                    ATT_ID_DUP_CHCEK_DIALOGTITLE.getContent(), 
                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
                 return;
@@ -2007,7 +2009,7 @@ public class AttListForm extends javax.swing.JFrame {
                 }                
                 
                 JOptionPane.showConfirmDialog(this, dialogMessage,
-                        ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                        ATT_ID_DUP_CHCEK_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 userIDText.requestFocusInWindow();
             } else {
@@ -2036,12 +2038,12 @@ public class AttListForm extends javax.swing.JFrame {
                     
                     JOptionPane.showConfirmDialog(this, dialogMessage,
 //                            getTextFor(ID_CHECK_GOOD_DIALOG, userIDText.getText().trim()),
-                            ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                            ATT_ID_DUP_CHCEK_DIALOGTITLE.getContent(), 
                              JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showConfirmDialog(this, 
                             checkResult,
-                            ((String[])Globals.DialogTitleList.get(ATT_ID_DUP_CHCEK_DIALOGTITLE.ordinal()))[ourLang], 
+                            ATT_ID_DUP_CHCEK_DIALOGTITLE.getContent(), 
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
                 }
             }
@@ -2142,7 +2144,7 @@ public class AttListForm extends javax.swing.JFrame {
             }            
             
             JOptionPane.showMessageDialog(this, dialogBuilder.toString(),
-                    ((String[])Globals.DialogTitleList.get(ATT_SFAVE_AS_SUCCESS_DIALOGTITLE.ordinal()))[ourLang], 
+                    ATT_SFAVE_AS_SUCCESS_DIALOGTITLE.getContent(), 
                     JOptionPane.PLAIN_MESSAGE);            
         } catch (Exception ex) {
         } finally {
@@ -2262,9 +2264,9 @@ public class AttListForm extends javax.swing.JFrame {
         newPW1ReqLabel.setText("");
         newPW2ReqLabel.setText("");
         changePWLabel.setEnabled(true);
-        newPW1Label.setText(((String[])Globals.LabelsText.get(NEW_PW_LABLE.ordinal()))[ourLang]);
-        newPW2Label.setText(((String[])Globals.LabelsText.get(REPEAT_PW_LABEL.ordinal()))[ourLang]);
-        userPWLabel.setText(((String[])Globals.LabelsText.get(MY_PW_LABEL.ordinal()))[ourLang]);
+        newPW1Label.setText(NEW_PW_LABLE.getContent());
+        newPW2Label.setText(REPEAT_PW_LABEL.getContent());
+        userPWLabel.setText(MY_PW_LABEL.getContent());
         // </editor-fold> 
         
         // <editor-fold defaultstate="collapsed" desc="-- Enable two buttons back again">        
@@ -2309,7 +2311,7 @@ public class AttListForm extends javax.swing.JFrame {
         checkIDButton.setEnabled(false); 
         // </editor-fold>   
 
-        legendLLabel.setText("\u203B" + ((String[])Globals.LabelsText.get(REQUIRED_LABEL.ordinal()))[ourLang] + "\u2212");       
+        legendLLabel.setText("\u203B" + REQUIRED_LABEL.getContent() + "\u2212");       
     }
 
     private boolean dataExistsInDB(String sql, String dataEntered) {
@@ -2366,7 +2368,7 @@ public class AttListForm extends javax.swing.JFrame {
         if (!(Character.isLetter(lastCh)) && !(Character.isDigit(lastCh))) 
         {
             tempStr.append(ID_END_CHAR_CHECK_DIALOG.getContent() + System.lineSeparator());
-//                    ((String[])Globals.DialogMSGList.get(ID_END_CHAR_CHECK_DIALOG.ordinal()))[ourLang]
+//                    ((String[])Globals.DialogMSGList.get(ID_END_CHAR_CHECK_DIALOG.getContent()
         }
         if (tempStr.length() >= 1) {
             tempStr.deleteCharAt(idLen - 1); // remove last newline character
@@ -2456,7 +2458,7 @@ public class AttListForm extends javax.swing.JFrame {
             }
             
             JOptionPane.showMessageDialog(this, dialogMessage,
-                    ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
+                    ATT_USER_UPDATE_DIALOGTITLE.getContent(), 
                     JOptionPane.PLAIN_MESSAGE);  
             clearPasswordFields();
         } else {
@@ -2478,7 +2480,7 @@ public class AttListForm extends javax.swing.JFrame {
             }
                 
             JOptionPane.showMessageDialog(this, dialogMessage,
-                    ((String[])Globals.DialogTitleList.get(ATT_USER_UPDATE_DIALOGTITLE.ordinal()))[ourLang], 
+                    ATT_USER_UPDATE_DIALOGTITLE.getContent(), 
                     JOptionPane.PLAIN_MESSAGE);            
         }
         selectedRowIndex = searchRow(userIDText.getText());
@@ -2852,8 +2854,8 @@ public class AttListForm extends javax.swing.JFrame {
 
         if (isManager)
         {
-            userPassword.setToolTipText(((String[])Globals.ToolTipLabels.get(PW_INPUT_TOOTLTIP.ordinal()))[ourLang]);
-            userPWLabel.setToolTipText(((String[])Globals.ToolTipLabels.get(PW_INPUT_TOOTLTIP.ordinal()))[ourLang]);
+            userPassword.setToolTipText(PW_INPUT_TOOTLTIP.getContent());
+            userPWLabel.setToolTipText((PW_INPUT_TOOTLTIP.getContent()));
         }
     }
 
@@ -2890,32 +2892,33 @@ public class AttListForm extends javax.swing.JFrame {
     }
     
 //    private String getTextFor(ControlEnums.DialogMSGTypes msgType, String str) {
-    private String getTextFor(AttListDialogType dialogType, String str) {
-        String label = null;
-        
-        switch (dialogType) {
-           
-            case SAVE_AS_FILE_FAILURE_DIALOG:
-            switch (parkingLotLocale.getLanguage()) {
-                case "ko":
-                    label = "아래 파일이 이미 존재합니다.\n " + 
-                            str + "\n이 파일에 덮어 쓰겠습니까?";
-                    break;
-                default:
-                    label = "A folder(=directory) of same name exists" +
-                            System.lineSeparator() + 
-                            str + "\nChange file name to a different one";
-                    break;
-                }
-                break;                        
-
-            default :
-                break;
-            
-        
-        }
-        return label;
-    }
+//    private String getTextFor(AttListDialogType dialogType, String str) {
+//        String label = null;
+//        
+//        switch (dialogType) {
+//           
+//            case SAVE_AS_FILE_FAILURE_DIALOG:
+//            switch (parkingLotLocale.getLanguage()) {
+//                case "ko":
+//                    label = SAVE_AS_EXIST_DIALOG.getContent() + System.lineSeparator() +
+//                            str + System.lineSeparator() + 
+//                            SAVE_OVERWRITE_DIALOG.getContent();
+//                    break;
+//                default:
+//                    label = "A folder(=directory) of same name exists" +
+//                            System.lineSeparator() + 
+//                            str + "\nChange file name to a different one";
+//                    break;
+//                }
+//                break;                        
+//
+//            default :
+//                break;
+//            
+//        
+//        }
+//        return label;
+//    }
     
     /**
      * @param args the command line arguments
@@ -2986,14 +2989,4 @@ enum FormMode {
     NormalMode,
     CreateMode,
     UpdateMode
-}
-
-enum AttListDialogType {
-    SAVE_AS_FILE_FAILURE_DIALOG,
-    CREATION_SUCCESS_DIALOG,
-    DELETE_SUCCESS_DIALOG,
-    DELETE_FAIL3_DAILOG,
-    EMAIL_DUP_TURE_DIALOG,
-    EMAIL_DUP_FALSE_DIALOG,
-    EMAIL_CHECK_FAIL_DIALOG,
 }

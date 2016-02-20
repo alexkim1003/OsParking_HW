@@ -390,36 +390,54 @@ public class Globals {
     public static String getTagNumber(byte picNo) {
         String tagNumber = null;
         
-        if (picNo == 1)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "52가8648"; 
-            else
-                tagNumber = "52GA8648"; 
-        else if (picNo == 2)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "47누8868";
-            else
-                tagNumber = "47NU8868";
-        else if (picNo == 3)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "서울31나3416"; 
-            else
-                tagNumber = "SEOUL31NA3416"; 
-        else if (picNo == 4)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "경기42GO6003"; 
-            else
-                tagNumber = "GYEONG42GO6003"; 
-        else if (picNo == 5)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "30모8186"; 
-            else
-                tagNumber = "30MO8186"; 
-        else if (picNo ==  6)
-            if(ourLang == KOREAN.ordinal())
-                tagNumber = "서울32가1234"; 
-            else
-                tagNumber = "SEOUL32GA1234"; 
+        if (language == KOREAN) {
+            switch (picNo) {
+                case 1:
+                    tagNumber = "52가8648"; 
+                    break;
+                case 2:
+                    tagNumber = "47누8868"; 
+                    break;
+                case 3:
+                    tagNumber = "서울31나3416"; 
+                    break;
+                case 4:
+                    tagNumber = "경기42GO6003"; 
+                    break;
+                case 5:
+                    tagNumber = "30모8186"; 
+                    break;
+                case 6:
+                    tagNumber = "서울32가1234"; 
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            switch (picNo) {
+                case 1:
+                    tagNumber = "52GA8648"; 
+                    break;
+                case 2:
+                    tagNumber = "47NU8868"; 
+                    break;
+                case 3:
+                    tagNumber = "SEOUL31NA3416"; 
+                    break;
+                case 4:
+                    tagNumber = "GYEONG42GO6003"; 
+                    break;
+                case 5:
+                    tagNumber = "30MO8186"; 
+                    break;
+                case 6:
+                    tagNumber = "SEOUL32GA1234"; 
+                    break;
+                default:
+                    break;
+            }
+            
+        }
         
         return tagNumber;
     }      
@@ -1699,14 +1717,12 @@ public class Globals {
         }       
     }
     
-    public static ArrayList LabelsText = new ArrayList();
-    public static ArrayList ToolTipLabels = new ArrayList();
-    public static ArrayList TableHeaderList = new ArrayList();
+//    public static ArrayList LabelsText = new ArrayList();
+//    public static ArrayList ToolTipLabels = new ArrayList();
+//    public static ArrayList TableHeaderList = new ArrayList();
     public static ArrayList TextFieldList = new ArrayList();
-    public static ArrayList ComboBoxItemList = new ArrayList();
-    public static ArrayList DialogTitleList = new ArrayList();
-//    public static ArrayList MenuItemList = new ArrayList();
+//    public static ArrayList ComboBoxItemList = new ArrayList();
     
-    public static int ourLang;
+//    public static int ourLang;
     public static Languages language;
 }

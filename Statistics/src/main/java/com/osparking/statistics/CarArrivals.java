@@ -625,7 +625,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         setSearchPeriodOptionButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         setSearchPeriodOptionButton.setMnemonic('f');
-        setSearchPeriodOptionButton.setText(FIX_IT_BTN.getContent());
+        setSearchPeriodOptionButton.setText(((String[])Globals.ButtonLabels.get(FIX_IT_BTN.ordinal()))[ourLang]);
         setSearchPeriodOptionButton.setToolTipText(((String[])Globals.ToolTipLabels.get(FIX_IT_BTN_TOOLTIP.ordinal()))[ourLang]);
         setSearchPeriodOptionButton.setPreferredSize(new java.awt.Dimension(77, 35));
         setSearchPeriodOptionButton.addActionListener(new java.awt.event.ActionListener() {
@@ -733,7 +733,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(SEARCH_BTN.getContent());
+        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
         searchButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
         searchButton.setMaximumSize(new java.awt.Dimension(80, 80));
         searchButton.setMinimumSize(new java.awt.Dimension(80, 80));
@@ -770,7 +770,7 @@ public class CarArrivals extends javax.swing.JFrame {
 
         closeButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeButton.setMnemonic('c');
-        closeButton.setText(CLOSE_BTN.getContent());
+        closeButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
         closeButton.setMaximumSize(new java.awt.Dimension(77, 52));
         closeButton.setMinimumSize(new java.awt.Dimension(77, 52));
         closeButton.setPreferredSize(new java.awt.Dimension(85, 52));
@@ -1138,7 +1138,7 @@ public class CarArrivals extends javax.swing.JFrame {
             sb.append("Order by name");
 
             rs = stmt.executeQuery(sb.toString());
-            attendantCB.addItem(new ConvComboBoxItem(null, ((String[])Globals.ComboBoxItemList.get(ATTENDANT_LOGOUT_ITEM.ordinal()))[ourLang]));
+            attendantCB.addItem(new ConvComboBoxItem(null, ATTENDANT_LOGOUT_ITEM.getContent()));
             while (rs.next()) {
                 attendantCB.addItem(new ConvComboBoxItem(rs.getString("id"), rs.getString("name")));
             }
@@ -1644,16 +1644,16 @@ public class CarArrivals extends javax.swing.JFrame {
                         if (regiTag == null) {
                             // handle unregistered vehicle
                             registeredTF.setText(((String[])Globals.TextFieldList.get(UNREGISTERED_TF.ordinal()))[ourLang]);
-                            buildingLabel.setText(((String[])Globals.LabelsText.get(NON_REGI_TAG1_LABEL.ordinal()))[ourLang]);
-                            affiliationLabel.setText(((String[])Globals.LabelsText.get(NON_REGI_TAG2_LABEL.ordinal()))[ourLang]);
+                            buildingLabel.setText(NON_REGI_TAG1_LABEL.getContent());
+                            affiliationLabel.setText(NON_REGI_TAG2_LABEL.getContent());
                             l2No = rs.getInt("visitL2No");
                             unitSN = rs.getInt("visitUnitSN");
                         }
                         else {
                             // for registered vehicles
                             registeredTF.setText(regiTag);
-                            buildingLabel.setText(((String[])Globals.LabelsText.get(BUILDING_LABEL.ordinal()))[ourLang]);
-                            affiliationLabel.setText(((String[])Globals.LabelsText.get(AFFILIATION_LABEL.ordinal()))[ourLang]);
+                            buildingLabel.setText(BUILDING_LABEL.getContent());
+                            affiliationLabel.setText(AFFILIATION_LABEL.getContent());
                             l2No = rs.getInt("regisL2No");
                             unitSN = rs.getInt("regisUnitSN");
                         }
@@ -1764,8 +1764,8 @@ public class CarArrivals extends javax.swing.JFrame {
         gateNameTF.setText("");    
         attendantTF.setText(""); 
         registeredTF.setText("");
-        buildingLabel.setText(((String[])Globals.LabelsText.get(NON_REGI_TAG1_LABEL.ordinal()))[ourLang]);
-        affiliationLabel.setText(((String[])Globals.LabelsText.get(NON_REGI_TAG2_LABEL.ordinal()))[ourLang]);
+        buildingLabel.setText(NON_REGI_TAG1_LABEL.getContent());
+        affiliationLabel.setText(NON_REGI_TAG2_LABEL.getContent());
         buildingTF.setText("");
         unitTF.setText("");
         affiliationTF.setText("");    
@@ -1791,7 +1791,7 @@ public class CarArrivals extends javax.swing.JFrame {
         attachEnterHandler(gateBarCB);
         
         // load gate number combobox 
-        gateCB.addItem(new ConvComboBoxItem(new Integer(-1), ((String[])Globals.ComboBoxItemList.get(GATE_CB_ITEM.ordinal()))[ourLang]));        
+        gateCB.addItem(new ConvComboBoxItem(new Integer(-1), GATE_CB_ITEM.getContent()));
         for (int i = 1; i <= gateCount; i++) {
             gateCB.addItem(new ConvComboBoxItem(new Integer(i), gateNames[i]));
         }
@@ -1857,13 +1857,13 @@ public class CarArrivals extends javax.swing.JFrame {
             // Check if starting date and ending date both entered
             if (beginDate == null || endDate == null) {
                 JOptionPane.showConfirmDialog(this, DATE_INPUT_CHECK_DIALOG.getContent(),
-                        ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                        WARING_DIALOGTITLE.getContent(),
                         JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE); 
             } else {
                 // Check if starting date were later than ending date which is illogical.
                 if (beginDate.after(endDate)) {
                     JOptionPane.showConfirmDialog(this, DATE_INPUT_ERROR_DIALOG.getContent(),
-                            ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                            WARING_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);             
                 } else {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -1884,7 +1884,7 @@ public class CarArrivals extends javax.swing.JFrame {
     private void addBarOperationItems() {
         gateBarCB.removeAllItems();
         
-        gateBarCB.addItem(new ConvComboBoxItem(new Integer(-1), ((String[])Globals.ComboBoxItemList.get(BAR_CB_ITEM.ordinal()))[ourLang]));
+        gateBarCB.addItem(new ConvComboBoxItem(new Integer(-1), BAR_CB_ITEM.getContent()));
 
         for (BarOperation barOperation : BarOperation.values()) {
             //<editor-fold desc="-- determine label for each item value">
@@ -1901,19 +1901,19 @@ public class CarArrivals extends javax.swing.JFrame {
         String label;
         switch (barOperation) {
             case ALLOWED:
-                label = ((String[])Globals.ComboBoxItemList.get(BAR_ALLOWED_CB_ITEM.ordinal()))[ourLang];
+                label = BAR_ALLOWED_CB_ITEM.getContent();
                 break;
 
             case LAZY_ATT:
-                label = ((String[])Globals.ComboBoxItemList.get(BAR_LAZY_ATT_CB_ITEM.ordinal()))[ourLang];
+                label = BAR_LAZY_ATT_CB_ITEM.getContent();
                 break;
 
             case MANUAL:
-                label = ((String[])Globals.ComboBoxItemList.get(BAR_MANUAL_CB_ITEM.ordinal()))[ourLang];
+                label = BAR_MANUAL_CB_ITEM.getContent();
                 break;
 
             case REMAIN_CLOSED:
-                label = ((String[])Globals.ComboBoxItemList.get(BAR_REMAIN_CLOSED_ATT_CB_ITEM.ordinal()))[ourLang];
+                label = BAR_REMAIN_CLOSED_ATT_CB_ITEM.getContent();
                 break;
 
             default:

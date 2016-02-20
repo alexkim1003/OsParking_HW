@@ -16,7 +16,6 @@
  */
 package com.osparking.vehicle.driver;
 
-import com.osparking.global.Globals;
 import static com.osparking.vehicle.driver.ManageDrivers.driverTable;
 import java.awt.Component;
 import java.awt.Point;
@@ -37,11 +36,8 @@ import javax.swing.table.TableColumn;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.Globals.emptyLastRowPossible;
 import static com.osparking.global.Globals.language;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.removeEmptyRow;
-import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.DialogTitleTypes.MODIFY_DAILOGTITLE;
-import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.InnoComboBoxItem;
 import com.osparking.global.names.OSP_enums.DriverCol;
 import static com.osparking.global.names.OSP_enums.DriverCol.AffiliationL1;
@@ -117,7 +113,7 @@ public class DriverTable extends JTable {
         JOptionPane optionPane = new JOptionPane(optionMessage,
                 JOptionPane.QUESTION_MESSAGE, 
                 JOptionPane.YES_NO_OPTION, null, null, null); // options[0]);
-        JDialog dialog = optionPane.createDialog(((String[])Globals.DialogTitleList.get(MODIFY_DAILOGTITLE.ordinal()))[ourLang]);
+        JDialog dialog = optionPane.createDialog(MODIFY_DAILOGTITLE.getContent());
         dialog.addKeyListener(new KeyListener () {
             @Override
             public void keyTyped(KeyEvent e) {

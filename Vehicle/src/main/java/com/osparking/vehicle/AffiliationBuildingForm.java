@@ -17,7 +17,6 @@
 package com.osparking.vehicle;
 
 import static com.mysql.jdbc.MysqlErrorNumbers.ER_DUP_ENTRY;
-import com.osparking.global.Globals;
 import static com.osparking.global.Globals.PopUpBackground;
 import static com.osparking.global.Globals.font_Size;
 import static com.osparking.global.Globals.font_Style;
@@ -36,12 +35,10 @@ import static com.osparking.global.Globals.insertNewLevel1Affiliation;
 import static com.osparking.global.Globals.insertNewLevel2Affiliation;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.Globals.rejectEmptyInput;
 import static com.osparking.global.Globals.removeEmptyRow;
 import static com.osparking.global.Globals.shortLicenseDialog;
 import static com.osparking.global.Globals.showLicensePanel;
-import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.AFFILIATION_DELETE_ALL_DAILOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.AFFILIATION_DELETE_ALL_RESULT_DAILOG;
@@ -68,7 +65,6 @@ import static com.osparking.global.names.ControlEnums.LabelContent.HELP_AFFIL_LA
 import static com.osparking.global.names.ControlEnums.LabelContent.HELP_BUILDING_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.LOWER_LIST_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.ROOM_LIST_LABEL;
 import static com.osparking.global.names.ControlEnums.TableTypes.*;
 import static com.osparking.global.names.ControlEnums.TitleTypes.AFFILI_BUILD_FRAME_TITLE;
@@ -257,7 +253,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel1.setText(((String[])Globals.LabelsText.get(AFFILIATION_LIST_LABEL.ordinal()))[ourLang]);
+        jLabel1.setText(AFFILIATION_LIST_LABEL.getContent());
         jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_START);
         jLabel1.getAccessibleContext().setAccessibleName("");
 
@@ -269,8 +265,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 {2, "Engineering Bldg", 1}
             },
             new String[]{
-                ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(HIGHER_HEADER.ordinal()))[ourLang],
+                ORDER_HEADER.getContent(),
+                HIGHER_HEADER.getContent(),
                 "L1_NO"
             }
         )
@@ -359,7 +355,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel2.setLayout(new java.awt.BorderLayout());
 
     L2AffilLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    L2AffilLabel.setText(((String[])Globals.LabelsText.get(LOWER_LIST_LABEL.ordinal()))[ourLang]);
+    L2AffilLabel.setText(LOWER_LIST_LABEL.getContent());
     jPanel2.add(L2AffilLabel, java.awt.BorderLayout.NORTH);
 
     L2_Affiliation.setAutoCreateRowSorter(true);
@@ -370,8 +366,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             {2, "Group 2", 4}
         },
         new String [] {
-            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
-            ((String[])Globals.TableHeaderList.get(LOWER_HEADER.ordinal()))[ourLang],
+            ORDER_HEADER.getContent(),
+            LOWER_HEADER.getContent(),
             "PARTY_NO"
         }
     )
@@ -510,7 +506,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel4.setLayout(new java.awt.BorderLayout());
 
     jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    jLabel4.setText(((String[])Globals.LabelsText.get(BUILDING_LIST_LABEL.ordinal()))[ourLang]);
+    jLabel4.setText(BUILDING_LIST_LABEL.getContent());
     jPanel4.add(jLabel4, java.awt.BorderLayout.NORTH);
 
     BuildingTable.setAutoCreateRowSorter(true);
@@ -518,8 +514,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     BuildingTable.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] { {1, 101, 5}, {2, 102, 6} },
         new String [] {
-            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
-            ((String[])Globals.TableHeaderList.get(BUILDING_HEADER.ordinal()))[ourLang],
+            ORDER_HEADER.getContent(),
+            BUILDING_HEADER.getContent(),
             "SEQ_NO"})
     {
         public boolean isCellEditable(int row, int column)
@@ -603,7 +599,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     jPanel5.setLayout(new java.awt.BorderLayout());
 
     UnitLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-    UnitLabel.setText(((String[])Globals.LabelsText.get(ROOM_LIST_LABEL.ordinal()))[ourLang]);
+    UnitLabel.setText(ROOM_LIST_LABEL.getContent());
     jPanel5.add(UnitLabel, java.awt.BorderLayout.NORTH);
 
     UnitTable.setAutoCreateRowSorter(true);
@@ -611,8 +607,8 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     UnitTable.setModel(new javax.swing.table.DefaultTableModel(
         new Object [][] {{1, 803, 1}, {2, 805, 2}},
         new String [] {
-            ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
-            ((String[])Globals.TableHeaderList.get(ROOM_HEADER.ordinal()))[ourLang],
+            ORDER_HEADER.getContent(),
+            ROOM_HEADER.getContent(),
             "SEQ_NO"})
     {
         public boolean isCellEditable(int row, int column)
@@ -929,7 +925,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         }
             
         int result = JOptionPane.showConfirmDialog(this, dialogMessage,
-                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                DELETE_DIALOGTITLE.getContent(),
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -971,7 +967,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     }                    
                     
                     JOptionPane.showConfirmDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                            DELETE_RESULT_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
@@ -1099,7 +1095,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             }
             
         int result = JOptionPane.showConfirmDialog(this, dialogMessage,
-                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                DELETE_DIALOGTITLE.getContent(),
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1140,7 +1136,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                     }
                     
                     JOptionPane.showConfirmDialog(this, dialog,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                            DELETE_RESULT_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
@@ -1354,7 +1350,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             }        
         
         int result = JOptionPane.showConfirmDialog(this, dialog,
-                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                DELETE_DIALOGTITLE.getContent(),
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1399,7 +1395,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 }
                 
                 JOptionPane.showConfirmDialog(this, dialog,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                            DELETE_RESULT_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                
             }
         }
@@ -1437,7 +1433,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         }        
         
         int result = JOptionPane.showConfirmDialog(this, dialog,
-                ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang], 
+                DELETE_DIALOGTITLE.getContent(), 
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1490,7 +1486,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 }
                 
                 JOptionPane.showConfirmDialog(this, dialog,
-                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_RESULT_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             } else {
                 
@@ -1506,7 +1502,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 }                
                 
                 JOptionPane.showConfirmDialog(this, dialog, 
-                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_RESULT_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                
             }
         }
@@ -1583,7 +1579,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
 
     private void deleteAll_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAll_ButtonActionPerformed
         int result = JOptionPane.showConfirmDialog(this, BUILDING_DELETE_ALL_DAILOG.getContent(), 
-                ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                DELETE_ALL_RESULT_DIALOGTITLE.getContent(), 
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1606,7 +1602,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             if (result >= 1) {
                 loadBuilding(0, 0); 
                 JOptionPane.showConfirmDialog(this, BUILDING_DELETE_ALL_RESULT_DAILOG.getContent(),
-                        ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                        DELETE_RESULT_DIALOGTITLE.getContent(),
                        JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }
         }
@@ -1656,7 +1652,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                         }
                         
                         int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                READ_ODS_DIALOGTITLE.getContent(), 
                                 JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readODS(sheet, this);
@@ -1685,7 +1681,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                             } 
                             
                             JOptionPane.showConfirmDialog(null, dialog,
-                                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                    READ_ODS_FAIL_DIALOGTITLE.getContent(), 
                                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);                      
                         }
                     }
@@ -1700,7 +1696,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         int result = JOptionPane.showConfirmDialog(this, AFFILIATION_DELETE_ALL_DAILOG.getContent(),
-                ((String[])Globals.DialogTitleList.get(DELETE_ALL_DAILOGTITLE.ordinal()))[ourLang], 
+                DELETE_ALL_DAILOGTITLE.getContent(), 
                 JOptionPane.YES_NO_OPTION); 
         
         if (result == JOptionPane.YES_OPTION) {
@@ -1724,7 +1720,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             if (result >= 1) {
                 loadL1_Affiliation(0, "");
                 JOptionPane.showConfirmDialog(this, AFFILIATION_DELETE_ALL_RESULT_DAILOG.getContent(),
-                        ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                        DELETE_ALL_RESULT_DIALOGTITLE.getContent(), 
                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }  
         }
@@ -1778,7 +1774,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                         }
                         
                         int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                READ_ODS_DIALOGTITLE.getContent(), 
                                 JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readAffiliationODS(sheet, this);
@@ -1794,7 +1790,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     private void ODSAffiliHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ODSAffiliHelpActionPerformed
 
         JDialog helpDialog = new ODS_HelpJDialog(this, false, 
-                ((String[])Globals.LabelsText.get(HELP_AFFIL_LABEL.ordinal()))[ourLang], 
+                HELP_AFFIL_LABEL.getContent(),
                 ODS_TYPE.AFFILIATION);
         Point buttonPoint = new Point();
         ODSAffiliHelp.getLocation(buttonPoint);
@@ -1807,7 +1803,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     private void ODSBuildPWHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ODSBuildPWHelpActionPerformed
 
         JDialog helpDialog = new ODS_HelpJDialog(this, false, 
-                ((String[])Globals.LabelsText.get(HELP_BUILDING_LABEL.ordinal()))[ourLang], 
+                HELP_BUILDING_LABEL.getContent(),
                 ODS_TYPE.BUILDING);
         Point buttonPoint = new Point();
         ODSBuildPWHelp.getLocation(buttonPoint);
@@ -1945,7 +1941,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     private void loadL2_Affiliation(Object L1_no, int viewIndex, String l2Name) {
         if (L1_no == null)
         {
-            L2AffilLabel.setText(((String[])Globals.LabelsText.get(LOWER_LIST_LABEL.ordinal()))[ourLang]);
+            L2AffilLabel.setText(LOWER_LIST_LABEL.getContent());
             insertL2_Button.setEnabled(false);
             ((DefaultTableModel) L2_Affiliation.getModel()).setRowCount(0);
         }
@@ -2162,7 +2158,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
     {
         if (bldg_seq_no == null)
         {
-            UnitLabel.setText(((String[])Globals.LabelsText.get(ROOM_LIST_LABEL.ordinal()))[ourLang]);            
+            UnitLabel.setText(ROOM_LIST_LABEL.getContent());
             insertUnit_Button.setEnabled(false);
             ((DefaultTableModel) UnitTable.getModel()).setRowCount(0);
         }
@@ -2463,7 +2459,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 }            
             
             int result = JOptionPane.showConfirmDialog(this, dialog,
-                    ((String[])Globals.DialogTitleList.get(UNIT_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    UNIT_MODIFY_DIALOGTITLE.getContent(),
                     JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
@@ -2498,7 +2494,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             }            
             
             int result = JOptionPane.showConfirmDialog(this, dialog,
-                    ((String[])Globals.DialogTitleList.get(LOWER_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    LOWER_MODIFY_DIALOGTITLE.getContent(),
                     JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
@@ -2536,7 +2532,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
             }            
             
             int result = JOptionPane.showConfirmDialog(this, dialog,
-                    ((String[])Globals.DialogTitleList.get(BUILDING_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    BUILDING_MODIFY_DIALOGTITLE.getContent(),
                     JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
@@ -2573,7 +2569,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
                 }            
             
             int result = JOptionPane.showConfirmDialog(this, dialog,
-                    ((String[])Globals.DialogTitleList.get(AFFILIATION_MODIFY_DIALOGTITLE.ordinal()))[ourLang],
+                    AFFILIATION_MODIFY_DIALOGTITLE.getContent(),
                     JOptionPane.YES_NO_OPTION); 
 
             if (result == JOptionPane.NO_OPTION) { 
@@ -2624,7 +2620,7 @@ public class AffiliationBuildingForm extends javax.swing.JFrame {
         }
         
         showMessageDialog(null, dialog,
-                ((String[])Globals.DialogTitleList.get(REJECT_USER_DIALOGTITLE.ordinal()))[ourLang],
+                REJECT_USER_DIALOGTITLE.getContent(),
                 JOptionPane.INFORMATION_MESSAGE);     
     }   
     

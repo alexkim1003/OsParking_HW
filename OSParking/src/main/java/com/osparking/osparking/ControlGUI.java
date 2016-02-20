@@ -1404,8 +1404,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         // <editor-fold defaultstate="collapsed" desc="-- automatic login during development">        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                loginForm.handleLoginAttempt();       
-                //SettingsItemActionPerformed(null);
+//                loginForm.handleLoginAttempt();       
+//                SettingsItemActionPerformed(null);
             }
         });  
         //</editor-fold>        

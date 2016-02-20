@@ -38,7 +38,6 @@ import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.OSPiconList;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_ID_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.INPUT_PW_DIALOG;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.LOGIN_FAIL_DIALOG;
@@ -240,7 +239,7 @@ public class LoginForm extends JFrame {
             dispose();
         } else {
             showMessageDialog(null, LOGIN_FAIL_DIALOG.ordinal(),
-                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    WARING_DIALOGTITLE.getContent(), 
                     JOptionPane.INFORMATION_MESSAGE);
         }
     }

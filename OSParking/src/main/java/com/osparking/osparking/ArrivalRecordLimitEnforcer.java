@@ -26,7 +26,6 @@ import java.util.TimerTask;
 import static com.osparking.global.names.DB_Access.maxMaintainDate;
 import static com.osparking.global.Globals.closeDBstuff;
 import static com.osparking.global.Globals.logParkingOperation;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.TextType.DELETE_LOG_MSG;
 import com.osparking.global.names.OSP_enums;
 import java.io.File;
@@ -169,8 +168,8 @@ class ArrivalRecordLimitEnforcer extends TimerTask {
         yearFolder = deleteOldLogFolders(new File(path + "operation"), agoYear);
         deleteOldLogFolders(yearFolder, agoMonth);
         if (numDeletedFolders != 0 || numDeletedFiles != 0) {
-            String logMsg = ((String[])Globals.TextFieldList.get(DELETE_LOG_MSG.ordinal()))[ourLang] + numDeletedFolders + 
-                    ((String[])Globals.TextFieldList.get(DELETE_LOG_MSG.ordinal()))[ourLang] + numDeletedFiles;
+            String logMsg = DELETE_LOG_MSG.getContent() + numDeletedFolders + 
+                    DELETE_LOG_MSG.getContent() + numDeletedFiles;
             logParkingOperation(OSP_enums.OpLogLevel.LogAlways, "Log deleted: " +  logMsg);        
             addMessageLine(messageArea, logMsg);
         }

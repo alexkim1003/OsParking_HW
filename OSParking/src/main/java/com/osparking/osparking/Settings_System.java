@@ -371,7 +371,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(((String[])Globals.LabelsText.get(PASSWORD_LEVEL_LABEL.ordinal()))[ourLang]);
+        jLabel1.setText(PASSWORD_LEVEL_LABEL.getContent());
         jLabel1.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -382,7 +382,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(((String[])Globals.LabelsText.get(LOGGING_LEVEL_LABEL.ordinal()))[ourLang]);
+        jLabel2.setText(LOGGING_LEVEL_LABEL.getContent());
         jLabel2.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -416,7 +416,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(((String[])Globals.LabelsText.get(LANGUAGE_LABEL.ordinal()))[ourLang]);
+        jLabel3.setText(LANGUAGE_LABEL.getContent());
         jLabel3.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -427,7 +427,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText(((String[])Globals.LabelsText.get(MAX_LINE_LABEL.ordinal()))[ourLang]);
+        jLabel5.setText(MAX_LINE_LABEL.getContent());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
@@ -522,7 +522,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         ImageDurationLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ImageDurationLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        ImageDurationLabel.setText(((String[])Globals.LabelsText.get(IMG_KEEP_LABEL.ordinal()))[ourLang]);
+        ImageDurationLabel.setText(IMG_KEEP_LABEL.getContent());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
@@ -555,7 +555,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText(((String[])Globals.LabelsText.get(GATE_NUM_LABEL.ordinal()))[ourLang]);
+        jLabel6.setText(GATE_NUM_LABEL.getContent());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
@@ -565,7 +565,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel19.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel19.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_SIZE_LABEL.ordinal()))[ourLang]);
+        jLabel19.setText(VEHICLE_IMG_SIZE_LABEL.getContent());
         jLabel19.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -576,7 +576,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel11.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_WIDTH_LABEL.ordinal()))[ourLang]);
+        jLabel11.setText(VEHICLE_IMG_WIDTH_LABEL.getContent());
         jLabel11.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -597,7 +597,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel12.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel12.setText(((String[])Globals.LabelsText.get(VEHICLE_IMG_HEIGHT_LABEL.ordinal()))[ourLang]);
+        jLabel12.setText(VEHICLE_IMG_HEIGHT_LABEL.getContent());
         jLabel12.setToolTipText("");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -696,7 +696,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel42.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel42.setText(((String[])Globals.LabelsText.get(LOT_NAME_LABEL.ordinal()))[ourLang]);
+        jLabel42.setText(LOT_NAME_LABEL.getContent());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -746,7 +746,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(((String[])Globals.LabelsText.get(STATISTICS_SIZE_LABEL.ordinal()))[ourLang]);
+        jLabel4.setText(STATISTICS_SIZE_LABEL.getContent());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -755,7 +755,7 @@ public class Settings_System extends javax.swing.JFrame {
         parkinglotOptionPanel.add(jLabel4, gridBagConstraints);
 
         RecordPassingDelayCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        RecordPassingDelayCBox.setText(((String[])Globals.LabelsText.get(RECORD_PASSING_LABEL.ordinal()))[ourLang]);
+        RecordPassingDelayCBox.setText(RECORD_PASSING_LABEL.getContent());
         RecordPassingDelayCBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         RecordPassingDelayCBox.setName("RecordPassingDelayCBox"); // NOI18N
         RecordPassingDelayCBox.addActionListener(new java.awt.event.ActionListener() {
@@ -793,7 +793,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gateNameLabel1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         gateNameLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        gateNameLabel1.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+        gateNameLabel1.setText(GATE_NAME_LABEL.getContent());
         gateNameLabel1.setToolTipText("");
         gate_name_p.add(gateNameLabel1);
 
@@ -858,7 +858,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel30.setText(((String[])Globals.LabelsText.get(CAMERA_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
+        jLabel30.setText(CAMERA_IP_ADDRESS_LABEL.getContent());
         jLabel30.setPreferredSize(new java.awt.Dimension(60, 15));
         cameraPan.add(jLabel30);
 
@@ -943,7 +943,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel37.setText(((String[])Globals.LabelsText.get(E_BOARD_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
+        jLabel37.setText(E_BOARD_IP_ADDRESS_LABEL.getContent());
         jLabel37.setPreferredSize(new java.awt.Dimension(60, 15));
         eBoardPan.add(jLabel37);
 
@@ -1034,7 +1034,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         ebdLbl.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ebdLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        ebdLbl.setText(((String[])Globals.LabelsText.get(GATE_BAR_IP_ADDRESS_LABEL.ordinal()))[ourLang]);
+        ebdLbl.setText(GATE_BAR_IP_ADDRESS_LABEL.getContent());
         ebdLbl.setPreferredSize(new java.awt.Dimension(60, 15));
         gateBarPan.add(ebdLbl);
 
@@ -1118,7 +1118,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gate1Panel.add(gateBarPan);
 
-        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "1", gate1Panel);
+        GatesTabbedPane.addTab(GATE_LABEL.getContent() + "1", gate1Panel);
 
         gate2Panel.setEnabled(false);
         gate2Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1133,7 +1133,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gateNameLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         gateNameLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        gateNameLabel2.setText(((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]);
+        gateNameLabel2.setText(GATE_NAME_LABEL.getContent());
         gateNameLabel2.setToolTipText("");
         gate_name_p1.add(gateNameLabel2);
 
@@ -1457,7 +1457,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         gate2Panel.add(gateBarPan1);
 
-        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "2", gate2Panel);
+        GatesTabbedPane.addTab(GATE_LABEL.getContent() + "2", gate2Panel);
 
         gate3Panel.setEnabled(false);
         gate3Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1645,7 +1645,7 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 10);
         gate3Panel.add(E_Board3_Port_TextField, gridBagConstraints);
 
-        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "3", gate3Panel);
+        GatesTabbedPane.addTab(GATE_LABEL.getContent() + "3", gate3Panel);
 
         gate4Panel.setEnabled(false);
         gate4Panel.setMinimumSize(new java.awt.Dimension(300, 115));
@@ -1862,7 +1862,7 @@ public class Settings_System extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 30, 10);
         gate4Panel.add(jLabel39, gridBagConstraints);
 
-        GatesTabbedPane.addTab(((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + "4", gate4Panel);
+        GatesTabbedPane.addTab(GATE_LABEL.getContent() + "4", gate4Panel);
 
         eBoardSettingPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         eBoardSettingPanel.setMinimumSize(new java.awt.Dimension(180, 215));
@@ -1872,7 +1872,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel20.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel20.setText(((String[])Globals.LabelsText.get(ELECTRONIC_DISPLAY_LABEL.ordinal()))[ourLang]);
+        jLabel20.setText(ELECTRONIC_DISPLAY_LABEL.getContent());
         jLabel20.setToolTipText("");
         jLabel20.setMaximumSize(new java.awt.Dimension(300, 27));
         jLabel20.setPreferredSize(new java.awt.Dimension(150, 27));
@@ -1925,7 +1925,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel8.setText(((String[])Globals.LabelsText.get(CYCLE_LABEL.ordinal()))[ourLang]);
+        jLabel8.setText(CYCLE_LABEL.getContent());
         jLabel8.setMaximumSize(new java.awt.Dimension(80, 15));
         jLabel8.setMinimumSize(new java.awt.Dimension(80, 15));
         jLabel8.setPreferredSize(new java.awt.Dimension(150, 15));
@@ -1959,7 +1959,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel31.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel31.setText(((String[])Globals.LabelsText.get(FLOWING_LABEL.ordinal()))[ourLang]);
+        jLabel31.setText(FLOWING_LABEL.getContent());
         jLabel31.setToolTipText("");
         jLabel31.setMaximumSize(new java.awt.Dimension(80, 15));
         jLabel31.setPreferredSize(new java.awt.Dimension(50, 15));
@@ -2003,7 +2003,7 @@ public class Settings_System extends javax.swing.JFrame {
 
         blinkingL.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         blinkingL.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        blinkingL.setText(((String[])Globals.LabelsText.get(BLINGKING_LABEL.ordinal()))[ourLang]);
+        blinkingL.setText(BLINGKING_LABEL.getContent());
         blinkingL.setToolTipText("");
         blinkingL.setMaximumSize(new java.awt.Dimension(80, 15));
         blinkingL.setPreferredSize(new java.awt.Dimension(50, 15));
@@ -2088,7 +2088,7 @@ public class Settings_System extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        GatesTabbedPane.getAccessibleContext().setAccessibleName("\"((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + \\\"2\\\"\"");
+        GatesTabbedPane.getAccessibleContext().setAccessibleName("\"GATE_LABEL.ordinal()))[ourLang] + \\\"2\\\"\"");
 
         wholePanel.add(gateSettingPanel);
 
@@ -2150,7 +2150,7 @@ public class Settings_System extends javax.swing.JFrame {
     private void StatPopSizeTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StatPopSizeTextFieldKeyTyped
         rejectNonNumericKeys(evt);
         
-//                ((String[])Globals.ToolTipLabels.get(SETTINGS_SAVE_TOOLTIP.ordinal()))[ourLang]);
+//                ((String[])Globals.ToolTipLabels.get(SETTINGS_SAVE_TOOLTIP.getContent());
     }//GEN-LAST:event_StatPopSizeTextFieldKeyTyped
 
     private void LanguageSelectionlHelpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LanguageSelectionlHelpButtonActionPerformed

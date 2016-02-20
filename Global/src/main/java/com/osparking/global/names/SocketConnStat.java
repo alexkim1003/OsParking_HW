@@ -22,7 +22,6 @@ import static com.osparking.global.Globals.addMessageLine;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.EBOARD_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
@@ -68,7 +67,7 @@ public class SocketConnStat {
         StringBuilder sb = new StringBuilder();
         
         if (disconnectionCount == 0) {
-            sb.append(((String[])Globals.TextFieldList.get(NO_SOCKET_DISCON_MSG.ordinal()))[ourLang]);
+            sb.append(((String[])Globals.TextFieldList.get(NO_SOCKET_DISCON_MSG.ordinal()))[language.ordinal()]);
         } else {
             switch(language){
                 case KOREAN :
@@ -135,7 +134,7 @@ public class SocketConnStat {
                         default :
                             break;
                     }
-                String msg =  "  ------" + device +" #" + deviceID + " " + ((String[])Globals.TextFieldList.get(CONN_MSG.ordinal()))[ourLang];
+                String msg =  "  ------" + device +" #" + deviceID + " " + ((String[])Globals.TextFieldList.get(CONN_MSG.ordinal()))[language.ordinal()];
                 addMessageLine(mainForm.getMessageTextArea(), msg);
                 logParkingException(Level.INFO, null, msg);                 
                 connected = true;

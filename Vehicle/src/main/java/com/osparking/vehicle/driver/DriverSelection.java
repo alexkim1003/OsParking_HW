@@ -41,7 +41,6 @@ import static com.osparking.global.Globals.font_Style;
 import static com.osparking.global.Globals.font_Type;
 import static com.osparking.global.Globals.initializeLoggers;
 import static com.osparking.global.Globals.logParkingException;
-import static com.osparking.global.Globals.ourLang;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.DRIVER_SELECTION_FRAME_TITLE;
@@ -221,7 +220,7 @@ public class DriverSelection extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(((String[])Globals.LabelsText.get(SEARCH_LABEL.ordinal()))[ourLang]);
+        jLabel3.setText(SEARCH_LABEL.getContent());
         jLabel3.setMaximumSize(new java.awt.Dimension(30, 28));
         jLabel3.setPreferredSize(new java.awt.Dimension(85, 28));
         jPanel1.add(jLabel3);
@@ -229,8 +228,8 @@ public class DriverSelection extends javax.swing.JFrame {
 
         searchName.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchName.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
-        searchName.setToolTipText(((String[])Globals.ToolTipLabels.get(DRIVER_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        searchName.setText(DRIVER_TF.getContent());
+        searchName.setToolTipText(DRIVER_INPUT_TOOLTIP.getContent());
         searchName.setMinimumSize(new java.awt.Dimension(6, 28));
         searchName.setPreferredSize(new java.awt.Dimension(82, 28));
         searchName.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -248,8 +247,8 @@ public class DriverSelection extends javax.swing.JFrame {
 
         searchCell.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchCell.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_TF.ordinal()))[ourLang]);
-        searchCell.setToolTipText(((String[])Globals.ToolTipLabels.get(CELL_PHONE_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        searchCell.setText(CELL_PHONE_TF.getContent());
+        searchCell.setToolTipText(CELL_PHONE_INPUT_TOOLTIP.getContent());
         searchCell.setMinimumSize(new java.awt.Dimension(6, 28));
         searchCell.setPreferredSize(new java.awt.Dimension(110, 28));
         searchCell.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -281,9 +280,9 @@ public class DriverSelection extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                ((String[])Globals.TableHeaderList.get(ORDER_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(NAME_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(CELL_PHONE_HEADER.ordinal()))[ourLang],
+                ORDER_HEADER.getContent(),
+                NAME_HEADER.getContent(),
+                CELL_PHONE_HEADER.getContent(),
                 "Phone No.", "SEQ_NO"
             })
             {
@@ -434,12 +433,12 @@ public class DriverSelection extends javax.swing.JFrame {
 
     private void searchNameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchNameFocusLost
         if(searchName.getText().trim().equals(""))
-            searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+            searchName.setText(DRIVER_TF.getContent());
     }//GEN-LAST:event_searchNameFocusLost
 
     private void searchCellFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchCellFocusLost
         if(searchCell.getText().trim().equals(""))
-            searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]);
+            searchCell.setText(CELL_PHONE_HEADER.getContent());
     }//GEN-LAST:event_searchCellFocusLost
 
     private void searchNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchNameMousePressed
@@ -451,8 +450,8 @@ public class DriverSelection extends javax.swing.JFrame {
     }//GEN-LAST:event_searchCellMousePressed
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
-        searchName.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
-        searchCell.setText(((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]);
+        searchName.setText(DRIVER_TF.getContent());
+        searchCell.setText(CELL_PHONE_HEADER.getContent());
         skinnyDriverTable.requestFocus();
     }//GEN-LAST:event_clearButtonActionPerformed
 
@@ -630,10 +629,10 @@ public class DriverSelection extends javax.swing.JFrame {
     private String formSearchCondition() {
         StringBuffer cond = new StringBuffer();
         if(!searchName.getText().trim().equals(
-                ((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]))
+                DRIVER_TF.getContent()))
             attachCondition(cond, "name", searchName.getText().trim());
         if(!searchCell.getText().trim().equals(
-                ((String[])Globals.TextFieldList.get(CELL_PHONE_HEADER.ordinal()))[ourLang]))
+                CELL_PHONE_HEADER.getContent()))
             attachCondition(cond, "cellphone", searchCell.getText().trim());
         
         return cond.length() > 0 ? "Where " + cond.toString() : "";

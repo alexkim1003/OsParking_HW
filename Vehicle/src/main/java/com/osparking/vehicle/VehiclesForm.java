@@ -364,7 +364,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(CLOSE_BTN.getContent());
+        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -446,7 +446,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         jPanel12.add(filler40);
 
         selectDriverButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        selectDriverButton.setText(OWNER_BTN.getContent());
+        selectDriverButton.setText(((String[])Globals.ButtonLabels.get(OWNER_BTN.ordinal()))[ourLang]);
         selectDriverButton.setEnabled(false);
         selectDriverButton.setFocusable(false);
         selectDriverButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -826,7 +826,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         clearButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearButton.setMnemonic('l');
-        clearButton.setText(CLEAR_BTN.getContent());
+        clearButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
         clearButton.setMaximumSize(new java.awt.Dimension(90, 40));
         clearButton.setMinimumSize(new java.awt.Dimension(100, 40));
         clearButton.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -840,7 +840,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(SEARCH_BTN.getContent());
+        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
         searchButton.setMaximumSize(new java.awt.Dimension(90, 40));
         searchButton.setMinimumSize(new java.awt.Dimension(90, 40));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -917,7 +917,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         saveSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         saveSheet_Button.setMnemonic('a');
-        saveSheet_Button.setText(SAVE_ODS_BTN.getContent());
+        saveSheet_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_ODS_BTN.ordinal()))[ourLang]);
         saveSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -931,7 +931,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         readSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         readSheet_Button.setMnemonic('o');
-        readSheet_Button.setText(READ_ODS_BTN.getContent());
+        readSheet_Button.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
         readSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -945,7 +945,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteAllVehicles.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteAllVehicles.setMnemonic('e');
-        deleteAllVehicles.setText(DELETE_ALL_BTN.getContent());
+        deleteAllVehicles.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
         deleteAllVehicles.setMaximumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setMinimumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -959,7 +959,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteCancel_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteCancel_Button.setMnemonic('d');
-        deleteCancel_Button.setText(DELETE_BTN.getContent());
+        deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
         deleteCancel_Button.setEnabled(false);
         deleteCancel_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         deleteCancel_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -974,7 +974,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         modiSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         modiSave_Button.setMnemonic('m');
-        modiSave_Button.setText(MODIFY_BTN.getContent());
+        modiSave_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
         modiSave_Button.setEnabled(false);
         modiSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         modiSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -989,7 +989,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         insertSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         insertSave_Button.setMnemonic('r');
-        insertSave_Button.setText(CREATE_BTN.getContent());
+        insertSave_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
         insertSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1027,12 +1027,12 @@ public class VehiclesForm extends javax.swing.JFrame {
             // check if all the required fields are supplied
             if (carTagTextField.getText().trim().length() == 0) {
                  JOptionPane.showConfirmDialog(null, CAR_TAG_DIALOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(VEHICLE_CHECK_DIALOGTITLE.ordinal()))[ourLang], 
+                                VEHICLE_CHECK_DIALOGTITLE.getContent(), 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);  
                 carTagTextField.requestFocus();
             } else if (driverTextField.getText().trim().length() == 0) {
                 JOptionPane.showConfirmDialog(null, DRIVER_DIALOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(VEHICLE_CHECK_DIALOGTITLE.ordinal()))[ourLang], 
+                                VEHICLE_CHECK_DIALOGTITLE.getContent(), 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);  
                 selectDriverButton.requestFocus();
 
@@ -1048,7 +1048,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                     loadVehicleTable(-1, plateNo.toString()); 
                 } else {
                     JOptionPane.showConfirmDialog(null, VEHICLE_CREATION_FAIL_DIALOG.getContent(),
-                            ((String[])Globals.DialogTitleList.get(CREATION_RESULT_DIALOGTITLE.ordinal()))[ourLang], 
+                            CREATION_RESULT_DIALOGTITLE.getContent(), 
                             JOptionPane.PLAIN_MESSAGE, 
                         WARNING_MESSAGE);
                 }
@@ -1092,7 +1092,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 logParkingOperation(OSP_enums.OpLogLevel.SettingsChange, vehicleModification.toString());
             } else {
                 JOptionPane.showConfirmDialog(null, VEHICLE_MODIFY_FAIL_DAILOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(VEHICLE_MODIFY_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                VEHICLE_MODIFY_FAIL_DIALOGTITLE.getContent(), 
                                 JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);
             }
             //</editor-fold>
@@ -1107,7 +1107,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             //<editor-fold defaultstate="collapsed" desc="--handle cancelling insertion">
             int response = JOptionPane.showConfirmDialog(null, VEHICLE_CREATE_CANCEL_DIALOG.getContent(),
 //                                ((String[])Globals.DialogMSGList.get(VEHICLE_CREATE_CANCEL_DIALOG.ordinal()))[ourLang], 
-                                ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                                WARING_DIALOGTITLE.getContent(), 
                                 JOptionPane.YES_NO_OPTION);
         
             if (response == JOptionPane.YES_OPTION) 
@@ -1125,7 +1125,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         } else if (formMode == FormMode.MODIFICATION) {
             //<editor-fold defaultstate="collapsed" desc="--handle cancelling update">
             int response = JOptionPane.showConfirmDialog(null, VEHICLE_MODIFY_CANCEL_DAILOG.getContent(),
-                                ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                                WARING_DIALOGTITLE.getContent(), 
                                 JOptionPane.YES_NO_OPTION);
         
             if (response == JOptionPane.YES_OPTION) 
@@ -1176,8 +1176,8 @@ public class VehiclesForm extends javax.swing.JFrame {
     private void deleteAllVehiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteAllVehiclesActionPerformed
 
         int result = JOptionPane.showConfirmDialog(this, VEHICLE_DELETE_ALL_DAILOG.getContent(),
-//                        ((String[])Globals.DialogMSGList.get(VEHICLE_DELETE_ALL_DAILOG.ordinal()))[ourLang],
-                        ((String[])Globals.DialogTitleList.get(DELETE_ALL_DAILOGTITLE.ordinal()))[ourLang], 
+//                        ((String[])Globals.DialogMSGList.get(VEHICLE_DELETE_ALL_DAILOG.getContent(),
+                        DELETE_ALL_DAILOGTITLE.getContent(), 
                         JOptionPane.YES_NO_OPTION);
 
         if (result == JOptionPane.YES_OPTION) {
@@ -1200,7 +1200,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 loadVehicleTable(0, "");
                 
                 JOptionPane.showConfirmDialog(this, VEHICLE_DELETE_ALL_RESULT_DAILOG.getContent(),
-                    ((String[])Globals.DialogTitleList.get(DELETE_ALL_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                    DELETE_ALL_RESULT_DIALOGTITLE.getContent(),
                     JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
             }
         }        
@@ -1252,7 +1252,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                         }
                         
                         int result = JOptionPane.showConfirmDialog(null, sb.toString(),
-                                        ((String[])Globals.DialogTitleList.get(READ_ODS_DIALOGTITLE.ordinal()))[ourLang], 
+                                        READ_ODS_DIALOGTITLE.getContent(), 
                                         JOptionPane.YES_NO_OPTION);            
                         if (result == JOptionPane.YES_OPTION) {                
                             objODSReader.readVehiclesODS(sheet, this);
@@ -1263,7 +1263,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                         if (wrongCells.size() > 0) {
                             JOptionPane.showConfirmDialog(null, READ_ODS_FAIL_DIALOG.getContent() +
                                     System.getProperty("line.separator") + getWrongCellPointString(wrongCells),
-                                    ((String[])Globals.DialogTitleList.get(READ_ODS_FAIL_DIALOGTITLE.ordinal()))[ourLang], 
+                                    READ_ODS_FAIL_DIALOGTITLE.getContent(), 
                                     JOptionPane.PLAIN_MESSAGE, WARNING_MESSAGE);     
                         }
                     }
@@ -1279,7 +1279,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         // Check the size of the list and if empty just return saying "noting to save"
         if (vehiclesTable.getModel().getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, VEHICLE_SAVE_ODS_FAIL_DIALOG.getContent(),
-                    ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                    WARING_DIALOGTITLE.getContent(), 
                     JOptionPane.YES_OPTION );
             return;
         }
@@ -1778,7 +1778,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                                 }
                                 
                                 JOptionPane.showConfirmDialog(null, dialogMessage,
-                                        ((String[])Globals.DialogTitleList.get(WORK_MODE_DIALOGTITLE.ordinal()))[ourLang],
+                                        WORK_MODE_DIALOGTITLE.getContent(),
                                         JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);                                
                             }
                         }
@@ -1810,7 +1810,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 clearButton.setEnabled(false);
                 closeFormButton.setEnabled(false);
                 
-                formModeLabel.setText(((String[])Globals.LabelsText.get(CREATE_MODE_LABEL.ordinal()))[ourLang]);
+                formModeLabel.setText(CREATE_MODE_LABEL.getContent());
                 insertSave_Button.setText(SAVE_BTN.getContent());
                 insertSave_Button.setMnemonic('s');
                 deleteCancel_Button.setEnabled(true);    
@@ -1833,7 +1833,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 clearButton.setEnabled(false);
                 closeFormButton.setEnabled(false);
                 
-                formModeLabel.setText(((String[])Globals.LabelsText.get(MODIFY_MODE_LABEL.ordinal()))[ourLang]);
+                formModeLabel.setText(MODIFY_MODE_LABEL.getContent());
                 modiSave_Button.setText(SAVE_BTN.getContent());
                 modiSave_Button.setMnemonic('s');
                 deleteCancel_Button.setEnabled(true);    
@@ -1856,7 +1856,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                 searchButton.setMnemonic('s');
                 closeFormButton.setEnabled(true);
                 closeFormButton.setMnemonic('c');
-                formModeLabel.setText(((String[])Globals.LabelsText.get(SEARCH_MODE_LABEL.ordinal()))[ourLang]);
+                formModeLabel.setText(SEARCH_MODE_LABEL.getContent());
                 
                 insertSave_Button.setText(CREATE_BTN.getContent());
                 insertSave_Button.setMnemonic('r');
@@ -1985,7 +1985,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             }
             
             int response = JOptionPane.showConfirmDialog(null, dialogMessage,
-                                ((String[])Globals.DialogTitleList.get(WARING_DIALOGTITLE.ordinal()))[ourLang], 
+                                WARING_DIALOGTITLE.getContent(), 
                                 JOptionPane.YES_NO_OPTION);
         
             if (response == JOptionPane.YES_OPTION) 
@@ -2047,7 +2047,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             }            
             
             result = JOptionPane.showConfirmDialog(this, dialogMessage,
-                        ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                        DELETE_DIALOGTITLE.getContent(),
                         JOptionPane.YES_NO_OPTION);
         } else {
             String dialogMessage = "";
@@ -2068,7 +2068,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             }
 
             result = JOptionPane.showConfirmDialog(this, dialogMessage,
-                    ((String[])Globals.DialogTitleList.get(DELETE_DIALOGTITLE.ordinal()))[ourLang],
+                    DELETE_DIALOGTITLE.getContent(),
                     JOptionPane.YES_NO_OPTION);
         }    
         
@@ -2118,7 +2118,7 @@ public class VehiclesForm extends javax.swing.JFrame {
                     }                    
                     
                     JOptionPane.showConfirmDialog(this, dialogMessage,
-                            ((String[])Globals.DialogTitleList.get(DELETE_RESULT_DIALOGTITLE.ordinal()))[ourLang],
+                            DELETE_RESULT_DIALOGTITLE.getContent(),
                             JOptionPane.PLAIN_MESSAGE, INFORMATION_MESSAGE);
                 }
             }
@@ -2176,7 +2176,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchAffiliCBox.removeAllItems();
         searchAffiliCBox.addItem(new ConvComboBoxItem(new Integer(-1), 
-                ((String[])Globals.ComboBoxItemList.get(LOWER_HIGHER_CB_ITEM.ordinal()))[ourLang]));
+                LOWER_HIGHER_CB_ITEM.getContent()));
         try {
             //<editor-fold defaultstate="collapsed" desc="-- load affiliation comboBox">                            
             conn = getConnection();
@@ -2203,7 +2203,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         
         searchBldgCBox.removeAllItems();
         searchBldgCBox.addItem(new ConvComboBoxItem(new Integer(-1), 
-                ((String[])Globals.ComboBoxItemList.get(ROOM_BUILDING_CB_ITEM.ordinal()))[ourLang]));
+                ROOM_BUILDING_CB_ITEM.getContent()));
         excepMsg = "(CBox Item Loading for : building-unit combined";
         try {
             //<editor-fold defaultstate="collapsed" desc="-- load affiliation comboBox">                            

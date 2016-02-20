@@ -65,7 +65,6 @@ public class ControlEnums {
         public String getContent() {
             return contents[language.ordinal()];
         }        
-        
     }
     
     public enum LabelContent {
@@ -90,10 +89,8 @@ public class ControlEnums {
         LOWER_LIST_LABEL("소속 부서 목록",  "Lower Affiliations"),
         BUILDING_LIST_LABEL("건물(동) 목록",  "Building Numbers"), 
         ROOM_LIST_LABEL("호실 목록",  "Rooms of Building"), 
-        HELP_AFFIL_LABEL("소속 명칭 ods 파일 형식",  
-                "Affiliation name list ods file content"), 
-        HELP_BUILDING_LABEL("건물 호실 ods 파일 형식",  
-                "Building room number list ods file content"), 
+        HELP_AFFIL_LABEL("소속 명칭 ods 파일 형식",  "Affiliation name list ods file content"), 
+        HELP_BUILDING_LABEL("건물 호실 ods 파일 형식", "Building room number list ods file content"), 
         FORM_MODE_LABEL("작업모드 : ",  "Form Mode :"), 
         SEARCH_MODE_LABEL("차량 검색",  "Searching"), 
         CREATE_MODE_LABEL("차량 등록",  "Car Creation"), 
@@ -134,8 +131,7 @@ public class ControlEnums {
         CAMERA_LABEL ("카메라",  "Camera"),
         EBOARD_LABEL ("전광판",  "E-Board"),
         GATE_BAR_LABEL ("차단기",  "G-Bar"),
-        DISALLOWED_LABEL("일시적으로 허용되지 않은 차량입니다.",  
-                "Car Temporarily Not Permitted"),
+        DISALLOWED_LABEL("일시적으로 허용되지 않은 차량입니다.", "Car Temporarily Not Permitted"),
         STATISTICS_SIZE_LABEL("통계 모집단 크기",  "Statistics Population Size"),
         RECORD_PASSING_LABEL("통과 시간 기록",  "Record Passing Delay"),
         PASSWORD_LEVEL_LABEL("비밀번호 난이도",  "Password Complexity Level"),
@@ -288,20 +284,47 @@ public class ControlEnums {
     }
     
     public enum TableTypes {
-        USER_ID_HEADER, NAME_HEADER, MANAGER_HEADER, CELL_PHONE_HEADER, PHONE_HEADER, EMAIL_HEADER, MODIFIED_HEADER,
-        ORDER_HEADER, HIGHER_HEADER, LOWER_HEADER, BUILDING_HEADER, ROOM_HEADER,  
-        CAR_TAG_HEADER, DRIVER_HEADER, LOW_HIGH_HEADER, ROOM_BUILD_HEADER, OTHER_INFO_HEDER, REASON_HEADER,
-        ARRIVAL_TIME_HEADER, LOGIN_TIME_HEADER, LOGOUT_TIME_HEADER, DURATION_HEADER, SHUTDOWN_HEADER, START_HEADER,
+        USER_ID_HEADER("아이디", "User ID"),
+        NAME_HEADER("이름", "Name"),
+        MANAGER_HEADER("매니저", "Manager"),
+        CELL_PHONE_HEADER("휴대전화", "Cell Phone"),
+        PHONE_HEADER("유선전화", "Phone"),
+        EMAIL_HEADER("이메일", "E-mail"),
+        MODIFIED_HEADER("수정날짜", "Modified"),
+        ORDER_HEADER("순번", "Order"),
+        HIGHER_HEADER("상위 소속", "Higher Affiliation"),
+        LOWER_HEADER("하위 소속", "Lower Affiliation"),
+        BUILDING_HEADER("건물 번호", "Building"),
+        ROOM_HEADER("호실 번호", "Room"),
+        CAR_TAG_HEADER("차량번호", "Tag No."),
+        DRIVER_HEADER("운전자", "Driver"),
+        LOW_HIGH_HEADER("하위-상위소속", "Lower-Higher"),
+        ROOM_BUILD_HEADER("호실-건물", "Room-Building"),
+        OTHER_INFO_HEDER("기타정보", "Other Info'"),
+        REASON_HEADER("불허 사유", "Reason"),
+        ARRIVAL_TIME_HEADER("도착일시", "Arrival Date"),
+        LOGIN_TIME_HEADER( "로그인 시간",  "Login Time"),
+        LOGOUT_TIME_HEADER( "로그아웃 시간",  "Logout Time"),
+        DURATION_HEADER( "경과시간(시:분:초)",  "Duration(hh:mm:ss)"),
+        SHUTDOWN_HEADER( "시스템 종료",  "Shutdown"),
+        START_HEADER("시스템 시작",  "Start Up");
+        
+        TableTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+                return contents[language.ordinal()];
+        }        
     }
     
     public enum ATTLIST_ComboBoxTypes {
         NAME, ID
     }
-    
-    public enum CheckBoxTypes {
-        OPEN_CHECKBOX
-    }
-    
+
     public enum DialogMSGTypes {
         ID_CHECK_DIALOG ("아이디 중복검사가 필요합니다.", "Need to check if 'id' is usable(unoccupied)."),
         EMAIL_CHECK_DIALOG("이메일 중복검사가 필요합니다.", "Need to check if 'E-Mail' is usable(unoccupied)."),
@@ -556,8 +579,12 @@ public class ControlEnums {
                         + " - 하위 소속: ", 
                 "Can't tell to what higher affiliation do following lower affiliation belong" 
                         + System.getProperty("line.separator") 
-                        + " - Lower Affiliation: ");        
+                        + " - Lower Affiliation: "),
+        SAVE_AS_EXIST_DIALOG(
+                "아래 파일이 이미 존재합니다.", "A folder(=directory) of same name exists"),
         
+        SAVE_OVERWRITE_DIALOG(
+                "이 파일에 덮어 쓰겠습니까?", "Do you want to overwrite it?");
 //        SAVE_AS_FAIL2_DIALOG, 
 //        SAVE_ODS_FAIL_DIALOG,        
 //        AFFILIATION_ODS_READ_DIALOG, 
@@ -599,33 +626,55 @@ public class ControlEnums {
     }
     
     public static enum DialogTitleTypes {
-        ATT_SAVE_AS_FAIL_DIALOGTITLE, ATT_EMAIL_DUP_DIALOGTITLE, ATT_EMAIL_SYNTAX_CHECK_DIALOG,
-        ATT_ID_DUP_CHCEK_DIALOGTITLE, ATT_USER_UPDATE_DIALOGTITLE, ATT_SFAVE_AS_SUCCESS_DIALOGTITLE, ATT_HELP_DIALOGTITLE,
-        READ_ODS_DIALOGTITLE, READ_ODS_FAIL_DIALOGTITLE,  
-        AFFILIATION_MODIFY_DIALOGTITLE,
-        BUILDING_MODIFY_DIALOGTITLE, LOWER_MODIFY_DIALOGTITLE, UNIT_MODIFY_DIALOGTITLE,
-        REJECT_USER_DIALOGTITLE, VEHICLE_CHECK_DIALOGTITLE, 
-        VEHICLE_MODIFY_FAIL_DIALOGTITLE, WARING_DIALOGTITLE,  ERROR_DIALOGTITLE,
-        WORK_MODE_DIALOGTITLE,
+        ATT_SAVE_AS_FAIL_DIALOGTITLE("파일명 변경 필요성 알림", "Choose Different File Name"), 
+        ATT_EMAIL_DUP_DIALOGTITLE("이메일 중복 검사 결과", "Duplicate Check Result"), 
+        ATT_EMAIL_SYNTAX_CHECK_DIALOG("이메일 주소 검사 결과", "Syntax Check Result"),            
+        ATT_ID_DUP_CHCEK_DIALOGTITLE("아이디 중복검사 결과", "ID Check Result"),               
+        ATT_USER_UPDATE_DIALOGTITLE("관리원 정보 수정 결과", "User Info Change Result"),       
+        ATT_SFAVE_AS_SUCCESS_DIALOGTITLE("텍스트(.txt) 파일 생성", "Text File(*.txt) Creation"), 
+        ATT_HELP_DIALOGTITLE("비밀번호 요구조건", "Password Requirements"),
+        READ_ODS_DIALOGTITLE("차트 분석 결과", "Sheet Analysis Result"),                
+        READ_ODS_FAIL_DIALOGTITLE("차트 형식 오류", "Sheet Cell Data Format Error"),       
+        AFFILIATION_MODIFY_DIALOGTITLE("상위 소속 변경", "Higher Affiliation Change"),  
+        BUILDING_MODIFY_DIALOGTITLE("건물 번호 변경 확인", "Building No. Change Confirm'"),
+        LOWER_MODIFY_DIALOGTITLE("소속 명칭 변경", "Change Low Affil' Confirm'"),
+        UNIT_MODIFY_DIALOGTITLE("호실 변경", "Room Number Change Confirm'"),
+        REJECT_USER_DIALOGTITLE("중복 값 입력 오류", "Duplicate Data Error'"),
+        VEHICLE_CHECK_DIALOGTITLE("차량 필수 자료 오류", "Required Field Missing"),
+        VEHICLE_MODIFY_FAIL_DIALOGTITLE("차량 변경 실패", "Vehicle Modification Failure"),
+        WARING_DIALOGTITLE("경고", "WARNING"),
+        ERROR_DIALOGTITLE("오류", "Error"),
+        WORK_MODE_DIALOGTITLE("작업 모드 환기", "Current Work Mode"),
+        CREATION_RESULT_DIALOGTITLE("생성 결과", "Creation Result"),
+        CREATTION_FAIL_DIALOGTITLE("생성 실패", "Creation Error" ),               
+        DELETE_ALL_DAILOGTITLE("전체 삭제 확인", "All Record Deletion Confirmation"),
+        DELETE_ALL_RESULT_DIALOGTITLE("전체 삭제 결과", "All Record Deletion Result"),
+        DELETE_DIALOGTITLE("삭제 확인", "Deletion Confirmation"),
+        DELETE_RESULT_DIALOGTITLE("삭제 결과", "Deletion Result"),
+        DELETE_FAIL_DAILOGTITLE("삭제 실패", "Deletion Failure"),
+        MODIFY_DAILOGTITLE("수정 확인", "Modification Confirm"),
+        MODIFY_FAIL_DIALOGTITLE("수정 실패", "Modification Failure"),
+        CANCEL_DIALOGTITLE("취소 확인", "Cancel Confirmation"),
+        SAVE_DIALOGTITLE("저장 확인", "Save Confirmation"),
+        CONFIRM_DIALOGTITLE("확인", "Confirm"),
+        LOGGING_DIALOGTITLE("어떤것들이 로깅되는가 ?", "What is being LOGGED?"),
+        PASSWORD_REQUIR_DIALOGTITLE("비밀번호 요구사항", "Password Requirements"),
+        LANGUAGE_SELECT_DIALOGTITLE("언어 사용", "Language Usage"),
+        STATISTICS_INPUT_ERROR_DIALOGTITLE("통계 주기 입력 오류", "Statistics Cycle Input Error"),
+        PHOTO_SIZE_INPUT_ERROR_DIALOGTITLE("사진 크기 입력 오류", "Picture Size Input Error"),
+        IP_FORMAT_ERROR_DAILOGTITLE("IP주소 형식 오류", "IP address format error");
+
+        DialogTitleTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
         
-        CREATION_RESULT_DIALOGTITLE, CREATTION_FAIL_DIALOGTITLE,   
+        private String[] contents = new String[Languages.values().length];
         
-        DELETE_ALL_DAILOGTITLE, DELETE_ALL_RESULT_DIALOGTITLE,
+        public String getContent() {
+                return contents[language.ordinal()];
+        }          
         
-        DELETE_DIALOGTITLE, DELETE_RESULT_DIALOGTITLE, DELETE_FAIL_DAILOGTITLE,
-        
-        MODIFY_DAILOGTITLE, MODIFY_FAIL_DIALOGTITLE, 
-        
-        CANCEL_DIALOGTITLE,
-        
-        SAVE_DIALOGTITLE,
-        
-        CONFIRM_DIALOGTITLE,
-        LOGGING_DIALOGTITLE, PASSWORD_REQUIR_DIALOGTITLE, LANGUAGE_SELECT_DIALOGTITLE,
-        
-        
-        STATISTICS_INPUT_ERROR_DIALOGTITLE, PHOTO_SIZE_INPUT_ERROR_DIALOGTITLE,
-        IP_FORMAT_ERROR_DAILOGTITLE
     }
     
     public enum TextType{
@@ -633,20 +682,20 @@ public class ControlEnums {
         DRIVER_TF("(운전자)", "(Driver)"),
         OTHER_INFO_TF("(기타정보)", "(Other Info)"),
         CELL_PHONE_TF("(휴대전화)", "(Cell Phone)"),
-	LANDLINE_TF("(유선전화)", "(LandLine)"),
+        LANDLINE_TF("(유선전화)", "(LandLine)"),
         LOG_OUT_TF("(로그아웃)", "(Log Out)"),
-	UNKNOWN_TF("(자료없음)", "(unknown)"),
-	UNREGISTERED_TF("(미등록)", "(Non-Registered)"),
-	NOT_APPLICABLE_TF("(해당사항없음)", "(Not Applicable)"),
+        UNKNOWN_TF("(자료없음)", "(unknown)"),
+        UNREGISTERED_TF("(미등록)", "(Non-Registered)"),
+        NOT_APPLICABLE_TF("(해당사항없음)", "(Not Applicable)"),
         STATUS_TF("<중요 상태 정보>", "<Critical Status Information>"),
-	START_MSG("시스템 시작", "System started"),
-	STOP_MSG("시스템 종료", "System stopped"),
-	FIRST_RUN_MSG("OsParking 의 첫 번째 실행", 
+        START_MSG("시스템 시작", "System started"),
+        STOP_MSG("시스템 종료", "System stopped"),
+        FIRST_RUN_MSG("OsParking 의 첫 번째 실행",
                 "Very First Run of OsParking!"),
         NO_MSG("없음", "N/A"),
-	ERROR_RATE_MSG ("인공 에러율: ", "Artificial error rate: "),
-	NO_APP_MSG("인공 에러 없음", "No artificial error"),
-	NO_SOCKET_DISCON_MSG(": 소켓 단절 없음.", ": no socket disconn'"),
+        ERROR_RATE_MSG ("인공 에러율: ", "Artificial error rate: "),
+        NO_APP_MSG("인공 에러 없음", "No artificial error"),
+        NO_SOCKET_DISCON_MSG(": 소켓 단절 없음.", ": no socket disconn'"),
         NO_COMMAND_MSG("개방 명령 없음.", "no Open command statistics"),
         OPEN_MSG("개방", "Open"),
         INTERRUPT_MSG("입차", "Interrupt"),
@@ -655,16 +704,28 @@ public class ControlEnums {
         ON_ARTIFI_ERROR_MSG("인공 에러 삽입", "Artificial error is on"),
         ERROR_RATE_MSG2("에러율 : ", "prob of error: "),
         ERROR_MSG("에러 ", "error"),
-        ERROR_CHECK_BOX_MSG("에러 체크 박스를 먼저 선택해주세요. ", 
+        ERROR_CHECK_BOX_MSG("에러 체크 박스를 먼저 선택해주세요. ",
                 "First, select error check box, OK?"),
         LETEST_MSG("최근 ", "latest"),
-	PASSING_MSG(" 대 도착, 평균 통과 시간", 
+        PASSING_MSG(" 대 도착, 평균 통과 시간",
                 " car arrivals, average passing delay is"),
         DELETE_LOG_MSG("삭제된 기록--폴더: ", "Deleted logs--directory: "),
-	DELETE_FILE_MSG(", 파일: ", "files: ");
+        DELETE_FILE_MSG(", 파일: ", "files: "),
         
+        HELP_TA(
+                "\u278A 오픈오피스 스프레드시트(OpenOffice Calc) 를 사용하여 만들 수 있습니다"
+                        + System.getProperty("line.separator")
+                        + "\u278B MS엑셀에서 엑셀파일을 다음 절차로 'ods' 파일로 저장할 수 있습니다"
+                        + System.getProperty("line.separator")
+                        + "     [파일] > [다른 이름으로 저장] > 파일 형식: 'OpenDocu...' 선택",
+                "\u278A Default file type of a office SW 'OpenOffice Calc'"
+                        + System.getProperty("line.separator")
+                        + "\u278B Creatable using MS Excel, OpenOffice Calc, etc."
+                        + System.getProperty("line.separator")
+                        + "\u278C In MS Excel, 'ods' can be created by --"
+                        + System.getProperty("line.separator")
+                        + "     [File] > [Save As...] > [File Type: (choose) 'OpenDocu...'");
 //        REFUSED_CONN_TF,
-//	HELP_TA,
 //	PASSING_DELAY_AVG_MSG, 
 //        DIS_CONN_MSG,
 //	COMMAND_ACK_MSG,
@@ -687,20 +748,57 @@ public class ControlEnums {
         }                  
     }
     
-    public enum ComboBoxItemTypes{
-        LOWER_HIGHER_CB_ITEM, ROOM_BUILDING_CB_ITEM,
-        HIGHER_CB_ITEM, LOWER_CB_ITEM, BUILDING_CB_ITEM, ROOM_CB_ITEM, 
-        GATE_CB_ITEM, ATTENDANT_CB_ITEM, BAR_CB_ITEM, ATTENDANT_LOGOUT_ITEM, 
-        BAR_ALLOWED_CB_ITEM, BAR_LAZY_ATT_CB_ITEM, BAR_MANUAL_CB_ITEM, BAR_REMAIN_CLOSED_ATT_CB_ITEM, 
-        USER_CB_ITEM, FOUR_DIGIT_CB_ITEM, SIX_DIGIT_CB_ITEM, COMPLEX_CB_ITEM,
-        NO_LOGGING_CB_ITEM, SETTING_CHANGE_CB_ITEM, LOG_E_BOARD_CHANGE_CB_ITEM,
-        DAY_CB_ITEM, DAYS_CB_ITEM,
-        VERBATIM_CB_ITEM, VEHICLE_TAG_CB_ITEM, REGISTRATION_STAT_CB_ITEM, GATE_NAME_CB_ITEM, 
-        CURRENT_DATE_CB_ITEM, CURRENT_TIME_CB_ITEM, CURRENT_DATE_TIME_CB_ITEM,
-        RED_COLOR_CB_ITEM, ORANGE_COLOR_CB_ITEM, GREEN_COLOR_CB_ITEM, 
-        BLACK_COLOR_CB_ITEM, BLUE_COLOR_CB_ITEM,
+    public enum ComboBoxItemTypes {
+        LOWER_HIGHER_CB_ITEM("(하위-상위소속)", "(Lower-Higher)"),
+        ROOM_BUILDING_CB_ITEM("(호수-건물)", "(Bldg-Rm#)"),
+        HIGHER_CB_ITEM("(상위 소속)", "(Higher Group)"),
+        LOWER_CB_ITEM("(하위 소속)", "(Lower Group)"),
+        BUILDING_CB_ITEM("(건물 번호)", "(Building No,)"),
+        ROOM_CB_ITEM("(호수)", "(Room No.)"),
+        GATE_CB_ITEM("(입구)", "(Gate)"),
+        ATTENDANT_CB_ITEM("(관리원)", "(Attendant)"),
+        BAR_CB_ITEM("(차단기)", "(Unselected)"),
+        ATTENDANT_LOGOUT_ITEM("(로그아웃)", "(logged out)"),
+        BAR_ALLOWED_CB_ITEM("자격개방", "Legal Open"),
+        BAR_LAZY_ATT_CB_ITEM("불문개방", "Auto' Open"),
+        BAR_MANUAL_CB_ITEM("수동개방", "Manual Open"),
+        BAR_REMAIN_CLOSED_ATT_CB_ITEM("폐쇄", "Remain Closed"),
+        USER_CB_ITEM("(모든 사용자)", "(everybody)"),
+        FOUR_DIGIT_CB_ITEM("네 자리 숫자", "Four digits"),
+        SIX_DIGIT_CB_ITEM("6자리 이상 영숫자", "Six-digit or more alpha-numeric"),
+        COMPLEX_CB_ITEM("8자리 이상 복합구성", "8 digit or more complex configuration"),
+        NO_LOGGING_CB_ITEM("로깅하지 않음", "no logging"),
+        SETTING_CHANGE_CB_ITEM("시스템 설정 변경", "System settings change"),
+        LOG_E_BOARD_CHANGE_CB_ITEM("시스템, 사용자, 차량", "Log E-Board change too"),
+        DAY_CB_ITEM("일", "day"),
+        DAYS_CB_ITEM("일", "days"),
+        VERBATIM_CB_ITEM("문구 자체", "Exact Words"),
+        VEHICLE_TAG_CB_ITEM("차량번호", "Plate Number"),
+        REGISTRATION_STAT_CB_ITEM("등록 상태", "Registration Status"),
+        GATE_NAME_CB_ITEM("입구 명칭", "Gate Name"),
+        CURRENT_DATE_CB_ITEM("현재 날짜", "Current Date"),
+        CURRENT_TIME_CB_ITEM("현재 시간", "Current Time"),
+        CURRENT_DATE_TIME_CB_ITEM("현재 날짜-시간", "Current Date and Time"),
+        RED_COLOR_CB_ITEM("빨강", "RED"),
+        ORANGE_COLOR_CB_ITEM("주황", "ORANGE"),
+        GREEN_COLOR_CB_ITEM("초록", "GREEN"),
+        BLACK_COLOR_CB_ITEM("검정", "BLACK"),
+        BLUE_COLOR_CB_ITEM("파랑", "BLUE"),
+        BLINKING_CB_ITEM("깜빡임", "Blinking"),
+        LTOR_CB_ITEM("우로 흐름", "L to R Flow"),
+        RTOL_CB_ITEM("좌로 흐름", "R to L Flow"),
+        STILL_FRAME_CB_ITEM("정지", "Still Frame");
         
-        BLINKING_CB_ITEM, LTOR_CB_ITEM, RTOL_CB_ITEM, STILL_FRAME_CB_ITEM,
+        ComboBoxItemTypes(String korean, String english) {
+            contents[KOREAN.ordinal()] = korean;
+            contents[ENGLISH.ordinal()] = english;
+        }
+        
+        private String[] contents = new String[Languages.values().length];
+        
+        public String getContent() {
+                return contents[language.ordinal()];
+        }          
     }
     
     public enum MenuITemTypes{
@@ -738,5 +836,4 @@ public class ControlEnums {
     public enum MessageTypes{
         LOGIN_MSG, LOGOUT_MSG, PASSING_DELAY_MSG, 
     }
-    
 }

@@ -273,12 +273,10 @@ public class DB_Access {
                 parkingLotLocale = new Locale(rs.getString("languageCode"), rs.getString("countryCode"));
                 switch(parkingLotLocale.getLanguage()){
                     case "ko" : 
-                        ourLang = ControlEnums.Languages.KOREAN.ordinal();
                         language = KOREAN;
                         font_Type = "맑은 고딕";
                         break;
                     default:
-                        ourLang = ControlEnums.Languages.ENGLISH.ordinal();
                         language = ENGLISH;
                         break;
                 }
@@ -296,42 +294,15 @@ public class DB_Access {
                 EBD_flowCycle = rs.getInt("EBD_flow_cycle");
                 EBD_blinkCycle = rs.getInt("EBD_blink_cycle");
             }
-            
-//            for(int i = 0; i < button.length; i++){
-//                inData = button[i];
-//                ButtonLabels.add(i, inData);
+
+//            for(int i = 0; i < tableHeader.length; i++){
+//                inData = tableHeader[i];
+//                TableHeaderList.add(i, inData);
 //            }
-            for(int i = 0; i < label.length; i++){
-                inData = label[i];
-                LabelsText.add(i, inData);
-            }
-            for(int i = 0; i < toolTip.length; i++){
-                inData = toolTip[i];
-                ToolTipLabels.add(i, inData);
-            }
-            for(int i = 0; i < tableHeader.length; i++){
-                inData = tableHeader[i];
-                TableHeaderList.add(i, inData);
-            }
-            for(int i = 0; i < textField.length; i++){
-                inData = textField[i];
-                TextFieldList.add(i, inData);
-            }
-            for(int i = 0; i < comboBoxItem.length; i++){
-                inData = comboBoxItem[i];
-                ComboBoxItemList.add(i, inData);
-            }
-//            for(int i = 0; i < dialogMSG.length; i++){
-//                inData = dialogMSG[i];
-//                DialogMSGList.add(i, inData);
-//            }
-            for(int i = 0; i < dialogTitle.length; i++){
-                inData = dialogTitle[i];
-                DialogTitleList.add(i, inData);
-            }
-//            for(int i = 0; i < menuItem.length; i++){
-//                inData = menuItem[i];
-//                MenuItemList.add(i, inData);
+
+//            for(int i = 0; i < comboBoxItem.length; i++){
+//                inData = comboBoxItem[i];
+//                ComboBoxItemList.add(i, inData);
 //            }
         } catch (SQLException ex) {
             logParkingException(Level.SEVERE, ex, "(Loading System Settings from the DB)");

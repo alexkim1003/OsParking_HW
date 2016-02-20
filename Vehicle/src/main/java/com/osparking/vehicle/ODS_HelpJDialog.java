@@ -41,6 +41,7 @@ import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
+import com.osparking.global.names.ControlEnums.TextType;
 import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import com.osparking.global.names.ImageDisplay;
 import com.osparking.global.names.OSP_enums.ODS_TYPE;
@@ -311,8 +312,7 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
         
         DefaultCaret caret = (DefaultCaret)topTextArea.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);   
-        
-        topTextArea.setText(getTextFor(ControlEnums.TextType.HELP_TA));
+        topTextArea.setText(TextType.HELP_TA.getContent());
         
         ImageIcon odsHelp_icon = null;
         String filename = null;
@@ -370,39 +370,5 @@ public class ODS_HelpJDialog extends javax.swing.JDialog {
                 return false;
             }
         }
-    }
-    
-    private String getTextFor(ControlEnums.TextType TextType){
-        String text = null;
-        
-        switch(TextType){
-            case HELP_TA :
-                StringBuffer sb = new StringBuffer();
-                switch (parkingLotLocale.getLanguage()) {
-                    case "ko":
-                        sb.append("\u278A 오픈오피스 스프레드시트(OpenOffice Calc) 를 사용하여 만들 수 있습니다");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append("\u278B MS엑셀에서 엑셀파일을 다음 절차로 'ods' 파일로 저장할 수 있습니다");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append("     [파일] > [다른 이름으로 저장] > 파일 형식: 'OpenDocu...' 선택");
-                        text = sb.toString();
-                        break;
-                    default:
-                        sb.append("\u278A Default file type of a office SW 'OpenOffice Calc'");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append("\u278B Creatable using MS Excel, OpenOffice Calc, etc.");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append("\u278C In MS Excel, 'ods' can be created by --");
-                        sb.append(System.getProperty("line.separator"));
-                        sb.append("     [File] > [Save As...] > [File Type: (choose) 'OpenDocu...'");
-                        text = sb.toString();
-                        break;
-                }
-                break;
-            default :
-                break;
-        }
-        
-        return text;
     }
 }
