@@ -16,7 +16,6 @@
  */
 package com.osparking.vehicle;
 
-import com.osparking.global.Globals;
 import com.osparking.vehicle.driver.DriverSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -47,7 +46,6 @@ import javax.swing.table.TableModel;
 import com.osparking.global.names.ConvComboBoxItem;
 import static com.osparking.global.names.DB_Access.readSettings;
 import static com.osparking.global.Globals.*;
-import com.osparking.global.names.ControlEnums;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.*;
 import static com.osparking.global.names.ControlEnums.ComboBoxItemTypes.*;
 import static com.osparking.global.names.ControlEnums.DialogMSGTypes.*;
@@ -70,14 +68,19 @@ import static com.osparking.global.names.ControlEnums.LabelContent.REGI_DATE_LAB
 import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.SEARCH_MODE_LABEL;
 import static com.osparking.global.names.ControlEnums.TitleTypes.VEHICLESFORM_FRAME_TITLE;
-import com.osparking.global.names.ControlEnums.TableTypes;
+import static com.osparking.global.names.ControlEnums.TableTypes.CAR_TAG_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.DRIVER_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.LOW_HIGH_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.ORDER_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.OTHER_INFO_HEDER;
+import static com.osparking.global.names.ControlEnums.TableTypes.REASON_HEADER;
+import static com.osparking.global.names.ControlEnums.TableTypes.ROOM_BUILD_HEADER;
 import static com.osparking.global.names.ControlEnums.TextType.*;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.AFFILIATION_TOOLTIP;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.BUILDING_TOOLTIP;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.CAR_TAG_INPUT_TOOLTIP;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.DRIVER_INPUT_TOOLTIP;
 import static com.osparking.global.names.ControlEnums.ToolTipContent.OTHER_TOOLTIP;
-import static com.osparking.global.names.DB_Access.parkingLotLocale;
 import static com.osparking.global.names.JDBCMySQL.getConnection;
 import com.osparking.global.names.JTextFieldLimit;
 import com.osparking.global.names.OSP_enums;
@@ -364,7 +367,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         closeFormButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         closeFormButton.setMnemonic('c');
-        closeFormButton.setText(((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]);
+        closeFormButton.setText(CLOSE_BTN.getContent());
         closeFormButton.setMaximumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setMinimumSize(new java.awt.Dimension(90, 40));
         closeFormButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -403,7 +406,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel2.setText(((String[])Globals.LabelsText.get(ORDER_LABEL.ordinal()))[ourLang]);
+        jLabel2.setText(ORDER_LABEL.getContent());
         jLabel2.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel2.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel2.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -426,7 +429,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel3.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel3.setText(((String[])Globals.LabelsText.get(CAR_TAG_LABEL.ordinal()))[ourLang]);
+        jLabel3.setText(CAR_TAG_LABEL.getContent());
         jLabel3.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel3.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel3.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -446,7 +449,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         jPanel12.add(filler40);
 
         selectDriverButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        selectDriverButton.setText(((String[])Globals.ButtonLabels.get(OWNER_BTN.ordinal()))[ourLang]);
+        selectDriverButton.setText(OWNER_BTN.getContent());
         selectDriverButton.setEnabled(false);
         selectDriverButton.setFocusable(false);
         selectDriverButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -486,7 +489,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel5.setText(((String[])Globals.LabelsText.get(CELL_PHONE_LABEL.ordinal()))[ourLang]);
+        jLabel5.setText(CELL_PHONE_LABEL.getContent());
         jLabel5.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel5.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel5.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -509,7 +512,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel6.setText(((String[])Globals.LabelsText.get(PHONE_LABEL.ordinal()))[ourLang]);
+        jLabel6.setText(PHONE_LABEL.getContent());
         jLabel6.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel6.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel6.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -532,7 +535,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel10.setText(((String[])Globals.LabelsText.get(MODI_DATE_LABEL.ordinal()))[ourLang]);
+        jLabel10.setText(MODI_DATE_LABEL.getContent());
         jLabel10.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel10.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel10.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -555,7 +558,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel7.setText(((String[])Globals.LabelsText.get(NOTIFICATION_LABEL.ordinal()))[ourLang]);
+        jLabel7.setText(NOTIFICATION_LABEL.getContent());
         jLabel7.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel7.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel7.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -577,7 +580,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel8.setText(((String[])Globals.LabelsText.get(EXACT_COMP_LABEL.ordinal()))[ourLang]);
+        jLabel8.setText(EXACT_COMP_LABEL.getContent());
         jLabel8.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel8.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel8.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -600,7 +603,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel13.setText(((String[])Globals.LabelsText.get(PARK_ALLOWED_LABEL.ordinal()))[ourLang]);
+        jLabel13.setText(PARK_ALLOWED_LABEL.getContent());
         jLabel13.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel13.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel13.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -623,7 +626,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel14.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel14.setText(((String[])Globals.LabelsText.get(REASON_LABEL.ordinal()))[ourLang]);
+        jLabel14.setText(REASON_LABEL.getContent());
         jLabel14.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel14.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel14.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -644,7 +647,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel15.setText(((String[])Globals.LabelsText.get(OTHER_INFO_LABEL.ordinal()))[ourLang]);
+        jLabel15.setText(OTHER_INFO_LABEL.getContent());
         jLabel15.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel15.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel15.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -665,7 +668,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel9.setText(((String[])Globals.LabelsText.get(REGI_DATE_LABEL.ordinal()))[ourLang]);
+        jLabel9.setText(REGI_DATE_LABEL.getContent());
         jLabel9.setMaximumSize(new java.awt.Dimension(90, 27));
         jLabel9.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel9.setPreferredSize(new java.awt.Dimension(90, 27));
@@ -689,7 +692,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel4.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(((String[])Globals.LabelsText.get(COUNT_LABEL.ordinal()))[ourLang]);
+        jLabel4.setText(COUNT_LABEL.getContent());
         jLabel4.setMaximumSize(new java.awt.Dimension(110, 27));
         jLabel4.setMinimumSize(new java.awt.Dimension(90, 27));
         jLabel4.setPreferredSize(new java.awt.Dimension(110, 27));
@@ -718,7 +721,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         jPanel5.add(filler31);
 
         jLabel12.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        jLabel12.setText(((String[])Globals.LabelsText.get(FORM_MODE_LABEL.ordinal()))[ourLang]);
+        jLabel12.setText(FORM_MODE_LABEL.getContent());
         jLabel12.setMaximumSize(new java.awt.Dimension(95, 27));
         jLabel12.setMinimumSize(new java.awt.Dimension(95, 27));
         jLabel12.setPreferredSize(new java.awt.Dimension(95, 27));
@@ -726,7 +729,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         jPanel5.add(filler50);
 
         formModeLabel.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        formModeLabel.setText(((String[])Globals.LabelsText.get(SEARCH_MODE_LABEL.ordinal()))[ourLang]);
+        formModeLabel.setText(SEARCH_MODE_LABEL.getContent());
         formModeLabel.setMaximumSize(new java.awt.Dimension(86, 27));
         formModeLabel.setMinimumSize(new java.awt.Dimension(86, 27));
         jPanel5.add(formModeLabel);
@@ -741,7 +744,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         jLabel11.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel11.setText(((String[])Globals.LabelsText.get(SEARCH_LABEL.ordinal()))[ourLang]);
+        jLabel11.setText(SEARCH_LABEL.getContent());
         jLabel11.setMaximumSize(new java.awt.Dimension(80, 27));
         jLabel11.setMinimumSize(new java.awt.Dimension(80, 27));
         jLabel11.setPreferredSize(new java.awt.Dimension(80, 27));
@@ -750,8 +753,8 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchCarTag.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchCarTag.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        searchCarTag.setText(((String[])Globals.TextFieldList.get(CAR_TAG_TF.ordinal()))[ourLang]);
-        searchCarTag.setToolTipText(((String[])Globals.ToolTipLabels.get(CAR_TAG_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        searchCarTag.setText(CAR_TAG_TF.getContent());
+        searchCarTag.setToolTipText(CAR_TAG_INPUT_TOOLTIP.getContent());
         searchCarTag.setMaximumSize(new java.awt.Dimension(120, 28));
         searchCarTag.setMinimumSize(new java.awt.Dimension(120, 28));
         searchCarTag.setPreferredSize(new java.awt.Dimension(120, 28));
@@ -770,8 +773,8 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchDriver.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchDriver.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        searchDriver.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
-        searchDriver.setToolTipText(((String[])Globals.ToolTipLabels.get(DRIVER_INPUT_TOOLTIP.ordinal()))[ourLang]);
+        searchDriver.setText(DRIVER_TF.getContent());
+        searchDriver.setToolTipText(DRIVER_INPUT_TOOLTIP.getContent());
         searchDriver.setMaximumSize(new java.awt.Dimension(32767, 28));
         searchDriver.setMinimumSize(new java.awt.Dimension(110, 28));
         searchDriver.setPreferredSize(new java.awt.Dimension(110, 28));
@@ -789,7 +792,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         searchPanel.add(filler67);
 
         searchAffiliCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        searchAffiliCBox.setToolTipText(((String[])Globals.ToolTipLabels.get(AFFILIATION_TOOLTIP.ordinal()))[ourLang]);
+        searchAffiliCBox.setToolTipText(AFFILIATION_TOOLTIP.getContent());
         searchAffiliCBox.setMaximumSize(new java.awt.Dimension(32767, 30));
         searchAffiliCBox.setMinimumSize(new java.awt.Dimension(125, 30));
         searchAffiliCBox.setPreferredSize(new java.awt.Dimension(125, 30));
@@ -797,7 +800,7 @@ public class VehiclesForm extends javax.swing.JFrame {
         searchPanel.add(filler68);
 
         searchBldgCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        searchBldgCBox.setToolTipText(((String[])Globals.ToolTipLabels.get(BUILDING_TOOLTIP.ordinal()))[ourLang]);
+        searchBldgCBox.setToolTipText(BUILDING_TOOLTIP.getContent());
         searchBldgCBox.setMaximumSize(new java.awt.Dimension(150, 30));
         searchBldgCBox.setMinimumSize(new java.awt.Dimension(110, 30));
         searchBldgCBox.setPreferredSize(new java.awt.Dimension(110, 30));
@@ -806,8 +809,8 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchETC.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchETC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        searchETC.setText(((String[])Globals.TextFieldList.get(OTHER_INFO_TF.ordinal()))[ourLang]);
-        searchETC.setToolTipText(((String[])Globals.ToolTipLabels.get(OTHER_TOOLTIP.ordinal()))[ourLang]);
+        searchETC.setText(OTHER_INFO_TF.getContent());
+        searchETC.setToolTipText(OTHER_TOOLTIP.getContent());
         searchETC.setMaximumSize(new java.awt.Dimension(32767, 28));
         searchETC.setMinimumSize(new java.awt.Dimension(120, 20));
         searchETC.setPreferredSize(new java.awt.Dimension(120, 20));
@@ -826,7 +829,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         clearButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         clearButton.setMnemonic('l');
-        clearButton.setText(((String[])Globals.ButtonLabels.get(CLEAR_BTN.ordinal()))[ourLang]);
+        clearButton.setText(CLEAR_BTN.getContent());
         clearButton.setMaximumSize(new java.awt.Dimension(90, 40));
         clearButton.setMinimumSize(new java.awt.Dimension(100, 40));
         clearButton.setPreferredSize(new java.awt.Dimension(100, 40));
@@ -840,7 +843,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         searchButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         searchButton.setMnemonic('s');
-        searchButton.setText(((String[])Globals.ButtonLabels.get(SEARCH_BTN.ordinal()))[ourLang]);
+        searchButton.setText(SEARCH_BTN.getContent());
         searchButton.setMaximumSize(new java.awt.Dimension(90, 40));
         searchButton.setMinimumSize(new java.awt.Dimension(90, 40));
         searchButton.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -871,15 +874,15 @@ public class VehiclesForm extends javax.swing.JFrame {
                     null, null, null, null}
             },
             new String [] {
-                ((String[])Globals.TableHeaderList.get(TableTypes.ORDER_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(TableTypes.CAR_TAG_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(TableTypes.DRIVER_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(TableTypes.LOW_HIGH_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(TableTypes.ROOM_BUILD_HEADER.ordinal()))[ourLang],
-                ((String[])Globals.TableHeaderList.get(TableTypes.OTHER_INFO_HEDER.ordinal()))[ourLang],
+                ORDER_HEADER.getContent(),
+                CAR_TAG_HEADER.getContent(),
+                DRIVER_HEADER.getContent(),
+                LOW_HIGH_HEADER.getContent(),
+                ROOM_BUILD_HEADER.getContent(),
+                OTHER_INFO_HEDER.getContent(),
                 "Cell Phone", "Land Line",
                 "Notif'", "Exact", "Allowed",
-                ((String[])Globals.TableHeaderList.get(TableTypes.REASON_HEADER.ordinal()))[ourLang],
+                REASON_HEADER.getContent(),
                 "Registered On",
                 "Modified On", "drvSeqNo"
             }
@@ -917,7 +920,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         saveSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         saveSheet_Button.setMnemonic('a');
-        saveSheet_Button.setText(((String[])Globals.ButtonLabels.get(SAVE_ODS_BTN.ordinal()))[ourLang]);
+        saveSheet_Button.setText(SAVE_ODS_BTN.getContent());
         saveSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         saveSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -931,7 +934,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         readSheet_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         readSheet_Button.setMnemonic('o');
-        readSheet_Button.setText(((String[])Globals.ButtonLabels.get(READ_ODS_BTN.ordinal()))[ourLang]);
+        readSheet_Button.setText(READ_ODS_BTN.getContent());
         readSheet_Button.setMaximumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setMinimumSize(new java.awt.Dimension(110, 40));
         readSheet_Button.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -945,7 +948,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteAllVehicles.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteAllVehicles.setMnemonic('e');
-        deleteAllVehicles.setText(((String[])Globals.ButtonLabels.get(DELETE_ALL_BTN.ordinal()))[ourLang]);
+        deleteAllVehicles.setText(DELETE_ALL_BTN.getContent());
         deleteAllVehicles.setMaximumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setMinimumSize(new java.awt.Dimension(110, 40));
         deleteAllVehicles.setPreferredSize(new java.awt.Dimension(110, 40));
@@ -959,7 +962,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         deleteCancel_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         deleteCancel_Button.setMnemonic('d');
-        deleteCancel_Button.setText(((String[])Globals.ButtonLabels.get(DELETE_BTN.ordinal()))[ourLang]);
+        deleteCancel_Button.setText(DELETE_BTN.getContent());
         deleteCancel_Button.setEnabled(false);
         deleteCancel_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         deleteCancel_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -974,7 +977,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         modiSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         modiSave_Button.setMnemonic('m');
-        modiSave_Button.setText(((String[])Globals.ButtonLabels.get(MODIFY_BTN.ordinal()))[ourLang]);
+        modiSave_Button.setText(MODIFY_BTN.getContent());
         modiSave_Button.setEnabled(false);
         modiSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         modiSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
@@ -989,7 +992,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
         insertSave_Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         insertSave_Button.setMnemonic('r');
-        insertSave_Button.setText(((String[])Globals.ButtonLabels.get(CREATE_BTN.ordinal()))[ourLang]);
+        insertSave_Button.setText(CREATE_BTN.getContent());
         insertSave_Button.setMaximumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setMinimumSize(new java.awt.Dimension(90, 40));
         insertSave_Button.setPreferredSize(new java.awt.Dimension(90, 40));
@@ -1354,7 +1357,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
     private void searchCarTagFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchCarTagFocusLost
         if(searchCarTag.getText().trim().equals(""))
-            searchCarTag.setText(((String[])Globals.TextFieldList.get(CAR_TAG_TF.ordinal()))[ourLang]);
+            searchCarTag.setText(CAR_TAG_TF.getContent());
     }//GEN-LAST:event_searchCarTagFocusLost
 
     private void searchDriverMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchDriverMousePressed
@@ -1365,7 +1368,7 @@ public class VehiclesForm extends javax.swing.JFrame {
 
     private void searchDriverFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchDriverFocusLost
         if(searchDriver.getText().trim().equals(""))
-            searchDriver.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+            searchDriver.setText(DRIVER_TF.getContent());
     }//GEN-LAST:event_searchDriverFocusLost
 
     private void searchETCMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchETCMousePressed
@@ -1376,16 +1379,16 @@ public class VehiclesForm extends javax.swing.JFrame {
     private void searchETCFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchETCFocusLost
 
         if(searchETC.getText().trim().equals(""))
-            searchETC.setText(((String[])Globals.TextFieldList.get(OTHER_INFO_TF.ordinal()))[ourLang]);
+            searchETC.setText(OTHER_INFO_TF.getContent());
     }//GEN-LAST:event_searchETCFocusLost
 
     private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
 
-        searchCarTag.setText(((String[])Globals.TextFieldList.get(CAR_TAG_TF.ordinal()))[ourLang]);
-        searchDriver.setText(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]);
+        searchCarTag.setText(CAR_TAG_TF.getContent());
+        searchDriver.setText(DRIVER_TF.getContent());
         searchAffiliCBox.setSelectedIndex(0);
         searchBldgCBox.setSelectedIndex(0);
-        searchETC.setText(((String[])Globals.TextFieldList.get(OTHER_INFO_TF.ordinal()))[ourLang]);
+        searchETC.setText(OTHER_INFO_TF.getContent());
         vehiclesTable.requestFocus();
     }//GEN-LAST:event_clearButtonActionPerformed
 
@@ -1597,9 +1600,9 @@ public class VehiclesForm extends javax.swing.JFrame {
         try {
             // <editor-fold defaultstate="collapsed" desc="-- construct SQL statement">  
             StringBuffer cond = new StringBuffer();
-            if(!searchCarTag.getText().trim().equals(((String[])Globals.TextFieldList.get(CAR_TAG_TF.ordinal()))[ourLang]))
+            if(!searchCarTag.getText().trim().equals(CAR_TAG_TF.getContent()))
                 attachCondition(cond, "PLATE_NUMBER", searchCarTag.getText().trim());
-            if(!searchDriver.getText().trim().equals(((String[])Globals.TextFieldList.get(DRIVER_TF.ordinal()))[ourLang]))
+            if(!searchDriver.getText().trim().equals(DRIVER_TF.getContent()))
                 attachCondition(cond, "NAME", searchDriver.getText().trim());
 
             Object keyObj =((ConvComboBoxItem)searchAffiliCBox.getSelectedItem()).getValue();
@@ -1608,7 +1611,7 @@ public class VehiclesForm extends javax.swing.JFrame {
             keyObj =((ConvComboBoxItem)searchBldgCBox.getSelectedItem()).getValue();
             attachIntCondition(cond, "UNIT_SEQ_NO", (Integer)keyObj);
 
-            if(!searchETC.getText().trim().equals(((String[])Globals.TextFieldList.get(OTHER_INFO_TF.ordinal()))[ourLang]))
+            if(!searchETC.getText().trim().equals(OTHER_INFO_TF.getContent()))
                 attachCondition(cond, "OTHER_INFO", searchETC.getText().trim());
 
             StringBuffer sb = new StringBuffer(); 

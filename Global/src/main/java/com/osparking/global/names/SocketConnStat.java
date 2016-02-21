@@ -67,7 +67,7 @@ public class SocketConnStat {
         StringBuilder sb = new StringBuilder();
         
         if (disconnectionCount == 0) {
-            sb.append(((String[])Globals.TextFieldList.get(NO_SOCKET_DISCON_MSG.ordinal()))[language.ordinal()]);
+            sb.append(NO_SOCKET_DISCON_MSG.getContent());
         } else {
             switch(language){
                 case KOREAN :
@@ -134,7 +134,7 @@ public class SocketConnStat {
                         default :
                             break;
                     }
-                String msg =  "  ------" + device +" #" + deviceID + " " + ((String[])Globals.TextFieldList.get(CONN_MSG.ordinal()))[language.ordinal()];
+                String msg =  "  ------" + device +" #" + deviceID + " " + CONN_MSG.getContent();
                 addMessageLine(mainForm.getMessageTextArea(), msg);
                 logParkingException(Level.INFO, null, msg);                 
                 connected = true;

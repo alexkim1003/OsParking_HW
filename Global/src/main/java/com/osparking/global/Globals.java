@@ -1720,7 +1720,7 @@ public class Globals {
 //    public static ArrayList LabelsText = new ArrayList();
 //    public static ArrayList ToolTipLabels = new ArrayList();
 //    public static ArrayList TableHeaderList = new ArrayList();
-    public static ArrayList TextFieldList = new ArrayList();
+//    public static ArrayList TextFieldList = new ArrayList();
 //    public static ArrayList ComboBoxItemList = new ArrayList();
     
 //    public static int ourLang;
