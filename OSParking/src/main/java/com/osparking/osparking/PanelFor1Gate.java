@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
