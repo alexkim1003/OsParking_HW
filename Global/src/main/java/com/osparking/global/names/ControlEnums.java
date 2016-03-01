@@ -662,7 +662,8 @@ public class ControlEnums {
         LANGUAGE_SELECT_DIALOGTITLE("언어 사용", "Language Usage"),
         STATISTICS_INPUT_ERROR_DIALOGTITLE("통계 주기 입력 오류", "Statistics Cycle Input Error"),
         PHOTO_SIZE_INPUT_ERROR_DIALOGTITLE("사진 크기 입력 오류", "Picture Size Input Error"),
-        IP_FORMAT_ERROR_DAILOGTITLE("IP주소 형식 오류", "IP address format error");
+        IP_FORMAT_ERROR_DAILOGTITLE("IP주소 형식 오류", "IP address format error"),
+        MAIN_GUI_TITLE("㈜오픈소스파킹", "Open Source Parking Inc.");
 
         DialogTitleTypes(String korean, String english) {
             contents[KOREAN.ordinal()] = korean;

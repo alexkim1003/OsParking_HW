@@ -28,6 +28,7 @@ import static com.osparking.global.names.ControlEnums.ButtonTypes.CAR_ARRIVAL_BT
 import static com.osparking.global.names.ControlEnums.ButtonTypes.STATISTICS_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.USERS_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.VEHICLES_BTN;
+import static com.osparking.global.names.ControlEnums.DialogTitleTypes.MAIN_GUI_TITLE;
 import static com.osparking.global.names.ControlEnums.LabelContent.OPEN_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.STATUS_LABEL;
 import static com.osparking.global.names.ControlEnums.MenuITemTypes.AFFILIATION_MENU;
@@ -316,7 +317,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
             this.prop.load( resourceAsStream );
         } catch (IOException e){
         }
-        setTitle("OsParking("+this.prop.getProperty("osparking.current.version")+")--Open Source Parking Inc.");   
+        setTitle("OsParking(" + this.prop.getProperty("osparking.current.version") 
+                + ")--" + MAIN_GUI_TITLE.getContent());   
         
         String processName = ManagementFactory.getRuntimeMXBean().getName();
         PID_Label.setText("(PID:" + processName.substring(0, processName.indexOf("@")) + ")");        
@@ -790,7 +792,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
 
         LeftSide_Label.setBackground(MainBackground);
         LeftSide_Label.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        LeftSide_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LeftSide_Label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LeftSide_Label.setText(STATUS_LABEL.getContent());
         LeftSide_Label.setToolTipText("");
         LeftSide_Label.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);

@@ -402,7 +402,7 @@ public class Globals {
                     tagNumber = "서울31나3416"; 
                     break;
                 case 4:
-                    tagNumber = "경기42GO6003"; 
+                    tagNumber = "경기42고6003"; 
                     break;
                 case 5:
                     tagNumber = "30모8186"; 
