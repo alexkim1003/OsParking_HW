@@ -253,9 +253,6 @@ public class OSP_enums {
         Camera ("카메라",  "Camera"),
         E_Board ("전광판",  "E-Board"),
         GateBar ("차단기",  "Gate Bar");
-//        CAMERA_LABEL ("카메라",  "Camera"),
-//        EBOARD_LABEL ("전광판",  "E-Board"),
-//        GATE_BAR_LABEL ("차단기",  "G-Bar"),     
         DeviceType(String korean, String english) {
             label[KOREAN.ordinal()] = korean;
             label[ENGLISH.ordinal()] = english;
@@ -263,7 +260,7 @@ public class OSP_enums {
         
         private String[] label = new String[Languages.values().length];
         
-        public String getLabel() {
+        public String getContent() {
             return label[language.ordinal()];
         }        
     }    

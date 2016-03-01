@@ -16,14 +16,13 @@
  */
 package com.osparking.global.names;
 
-import com.osparking.global.Globals;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.addMessageLine;
 import static com.osparking.global.Globals.getFormattedRealNumber;
 import static com.osparking.global.Globals.language;
 import static com.osparking.global.Globals.logParkingException;
 import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelContent.EBOARD_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.E_BOARD_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
 import static com.osparking.global.names.ControlEnums.TextType.CONN_MSG;
 import static com.osparking.global.names.ControlEnums.TextType.NO_SOCKET_DISCON_MSG;
@@ -129,7 +128,7 @@ public class SocketConnStat {
                             device = GATE_BAR_LABEL.getContent();
                             break;
                         case E_Board :
-                            device = EBOARD_LABEL.getContent();
+                            device = E_BOARD_LABEL.getContent();
                             break;
                         default :
                             break;

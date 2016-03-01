@@ -65,12 +65,12 @@ import static com.osparking.global.names.ControlEnums.ButtonTypes.CANCEL_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.CLOSE_BTN;
 import static com.osparking.global.names.ControlEnums.ButtonTypes.SAVE_BTN;
 import static com.osparking.global.names.ControlEnums.LabelContent.BLINGKING_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.CAMERA_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.CYCLE_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.ELECTRONIC_DISPLAY_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelContent.E_BOARD_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.E_BOARD_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.FLOWING_LABEL;
-import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_IP_ADDRESS_LABEL;
+import static com.osparking.global.names.ControlEnums.LabelContent.GATE_BAR_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_NAME_LABEL;
 import static com.osparking.global.names.ControlEnums.LabelContent.GATE_NUM_LABEL;
@@ -196,21 +196,21 @@ public class Settings_System extends javax.swing.JFrame {
         gateNameLabel1 = new javax.swing.JLabel();
         TextFieldGateName1 = new javax.swing.JTextField();
         topLabelsPanel = new javax.swing.JPanel();
-        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         device1_Label = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         cameraPan = new javax.swing.JPanel();
-        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         jLabel30 = new javax.swing.JLabel();
         Camera1_TypeCBox = new javax.swing.JComboBox();
         Camera1_connTypeCBox = new javax.swing.JComboBox();
         Camera1_IP_TextField = new javax.swing.JTextField();
         Camera1_Port_TextField = new javax.swing.JTextField();
         eBoardPan = new javax.swing.JPanel();
-        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         jLabel37 = new javax.swing.JLabel();
         E_Board1_TypeCBox = new javax.swing.JComboBox();
         E_Board1_connTypeCBox = new javax.swing.JComboBox();
@@ -218,7 +218,7 @@ public class Settings_System extends javax.swing.JFrame {
         E_Board1_IP_TextField = new javax.swing.JTextField();
         E_Board1_Port_TextField = new javax.swing.JTextField();
         gateBarPan = new javax.swing.JPanel();
-        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler12 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         ebdLbl = new javax.swing.JLabel();
         GateBar1_TypeCBox = new javax.swing.JComboBox();
         GateBar1_connTypeCBox = new javax.swing.JComboBox();
@@ -231,21 +231,21 @@ public class Settings_System extends javax.swing.JFrame {
         gateNameLabel2 = new javax.swing.JLabel();
         TextFieldGateName2 = new javax.swing.JTextField();
         topLabelsPanel1 = new javax.swing.JPanel();
-        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler19 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         device1_Label1 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jLabel40 = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
         cameraPan1 = new javax.swing.JPanel();
-        filler20 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler20 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         jLabel44 = new javax.swing.JLabel();
         Camera2_TypeCBox = new javax.swing.JComboBox();
         Camera2_connTypeCBox = new javax.swing.JComboBox();
         Camera2_IP_TextField = new javax.swing.JTextField();
         Camera2_Port_TextField = new javax.swing.JTextField();
         eBoardPan1 = new javax.swing.JPanel();
-        filler21 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler21 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         jLabel45 = new javax.swing.JLabel();
         E_Board2_TypeCBox = new javax.swing.JComboBox();
         E_Board2_connTypeCBox = new javax.swing.JComboBox();
@@ -253,7 +253,7 @@ public class Settings_System extends javax.swing.JFrame {
         E_Board2_IP_TextField = new javax.swing.JTextField();
         E_Board2_Port_TextField = new javax.swing.JTextField();
         gateBarPan1 = new javax.swing.JPanel();
-        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(28, 0), new java.awt.Dimension(50, 32767));
+        filler22 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(15, 0), new java.awt.Dimension(50, 32767));
         ebdLbl1 = new javax.swing.JLabel();
         GateBar2_TypeCBox = new javax.swing.JComboBox();
         GateBar2_connTypeCBox = new javax.swing.JComboBox();
@@ -802,7 +802,7 @@ public class Settings_System extends javax.swing.JFrame {
         TextFieldGateName1.setToolTipText("");
         TextFieldGateName1.setMinimumSize(new java.awt.Dimension(30, 25));
         TextFieldGateName1.setName("TextFieldGateName1"); // NOI18N
-        TextFieldGateName1.setPreferredSize(new java.awt.Dimension(120, 27));
+        TextFieldGateName1.setPreferredSize(new java.awt.Dimension(120, 30));
         TextFieldGateName1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextFieldGateName1KeyReleased(evt);
@@ -826,7 +826,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel26.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("Type");
-        jLabel26.setPreferredSize(new java.awt.Dimension(115, 15));
+        jLabel26.setPreferredSize(new java.awt.Dimension(125, 15));
         topLabelsPanel.add(jLabel26);
 
         jLabel27.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -850,7 +850,6 @@ public class Settings_System extends javax.swing.JFrame {
 
         gate1Panel.add(topLabelsPanel);
 
-        cameraPan.setAlignmentX(0.75F);
         cameraPan.setMinimumSize(new java.awt.Dimension(426, 25));
         cameraPan.setPreferredSize(new java.awt.Dimension(518, 25));
         cameraPan.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
@@ -858,8 +857,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel30.setText(CAMERA_IP_ADDRESS_LABEL.getContent());
-        jLabel30.setPreferredSize(new java.awt.Dimension(60, 15));
+        jLabel30.setText(CAMERA_LABEL.getContent());
+        jLabel30.setMinimumSize(new java.awt.Dimension(60, 15));
+        jLabel30.setPreferredSize(new java.awt.Dimension(70, 15));
         cameraPan.add(jLabel30);
 
         Camera1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -943,8 +943,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel37.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel37.setText(E_BOARD_IP_ADDRESS_LABEL.getContent());
-        jLabel37.setPreferredSize(new java.awt.Dimension(60, 15));
+        jLabel37.setText(E_BOARD_LABEL.getContent());
+        jLabel37.setMinimumSize(new java.awt.Dimension(60, 15));
+        jLabel37.setPreferredSize(new java.awt.Dimension(70, 15));
         eBoardPan.add(jLabel37);
 
         E_Board1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1034,8 +1035,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         ebdLbl.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ebdLbl.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        ebdLbl.setText(GATE_BAR_IP_ADDRESS_LABEL.getContent());
-        ebdLbl.setPreferredSize(new java.awt.Dimension(60, 15));
+        ebdLbl.setText(GATE_BAR_LABEL.getContent());
+        ebdLbl.setMinimumSize(new java.awt.Dimension(60, 15));
+        ebdLbl.setPreferredSize(new java.awt.Dimension(70, 15));
         gateBarPan.add(ebdLbl);
 
         GateBar1_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1142,7 +1144,7 @@ public class Settings_System extends javax.swing.JFrame {
         TextFieldGateName2.setToolTipText("");
         TextFieldGateName2.setMinimumSize(new java.awt.Dimension(30, 25));
         TextFieldGateName2.setName("TextFieldGateName2"); // NOI18N
-        TextFieldGateName2.setPreferredSize(new java.awt.Dimension(120, 27));
+        TextFieldGateName2.setPreferredSize(new java.awt.Dimension(120, 30));
         TextFieldGateName2.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 TextFieldGateName2KeyReleased(evt);
@@ -1166,7 +1168,7 @@ public class Settings_System extends javax.swing.JFrame {
         jLabel34.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel34.setText("Type");
-        jLabel34.setPreferredSize(new java.awt.Dimension(115, 15));
+        jLabel34.setPreferredSize(new java.awt.Dimension(125, 15));
         topLabelsPanel1.add(jLabel34);
 
         jLabel40.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1197,8 +1199,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel44.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel44.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel44.setText("Camera");
-        jLabel44.setPreferredSize(new java.awt.Dimension(60, 15));
+        jLabel44.setText(CAMERA_LABEL.getContent());
+        jLabel44.setMinimumSize(new java.awt.Dimension(60, 15));
+        jLabel44.setPreferredSize(new java.awt.Dimension(70, 15));
         cameraPan1.add(jLabel44);
 
         Camera2_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1282,8 +1285,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         jLabel45.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         jLabel45.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel45.setText("E-board");
-        jLabel45.setPreferredSize(new java.awt.Dimension(60, 15));
+        jLabel45.setText(E_Board.getContent());
+        jLabel45.setMinimumSize(new java.awt.Dimension(60, 15));
+        jLabel45.setPreferredSize(new java.awt.Dimension(70, 15));
         eBoardPan1.add(jLabel45);
 
         E_Board2_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1373,8 +1377,9 @@ public class Settings_System extends javax.swing.JFrame {
 
         ebdLbl1.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
         ebdLbl1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        ebdLbl1.setText("Gate bar");
-        ebdLbl1.setPreferredSize(new java.awt.Dimension(60, 15));
+        ebdLbl1.setText(GateBar.getContent());
+        ebdLbl1.setMinimumSize(new java.awt.Dimension(60, 15));
+        ebdLbl1.setPreferredSize(new java.awt.Dimension(70, 15));
         gateBarPan1.add(ebdLbl1);
 
         GateBar2_TypeCBox.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -2088,7 +2093,7 @@ public class Settings_System extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        GatesTabbedPane.getAccessibleContext().setAccessibleName("\"GATE_LABEL.ordinal()))[ourLang] + \\\"2\\\"\"");
+        GatesTabbedPane.getAccessibleContext().setAccessibleName("\"GATE_LABEL.getContent() + \\\"2\\\"\"");
 
         wholePanel.add(gateSettingPanel);
 

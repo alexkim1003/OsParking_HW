@@ -129,7 +129,7 @@ public class ControlEnums {
         STATUS_LABEL ("상황 게시",  "Recent Events"),
         GATE_LABEL ("입구",  "Gate"),
         CAMERA_LABEL ("카메라",  "Camera"),
-        EBOARD_LABEL ("전광판",  "E-Board"),
+        E_BOARD_LABEL ("전광판",  "E-Board"),
         GATE_BAR_LABEL ("차단기",  "G-Bar"),
         DISALLOWED_LABEL("일시적으로 허용되지 않은 차량입니다.", "Car Temporarily Not Permitted"),
         STATISTICS_SIZE_LABEL("통계 모집단 크기",  "Statistics Population Size"),

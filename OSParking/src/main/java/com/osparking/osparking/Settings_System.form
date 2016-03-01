@@ -5,7 +5,7 @@
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="System Settings -- OsParking"/>
     <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-      <Color id="Default Cursor"/>
+      <Color id="&#xae30;&#xbcf8; &#xcee4;&#xc11c;"/>
     </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[775, 800]"/>
@@ -107,7 +107,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(PASSWORD_LEVEL_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="PASSWORD_LEVEL_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -124,7 +124,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(LOGGING_LEVEL_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="LOGGING_LEVEL_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -171,7 +171,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(LANGUAGE_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="LANGUAGE_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -188,7 +188,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(MAX_LINE_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="MAX_LINE_LABEL.getContent()" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -329,7 +329,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(IMG_KEEP_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="IMG_KEEP_LABEL.getContent()" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -375,7 +375,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(GATE_NUM_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="GATE_NUM_LABEL.getContent()" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -391,7 +391,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(VEHICLE_IMG_SIZE_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="VEHICLE_IMG_SIZE_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -408,7 +408,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(VEHICLE_IMG_WIDTH_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="VEHICLE_IMG_WIDTH_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -440,7 +440,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(VEHICLE_IMG_HEIGHT_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="VEHICLE_IMG_HEIGHT_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -564,7 +564,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(LOT_NAME_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="LOT_NAME_LABEL.getContent()" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -629,7 +629,7 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="4"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(STATISTICS_SIZE_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="STATISTICS_SIZE_LABEL.getContent()" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -644,7 +644,7 @@
                   <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.LabelsText.get(RECORD_PASSING_LABEL.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="RECORD_PASSING_LABEL.getContent()" type="code"/>
                 </Property>
                 <Property name="horizontalTextPosition" type="int" value="2"/>
                 <Property name="name" type="java.lang.String" value="RecordPassingDelayCBox" noResource="true"/>
@@ -715,7 +715,7 @@
                 </Property>
               </Properties>
               <AccessibilityProperties>
-                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&quot;((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + \u005c&quot;2\u005c&quot;&quot;" containsInvalidXMLChars="true"/>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="&quot;GATE_LABEL.getContent() + \u005c&quot;2\u005c&quot;&quot;" containsInvalidXMLChars="true"/>
               </AccessibilityProperties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -737,7 +737,7 @@
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                         <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + &quot;1&quot;" type="code"/>
+                          <Connection code="GATE_LABEL.getContent() + &quot;1&quot;" type="code"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -786,7 +786,7 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="4"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="GATE_NAME_LABEL.getContent()" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value=""/>
                           </Properties>
@@ -803,7 +803,7 @@
                             </Property>
                             <Property name="name" type="java.lang.String" value="TextFieldGateName1" noResource="true"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[120, 27]"/>
+                              <Dimension value="[120, 30]"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -836,7 +836,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -863,7 +863,7 @@
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="text" type="java.lang.String" value="Type"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[115, 15]"/>
+                              <Dimension value="[125, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -910,7 +910,6 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="cameraPan">
                       <Properties>
-                        <Property name="alignmentX" type="float" value="0.75"/>
                         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[426, 25]"/>
                         </Property>
@@ -933,7 +932,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -947,10 +946,13 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(CAMERA_IP_ADDRESS_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="CAMERA_LABEL.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[60, 15]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[60, 15]"/>
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1075,7 +1077,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1089,10 +1091,13 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(E_BOARD_IP_ADDRESS_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="E_BOARD_LABEL.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[60, 15]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[60, 15]"/>
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1233,7 +1238,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1247,10 +1252,13 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(GATE_BAR_IP_ADDRESS_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="GATE_BAR_LABEL.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[60, 15]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[60, 15]"/>
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1383,7 +1391,7 @@
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                         <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + &quot;2&quot;" type="code"/>
+                          <Connection code="GATE_LABEL.getContent() + &quot;2&quot;" type="code"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -1432,7 +1440,7 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="4"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(GATE_NAME_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="GATE_NAME_LABEL.getContent()" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value=""/>
                           </Properties>
@@ -1449,7 +1457,7 @@
                             </Property>
                             <Property name="name" type="java.lang.String" value="TextFieldGateName2" noResource="true"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[120, 27]"/>
+                              <Dimension value="[120, 30]"/>
                             </Property>
                           </Properties>
                           <Events>
@@ -1482,7 +1490,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1509,7 +1517,7 @@
                             <Property name="horizontalAlignment" type="int" value="0"/>
                             <Property name="text" type="java.lang.String" value="Type"/>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[115, 15]"/>
+                              <Dimension value="[125, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1576,7 +1584,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1589,9 +1597,14 @@
                               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
-                            <Property name="text" type="java.lang.String" value="Camera"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="CAMERA_LABEL.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[60, 15]"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1716,7 +1729,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1729,9 +1742,14 @@
                               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
-                            <Property name="text" type="java.lang.String" value="E-board"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="E_Board.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[60, 15]"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -1872,7 +1890,7 @@
                               <Dimension value="[10, 0]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[28, 0]"/>
+                              <Dimension value="[15, 0]"/>
                             </Property>
                           </Properties>
                           <AuxValues>
@@ -1885,9 +1903,14 @@
                               <Connection code="new java.awt.Font(font_Type, font_Style, font_Size)" type="code"/>
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="11"/>
-                            <Property name="text" type="java.lang.String" value="Gate bar"/>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="GateBar.getContent()" type="code"/>
+                            </Property>
+                            <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[60, 15]"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[70, 15]"/>
                             </Property>
                           </Properties>
                         </Component>
@@ -2020,7 +2043,7 @@
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                         <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + &quot;3&quot;" type="code"/>
+                          <Connection code="GATE_LABEL.getContent() + &quot;3&quot;" type="code"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -2275,7 +2298,7 @@
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
                       <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                         <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="((String[])Globals.LabelsText.get(GATE_LABEL.ordinal()))[ourLang] + &quot;4&quot;" type="code"/>
+                          <Connection code="GATE_LABEL.getContent() + &quot;4&quot;" type="code"/>
                         </Property>
                       </JTabbedPaneConstraints>
                     </Constraint>
@@ -2643,7 +2666,7 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="2"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(ELECTRONIC_DISPLAY_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="ELECTRONIC_DISPLAY_LABEL.getContent()" type="code"/>
                             </Property>
                             <Property name="toolTipText" type="java.lang.String" value=""/>
                             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -2731,7 +2754,7 @@
                             </Property>
                             <Property name="horizontalAlignment" type="int" value="2"/>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="((String[])Globals.LabelsText.get(CYCLE_LABEL.ordinal()))[ourLang]" type="code"/>
+                              <Connection code="CYCLE_LABEL.getContent()" type="code"/>
                             </Property>
                             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[80, 15]"/>
@@ -2810,7 +2833,7 @@
                                         </Property>
                                         <Property name="horizontalAlignment" type="int" value="2"/>
                                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                          <Connection code="((String[])Globals.LabelsText.get(FLOWING_LABEL.ordinal()))[ourLang]" type="code"/>
+                                          <Connection code="FLOWING_LABEL.getContent()" type="code"/>
                                         </Property>
                                         <Property name="toolTipText" type="java.lang.String" value=""/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -2928,7 +2951,7 @@
                                         </Property>
                                         <Property name="horizontalAlignment" type="int" value="2"/>
                                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                          <Connection code="((String[])Globals.LabelsText.get(BLINGKING_LABEL.ordinal()))[ourLang]" type="code"/>
+                                          <Connection code="BLINGKING_LABEL.getContent()" type="code"/>
                                         </Property>
                                         <Property name="toolTipText" type="java.lang.String" value=""/>
                                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -3042,10 +3065,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="115"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.ButtonLabels.get(SAVE_BTN.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="SAVE_BTN.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="SETTINGS_SAVE_TOOLTIP.getContent(language)" type="code"/>
+                  <Connection code="SETTINGS_SAVE_TOOLTIP.getContent()" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -3079,10 +3102,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.ButtonLabels.get(CANCEL_BTN.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="CANCEL_BTN.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="SETTINGS_CANCEL_TOOLTIP.getContent(language)" type="code"/>
+                  <Connection code="SETTINGS_CANCEL_TOOLTIP.getContent()" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -3116,10 +3139,10 @@
                 </Property>
                 <Property name="mnemonic" type="int" value="99"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="((String[])Globals.ButtonLabels.get(CLOSE_BTN.ordinal()))[ourLang]" type="code"/>
+                  <Connection code="CLOSE_BTN.getContent()" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="CLOSE_BTN_TOOLTIP.getContent(language)" type="code"/>
+                  <Connection code="CLOSE_BTN_TOOLTIP.getContent()" type="code"/>
                 </Property>
                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                   <Dimension value="[90, 40]"/>
