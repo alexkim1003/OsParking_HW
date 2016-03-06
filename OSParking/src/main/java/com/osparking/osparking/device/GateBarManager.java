@@ -267,13 +267,13 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             }                
         } 
         
-//        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
-//            if (!mainForm.isSHUT_DOWN()) {
+        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
+            if (!mainForm.isSHUT_DOWN()) {
 //                getCommPort().close();
-//                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
-//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
-//            }
-//        }        
+                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
+                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Gate bar #" + gateNo);
+            }
+        }        
     }
 
     /**

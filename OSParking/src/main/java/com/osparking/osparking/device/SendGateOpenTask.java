@@ -42,7 +42,7 @@ public class SendGateOpenTask implements Runnable {
     byte[] msgCode = new byte[]{(byte)MsgCode.Open.ordinal()}; //length:1
     
     byte[] integerArr = null;
-    private int resendCount = 0;
+    private int[] resendCount = new int[4];
     byte[] messageArr = new byte[9]; // code(1 byte), cmd ID(4 bytes), delay(4 bytes)
     
     /**
@@ -78,25 +78,16 @@ public class SendGateOpenTask implements Runnable {
         {
             synchronized(mainForm.getSocketMutex()[GateBar.ordinal()][gateID]) 
             {
-//                if (! isConnected(gateMan.getSocket())) 
-                if (! IDevice.isConnected(mainForm.getDeviceManagers()[GateBar.ordinal()][gateID], GateBar, gateID))
+                if (! IDevice.isConnected(
+                        mainForm.getDeviceManagers()[GateBar.ordinal()][gateID], GateBar, gateID))
                 {
                     System.out.println("before opentask");
                     mainForm.getSocketMutex()[GateBar.ordinal()][gateID].wait();
                     System.out.println("after opentask");
                 }
-            }
-            ++resendCount;
-//            if (connectionType[GateBar.ordinal()][gateID] == OSP_enums.ConnectionType.RS_232.ordinal()) {
-////                IDevice.ISerial gateMan = (IDevice.ISerial) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];
-//                if (deviceType[GateBar.ordinal()][gateID] == NaraBar.ordinal()) {
-//                    NaraBarMan gateMan = (NaraBarMan) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];
-//                    gateMan.getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateUp));
-////                    gateMan.getCommPort().getOutputStream().write(messageArr);
-//                }
-//            } else
-            {
-                IDevice.ISocket gateMan = (IDevice.ISocket) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];
+                ++resendCount[gateID];
+                IDevice.ISocket gateMan = 
+                        (IDevice.ISocket) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];
                 gateMan.getSocket().getOutputStream().write(messageArr);
             }
         } catch (IOException e) {
@@ -114,9 +105,9 @@ public class SendGateOpenTask implements Runnable {
      * @return the resendCount
      */
     public int getResendCount() {
-        if (resendCount - 1 < 0) {
+        if (resendCount[gateID] - 1 < 0) {
             JOptionPane.showMessageDialog(null, "negative resend count");
         }
-        return resendCount - 1;  // first send shouldn't be counted
+        return resendCount[gateID] - 1;  // first send shouldn't be counted
     }
 }

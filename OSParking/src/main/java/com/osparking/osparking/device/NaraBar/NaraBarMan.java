@@ -97,12 +97,6 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
             reader.start();
         }
         
-
-//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.Status));
-//        ((NaraBarMan)mainGUI.getDeviceManagers()[GateBar.ordinal()][deviceNo])
-//                .getNaraBarMessages().add(new NaraMsgItem(Nara_MsgType.GateDown));        
-        
         msgSender = new Thread("osp_NaraBarWriterThread")
         {
             public void run() {
@@ -125,8 +119,9 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
                         }
                         //</editor-fold>
                         synchronized (getMsgQdoor()) {
-                            if (getNaraBarMessages().peek() == null)
+                            if (getNaraBarMessages().peek() == null) {
                                 getMsgQdoor().wait();
+                            }
                         }
                         
                         while (!naraBarMessages.isEmpty()) {
