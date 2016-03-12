@@ -97,6 +97,8 @@ import static com.osparking.global.names.OSP_enums.DeviceType.GateBar;
 import com.osparking.global.names.OSP_enums.EBD_ContentType;
 import com.osparking.global.names.OSP_enums.OpLogLevel;
 import com.osparking.global.names.OSP_enums.VersionType;
+import com.osparking.global.names.ParkingTimer;
+import com.osparking.global.names.SocketConnStat;
 import java.awt.Container;
 import javax.imageio.ImageIO;
 import javax.swing.JComboBox;
@@ -1554,7 +1556,6 @@ public class Globals {
     }    
     
     public static boolean registeredDevice(DeviceType devType, String devIP, byte devID) {
-        boolean result = false;
         
         if (devID > gateCount)
             return false;
@@ -1717,12 +1718,43 @@ public class Globals {
         }       
     }
     
-//    public static ArrayList LabelsText = new ArrayList();
-//    public static ArrayList ToolTipLabels = new ArrayList();
-//    public static ArrayList TableHeaderList = new ArrayList();
-//    public static ArrayList TextFieldList = new ArrayList();
-//    public static ArrayList ComboBoxItemList = new ArrayList();
+    /**
+     * closes socket connection to a gate bar.
+     * 
+     * before closing the socket, it cancels any existing relevant tasks.
+     */
+    public static void gfinishConnection(Exception e, String description, byte gateNo,
+            Object sockMutex, Socket socket, javax.swing.JTextArea textArea,
+            SocketConnStat connStat, ParkingTimer connTimer, boolean beingShutdown) {
+
+        synchronized(sockMutex) 
+        {
+            if (isConnected(socket)) 
+            {
+                String msg =  "Gate bar #" + gateNo;
+
+                addMessageLine(textArea, "  ------" + msg + " disconnected");
+                logParkingException(Level.INFO, e, description + " " + msg);
+
+                long closeTm = System.currentTimeMillis();
+
+                connStat.recordSocketDisconnection(closeTm);
+                
+                if (DEBUG) {
+                    System.out.println("M9. Gate bar #" + gateNo + " disconnected at: " + closeTm);                        
+                }
+                closeSocket(socket, "while gate bar socket closing");
+                socket = null;
+            }                
+        } 
+        
+        if (connTimer != null) {
+            if (!beingShutdown) {
+                connTimer.reRunOnce();
+                addMessageLine(textArea, "Trying to connect to Gate bar #" + gateNo);
+            }
+        }        
+    }
     
-//    public static int ourLang;
     public static Languages language;
 }

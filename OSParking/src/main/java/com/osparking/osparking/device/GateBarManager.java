@@ -105,10 +105,28 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
                 //<editor-fold defaultstate="collapsed" desc="-- Reject irrelevant message code">
                 if (barMessageCode == -1) {
                     // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    finishConnection(null,  "End of stream reached, gate #" + gateID, gateID);
+                    gfinishConnection(null,  
+                            "End of stream reached, gate #" + gateID, 
+                            gateID,
+                            mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                            mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                            mainForm.isSHUT_DOWN()
+                            );                    
                     continue;
                 } else if (barMessageCode < -1 || MsgCode.values().length <= barMessageCode) {
-                    finishConnection(null, "Wrong message code: "+ barMessageCode, gateID);
+                    gfinishConnection(null,  
+                            "Wrong message code: "+ barMessageCode, 
+                            gateID,
+                            mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                            mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                            mainForm.isSHUT_DOWN()
+                            );                      
                     continue;
                 } 
                 //</editor-fold>
@@ -198,23 +216,59 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "Gate bar manager #" + gateID + " waits socket conn'");
-                    finishConnection(ex,  "Gate bar manager #" + gateID + " waits socket conn'", gateID);
+                    gfinishConnection(ex,  
+                            "Gate bar manager #" + gateID + " waits socket conn'", 
+                            gateID,
+                            mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                            mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                            mainForm.isSHUT_DOWN()
+                            );
                 }
             } catch (IOException e) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, Gate bar #" + gateID,
                             mainForm.getStatusTextField(), gateID);
-                    finishConnection(e, "server closed socket for ", gateID);
+                    gfinishConnection(e,  
+                            "server closed socket for ", 
+                            gateID,
+                            mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                            mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                            mainForm.isSHUT_DOWN()
+                            );                    
                 }
             } catch (Exception e2) {
                 logParkingExceptionStatus(Level.SEVERE, e2, "server- closed socket for Gate bar #" + gateID,
                             mainForm.getStatusTextField(), gateID);
-                finishConnection(e2, "Gate bar manager Excp  ", gateID);
+                gfinishConnection(e2,  
+                        "Gate bar manager Excp  ", 
+                        gateID,
+                        mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                        socket,
+                        mainForm.getMessageTextArea(), 
+                        mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                        mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                        mainForm.isSHUT_DOWN()
+                );
             }
             //</editor-fold>
 
             if (mainForm.tolerance[GateBar.ordinal()][gateID].getLevel() < 0) {
-                finishConnection(null, "LED: tolerance depleted for", gateID);
+                gfinishConnection(null,  
+                        "LED: tolerance depleted for", 
+                        gateID,
+                        mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                        socket,
+                        mainForm.getMessageTextArea(), 
+                        mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                        mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                        mainForm.isSHUT_DOWN()
+                );                
             }
         }
     }
@@ -224,7 +278,17 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      */
     @Override
     public void stopOperation(String reason) {
-        finishConnection(null, reason, gateID);
+        gfinishConnection(null,  
+                reason, 
+                gateID,
+                mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                socket,
+                mainForm.getMessageTextArea(), 
+                mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                mainForm.isSHUT_DOWN()
+                );        
+        
         interrupt();
     }
 
