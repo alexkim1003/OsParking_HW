@@ -210,10 +210,29 @@ public class EBoardManager extends Thread implements
                 //<editor-fold defaultstate="collapsed" desc="-- Reject irrelevant message code">
                 if (msgCode == -1) {
                     // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    finishConnection(null,  "End of stream reached, gate #" + deviceNo, deviceNo);
+                    gfinishConnection(E_Board, null,  
+                            "End of stream reached, gate #" + deviceNo, 
+                            deviceNo,
+                            mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                            mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                            mainForm.isSHUT_DOWN()
+                    );   
+                
                     continue;
                 } else if (msgCode < -1 || MsgCode.values().length <= msgCode) {
-                    finishConnection(null, "Wrong message code: "+ msgCode, deviceNo);
+                    gfinishConnection(E_Board, null,  
+                            "Wrong message code: "+ msgCode, 
+                            deviceNo,
+                            mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                            mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                            mainForm.isSHUT_DOWN()
+                    );                       
                     continue;
                 }
                 //</editor-fold>
@@ -316,24 +335,60 @@ public class EBoardManager extends Thread implements
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "E-Board manager #" + deviceNo + " waits socket conn'");
-                    finishConnection(ex,  "E-Board manager #" + deviceNo + " waits socket conn'", deviceNo);
+                    gfinishConnection(E_Board, ex,  
+                            "E-Board manager #" + deviceNo + " waits socket conn'", 
+                            deviceNo,
+                            mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                            mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                            mainForm.isSHUT_DOWN()
+                    );                       
                 }
             } catch (IOException e) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, E-board #" + deviceNo,
                             mainForm.getStatusTextField(), deviceNo);
-                    finishConnection(e, "server closed socket for ", deviceNo);
+                    gfinishConnection(E_Board, e,  
+                            "server closed socket for ", 
+                            deviceNo,
+                            mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                            socket,
+                            mainForm.getMessageTextArea(), 
+                            mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                            mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                            mainForm.isSHUT_DOWN()
+                    );                       
                 }
             } catch (Exception e2) {
                 logParkingExceptionStatus(Level.SEVERE, e2, 
                         e2.getMessage() + "server- closed socket forE-Board #" + deviceNo,
                         mainForm.getStatusTextField(), deviceNo);
-                finishConnection(e2, "E-Board manager Excp", deviceNo);
+                gfinishConnection(E_Board, e2,  
+                        "E-Board manager Excp", 
+                        deviceNo,
+                        mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                        socket,
+                        mainForm.getMessageTextArea(), 
+                        mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                        mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                        mainForm.isSHUT_DOWN()
+                );                   
             }
             //</editor-fold>
 
             if (mainForm.tolerance[E_Board.ordinal()][deviceNo].getLevel() <= 0) {
-                finishConnection(null, "LED: tolerance depleted for", deviceNo);
+                gfinishConnection(E_Board, null,  
+                        "LED: tolerance depleted for", 
+                        deviceNo,
+                        mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                        socket,
+                        mainForm.getMessageTextArea(), 
+                        mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                        mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                        mainForm.isSHUT_DOWN()
+                );                   
             }
         }
     }
@@ -343,7 +398,16 @@ public class EBoardManager extends Thread implements
      */
     @Override
     public void stopOperation(String reason) {
-        finishConnection(null, reason, deviceNo);
+        gfinishConnection(E_Board, null,  
+                reason, 
+                deviceNo,
+                mainForm.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                socket,
+                mainForm.getMessageTextArea(), 
+                mainForm.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                mainForm.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                mainForm.isSHUT_DOWN()
+        );           
         interrupt();
     }
 
@@ -362,37 +426,37 @@ public class EBoardManager extends Thread implements
      * 
      * before closing the socket, it cancels any existing relevant tasks.
      */
-    @Override
-    public void finishConnection(Exception e, String description, byte gateNo) 
-    {
-        synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][gateNo]) 
-        {
-            if (0 < gateNo && gateNo <= gateCount) 
-            {
-                if (isConnected(socket)) 
-                {   
-                    String msg =  "E-Board #" + gateNo;
-
-                    addMessageLine(mainForm.getMessageTextArea(), "  ------" +  msg + " disconnected");
-                    logParkingException(Level.INFO, e, description + " " + msg);
-
-                    mainForm.getSockConnStat()[E_Board.ordinal()][gateNo].
-                            recordSocketDisconnection(System.currentTimeMillis());
-                    closeSocket(getSocket(), "while gate bar socket closing");
-                    socket = null;
-                }
-            } else {
-                System.out.println("this never ever gateNo");
-            }
-        }
-            
-        if (mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo] != null) {
-            if (!mainForm.isSHUT_DOWN()) {
-                mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo].reRunOnce();
-                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
-            }
-        }
-    }
+//    @Override
+//    public void finishConnection(Exception e, String description, byte gateNo) 
+//    {
+//        synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][gateNo]) 
+//        {
+//            if (0 < gateNo && gateNo <= gateCount) 
+//            {
+//                if (isConnected(socket)) 
+//                {   
+//                    String msg =  "E-Board #" + gateNo;
+//
+//                    addMessageLine(mainForm.getMessageTextArea(), "  ------" +  msg + " disconnected");
+//                    logParkingException(Level.INFO, e, description + " " + msg);
+//
+//                    mainForm.getSockConnStat()[E_Board.ordinal()][gateNo].
+//                            recordSocketDisconnection(System.currentTimeMillis());
+//                    closeSocket(getSocket(), "while gate bar socket closing");
+//                    socket = null;
+//                }
+//            } else {
+//                System.out.println("this never ever gateNo");
+//            }
+//        }
+//            
+//        if (mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo] != null) {
+//            if (!mainForm.isSHUT_DOWN()) {
+//                mainForm.getConnectDeviceTimer()[E_Board.ordinal()][gateNo].reRunOnce();
+//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + gateNo);
+//            }
+//        }
+//    }
 
     public static void sendEBoardDefaultSetting(ControlGUI mainForm, byte deviceNo, EBD_Row row) {
         if (! mainForm.getSendEBDmsgTimer()[deviceNo][row.ordinal()].hasTask())

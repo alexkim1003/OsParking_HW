@@ -18,6 +18,7 @@ package com.osparking.osparking.device;
 
 import com.osparking.global.names.IDevice;
 import static com.osparking.global.Globals.gateDeviceTypes;
+import static com.osparking.global.Globals.gfinishConnection;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.TimerTask;
@@ -200,7 +201,16 @@ public class LED_Task extends TimerTask {
                 outStream.write(msgBytes);
             }
         } catch (IOException e) {
-            deviceManagers[type.ordinal()][gateNo].finishConnection(e, "while sending heartbeat", gateNo);
+            gfinishConnection(type, null,  
+                    "while sending heartbeat", 
+                    gateNo,
+                    controlGUI.getSocketMutex()[type.ordinal()][gateNo],
+                    ((ISocket)deviceManagers[type.ordinal()][gateNo]).getSocket(),
+                    controlGUI.getMessageTextArea(), 
+                    controlGUI.getSockConnStat()[type.ordinal()][gateNo],
+                    controlGUI.getConnectDeviceTimer()[type.ordinal()][gateNo],
+                    controlGUI.isSHUT_DOWN()
+                    );                 
         }
     }
 }

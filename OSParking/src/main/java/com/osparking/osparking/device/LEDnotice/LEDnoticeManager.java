@@ -404,7 +404,7 @@ public class LEDnoticeManager extends Thread implements
      * 
      * before closing the socket, it cancels any existing relevant tasks.
      */
-    @Override
+//    @Override
     public void finishConnection(Exception e, String description, byte gateNo) 
     {
         synchronized(mainForm.getSocketMutex()[E_Board.ordinal()][gateNo]) 

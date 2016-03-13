@@ -19,7 +19,6 @@ package com.osparking.global.names;
 import com.osparking.global.Globals;
 import static com.osparking.global.names.DB_Access.connectionType;
 import static com.osparking.global.names.OSP_enums.ConnectionType.RS_232;
-import static com.osparking.global.names.OSP_enums.ConnectionType.TCP_IP;
 import com.osparking.global.names.OSP_enums.DeviceType;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -33,7 +32,7 @@ import java.net.Socket;
 public class IDevice {
     
     public static interface IManager {
-        void finishConnection(Exception e, String description, byte deviceNo);
+//        void finishConnection(Exception e, String description, byte deviceNo);
         void setPriority(int newPriority);
         void start();
         public void stopOperation(String reason);

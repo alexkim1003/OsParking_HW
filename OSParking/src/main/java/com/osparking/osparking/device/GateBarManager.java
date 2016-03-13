@@ -105,7 +105,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
                 //<editor-fold defaultstate="collapsed" desc="-- Reject irrelevant message code">
                 if (barMessageCode == -1) {
                     // 'End of stream' means other party closed socket. So, I need to close it from my side.
-                    gfinishConnection(null,  
+                    gfinishConnection(GateBar, null,  
                             "End of stream reached, gate #" + gateID, 
                             gateID,
                             mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -117,7 +117,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
                             );                    
                     continue;
                 } else if (barMessageCode < -1 || MsgCode.values().length <= barMessageCode) {
-                    gfinishConnection(null,  
+                    gfinishConnection(GateBar, null,  
                             "Wrong message code: "+ barMessageCode, 
                             gateID,
                             mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -216,7 +216,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             } catch (InterruptedException ex) {
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "Gate bar manager #" + gateID + " waits socket conn'");
-                    gfinishConnection(ex,  
+                    gfinishConnection(GateBar, ex,  
                             "Gate bar manager #" + gateID + " waits socket conn'", 
                             gateID,
                             mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -231,7 +231,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingExceptionStatus(Level.SEVERE, e, "IOEx- closed socket, Gate bar #" + gateID,
                             mainForm.getStatusTextField(), gateID);
-                    gfinishConnection(e,  
+                    gfinishConnection(GateBar, e,  
                             "server closed socket for ", 
                             gateID,
                             mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -245,7 +245,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             } catch (Exception e2) {
                 logParkingExceptionStatus(Level.SEVERE, e2, "server- closed socket for Gate bar #" + gateID,
                             mainForm.getStatusTextField(), gateID);
-                gfinishConnection(e2,  
+                gfinishConnection(GateBar, e2,  
                         "Gate bar manager Excp  ", 
                         gateID,
                         mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -259,7 +259,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
             //</editor-fold>
 
             if (mainForm.tolerance[GateBar.ordinal()][gateID].getLevel() < 0) {
-                gfinishConnection(null,  
+                gfinishConnection(GateBar, null,  
                         "LED: tolerance depleted for", 
                         gateID,
                         mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -278,7 +278,7 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      */
     @Override
     public void stopOperation(String reason) {
-        gfinishConnection(null,  
+        gfinishConnection(GateBar, null,  
                 reason, 
                 gateID,
                 mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
@@ -307,38 +307,38 @@ public class GateBarManager extends Thread implements IDevice.IManager, IDevice.
      * 
      * before closing the socket, it cancels any existing relevant tasks.
      */
-    @Override
-    public void finishConnection(Exception e, String description, byte gateNo) {
-
-        synchronized(mainForm.getSocketMutex()[GateBar.ordinal()][gateNo]) 
-        {
-            if (isConnected(socket)) 
-            {
-                String msg =  "Gate bar #" + gateNo;
-
-                addMessageLine(mainForm.getMessageTextArea(), "  ------" + msg + " disconnected");
-                logParkingException(Level.INFO, e, description + " " + msg);
-
-                long closeTm = System.currentTimeMillis();
-
-                mainForm.getSockConnStat()[GateBar.ordinal()][gateNo].recordSocketDisconnection(closeTm);
-                
-                if (DEBUG) {
-                    System.out.println("M9. Gate bar #" + gateNo + " disconnected at: " + closeTm);                        
-                }
-                closeSocket(getSocket(), "while gate bar socket closing");
-                socket = null;
-            }                
-        } 
-        
-        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
-            if (!mainForm.isSHUT_DOWN()) {
-//                getCommPort().close();
-                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
-                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Gate bar #" + gateNo);
-            }
-        }        
-    }
+//    @Override
+//    public void finishConnection(Exception e, String description, byte gateNo) {
+//
+//        synchronized(mainForm.getSocketMutex()[GateBar.ordinal()][gateNo]) 
+//        {
+//            if (isConnected(socket)) 
+//            {
+//                String msg =  "Gate bar #" + gateNo;
+//
+//                addMessageLine(mainForm.getMessageTextArea(), "  ------" + msg + " disconnected");
+//                logParkingException(Level.INFO, e, description + " " + msg);
+//
+//                long closeTm = System.currentTimeMillis();
+//
+//                mainForm.getSockConnStat()[GateBar.ordinal()][gateNo].recordSocketDisconnection(closeTm);
+//                
+//                if (DEBUG) {
+//                    System.out.println("M9. Gate bar #" + gateNo + " disconnected at: " + closeTm);                        
+//                }
+//                closeSocket(getSocket(), "while gate bar socket closing");
+//                socket = null;
+//            }                
+//        } 
+//        
+//        if (mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo] != null) {
+//            if (!mainForm.isSHUT_DOWN()) {
+////                getCommPort().close();
+//                mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateNo].reRunOnce();
+//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Gate bar #" + gateNo);
+//            }
+//        }        
+//    }
 
     /**
      * @return the everConnected

@@ -16,12 +16,12 @@
  */
 package com.osparking.osparking.device;
 
+import static com.osparking.global.Globals.gfinishConnection;
 import java.io.IOException;
 import java.util.logging.Level;
 import static com.osparking.global.Globals.isConnected;
 import static com.osparking.global.Globals.logParkingException;
 import com.osparking.global.names.IDevice;
-import com.osparking.global.names.IDevice.IManager;
 import com.osparking.global.names.OSP_enums;
 import static com.osparking.global.names.OSP_enums.DeviceType.E_Board;
 import com.osparking.osparking.ControlGUI;
@@ -66,7 +66,16 @@ public class SendEBDMessageTask implements Runnable {
                     .write(message);
             
         } catch (IOException e) {
-            ((IManager)ebdMan).finishConnection(e, "EBD message sent", deviceNo);
+            gfinishConnection(E_Board, null,  
+                    "EBD message sent", 
+                    deviceNo,
+                    mainGUI.getSocketMutex()[E_Board.ordinal()][deviceNo],
+                    ebdMan.getSocket(),
+                    mainGUI.getMessageTextArea(), 
+                    mainGUI.getSockConnStat()[E_Board.ordinal()][deviceNo],
+                    mainGUI.getConnectDeviceTimer()[E_Board.ordinal()][deviceNo],
+                    mainGUI.isSHUT_DOWN()
+            );
         } catch (InterruptedException ex) {
             logParkingException(Level.SEVERE, ex, "E-Board #" + deviceNo + " message sender wait socket conn'");
         }          

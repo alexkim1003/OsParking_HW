@@ -94,7 +94,6 @@ public class SocketReader extends Thread {
      */
     public void stopOperation(String reason) {
         barManager.finishConnection(null, reason, gateID);
-//        finishConnection(null, reason, gateID);
         interrupt();
     }
 

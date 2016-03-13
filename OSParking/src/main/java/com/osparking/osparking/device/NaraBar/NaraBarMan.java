@@ -288,7 +288,7 @@ public class NaraBarMan extends Thread implements IDevice.IManager, IDevice.ISer
         return naraBarMessages;
     }
     
-    @Override
+//    @Override
     public void finishConnection(Exception e, String description, byte deviceNo) {
         
         synchronized(mainGUI.getSocketMutex()[GateBar.ordinal()][deviceNo]) {

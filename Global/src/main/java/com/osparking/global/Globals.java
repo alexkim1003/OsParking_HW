@@ -1723,13 +1723,14 @@ public class Globals {
      * 
      * before closing the socket, it cancels any existing relevant tasks.
      */
-    public static void gfinishConnection(Exception e, String description, byte gateNo,
+    public static void gfinishConnection(DeviceType devType, 
+            Exception e, String description, byte gateNo,
             Object sockMutex, Socket socket, javax.swing.JTextArea textArea,
             SocketConnStat connStat, ParkingTimer connTimer, boolean beingShutdown) {
 
         synchronized(sockMutex) 
         {
-            if (isConnected(socket)) 
+            if (isConnected(socket))
             {
                 String msg =  "Gate bar #" + gateNo;
 
@@ -1739,10 +1740,7 @@ public class Globals {
                 long closeTm = System.currentTimeMillis();
 
                 connStat.recordSocketDisconnection(closeTm);
-                
-                if (DEBUG) {
-                    System.out.println("M9. Gate bar #" + gateNo + " disconnected at: " + closeTm);                        
-                }
+
                 closeSocket(socket, "while gate bar socket closing");
                 socket = null;
             }                

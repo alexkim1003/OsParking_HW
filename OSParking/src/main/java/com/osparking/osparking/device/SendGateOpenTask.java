@@ -16,6 +16,7 @@
  */
 package com.osparking.osparking.device;
 
+import static com.osparking.global.Globals.gfinishConnection;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -91,8 +92,19 @@ public class SendGateOpenTask implements Runnable {
                 gateMan.getSocket().getOutputStream().write(messageArr);
             }
         } catch (IOException e) {
-            mainForm.getDeviceManagers()[GateBar.ordinal()][gateID].finishConnection(null, 
-                    "writing open cmd #" + openCmd_ID + " to bar#" + gateID, gateID);
+            IDevice.ISocket gateMan = 
+                    (IDevice.ISocket) mainForm.getDeviceManagers()[GateBar.ordinal()][gateID];            
+            gfinishConnection(GateBar, null,  
+                    "writing open cmd #" + openCmd_ID + " to bar#" + gateID, 
+                    gateID,
+                    mainForm.getSocketMutex()[GateBar.ordinal()][gateID],
+                    gateMan.getSocket(),
+                    mainForm.getMessageTextArea(), 
+                    mainForm.getSockConnStat()[GateBar.ordinal()][gateID],
+                    mainForm.getConnectDeviceTimer()[GateBar.ordinal()][gateID],
+                    mainForm.isSHUT_DOWN()
+                    );                 
+            
         } catch (InterruptedException ex) {
             logParkingException(Level.SEVERE, ex, "gate #" + gateID + " open sender wait socket conn'");
         }    
