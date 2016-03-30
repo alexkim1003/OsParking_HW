@@ -91,7 +91,7 @@ public class OSP_enums {
     
     public enum CameraType {
         Simulator("모의장치"), 
-        PointGrey("Point Grey");
+        Blackfly("Blackfly");
         
         private String label;
         

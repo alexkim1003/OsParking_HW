@@ -2765,7 +2765,7 @@ public class Settings_System extends javax.swing.JFrame {
         ChangeSettings.changeStatus_Manager(
                 SettingsSaveButton, SettingsCancelButton, SettingsCloseButton, 
                 changedControls, ((Component) evt.getSource()), Camera1_TypeCBox.getSelectedIndex(), 
-                deviceType[Camera.ordinal()][1]  );
+                deviceType[Camera.ordinal()][1]);
     }//GEN-LAST:event_Camera1_TypeCBoxPopupMenuWillBecomeInvisible
 
     private void E_Board1_TypeCBoxPopupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_E_Board1_TypeCBoxPopupMenuWillBecomeInvisible
