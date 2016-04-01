@@ -93,6 +93,7 @@ import com.osparking.osparking.device.GateBarManager;
 import com.osparking.global.names.IDevice;
 import com.osparking.global.names.IDevice.IE_Board;
 import static com.osparking.global.names.OSP_enums.GateBarType.NaraBar;
+import com.osparking.osparking.device.BlackflyManager;
 import com.osparking.osparking.device.LED_Task;
 import com.osparking.osparking.device.LEDnotice.FinishLEDnoticeIntrTask;
 import com.osparking.osparking.device.LEDnotice.LEDnoticeManager;
@@ -417,7 +418,18 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
                 
                 switch (type) {
                     case Camera: 
-                        deviceManagers[type.ordinal()][gateNo] = (IDevice.IManager)new CameraManager(this, gateNo);
+                        
+                        switch (Globals.gateDeviceTypes[gateNo].cameraType) {
+                            case Blackfly:
+                                deviceManagers[type.ordinal()][gateNo]
+                                        = (IDevice.IManager)new BlackflyManager(this, gateNo);
+                                break;
+                                
+                            default:
+                                deviceManagers[type.ordinal()][gateNo] 
+                                        = (IDevice.IManager)new CameraManager(this, gateNo);
+                                break;
+                        }                        
                         break;
                         
                     case E_Board: 
@@ -615,8 +627,11 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 50), new java.awt.Dimension(0, 50), new java.awt.Dimension(32767, 50));
         jPanel2 = new javax.swing.JPanel();
-        CarEnteredButton = new javax.swing.JButton();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30), new java.awt.Dimension(32767, 30));
+        filler17 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
+        entryPanel = new javax.swing.JPanel();
+        gate1Button = new javax.swing.JButton();
+        gate2Button = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 15), new java.awt.Dimension(0, 15), new java.awt.Dimension(32767, 15));
         showStatisticsBtn = new javax.swing.JButton();
         status_botPanel = new javax.swing.JPanel();
         statusPanelGate1 = new javax.swing.JPanel();
@@ -934,20 +949,41 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         status_topPanel.add(jPanel3);
 
         jPanel2.setBackground(MainBackground);
-        jPanel2.setMaximumSize(new java.awt.Dimension(32882, 32767));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel2.setMaximumSize(new java.awt.Dimension(32882, 120));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        jPanel2.add(filler17);
 
-        CarEnteredButton.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
-        CarEnteredButton.setText(CAR_ARRIVAL_BTN.getContent());
-        CarEnteredButton.setMaximumSize(new java.awt.Dimension(120, 40));
-        CarEnteredButton.setMinimumSize(new java.awt.Dimension(120, 40));
-        CarEnteredButton.setPreferredSize(new java.awt.Dimension(120, 40));
-        CarEnteredButton.addActionListener(new java.awt.event.ActionListener() {
+        entryPanel.setAlignmentX(0.0F);
+        entryPanel.setMaximumSize(new java.awt.Dimension(120, 50));
+        entryPanel.setMinimumSize(new java.awt.Dimension(120, 50));
+        entryPanel.setPreferredSize(new java.awt.Dimension(120, 50));
+        entryPanel.setLayout(new java.awt.GridLayout(1, 2, 10, 0));
+
+        gate1Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        gate1Button.setText(CAR_ARRIVAL_BTN.getContent() + "1");
+        gate1Button.setMaximumSize(new java.awt.Dimension(120, 40));
+        gate1Button.setMinimumSize(new java.awt.Dimension(40, 40));
+        gate1Button.setPreferredSize(new java.awt.Dimension(40, 40));
+        gate1Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CarEnteredButtonActionPerformed(evt);
+                gate1ButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(CarEnteredButton);
+        entryPanel.add(gate1Button);
+
+        gate2Button.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
+        gate2Button.setText(CAR_ARRIVAL_BTN.getContent() + "2");
+        gate2Button.setMaximumSize(new java.awt.Dimension(120, 40));
+        gate2Button.setMinimumSize(new java.awt.Dimension(40, 40));
+        gate2Button.setPreferredSize(new java.awt.Dimension(40, 40));
+        gate2Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gate2ButtonActionPerformed(evt);
+            }
+        });
+        entryPanel.add(gate2Button);
+
+        jPanel2.add(entryPanel);
         jPanel2.add(filler7);
 
         showStatisticsBtn.setFont(new java.awt.Font(font_Type, font_Style, font_Size));
@@ -1500,7 +1536,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     }//GEN-LAST:event_formComponentResized
 
     static int manualSimulationImageID = 0;
-    private void CarEnteredButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CarEnteredButtonActionPerformed
+    private void gate1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gate1ButtonActionPerformed
         Random randomInteger = new Random();
         byte gateNo = (byte) (randomInteger.nextInt(gateCount) + 1);
         
@@ -1519,7 +1555,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         getPassingDelayStat()[gateNo].setICodeArrivalTime(System.currentTimeMillis());
         processCarArrival(gateNo, --manualSimulationImageID, dummyMessages[imageNo].getCarNumber(),
                 dummyMessages[imageNo].getBufferedImg());
-    }//GEN-LAST:event_CarEnteredButtonActionPerformed
+    }//GEN-LAST:event_gate1ButtonActionPerformed
 
     private void BuildingListItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuildingListItemActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1679,6 +1715,10 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
         new ManageArrivalList().run();
     }//GEN-LAST:event_CarIOListButtonActionPerformed
 
+    private void gate2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gate2ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gate2ButtonActionPerformed
+
     LedProtocol ledNoticeProtocol = new LedProtocol(); 
 
     private String getDevType(DeviceType type, byte gateNo) {
@@ -1734,7 +1774,6 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private javax.swing.JMenu AttendantMenu;
     private javax.swing.JMenuItem BuildingListItem;
     private javax.swing.JMenu BuildingMenu;
-    private javax.swing.JButton CarEnteredButton;
     private javax.swing.JButton CarIOListButton;
     private javax.swing.JLabel ClockLabel;
     private javax.swing.JMenuItem CloseProgramItem;
@@ -1763,6 +1802,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private javax.swing.JButton VehiclesButton;
     private javax.swing.JPanel WholePanel;
     private javax.swing.JCheckBox autoGateOpenCheckBox;
+    private javax.swing.JPanel entryPanel;
     private javax.swing.JButton errDecButton;
     private javax.swing.JButton errIncButton;
     public javax.swing.JCheckBox errorCheckBox;
@@ -1775,6 +1815,7 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private javax.swing.Box.Filler filler14;
     private javax.swing.Box.Filler filler15;
     private javax.swing.Box.Filler filler16;
+    private javax.swing.Box.Filler filler17;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -1785,6 +1826,8 @@ public final class ControlGUI extends javax.swing.JFrame implements ActionListen
     private javax.swing.Box.Filler filler9;
     private javax.swing.Box.Filler fillerLeft;
     private javax.swing.JPanel fullPanel;
+    private javax.swing.JButton gate1Button;
+    private javax.swing.JButton gate2Button;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -203,7 +203,7 @@ public class ControlEnums {
         ARRIVALS_BTN("<HTML>입차기록(<U>A</U>)</HTML>", "<HTML><U>A</U>rrivals</HTML>"),
         VEHICLES_BTN("<HTML>등록차목록(<U>V</U>)</HTML>", "<HTML><U>V</U>ehicles</HTML>"),
         USERS_BTN("<HTML>사용자목록(<U>U</U>)</HTML>", "<HTML><U>U</U>sers</HTML>"),
-        CAR_ARRIVAL_BTN("모의 입차", "Car Arrival"),
+        CAR_ARRIVAL_BTN("입 ", "CA"),
         STATISTICS_BTN("통계", "statistics"),
         GATE_BAR_OPEN_BTN("차단기 열림(O)", "Open Bar"),
         GATE_BAR_CLOSE_BTN("차단기 닫힘(C)", "Close Bar"),

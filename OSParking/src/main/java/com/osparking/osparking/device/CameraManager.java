@@ -65,9 +65,9 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
      */
     byte[] bytesID = new byte[4];
     byte[] bytesSize = new byte[4];
-    byte[] bytes9 =new byte[9];    
+    byte[] bytes9 =new byte[9];
     
-    final static int ImageSizeMax = 1024 * 1024 ;
+    final static int ImageSizeMax = 1024 * 1024;
     static byte[][] oneMBytes = new byte[gateCount][ImageSizeMax];
     
     FileWriter fw;
@@ -250,6 +250,7 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
                 
             } catch (SocketTimeoutException e) {
             } catch (InterruptedException ex) {
+                //<editor-fold defaultstate="collapsed" desc="-- Process InterruptedException">
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingException(Level.INFO, ex, "Camera manager #" + cameraID + " waits socket conn'");
                     gfinishConnection(Camera, null,  
@@ -264,7 +265,9 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
                             ); 
                     
                 }
+                //</editor-fold>                
             } catch (IOException e) {
+                //<editor-fold defaultstate="collapsed" desc="-- Process IOException">
                 if (!mainForm.isSHUT_DOWN()) {
                     logParkingExceptionStatus(Level.SEVERE, e, "server- closed socket for camera #" + cameraID,
                             mainForm.getStatusTextField(), cameraID);
@@ -279,7 +282,9 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
                             mainForm.isSHUT_DOWN()
                             );                     
                 }
+                //</editor-fold>                
             } catch (Exception e2) {
+                //<editor-fold defaultstate="collapsed" desc="-- Process Exception">
                 logParkingExceptionStatus(Level.SEVERE, e2, "server- closed socket for camera #" + cameraID,
                         mainForm.getStatusTextField(), cameraID);
                 gfinishConnection(Camera, null,  
@@ -292,6 +297,7 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
                         mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID],
                         mainForm.isSHUT_DOWN()
                         );                     
+                //</editor-fold>                
             }
             //</editor-fold>
             
@@ -353,47 +359,6 @@ public class CameraManager extends Thread implements IDevice.IManager, IDevice.I
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
-
-    /**
-     * stop serving a camera in case of exceptional event happens.
-     */
-//    @Override
-//    public void finishConnection(Exception e, String description, byte cameraID)
-//    {
-//        synchronized (mainForm.getSocketMutex()[Camera.ordinal()][cameraID]) 
-//        {
-//            /** 
-//             * close IO streams and camera socket before finishin service of this manager thread.
-//             */
-//            if (0 < cameraID && cameraID <= gateCount) {
-//                if (isConnected(socket)) {
-//                    String msg = "  ------Camera #" + cameraID + " disconnected";
-//
-//                    addMessageLine(mainForm.getMessageTextArea(), msg);
-//                    logParkingException(Level.INFO, e, description + msg);
-//
-//                    long closeTm = System.currentTimeMillis();
-//
-//                    mainForm.getSockConnStat()[Camera.ordinal()][cameraID]
-//                            .recordSocketDisconnection(closeTm);   
-//                    if (DEBUG) {
-//                        System.out.println("Camera #" + cameraID + " disconnected at: " + closeTm);
-//                    }
-//                    closeSocket(socket, "while socket closing during camera connection finishing");
-//                    socket = null;
-//                }
-//            } else {
-//                System.out.println("this never ever cameraID");
-//            }
-//        }
-//            
-//        if (mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID] != null) {
-//            if (!mainForm.isSHUT_DOWN()) {
-//                mainForm.getConnectDeviceTimer()[Camera.ordinal()][cameraID].reRunOnce();
-//                addMessageLine(mainForm.getMessageTextArea(), "Trying to connect to Camera #" + cameraID);
-//            }
-//        }
-//    }
 
     @Override
     public boolean isNeverConnected() {
