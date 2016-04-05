@@ -1,4 +1,4 @@
-OSParking Project(main)--part of OSParking (Parking Lot Management Software) Simulator Package
+OsParking Project(main)--part of OsParking (Parking Lot Management Software) Package
 
 Copyright holder Contact Information
 
